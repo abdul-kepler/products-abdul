@@ -1,0 +1,50 @@
+{
+  "braintrust_experiment_id": "39972e9b-9498-4821-89da-ab528f389008",
+  "braintrust_experiment_name": "M10_ValidatePrimaryIntendedUse_sonnet",
+  "created": "2026-01-25 23:08:19.169000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "329287b2-4ebd-472c-8db3-f7e731cc56e7",
+  "dataset_name": "M10_ValidatePrimaryIntendedUse_V1.1",
+  "dataset_version": "1000196473826547156",
+  "prompt_id": "e2c3fe3a-be9f-477d-a6d8-cbc98b6523e0",
+  "prompt_version": "1000196550503030986",
+  "prompt_session_id": "06e5f53d-968e-4273-b356-f33732023cb6",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_10_ValidatePrimaryIntendedUse_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "validated_use",
+          "was_corrected",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of validation result"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "validated_use": {
+            "type": "string",
+            "description": "The validated primary use phrase - either the original from M9 if it passed validation, or a corrected version if it needed fixing"
+          },
+          "was_corrected": {
+            "type": "boolean",
+            "description": "Whether the original primary use was corrected"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 10,
+  "downloaded_at": "2026-01-26T02:15:18.927958"
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Binary Metrics</title>
+    <script src="modules_data.js"></script>
+</head>
+<body>
+    <h1>Binary Metrics Test</h1>
+    <pre id="output"></pre>
+    <script>
+        const out = document.getElementById('output');
+
+        if (typeof binaryMetrics === 'undefined') {
+            out.textContent = 'ERROR: binaryMetrics is NOT defined!';
+            out.style.color = 'red';
+        } else {
+            out.textContent = 'SUCCESS: binaryMetrics is defined!\n\n';
+            out.textContent += 'Keys: ' + Object.keys(binaryMetrics).join(', ') + '\n\n';
+            out.textContent += 'm12 data:\n' + JSON.stringify(binaryMetrics['m12'], null, 2);
+            out.style.color = 'green';
+        }
+    </script>
+</body>
+</html>

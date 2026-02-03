@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Judge Report - M09</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .tab.active {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: #00d9ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .rubric-title {
+            font-weight: 600;
+        }
+        .rubric-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .stat {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .stat.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .stat.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+            transition: width 0.3s;
+        }
+        .rubric-content {
+            display: none;
+            padding: 20px;
+        }
+        .rubric-content.open {
+            display: block;
+        }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass {
+            border-left-color: #00ff88;
+        }
+        .eval-item.fail {
+            border-left-color: #ff4757;
+        }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id {
+            font-family: monospace;
+            color: #00d9ff;
+        }
+        .verdict {
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+        .verdict.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .verdict.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .reasoning {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #aaa;
+            white-space: pre-wrap;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .output-box.expected h4 {
+            color: #00ff88;
+        }
+        .output-box.actual h4 {
+            color: #00d9ff;
+        }
+        .output-content {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .input-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .input-section h4 {
+            font-size: 0.8rem;
+            color: #ffa502;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .input-content {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .input-field {
+            margin-bottom: 8px;
+        }
+        .input-field strong {
+            color: #ccc;
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible-header:hover {
+            opacity: 0.8;
+        }
+        .collapsible-content {
+            display: none;
+        }
+        .collapsible-content.open {
+            display: block;
+        }
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+        .toggle-icon.open {
+            transform: rotate(90deg);
+        }
+        .match-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .match-indicator.exact {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .match-indicator.partial {
+            background: rgba(255, 165, 2, 0.2);
+            color: #ffa502;
+        }
+        .match-indicator.mismatch {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .match-details {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        .match-details .overlap {
+            color: #00ff88;
+        }
+        .match-details .missing {
+            color: #ff4757;
+        }
+        .match-details .extra {
+            color: #ffa502;
+        }
+        .sample-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .sample-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .sample-content {
+            display: none;
+            padding: 15px;
+        }
+        .sample-content.open {
+            display: block;
+        }
+        .mini-eval {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .mini-eval:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .detail-modal.open {
+            display: block;
+        }
+        .modal-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LLM Judge Report - M09</h1>
+            <p class="meta">Model: gpt-4o-mini | Generated: 2026-01-14 00:25:12</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">40</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">31</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">9</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">77.5%</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('by-rubric')">By Rubric</div>
+            <div class="tab" onclick="showTab('by-sample')">By Sample</div>
+        </div>
+
+        <div id="by-rubric" class="tab-content active">
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M09_word_count')">
+                    <span class="rubric-title">Word Count 3-6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">10 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100.0%"></div>
+                        </div>
+                        <span>100%</span>
+                    </div>
+                </div>
+                <div id="M09_word_count" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion specifies that the primary use phrase must contain between 3 to 6 words.
+2. The module output provided is &quot;wireless audio listening.&quot;
+3. I will count the words in the phrase:
+   - &quot;wireless&quot; (1 word)
+   - &quot;audio&quot; (1 word)
+   - &quot;listening&quot; (1 word)
+4. The total word count is 3 words, which falls within the acceptable range of 3 to 6 words as per the PASS conditions.
+5. Therefore, the module output meets the requirement of the rubric criterion.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;portable beverage storage and hydration.&quot;
+2. I need to evaluate the word count of this phrase to determine if it meets the criterion of having between 3 to 6 words.
+3. Counting the words in the phrase:
+   - &quot;portable&quot; (1)
+   - &quot;beverage&quot; (2)
+   - &quot;storage&quot; (3)
+   - &quot;and&quot; (4)
+   - &quot;hydration&quot; (5)
+4. The total word count is 5, which falls within the acceptable range of 3 to 6 words as specified in the rubric.
+5. Since the phrase meets the PASS conditions of containing 3-6 words, it satisfies the criterion.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;sink organization and storage&quot;.
+2. I need to evaluate whether this phrase meets the word count requirement of 3-6 words as specified in the rubric.
+3. The phrase &quot;sink organization and storage&quot; consists of 5 words.
+4. Since 5 is within the range of 3 to 6 words, it satisfies the PASS condition.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;insulated warmth during outdoor activities.&quot;
+2. I need to evaluate the word count of this phrase to determine if it meets the criterion of having between 3 to 6 words.
+3. Counting the words in the phrase:
+   - &quot;insulated&quot; (1)
+   - &quot;warmth&quot; (2)
+   - &quot;during&quot; (3)
+   - &quot;outdoor&quot; (4)
+   - &quot;activities&quot; (5)
+4. The total word count is 5, which falls within the acceptable range of 3 to 6 words as specified in the rubric.
+5. Since the phrase meets the PASS conditions by containing 5 words, it satisfies the requirement.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;smartphone mounting in vehicle for navigation.&quot;
+2. I need to evaluate the word count of this phrase to determine if it meets the rubric criterion of having 3-6 words.
+3. Counting the words in the phrase:
+   - &quot;smartphone&quot; (1)
+   - &quot;mounting&quot; (2)
+   - &quot;in&quot; (3)
+   - &quot;vehicle&quot; (4)
+   - &quot;for&quot; (5)
+   - &quot;navigation&quot; (6)
+4. The total word count is 6, which falls within the acceptable range of 3-6 words as specified in the PASS conditions of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;make ice cubes quickly at home.&quot;
+2. I need to evaluate the word count of this phrase to determine if it meets the criterion of having between 3 and 6 words.
+3. Counting the words in the phrase:
+   - &quot;make&quot; (1)
+   - &quot;ice&quot; (2)
+   - &quot;cubes&quot; (3)
+   - &quot;quickly&quot; (4)
+   - &quot;at&quot; (5)
+   - &quot;home&quot; (6)
+4. The total word count is 6, which is within the acceptable range of 3 to 6 words as specified in the rubric.
+5. Since the phrase meets the PASS conditions, it does not fall under any of the FAIL conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;eye definition with eyeliner pencil&quot;.
+2. To evaluate this against the rubric criterion, we need to check the word count of the phrase.
+3. The phrase consists of 5 words: &quot;eye&quot;, &quot;definition&quot;, &quot;with&quot;, &quot;eyeliner&quot;, &quot;pencil&quot;.
+4. Since the word count is within the specified range of 3-6 words, it meets the PASS conditions outlined in the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The criterion states that the primary use phrase must contain between 3 to 6 words.
+2. The module output provided is: &quot;handling hot cookware safely and securely&quot;.
+3. I will count the number of words in this phrase:
+   - &quot;handling&quot; (1)
+   - &quot;hot&quot; (2)
+   - &quot;cookware&quot; (3)
+   - &quot;safely&quot; (4)
+   - &quot;and&quot; (5)
+   - &quot;securely&quot; (6)
+4. The total word count is 6, which is within the acceptable range of 3 to 6 words.
+5. Therefore, the output meets the PASS conditions of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;serving food and drinks.&quot;
+2. I need to evaluate the word count of this phrase to determine if it meets the rubric criterion of having 3-6 words.
+3. The phrase &quot;serving food and drinks&quot; consists of 4 words.
+4. Since 4 is within the specified range of 3-6 words, it satisfies the PASS conditions outlined in the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_word_count_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M09_word_count_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_word_count_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_word_count_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_word_count_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provided is &quot;robot-to-truck conversion toy&quot;.
+2. I need to evaluate the word count of this phrase to determine if it meets the rubric criterion of having 3-6 words.
+3. Counting the words in the phrase:
+   - &quot;robot-to-truck&quot; (1 word, as it is a hyphenated term)
+   - &quot;conversion&quot; (1 word)
+   - &quot;toy&quot; (1 word)
+4. This results in a total of 3 words.
+5. According to the PASS conditions, a phrase must contain between 3 and 6 words to pass. Since the output contains exactly 3 words, it meets the minimum requirement.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M09_describes_function')">
+                    <span class="rubric-title">Describes Function</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">9 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 90.0%"></div>
+                        </div>
+                        <span>90%</span>
+                    </div>
+                </div>
+                <div id="M09_describes_function" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;wireless audio listening&quot; as the primary use of the product.
+2. This phrase describes what the product does, which is to allow users to listen to audio wirelessly.
+3. The output aligns with the PASS conditions as it describes the primary purpose/function of the product rather than just stating what it is or listing features.
+4. However, the expected output specifies &quot;Wireless music and audio listening,&quot; which is slightly more specific than the module output. While the module output is correct, it lacks the specificity of &quot;music&quot; that the expected output provides.
+5. Despite this minor difference, the module output still effectively answers the question of what the product does for the user.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;portable beverage storage and hydration.&quot;
+2. The phrase describes what the product does, focusing on its primary function of storing beverages and facilitating hydration.
+3. The output does not simply name the product or list features; instead, it conveys the purpose of the product in a way that answers the question, &quot;What does this product do for the user?&quot;
+4. The term &quot;portable&quot; emphasizes the convenience aspect, which is relevant to the product&#x27;s use case.
+5. While the expected output uses the term &quot;insulated&quot; to highlight a specific feature, the module output still effectively communicates the primary function of the product.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;sink organization and storage&quot; as the primary use of the product.
+2. This phrase describes what the product does, focusing on its function of organizing and storing items related to the sink area.
+3. The output does not simply name the product or list features; it conveys the purpose of the product in a way that answers the question, &quot;What does this product do for the user?&quot;
+4. While the expected output is &quot;Kitchen sink item organization,&quot; the module output still effectively communicates the primary function of the product, albeit with slightly different wording.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;insulated warmth during outdoor activities&quot; as the primary use of the product.
+2. This phrase describes what the product does for the user, specifically focusing on providing warmth, which is a primary function of the puffer jacket.
+3. The output does not simply state what the product is (e.g., &quot;puffer jacket&quot;) or list features (e.g., &quot;insulated&quot;), but rather emphasizes the benefit to the user (i.e., warmth during outdoor activities).
+4. The phrase effectively answers the question of what the product does for the user, aligning with the PASS conditions of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;smartphone mounting in vehicle for navigation.&quot;
+2. This phrase describes the function of the product by indicating that it is used for mounting smartphones in a vehicle, which is a primary purpose of the product.
+3. The output answers the question of what the product does for the user, as it implies that the user can mount their smartphone in the vehicle for navigation purposes.
+4. The phrase does not simply state what the product is (e.g., &quot;phone holder&quot;) or list features (e.g., &quot;magnetic grip&quot;), but rather focuses on the use case and functionality.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states that the primary use of the product is to &quot;make ice cubes quickly at home.&quot;
+2. The phrase describes what the product does, specifically focusing on the action of making ice cubes, which aligns with the PASS condition of describing the primary purpose/function.
+3. The output answers the question &quot;what does this product do for the user?&quot; by indicating that it facilitates the quick production of ice cubes, which is a clear benefit for the user.
+4. The phrase does not merely state the product name or list features; it emphasizes the functionality and the context of use (home), which is relevant to the user experience.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a description of what the product does, rather than what it is. It should focus on the primary purpose or function of the product.
+2. The module output states &quot;eye definition with eyeliner pencil.&quot; This phrase indicates the function of the product, which is to define the eyes using an eyeliner pencil.
+3. The output answers the question &quot;what does this product do for the user?&quot; by highlighting that it is used for eye definition, which aligns with the intended use of an eyeliner.
+4. While the expected output &quot;Long-lasting eye line definition&quot; is slightly more descriptive, the module output still effectively communicates the primary function of the product.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the output to describe what the product does, rather than what it is. It should focus on the primary purpose or function of the product.
+2. The module output states, &quot;handling hot cookware safely and securely.&quot; This phrase clearly describes the function of the oven mitts, which is to provide safety and security when dealing with hot items in the kitchen.
+3. The output answers the question, &quot;What does this product do for the user?&quot; by indicating that it helps the user handle hot cookware without risk of burns or accidents.
+4. The expected output, &quot;Heat protection when cooking,&quot; also describes the function of the product effectively, but the module output is equally valid as it conveys the same essential purpose.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;serving food and drinks&quot; as the primary use of the product.
+2. This phrase describes what the product does for the user, which is to serve food and drinks, aligning with the PASS condition of the rubric.
+3. The output does not simply state the product name or list features; it clearly communicates the function of the serving tray in a way that answers the question, &quot;What does this product do for the user?&quot;
+4. The expected output is &quot;Food and drink serving,&quot; which is a slightly different phrasing but conveys the same primary purpose. The module output is still valid as it effectively describes the function.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_describes_function_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M09_describes_function_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_describes_function_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_describes_function_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_describes_function_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;robot-to-truck conversion toy&quot; as the primary use.
+2. The phrase describes a specific feature of the toy (the conversion from robot to truck) rather than the broader function or purpose it serves for the user.
+3. The output does not answer the question &quot;what does this product do for the user?&quot; in a way that emphasizes imaginative play or the experience of using the toy.
+4. The expected output, &quot;Transforming robot imaginative play,&quot; captures the essence of what the product does for the user, focusing on the imaginative aspect of play rather than just the conversion feature.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M09_no_adjectives')">
+                    <span class="rubric-title">No Adjectives/Marketing</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">7 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70.0%"></div>
+                        </div>
+                        <span>70%</span>
+                    </div>
+                </div>
+                <div id="M09_no_adjectives" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states: `&quot;primary_use&quot;: &quot;wireless audio listening&quot;`.
+2. The phrase &quot;wireless audio listening&quot; is a functional description of the product&#x27;s primary use without any adjectives or marketing language.
+3. There are no quality claims or marketing terms present in the output. It simply describes the function of the product.
+4. The expected output, `&quot;primary_use&quot;: &quot;Wireless music and audio listening&quot;`, contains the word &quot;music,&quot; which could be considered a slight embellishment, but it is still a functional description of the use case.
+5. However, the module output does not include any adjectives or marketing language, thus adhering to the rubric&#x27;s PASS conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;portable beverage storage and hydration.&quot;
+2. The phrase &quot;portable beverage storage&quot; is a functional description that does not contain any adjectives or marketing language. It describes the use of the product without making any quality claims.
+3. The term &quot;hydration&quot; is also a functional term that describes the purpose of the product without implying any quality or marketing language.
+4. There are no adjectives such as &quot;premium,&quot; &quot;comfortable,&quot; &quot;efficient,&quot; or any marketing terms like &quot;enhanced,&quot; &quot;superior,&quot; or &quot;advanced&quot; present in the output.
+5. The output adheres to the PASS conditions of providing a pure functional description without any quality claims or marketing terms.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states: &quot;sink organization and storage.&quot;
+2. The phrase is a functional description of the primary use of the product without any adjectives or marketing language.
+3. There are no quality claims or marketing terms present in the output.
+4. The output is straightforward and describes the function of the product without embellishment.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;insulated warmth during outdoor activities.&quot;
+2. The phrase &quot;insulated warmth&quot; contains the adjective &quot;insulated,&quot; which describes the type of warmth being provided. This is a quality claim about the product&#x27;s functionality.
+3. The term &quot;warmth&quot; itself is a quality descriptor, as it implies a level of comfort or heat that is subjective.
+4. The phrase also includes &quot;outdoor activities,&quot; which, while functional, does not negate the presence of the adjectives in the first part of the phrase.
+5. According to the rubric, the presence of adjectives or marketing language results in a failure to meet the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states: &quot;smartphone mounting in vehicle for navigation.&quot;
+2. I will analyze the phrase for any adjectives or marketing language.
+3. The term &quot;smartphone&quot; is a functional descriptor and does not qualify as an adjective or marketing term.
+4. The phrase &quot;mounting in vehicle&quot; describes the action and context without using any quality claims or marketing language.
+5. The phrase &quot;for navigation&quot; indicates the purpose of the mounting, which is also functional and does not contain any adjectives or marketing terms.
+6. Overall, the output is a pure functional description of the product&#x27;s use without any quality claims or marketing language.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states, &quot;make ice cubes quickly at home.&quot; 
+2. The phrase &quot;quickly&quot; is an adverb that implies speed, which can be interpreted as a quality claim about the ice-making process. This suggests a level of efficiency that aligns with marketing language.
+3. The phrase &quot;at home&quot; indicates a specific use case but does not contribute to quality claims or marketing terms.
+4. According to the rubric, the presence of the word &quot;quickly&quot; violates the criterion of having no adjectives or marketing language, as it suggests a superior performance in terms of speed.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states: &quot;eye definition with eyeliner pencil.&quot;
+2. This phrase is a functional description of the primary use of the product, which is to define the eyes using an eyeliner pencil.
+3. The output does not contain any adjectives or marketing language. It avoids terms that imply quality or superiority, such as &quot;long-lasting,&quot; &quot;best,&quot; or &quot;superior.&quot;
+4. The expected output, &quot;Long-lasting eye line definition,&quot; includes the adjective &quot;long-lasting,&quot; which is a quality claim and thus fails the rubric criterion.
+5. Since the module output adheres to the rubric&#x27;s PASS conditions by providing a pure functional description without any quality claims or marketing terms, it meets the requirements.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states: &quot;handling hot cookware safely and securely.&quot;
+2. The phrase &quot;safely and securely&quot; contains the adjectives &quot;safely&quot; and &quot;securely,&quot; which imply a quality claim about the use of the product.
+3. According to the rubric, the presence of adjectives or marketing language disqualifies the output from passing the criterion.
+4. The expected output, &quot;Heat protection when cooking,&quot; is a pure functional description without any adjectives or marketing terms, which aligns with the PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states: &quot;serving food and drinks.&quot;
+2. This phrase is a functional description of the primary use of the product without any adjectives or marketing language.
+3. There are no quality claims or marketing terms present in the output.
+4. The expected output is &quot;Food and drink serving,&quot; which is also a pure functional description and aligns with the rubric&#x27;s PASS conditions.
+5. Since the module output does not contain any adjectives or marketing language, it meets the criteria for passing.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_no_adjectives_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M09_no_adjectives_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_no_adjectives_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_no_adjectives_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_no_adjectives_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states &quot;robot-to-truck conversion toy.&quot; 
+2. This phrase describes the function of the toy without using any adjectives or marketing language. It focuses purely on the action of converting from robot to truck, which is a functional description.
+3. The expected output, &quot;Transforming robot imaginative play,&quot; also describes a use case but includes the term &quot;imaginative,&quot; which can be considered an adjective that implies a quality of play.
+4. Since the module output does not contain any adjectives or marketing terms, it adheres to the rubric criterion of avoiding quality claims or marketing language.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M09_single_core_action')">
+                    <span class="rubric-title">Single Core Action</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">5 Pass</span>
+                        <span class="stat fail">5 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50.0%"></div>
+                        </div>
+                        <span>50%</span>
+                    </div>
+                </div>
+                <div id="M09_single_core_action" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;wireless audio listening.&quot;
+2. The expected output describes the primary use as &quot;Wireless music and audio listening.&quot;
+3. Both outputs focus on a single core action related to audio consumption, specifically through wireless means.
+4. The module output does not combine multiple uses or list functions; it clearly identifies one primary use.
+5. The slight difference in wording between the module output and the expected output does not affect the fact that both describe a single unified purpose.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;portable beverage storage and hydration.&quot;
+2. The phrase &quot;portable beverage storage&quot; suggests a function related to holding beverages, while &quot;hydration&quot; implies a broader purpose of providing access to drinks for the purpose of staying hydrated.
+3. The combination of &quot;storage&quot; and &quot;hydration&quot; indicates that there are two distinct functions being described: one for storing beverages and another for the act of hydration itself.
+4. According to the rubric, a PASS condition requires a single unified purpose described, which is not met here due to the presence of two core actions.
+5. The expected output, &quot;Portable insulated drink hydration,&quot; focuses solely on the hydration aspect, aligning with the requirement for a single core action.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;sink organization and storage.&quot;
+2. The phrase &quot;sink organization and storage&quot; implies two distinct functions: organizing and storing items in the sink area.
+3. According to the rubric, a PASS condition requires a single unified purpose described, which means only one core action or function should be presented.
+4. Since the output combines two actions (organization and storage), it does not meet the requirement of describing a single core action.
+5. The expected output specifies &quot;Kitchen sink item organization,&quot; which focuses solely on the organization aspect, aligning with the rubric&#x27;s PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;insulated warmth during outdoor activities.&quot;
+2. The phrase &quot;insulated warmth&quot; suggests a focus on providing warmth, which aligns with the product&#x27;s purpose of keeping the wearer warm in cold conditions.
+3. However, the addition of &quot;during outdoor activities&quot; introduces a secondary aspect, implying that the jacket is intended for multiple contexts (outdoor activities), which could encompass various uses such as hiking, skiing, or camping.
+4. The expected output, &quot;Cold weather body warmth,&quot; is more focused and singular, emphasizing the primary function of the jacket without introducing additional contexts or uses.
+5. According to the rubric, the output must describe a single unified purpose without combining multiple uses or listing functions. The module output fails to meet this criterion due to the inclusion of &quot;outdoor activities,&quot; which implies multiple uses.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;smartphone mounting in vehicle for navigation.&quot;
+2. This description focuses on a single core action: mounting a smartphone in a vehicle.
+3. The output does not combine multiple uses or functions; it clearly identifies one primary purpose related to the product&#x27;s functionality.
+4. The expected output states &quot;Hands-free phone mounting,&quot; which is also a single unified purpose but is slightly broader than the module output.
+5. However, both outputs describe a singular action related to the product&#x27;s main function without listing multiple uses or combining different actions.
+
+Given that the module output adheres to the requirement of describing one primary use without combining multiple functions, it meets the PASS conditions of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;make ice cubes quickly at home.&quot;
+2. This description focuses on a single core action, which is the production of ice cubes.
+3. The phrase &quot;quickly at home&quot; specifies the context but does not introduce multiple functions or uses.
+4. The expected output, &quot;Portable ice cube production,&quot; also describes a single unified purpose, emphasizing the action of producing ice cubes.
+5. Both outputs align with the PASS conditions of the rubric, as they describe one primary use without combining multiple functions or uses.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;eye definition with eyeliner pencil.&quot;
+2. This description focuses on a single core action, which is defining the eyes using the eyeliner pencil.
+3. The output does not combine multiple uses or functions; it clearly identifies one primary purpose.
+4. The expected output also describes a similar single core action, &quot;Long-lasting eye line definition,&quot; which aligns with the module output&#x27;s focus on eye definition.
+5. Both outputs emphasize the primary function of the product without introducing additional uses or a list of functions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the output to describe a single core action or purpose.
+2. The module output states &quot;handling hot cookware safely and securely,&quot; which implies a focus on the action of handling hot cookware.
+3. The expected output states &quot;Heat protection when cooking,&quot; which also describes a single unified purpose related to safety in the kitchen.
+4. Both outputs focus on a singular action related to the use of oven mitts, which is to protect hands from heat while handling cookware.
+5. The module output does not combine multiple uses or list functions; it maintains a singular focus on the action of handling hot cookware.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output states the primary use as &quot;serving food and drinks.&quot;
+2. According to the rubric criterion, the output must describe a single core action or function.
+3. The phrase &quot;serving food and drinks&quot; implies two distinct actions: serving food and serving drinks. This indicates that the output combines multiple uses rather than focusing on a single unified purpose.
+4. The expected output, &quot;Food and drink serving,&quot; also suggests a similar duality, but it is phrased more succinctly. However, it still does not meet the requirement of describing only one primary use.
+5. Since the module output does not adhere to the requirement of describing a single core action, it fails to meet the PASS conditions outlined in the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M09_single_core_action_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M09_single_core_action_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M09_single_core_action_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M09_single_core_action_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M09_single_core_action_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the output to describe a single core action or function.
+2. The module output states &quot;robot-to-truck conversion toy,&quot; which implies a specific action (conversion) but does not focus on a singular unified purpose.
+3. The phrase &quot;robot-to-truck conversion&quot; suggests a duality in function, as it describes both the robot and the truck forms, which can be interpreted as multiple uses combined.
+4. The expected output, &quot;Transforming robot imaginative play,&quot; emphasizes a singular purpose related to imaginative play, which aligns with the rubric&#x27;s PASS conditions.
+5. Since the module output does not encapsulate a single core action or function and instead implies multiple uses, it does not meet the PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="by-sample" class="tab-content">
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0BQPGJ9LQ')">
+                    <span class="sample-id">B0BQPGJ9LQ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">4 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0BQPGJ9LQ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B0BQPGJ9LQ')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B0BQPGJ9LQ')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B0BQPGJ9LQ')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B0BQPGJ9LQ')">
+                        <span>Single Core Action</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0BZYCJK89')">
+                    <span class="sample-id">B0BZYCJK89</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0BZYCJK89" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B0BZYCJK89')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B0BZYCJK89')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B0BZYCJK89')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B0BZYCJK89')">
+                        <span>Single Core Action</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0CJ4WZXQF')">
+                    <span class="sample-id">B0CJ4WZXQF</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0CJ4WZXQF" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B0CJ4WZXQF')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B0CJ4WZXQF')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B0CJ4WZXQF')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B0CJ4WZXQF')">
+                        <span>Single Core Action</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0D6YNWLTS')">
+                    <span class="sample-id">B0D6YNWLTS</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0D6YNWLTS" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B0D6YNWLTS')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B0D6YNWLTS')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B0D6YNWLTS')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B0D6YNWLTS')">
+                        <span>Single Core Action</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0DSHWLXG6')">
+                    <span class="sample-id">B0DSHWLXG6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">4 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0DSHWLXG6" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B0DSHWLXG6')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B0DSHWLXG6')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B0DSHWLXG6')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B0DSHWLXG6')">
+                        <span>Single Core Action</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0F42MT8JX')">
+                    <span class="sample-id">B0F42MT8JX</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0F42MT8JX" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B0F42MT8JX')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B0F42MT8JX')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B0F42MT8JX')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B0F42MT8JX')">
+                        <span>Single Core Action</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B000H3I2JG')">
+                    <span class="sample-id">B000H3I2JG</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">4 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B000H3I2JG" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B000H3I2JG')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B000H3I2JG')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B000H3I2JG')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B000H3I2JG')">
+                        <span>Single Core Action</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B08J8GZXKZ')">
+                    <span class="sample-id">B08J8GZXKZ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B08J8GZXKZ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B08J8GZXKZ')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B08J8GZXKZ')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B08J8GZXKZ')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B08J8GZXKZ')">
+                        <span>Single Core Action</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B09LCKZBTW')">
+                    <span class="sample-id">B09LCKZBTW</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B09LCKZBTW" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B09LCKZBTW')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B09LCKZBTW')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B09LCKZBTW')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B09LCKZBTW')">
+                        <span>Single Core Action</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B077YYP739')">
+                    <span class="sample-id">B077YYP739</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B077YYP739" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M09_word_count', 'B077YYP739')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_describes_function', 'B077YYP739')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_no_adjectives', 'B077YYP739')">
+                        <span>No Adjectives/Marketing</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M09_single_core_action', 'B077YYP739')">
+                        <span>Single Core Action</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleRubric(rubricId) {
+            document.getElementById(rubricId).classList.toggle('open');
+        }
+
+        function toggleSample(sampleId) {
+            document.getElementById('sample-' + sampleId).classList.toggle('open');
+        }
+
+        function toggleCollapsible(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + '_icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_4_ClassifyCompetitorBrandKeywords_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Classification results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being classified"
+              },
+              "branding_scope_2": {
+                "type": ["string", "null"],
+                "enum": ["CB", null],
+                "description": "CB if keyword matches competitor entity, null otherwise"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why this classification was chosen"
+              }
+            },
+            "required": ["keyword", "branding_scope_2", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

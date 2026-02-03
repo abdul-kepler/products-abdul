@@ -1,0 +1,1846 @@
+{
+  "experiment": "V2",
+  "module": "m06_sd",
+  "model": "gpt-4o",
+  "rubrics_version": "v5",
+  "timestamp": "2026-01-20T00:56:20.386036",
+  "data_source": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M06_GenerateProductTypeTaxonomy/M06_GenerateProductTypeTaxonomy_sd1_v1_150126_1.csv",
+  "summary": {
+    "pass": 39,
+    "fail": 21,
+    "error": 0
+  },
+  "pass_rate": 65.0,
+  "evaluations": [
+    {
+      "sample_id": "B0FY3R81S9",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because it only provides 2 levels instead of the required 3 levels. The output is missing the 'Department' level, which should be the third level in the hierarchy.",
+      "input": {
+        "bullet_points": "",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Dinnerware Sets",
+        "description": "",
+        "product_type": "UNKNOWN",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Dinnerware Set",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Dinnerware",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY3R81S9",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product category/type by using 'Dinnerware Set' and 'Dinnerware', which align with the rubric's requirement to focus on what the product is. There are no feature-based or marketing terms in the taxonomy.",
+      "input": {
+        "bullet_points": "",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Dinnerware Sets",
+        "description": "",
+        "product_type": "UNKNOWN",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Dinnerware Set",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Dinnerware",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY3R81S9",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the rubric criterion as the taxonomy levels go from specific to general. Level 1 is 'Dinnerware Set', which is more specific, and Level 2 is 'Dinnerware', which is broader. This order aligns with the PASS conditions of the rubric.",
+      "input": {
+        "bullet_points": "",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Dinnerware Sets",
+        "description": "",
+        "product_type": "UNKNOWN",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Dinnerware Set",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Dinnerware",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY3R81S9",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies the product as a 'Dinnerware Set' and 'Dinnerware', which accurately describes the product type based on the title 'kate spade new york Deco Dot 12-Piece Dinnerware Set'. This meets the PASS conditions of the rubric.",
+      "input": {
+        "bullet_points": "",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Dinnerware Sets",
+        "description": "",
+        "product_type": "UNKNOWN",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Dinnerware Set",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Dinnerware",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY3R81S9",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The module output contains a taxonomy with 2 levels, which is within the allowed range of 1-3 levels as per the rubric. No unnecessary categories were added.",
+      "input": {
+        "bullet_points": "",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Dinnerware Sets",
+        "description": "",
+        "product_type": "UNKNOWN",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Dinnerware Set",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Dinnerware",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY3R81S9",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Dinnerware Set' and 'Dinnerware' as separate taxonomy levels, which violates the rubric criterion that requires material/feature modifiers to be combined into a single product type. The output should use only one level for the simple product 'Dinnerware Set'.",
+      "input": {
+        "bullet_points": "",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Dinnerware Sets",
+        "description": "",
+        "product_type": "UNKNOWN",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Dinnerware Set",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Dinnerware",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY37Z5L7",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because it only provides 2 levels instead of the required 3 levels. The output is missing the 'Department' level, which should be 'Electronics' according to the input data. Additionally, the levels provided are not in the specific-to-broad order as required by the rubric.",
+      "input": {
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Point and Shoot Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Digital Camera",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY37Z5L7",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product category/type at both levels of the taxonomy. 'Point and Shoot Digital Camera' and 'Digital Camera' are both product types, not features or marketing terms, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Point and Shoot Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Digital Camera",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY37Z5L7",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the taxonomy levels go from specific to general. The module output lists 'Point and Shoot Digital Camera' at level 1, which is more specific, and 'Digital Camera' at level 2, which is broader. This hierarchy order is correct according to the rubric's PASS conditions.",
+      "input": {
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Point and Shoot Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Digital Camera",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY37Z5L7",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output lists 'Point and Shoot Digital Camera' and 'Digital Camera' as the product types, which correctly describe the product as per the input data. The input data describes a digital camera with features typical of point and shoot cameras, such as ease of use and compact size. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Point and Shoot Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Digital Camera",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY37Z5L7",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the taxonomy has at most 3 levels. The module output contains a taxonomy with only 2 levels, which meets the PASS condition of having 1-3 levels only.",
+      "input": {
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Point and Shoot Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Digital Camera",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FY37Z5L7",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires that material/feature modifiers are not separate taxonomy levels and should be combined into a single product type. The module output has 'Point and Shoot Digital Camera' and 'Digital Camera' as separate levels, which violates the rubric's requirement to use one level for simple products. Therefore, the output does not meet the PASS conditions.",
+      "input": {
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Point and Shoot Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Digital Camera",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FS1JP2WV",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires exactly 3 levels: Product Type, Category, and Department. The module output only provides 2 levels: 'Digital Camera' as Product Type and 'Point & Shoot Digital Cameras' as Category. The Department level 'Electronics' is missing, leading to a failure to meet the PASS conditions.",
+      "input": {
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Point & Shoot Digital Cameras",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FS1JP2WV",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output provides a taxonomy that describes the product category/type. 'Digital Camera' and 'Point & Shoot Digital Cameras' are appropriate product types and align with the rubric's requirement to describe what the product is, rather than focusing on features or using marketing terms.",
+      "input": {
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Point & Shoot Digital Cameras",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FS1JP2WV",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires the hierarchy to go from specific to general. The module output lists 'Digital Camera' as level 1 and 'Point & Shoot Digital Cameras' as level 2. However, 'Point & Shoot Digital Cameras' is more specific than 'Digital Camera', indicating the hierarchy is inverted.",
+      "input": {
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Point & Shoot Digital Cameras",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FS1JP2WV",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output lists 'Digital Camera' and 'Point & Shoot Digital Cameras' as the product types, which accurately describe the product based on the input data. The product is indeed a digital camera with point-and-shoot capabilities, as indicated by the bullet points and title. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Point & Shoot Digital Cameras",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FS1JP2WV",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the taxonomy has at most 3 levels. The module output provides a taxonomy with 2 levels, which meets the PASS condition of having 1-3 levels only.",
+      "input": {
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Point & Shoot Digital Cameras",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FS1JP2WV",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "PASS",
+      "reasoning": "The module output combines the material/feature modifiers into a single product type at level 1 ('Digital Camera') and uses a single level for the simple product type ('Point & Shoot Digital Cameras') at level 2. There are no separate taxonomy levels for material or feature modifiers, meeting the rubric's PASS conditions.",
+      "input": {
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "category_root": "Electronics",
+        "category_sub": "Point & Shoot Digital Cameras",
+        "description": "",
+        "product_type": "CAMERA_DIGITAL",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Digital Camera",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Point & Shoot Digital Cameras",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FJ6TF24P",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because it only provides 2 levels instead of the required 3 levels. The output is missing the 'Department' level, which is necessary for a PASS.",
+      "input": {
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "category_root": "Automotive",
+        "category_sub": "Floor Mats",
+        "description": "",
+        "product_type": "VEHICLE_MAT",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Floor Mats",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Automotive Accessories",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FJ6TF24P",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product category/type at both levels of the taxonomy. 'Floor Mats' at Level 1 and 'Automotive Accessories' at Level 2 are appropriate product types and do not focus on features or use marketing terms, thus meeting the rubric's PASS conditions.",
+      "input": {
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "category_root": "Automotive",
+        "category_sub": "Floor Mats",
+        "description": "",
+        "product_type": "VEHICLE_MAT",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Floor Mats",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Automotive Accessories",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FJ6TF24P",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because the hierarchy is not correctly ordered from specific to general. 'Floor Mats' is more specific than 'Automotive Accessories', but the output places 'Floor Mats' at level 1 and 'Automotive Accessories' at level 2, which is inverted.",
+      "input": {
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "category_root": "Automotive",
+        "category_sub": "Floor Mats",
+        "description": "",
+        "product_type": "VEHICLE_MAT",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Floor Mats",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Automotive Accessories",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FJ6TF24P",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output lists 'Floor Mats' and 'Automotive Accessories' as the product types. The input data describes the product as floor mats and a cargo liner for a vehicle, which fits within the 'Floor Mats' and 'Automotive Accessories' categories. Therefore, the output meets the PASS conditions as the product types accurately describe the product.",
+      "input": {
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "category_root": "Automotive",
+        "category_sub": "Floor Mats",
+        "description": "",
+        "product_type": "VEHICLE_MAT",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Floor Mats",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Automotive Accessories",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FJ6TF24P",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires the taxonomy to have at most 3 levels. The module output shows a taxonomy with 2 levels, which meets the PASS condition of having 1-3 levels only.",
+      "input": {
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "category_root": "Automotive",
+        "category_sub": "Floor Mats",
+        "description": "",
+        "product_type": "VEHICLE_MAT",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Floor Mats",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Automotive Accessories",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FJ6TF24P",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires that material/feature modifiers are not separate taxonomy levels and should be combined into a single product type. The module output separates 'Floor Mats' and 'Automotive Accessories' into different levels, which does not align with the rubric's requirement to use one level for simple products. Therefore, the output does not meet the PASS conditions.",
+      "input": {
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "category_root": "Automotive",
+        "category_sub": "Floor Mats",
+        "description": "",
+        "product_type": "VEHICLE_MAT",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Floor Mats",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Automotive Accessories",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FHH693Z4",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because it only provides 2 levels instead of the required 3 levels. The output is missing the 'Department' level, which is necessary for a PASS.",
+      "input": {
+        "bullet_points": "\u3010Natural Beeswax Blend for Long\u3011The beeswax bread bags for sourdough made of natural beeswax lasting freshness. These breathable 100% premium cotton bread storage bags lock in moisture to keep bread soft and flavorful. The \u200bbeeswax bread bag inner layer regulates moisture, keeping your \u200bhomemade\u200b loaves, bagels, or \u200bsourdough crusts fresh for days. These \u200beco-friendly bread bags\u200b are a \u200bsustainable alternative\u200b to plastic wrap and single-use bags\n\u3010Innovative Separable Beeswax Liner\u3011This beeswax bread bag for sourdough features a unique separable beeswax-coated liner. Unlike traditional reusable sourdough bread bags, simply pull out the liner for easy deep cleaning and let it air dry effortlessly. Say goodbye to sticky liners\n\u3010Bread Bag with Zipper\u3011 Extra \u200bLarge (XL) size\u200b sourdough bread bags comfortably fits artisan loaves and \u200bsourdough. The reusable bread bags feature a new zippered fold-over closure for a secure seal. The breathable design provides optimal storage. While freezer safety depends on moisture content, room temperature storage is optimal for sourdough\n\u3010Easy to Clean & Maintain\u3011The beeswax wraps for food's \u200bseparable liner allows thorough hand washing or gentle spot cleaning. Promote \u200bbreathability\u200b while drying naturally, preventing moisture buildup & mold for \u200bhealthier homemade bread. Sourdough bread bags get perfect \u200bcare\u200b every time\n\u3010Idea Gift for Baking Lovers\u3011 Designed with elegant patterns, this beeswax bags for sourdough bread makes a thoughtful and practical gift for home bakers, baking enthusiasts, and environmentally conscious friends. Ideal gift for Mother\u2019s Day, Christmas, Thanksgiving, housewarmings, birthdays, and more, this is a must-have for anyone passionate about homemade bread and sustainable living",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Food Storage",
+        "description": "",
+        "product_type": "FOOD_STORAGE_BAG",
+        "title": "2 Pack Beeswax Bread Bags with Zipper, XL(13x17in) Sourdough Bread Storage for Homemade, Freezer Storage Bag to Keep Fresh, Cotton Beeswax Container, Baguette Bag with Liner, Kitchen Baking Supplies"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Beeswax Bread Bag",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Storage Bag",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FHH693Z4",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product type as 'Beeswax Bread Bag' and 'Food Storage Bag', which aligns with the rubric's requirement to describe the product category/type. The use of 'Beeswax' in Level 1 is acceptable as it describes the product type, not a feature. There are no marketing terms or feature-based taxonomy present.",
+      "input": {
+        "bullet_points": "\u3010Natural Beeswax Blend for Long\u3011The beeswax bread bags for sourdough made of natural beeswax lasting freshness. These breathable 100% premium cotton bread storage bags lock in moisture to keep bread soft and flavorful. The \u200bbeeswax bread bag inner layer regulates moisture, keeping your \u200bhomemade\u200b loaves, bagels, or \u200bsourdough crusts fresh for days. These \u200beco-friendly bread bags\u200b are a \u200bsustainable alternative\u200b to plastic wrap and single-use bags\n\u3010Innovative Separable Beeswax Liner\u3011This beeswax bread bag for sourdough features a unique separable beeswax-coated liner. Unlike traditional reusable sourdough bread bags, simply pull out the liner for easy deep cleaning and let it air dry effortlessly. Say goodbye to sticky liners\n\u3010Bread Bag with Zipper\u3011 Extra \u200bLarge (XL) size\u200b sourdough bread bags comfortably fits artisan loaves and \u200bsourdough. The reusable bread bags feature a new zippered fold-over closure for a secure seal. The breathable design provides optimal storage. While freezer safety depends on moisture content, room temperature storage is optimal for sourdough\n\u3010Easy to Clean & Maintain\u3011The beeswax wraps for food's \u200bseparable liner allows thorough hand washing or gentle spot cleaning. Promote \u200bbreathability\u200b while drying naturally, preventing moisture buildup & mold for \u200bhealthier homemade bread. Sourdough bread bags get perfect \u200bcare\u200b every time\n\u3010Idea Gift for Baking Lovers\u3011 Designed with elegant patterns, this beeswax bags for sourdough bread makes a thoughtful and practical gift for home bakers, baking enthusiasts, and environmentally conscious friends. Ideal gift for Mother\u2019s Day, Christmas, Thanksgiving, housewarmings, birthdays, and more, this is a must-have for anyone passionate about homemade bread and sustainable living",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Food Storage",
+        "description": "",
+        "product_type": "FOOD_STORAGE_BAG",
+        "title": "2 Pack Beeswax Bread Bags with Zipper, XL(13x17in) Sourdough Bread Storage for Homemade, Freezer Storage Bag to Keep Fresh, Cotton Beeswax Container, Baguette Bag with Liner, Kitchen Baking Supplies"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Beeswax Bread Bag",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Storage Bag",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FHH693Z4",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the taxonomy levels go from specific to general. The module output lists 'Beeswax Bread Bag' as level 1, which is more specific, and 'Food Storage Bag' as level 2, which is broader. This order aligns with the rubric's requirement for hierarchy from specific to general.",
+      "input": {
+        "bullet_points": "\u3010Natural Beeswax Blend for Long\u3011The beeswax bread bags for sourdough made of natural beeswax lasting freshness. These breathable 100% premium cotton bread storage bags lock in moisture to keep bread soft and flavorful. The \u200bbeeswax bread bag inner layer regulates moisture, keeping your \u200bhomemade\u200b loaves, bagels, or \u200bsourdough crusts fresh for days. These \u200beco-friendly bread bags\u200b are a \u200bsustainable alternative\u200b to plastic wrap and single-use bags\n\u3010Innovative Separable Beeswax Liner\u3011This beeswax bread bag for sourdough features a unique separable beeswax-coated liner. Unlike traditional reusable sourdough bread bags, simply pull out the liner for easy deep cleaning and let it air dry effortlessly. Say goodbye to sticky liners\n\u3010Bread Bag with Zipper\u3011 Extra \u200bLarge (XL) size\u200b sourdough bread bags comfortably fits artisan loaves and \u200bsourdough. The reusable bread bags feature a new zippered fold-over closure for a secure seal. The breathable design provides optimal storage. While freezer safety depends on moisture content, room temperature storage is optimal for sourdough\n\u3010Easy to Clean & Maintain\u3011The beeswax wraps for food's \u200bseparable liner allows thorough hand washing or gentle spot cleaning. Promote \u200bbreathability\u200b while drying naturally, preventing moisture buildup & mold for \u200bhealthier homemade bread. Sourdough bread bags get perfect \u200bcare\u200b every time\n\u3010Idea Gift for Baking Lovers\u3011 Designed with elegant patterns, this beeswax bags for sourdough bread makes a thoughtful and practical gift for home bakers, baking enthusiasts, and environmentally conscious friends. Ideal gift for Mother\u2019s Day, Christmas, Thanksgiving, housewarmings, birthdays, and more, this is a must-have for anyone passionate about homemade bread and sustainable living",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Food Storage",
+        "description": "",
+        "product_type": "FOOD_STORAGE_BAG",
+        "title": "2 Pack Beeswax Bread Bags with Zipper, XL(13x17in) Sourdough Bread Storage for Homemade, Freezer Storage Bag to Keep Fresh, Cotton Beeswax Container, Baguette Bag with Liner, Kitchen Baking Supplies"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Beeswax Bread Bag",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Storage Bag",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FHH693Z4",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies the product as a 'Beeswax Bread Bag' and 'Food Storage Bag', which accurately describe the product type as per the input data. The product is indeed a type of food storage bag specifically designed for bread, aligning with the rubric's requirement for accurate product type description.",
+      "input": {
+        "bullet_points": "\u3010Natural Beeswax Blend for Long\u3011The beeswax bread bags for sourdough made of natural beeswax lasting freshness. These breathable 100% premium cotton bread storage bags lock in moisture to keep bread soft and flavorful. The \u200bbeeswax bread bag inner layer regulates moisture, keeping your \u200bhomemade\u200b loaves, bagels, or \u200bsourdough crusts fresh for days. These \u200beco-friendly bread bags\u200b are a \u200bsustainable alternative\u200b to plastic wrap and single-use bags\n\u3010Innovative Separable Beeswax Liner\u3011This beeswax bread bag for sourdough features a unique separable beeswax-coated liner. Unlike traditional reusable sourdough bread bags, simply pull out the liner for easy deep cleaning and let it air dry effortlessly. Say goodbye to sticky liners\n\u3010Bread Bag with Zipper\u3011 Extra \u200bLarge (XL) size\u200b sourdough bread bags comfortably fits artisan loaves and \u200bsourdough. The reusable bread bags feature a new zippered fold-over closure for a secure seal. The breathable design provides optimal storage. While freezer safety depends on moisture content, room temperature storage is optimal for sourdough\n\u3010Easy to Clean & Maintain\u3011The beeswax wraps for food's \u200bseparable liner allows thorough hand washing or gentle spot cleaning. Promote \u200bbreathability\u200b while drying naturally, preventing moisture buildup & mold for \u200bhealthier homemade bread. Sourdough bread bags get perfect \u200bcare\u200b every time\n\u3010Idea Gift for Baking Lovers\u3011 Designed with elegant patterns, this beeswax bags for sourdough bread makes a thoughtful and practical gift for home bakers, baking enthusiasts, and environmentally conscious friends. Ideal gift for Mother\u2019s Day, Christmas, Thanksgiving, housewarmings, birthdays, and more, this is a must-have for anyone passionate about homemade bread and sustainable living",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Food Storage",
+        "description": "",
+        "product_type": "FOOD_STORAGE_BAG",
+        "title": "2 Pack Beeswax Bread Bags with Zipper, XL(13x17in) Sourdough Bread Storage for Homemade, Freezer Storage Bag to Keep Fresh, Cotton Beeswax Container, Baguette Bag with Liner, Kitchen Baking Supplies"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Beeswax Bread Bag",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Storage Bag",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FHH693Z4",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires the taxonomy to have at most 3 levels. The module output contains a taxonomy with 2 levels, which meets the PASS conditions of having 1-3 levels only.",
+      "input": {
+        "bullet_points": "\u3010Natural Beeswax Blend for Long\u3011The beeswax bread bags for sourdough made of natural beeswax lasting freshness. These breathable 100% premium cotton bread storage bags lock in moisture to keep bread soft and flavorful. The \u200bbeeswax bread bag inner layer regulates moisture, keeping your \u200bhomemade\u200b loaves, bagels, or \u200bsourdough crusts fresh for days. These \u200beco-friendly bread bags\u200b are a \u200bsustainable alternative\u200b to plastic wrap and single-use bags\n\u3010Innovative Separable Beeswax Liner\u3011This beeswax bread bag for sourdough features a unique separable beeswax-coated liner. Unlike traditional reusable sourdough bread bags, simply pull out the liner for easy deep cleaning and let it air dry effortlessly. Say goodbye to sticky liners\n\u3010Bread Bag with Zipper\u3011 Extra \u200bLarge (XL) size\u200b sourdough bread bags comfortably fits artisan loaves and \u200bsourdough. The reusable bread bags feature a new zippered fold-over closure for a secure seal. The breathable design provides optimal storage. While freezer safety depends on moisture content, room temperature storage is optimal for sourdough\n\u3010Easy to Clean & Maintain\u3011The beeswax wraps for food's \u200bseparable liner allows thorough hand washing or gentle spot cleaning. Promote \u200bbreathability\u200b while drying naturally, preventing moisture buildup & mold for \u200bhealthier homemade bread. Sourdough bread bags get perfect \u200bcare\u200b every time\n\u3010Idea Gift for Baking Lovers\u3011 Designed with elegant patterns, this beeswax bags for sourdough bread makes a thoughtful and practical gift for home bakers, baking enthusiasts, and environmentally conscious friends. Ideal gift for Mother\u2019s Day, Christmas, Thanksgiving, housewarmings, birthdays, and more, this is a must-have for anyone passionate about homemade bread and sustainable living",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Food Storage",
+        "description": "",
+        "product_type": "FOOD_STORAGE_BAG",
+        "title": "2 Pack Beeswax Bread Bags with Zipper, XL(13x17in) Sourdough Bread Storage for Homemade, Freezer Storage Bag to Keep Fresh, Cotton Beeswax Container, Baguette Bag with Liner, Kitchen Baking Supplies"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Beeswax Bread Bag",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Storage Bag",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FHH693Z4",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The module output separates 'Beeswax Bread Bag' and 'Food Storage Bag' into two taxonomy levels, which violates the rubric's requirement to combine material/feature modifiers into a single product type. According to the rubric, 'Beeswax Bread Bag' should not be a separate level from 'Food Storage Bag'.",
+      "input": {
+        "bullet_points": "\u3010Natural Beeswax Blend for Long\u3011The beeswax bread bags for sourdough made of natural beeswax lasting freshness. These breathable 100% premium cotton bread storage bags lock in moisture to keep bread soft and flavorful. The \u200bbeeswax bread bag inner layer regulates moisture, keeping your \u200bhomemade\u200b loaves, bagels, or \u200bsourdough crusts fresh for days. These \u200beco-friendly bread bags\u200b are a \u200bsustainable alternative\u200b to plastic wrap and single-use bags\n\u3010Innovative Separable Beeswax Liner\u3011This beeswax bread bag for sourdough features a unique separable beeswax-coated liner. Unlike traditional reusable sourdough bread bags, simply pull out the liner for easy deep cleaning and let it air dry effortlessly. Say goodbye to sticky liners\n\u3010Bread Bag with Zipper\u3011 Extra \u200bLarge (XL) size\u200b sourdough bread bags comfortably fits artisan loaves and \u200bsourdough. The reusable bread bags feature a new zippered fold-over closure for a secure seal. The breathable design provides optimal storage. While freezer safety depends on moisture content, room temperature storage is optimal for sourdough\n\u3010Easy to Clean & Maintain\u3011The beeswax wraps for food's \u200bseparable liner allows thorough hand washing or gentle spot cleaning. Promote \u200bbreathability\u200b while drying naturally, preventing moisture buildup & mold for \u200bhealthier homemade bread. Sourdough bread bags get perfect \u200bcare\u200b every time\n\u3010Idea Gift for Baking Lovers\u3011 Designed with elegant patterns, this beeswax bags for sourdough bread makes a thoughtful and practical gift for home bakers, baking enthusiasts, and environmentally conscious friends. Ideal gift for Mother\u2019s Day, Christmas, Thanksgiving, housewarmings, birthdays, and more, this is a must-have for anyone passionate about homemade bread and sustainable living",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Food Storage",
+        "description": "",
+        "product_type": "FOOD_STORAGE_BAG",
+        "title": "2 Pack Beeswax Bread Bags with Zipper, XL(13x17in) Sourdough Bread Storage for Homemade, Freezer Storage Bag to Keep Fresh, Cotton Beeswax Container, Baguette Bag with Liner, Kitchen Baking Supplies"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Beeswax Bread Bag",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Storage Bag",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGD6R7T2",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because the levels are not correctly labeled. The rubric requires Level 1 to be a specific product type, Level 2 to be a category, and Level 3 to be a department. However, the output labels all levels as 'product_type' and does not follow the specific-to-broad order required by the rubric.",
+      "input": {
+        "bullet_points": "\ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: RoadNow Blower replacement compatible with Cadillac Escalade EXT 2003-2006 | for Avalanche 1500 & 2500 2003-2006 | for Silverado 1500 & 2500 & 3500 2003-2006 | for Silverado 1500HD & 2500HD 2003-2006 | for GMC Sierra 1500 & 3500 2003-2006 | for GMC Sierra 2500 2007 | for GMC Sierra 1500HD 2003 2007 | for GMC Sierra 2500HD 2003-2006 | for Hummer H2 2003-2007.\n\ud835\udc01\ud835\udc1e\ud835\udc32\ud835\udc28\ud835\udc27\ud835\udc1d \ud835\udc04\ud835\udc31\ud835\udc1c\ud835\udc1e\ud835\udc25\ud835\udc25\ud835\udc1e\ud835\udc27\ud835\udc2d \ud835\udc10\ud835\udc2e\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: Dynamic-balanced design and sealed bearings push high CFM without the racket of high speed fans for cooling. Multi-stage testing keeps the 2-pin male connector, 17.5A draw and 13.5V feed within GM limits, giving whisper-quiet 3250RPM response, effectively prevents dust deposition while engine idle stays calm and battery reserves stay strong. Designed for heavy duty, it keeps airflow steady on steep climbs and hot interstate runs\n\ud835\udc11\ud835\udc1e\ud835\udc25\ud835\udc22\ud835\udc1a\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc22\ud835\udc27 \ud835\udc04\ud835\udc2f\ud835\udc1e\ud835\udc2b\ud835\udc32 \ud835\udc13\ud835\udc2e\ud835\udc2b\ud835\udc27: This automotive blower fan uses heat-resistant copper windings, anti-corrosion shafts and reinforced plastic fins to shrug off under-dash heat. Each unit endures vibration, voltage spike and thermal cycling tests, guaranteeing continuous 17.5A output that won\u2019t fade in traffic, won\u2019t squeal at startup and won\u2019t stall when you need maximum A/C during sweltering summer drives, keeping commutes factory-fresh\n\ud835\udc07\ud835\udc15\ud835\udc00\ud835\udc02 \ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc12\ud835\udc29\ud835\udc1e\ud835\udc1c\ud835\udc2c: \u2460Current (amps): 17.5A; \u2461Rotation Direction: CW; \u2462Stall Speed RPM: 3250RPM; \u2463Voltage: 13.5V; \u2464Terminal Count: 2; \u2465Teminal Gender: Male. \u3010Reference Number\u301188986838, 89019301, 89019320, GM3126130, 700191.\n\ud835\udc12\ud835\udc2e\ud835\udc29\ud835\udc29\ud835\udc28\ud835\udc2b\ud835\udc2d \ud835\udc12\ud835\udc1e\ud835\udc2b\ud835\udc2f\ud835\udc22\ud835\udc1c\ud835\udc1e: If you encounter any issues with the RoadNow HVAC blower motor\u2014such as compatibility concerns with your vehicle model, installation difficulties or errors, or potential quality problems\u2014please feel free to contact-us, RoadNow team will promptly provide tailored solutions to address your needs.\u3010Please Note\u3011Improper installation may lead to operational noise, so we strongly recommend professional installation to ensure optimal performance.\n\ud835\udc07\ud835\udc1a\ud835\udc2c\ud835\udc2c\ud835\udc25\ud835\udc1e-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e \ud835\udc08\ud835\udc27\ud835\udc2c\ud835\udc2d\ud835\udc1a\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc28\ud835\udc27: This HVAC blower motor features a tool-free, no-professional-required design\u2014no complex tools or specialized skills are needed for setup. It comes ready to install right out of the box, with no extra brackets to mount, saving you time and effort on installation. Plus, it requires zero additional maintenance after installation, letting you enjoy reliable airflow performance without follow-up hassle.\n\ud835\udc15\ud835\udc1e\ud835\udc21\ud835\udc22\ud835\udc1c\ud835\udc25\ud835\udc1e \ud835\udc0c\ud835\udc28\ud835\udc1d\ud835\udc1e\ud835\udc25 \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc11\ud835\udc1e\ud835\udc26\ud835\udc22\ud835\udc27\ud835\udc1d\ud835\udc1e\ud835\udc2b: Specifically engineered for use with the vehicle models listed in the \"Blower Motor Compatibility\" section (including Cadillac Escalade EXT 2003-2006, Chevrolet Avalanche 1500/2500 2003-2006, GMC Sierra series, Hummer H2 2003-2007, etc.). It is designed to match the exact specifications of these models, ensuring seamless fit and optimal functionality\u2014please confirm your vehicle model is within the listed range to avoid compatibility issues.",
+        "category_root": "Automotive",
+        "category_sub": "Blower, Air Conditioning, Blower Motors",
+        "description": "",
+        "product_type": "AUTO_PART",
+        "title": "RoadNow 700191 HVAC Blower Motor Fits for Cadillac Escalade EXT 2003-2006,for Chevy Avalanche 1500 2500,for Silverado 1500 2500 3500,for GMC Sierra 1500 2500 3500 Replacement Part 89019320 88986838"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "HVAC Blower Motor",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Blower",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Automotive",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGD6R7T2",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product taxonomy focusing on what the product is, specifically 'HVAC Blower Motor', 'Blower', and 'Automotive'. These terms describe the product category/type rather than features or marketing terms, meeting the PASS conditions of the rubric.",
+      "input": {
+        "bullet_points": "\ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: RoadNow Blower replacement compatible with Cadillac Escalade EXT 2003-2006 | for Avalanche 1500 & 2500 2003-2006 | for Silverado 1500 & 2500 & 3500 2003-2006 | for Silverado 1500HD & 2500HD 2003-2006 | for GMC Sierra 1500 & 3500 2003-2006 | for GMC Sierra 2500 2007 | for GMC Sierra 1500HD 2003 2007 | for GMC Sierra 2500HD 2003-2006 | for Hummer H2 2003-2007.\n\ud835\udc01\ud835\udc1e\ud835\udc32\ud835\udc28\ud835\udc27\ud835\udc1d \ud835\udc04\ud835\udc31\ud835\udc1c\ud835\udc1e\ud835\udc25\ud835\udc25\ud835\udc1e\ud835\udc27\ud835\udc2d \ud835\udc10\ud835\udc2e\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: Dynamic-balanced design and sealed bearings push high CFM without the racket of high speed fans for cooling. Multi-stage testing keeps the 2-pin male connector, 17.5A draw and 13.5V feed within GM limits, giving whisper-quiet 3250RPM response, effectively prevents dust deposition while engine idle stays calm and battery reserves stay strong. Designed for heavy duty, it keeps airflow steady on steep climbs and hot interstate runs\n\ud835\udc11\ud835\udc1e\ud835\udc25\ud835\udc22\ud835\udc1a\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc22\ud835\udc27 \ud835\udc04\ud835\udc2f\ud835\udc1e\ud835\udc2b\ud835\udc32 \ud835\udc13\ud835\udc2e\ud835\udc2b\ud835\udc27: This automotive blower fan uses heat-resistant copper windings, anti-corrosion shafts and reinforced plastic fins to shrug off under-dash heat. Each unit endures vibration, voltage spike and thermal cycling tests, guaranteeing continuous 17.5A output that won\u2019t fade in traffic, won\u2019t squeal at startup and won\u2019t stall when you need maximum A/C during sweltering summer drives, keeping commutes factory-fresh\n\ud835\udc07\ud835\udc15\ud835\udc00\ud835\udc02 \ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc12\ud835\udc29\ud835\udc1e\ud835\udc1c\ud835\udc2c: \u2460Current (amps): 17.5A; \u2461Rotation Direction: CW; \u2462Stall Speed RPM: 3250RPM; \u2463Voltage: 13.5V; \u2464Terminal Count: 2; \u2465Teminal Gender: Male. \u3010Reference Number\u301188986838, 89019301, 89019320, GM3126130, 700191.\n\ud835\udc12\ud835\udc2e\ud835\udc29\ud835\udc29\ud835\udc28\ud835\udc2b\ud835\udc2d \ud835\udc12\ud835\udc1e\ud835\udc2b\ud835\udc2f\ud835\udc22\ud835\udc1c\ud835\udc1e: If you encounter any issues with the RoadNow HVAC blower motor\u2014such as compatibility concerns with your vehicle model, installation difficulties or errors, or potential quality problems\u2014please feel free to contact-us, RoadNow team will promptly provide tailored solutions to address your needs.\u3010Please Note\u3011Improper installation may lead to operational noise, so we strongly recommend professional installation to ensure optimal performance.\n\ud835\udc07\ud835\udc1a\ud835\udc2c\ud835\udc2c\ud835\udc25\ud835\udc1e-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e \ud835\udc08\ud835\udc27\ud835\udc2c\ud835\udc2d\ud835\udc1a\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc28\ud835\udc27: This HVAC blower motor features a tool-free, no-professional-required design\u2014no complex tools or specialized skills are needed for setup. It comes ready to install right out of the box, with no extra brackets to mount, saving you time and effort on installation. Plus, it requires zero additional maintenance after installation, letting you enjoy reliable airflow performance without follow-up hassle.\n\ud835\udc15\ud835\udc1e\ud835\udc21\ud835\udc22\ud835\udc1c\ud835\udc25\ud835\udc1e \ud835\udc0c\ud835\udc28\ud835\udc1d\ud835\udc1e\ud835\udc25 \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc11\ud835\udc1e\ud835\udc26\ud835\udc22\ud835\udc27\ud835\udc1d\ud835\udc1e\ud835\udc2b: Specifically engineered for use with the vehicle models listed in the \"Blower Motor Compatibility\" section (including Cadillac Escalade EXT 2003-2006, Chevrolet Avalanche 1500/2500 2003-2006, GMC Sierra series, Hummer H2 2003-2007, etc.). It is designed to match the exact specifications of these models, ensuring seamless fit and optimal functionality\u2014please confirm your vehicle model is within the listed range to avoid compatibility issues.",
+        "category_root": "Automotive",
+        "category_sub": "Blower, Air Conditioning, Blower Motors",
+        "description": "",
+        "product_type": "AUTO_PART",
+        "title": "RoadNow 700191 HVAC Blower Motor Fits for Cadillac Escalade EXT 2003-2006,for Chevy Avalanche 1500 2500,for Silverado 1500 2500 3500,for GMC Sierra 1500 2500 3500 Replacement Part 89019320 88986838"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "HVAC Blower Motor",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Blower",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Automotive",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGD6R7T2",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the taxonomy levels go from specific to general. The module output shows 'HVAC Blower Motor' at level 1, 'Blower' at level 2, and 'Automotive' at level 3. This order correctly goes from the most specific to the most general, meeting the PASS conditions.",
+      "input": {
+        "bullet_points": "\ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: RoadNow Blower replacement compatible with Cadillac Escalade EXT 2003-2006 | for Avalanche 1500 & 2500 2003-2006 | for Silverado 1500 & 2500 & 3500 2003-2006 | for Silverado 1500HD & 2500HD 2003-2006 | for GMC Sierra 1500 & 3500 2003-2006 | for GMC Sierra 2500 2007 | for GMC Sierra 1500HD 2003 2007 | for GMC Sierra 2500HD 2003-2006 | for Hummer H2 2003-2007.\n\ud835\udc01\ud835\udc1e\ud835\udc32\ud835\udc28\ud835\udc27\ud835\udc1d \ud835\udc04\ud835\udc31\ud835\udc1c\ud835\udc1e\ud835\udc25\ud835\udc25\ud835\udc1e\ud835\udc27\ud835\udc2d \ud835\udc10\ud835\udc2e\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: Dynamic-balanced design and sealed bearings push high CFM without the racket of high speed fans for cooling. Multi-stage testing keeps the 2-pin male connector, 17.5A draw and 13.5V feed within GM limits, giving whisper-quiet 3250RPM response, effectively prevents dust deposition while engine idle stays calm and battery reserves stay strong. Designed for heavy duty, it keeps airflow steady on steep climbs and hot interstate runs\n\ud835\udc11\ud835\udc1e\ud835\udc25\ud835\udc22\ud835\udc1a\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc22\ud835\udc27 \ud835\udc04\ud835\udc2f\ud835\udc1e\ud835\udc2b\ud835\udc32 \ud835\udc13\ud835\udc2e\ud835\udc2b\ud835\udc27: This automotive blower fan uses heat-resistant copper windings, anti-corrosion shafts and reinforced plastic fins to shrug off under-dash heat. Each unit endures vibration, voltage spike and thermal cycling tests, guaranteeing continuous 17.5A output that won\u2019t fade in traffic, won\u2019t squeal at startup and won\u2019t stall when you need maximum A/C during sweltering summer drives, keeping commutes factory-fresh\n\ud835\udc07\ud835\udc15\ud835\udc00\ud835\udc02 \ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc12\ud835\udc29\ud835\udc1e\ud835\udc1c\ud835\udc2c: \u2460Current (amps): 17.5A; \u2461Rotation Direction: CW; \u2462Stall Speed RPM: 3250RPM; \u2463Voltage: 13.5V; \u2464Terminal Count: 2; \u2465Teminal Gender: Male. \u3010Reference Number\u301188986838, 89019301, 89019320, GM3126130, 700191.\n\ud835\udc12\ud835\udc2e\ud835\udc29\ud835\udc29\ud835\udc28\ud835\udc2b\ud835\udc2d \ud835\udc12\ud835\udc1e\ud835\udc2b\ud835\udc2f\ud835\udc22\ud835\udc1c\ud835\udc1e: If you encounter any issues with the RoadNow HVAC blower motor\u2014such as compatibility concerns with your vehicle model, installation difficulties or errors, or potential quality problems\u2014please feel free to contact-us, RoadNow team will promptly provide tailored solutions to address your needs.\u3010Please Note\u3011Improper installation may lead to operational noise, so we strongly recommend professional installation to ensure optimal performance.\n\ud835\udc07\ud835\udc1a\ud835\udc2c\ud835\udc2c\ud835\udc25\ud835\udc1e-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e \ud835\udc08\ud835\udc27\ud835\udc2c\ud835\udc2d\ud835\udc1a\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc28\ud835\udc27: This HVAC blower motor features a tool-free, no-professional-required design\u2014no complex tools or specialized skills are needed for setup. It comes ready to install right out of the box, with no extra brackets to mount, saving you time and effort on installation. Plus, it requires zero additional maintenance after installation, letting you enjoy reliable airflow performance without follow-up hassle.\n\ud835\udc15\ud835\udc1e\ud835\udc21\ud835\udc22\ud835\udc1c\ud835\udc25\ud835\udc1e \ud835\udc0c\ud835\udc28\ud835\udc1d\ud835\udc1e\ud835\udc25 \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc11\ud835\udc1e\ud835\udc26\ud835\udc22\ud835\udc27\ud835\udc1d\ud835\udc1e\ud835\udc2b: Specifically engineered for use with the vehicle models listed in the \"Blower Motor Compatibility\" section (including Cadillac Escalade EXT 2003-2006, Chevrolet Avalanche 1500/2500 2003-2006, GMC Sierra series, Hummer H2 2003-2007, etc.). It is designed to match the exact specifications of these models, ensuring seamless fit and optimal functionality\u2014please confirm your vehicle model is within the listed range to avoid compatibility issues.",
+        "category_root": "Automotive",
+        "category_sub": "Blower, Air Conditioning, Blower Motors",
+        "description": "",
+        "product_type": "AUTO_PART",
+        "title": "RoadNow 700191 HVAC Blower Motor Fits for Cadillac Escalade EXT 2003-2006,for Chevy Avalanche 1500 2500,for Silverado 1500 2500 3500,for GMC Sierra 1500 2500 3500 Replacement Part 89019320 88986838"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "HVAC Blower Motor",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Blower",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Automotive",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGD6R7T2",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output lists 'HVAC Blower Motor', 'Blower', and 'Automotive' as product types. The input data describes a product that is an HVAC blower motor for vehicles, which fits within these categories. Therefore, the output meets the PASS conditions as the product types accurately describe the product.",
+      "input": {
+        "bullet_points": "\ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: RoadNow Blower replacement compatible with Cadillac Escalade EXT 2003-2006 | for Avalanche 1500 & 2500 2003-2006 | for Silverado 1500 & 2500 & 3500 2003-2006 | for Silverado 1500HD & 2500HD 2003-2006 | for GMC Sierra 1500 & 3500 2003-2006 | for GMC Sierra 2500 2007 | for GMC Sierra 1500HD 2003 2007 | for GMC Sierra 2500HD 2003-2006 | for Hummer H2 2003-2007.\n\ud835\udc01\ud835\udc1e\ud835\udc32\ud835\udc28\ud835\udc27\ud835\udc1d \ud835\udc04\ud835\udc31\ud835\udc1c\ud835\udc1e\ud835\udc25\ud835\udc25\ud835\udc1e\ud835\udc27\ud835\udc2d \ud835\udc10\ud835\udc2e\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: Dynamic-balanced design and sealed bearings push high CFM without the racket of high speed fans for cooling. Multi-stage testing keeps the 2-pin male connector, 17.5A draw and 13.5V feed within GM limits, giving whisper-quiet 3250RPM response, effectively prevents dust deposition while engine idle stays calm and battery reserves stay strong. Designed for heavy duty, it keeps airflow steady on steep climbs and hot interstate runs\n\ud835\udc11\ud835\udc1e\ud835\udc25\ud835\udc22\ud835\udc1a\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc22\ud835\udc27 \ud835\udc04\ud835\udc2f\ud835\udc1e\ud835\udc2b\ud835\udc32 \ud835\udc13\ud835\udc2e\ud835\udc2b\ud835\udc27: This automotive blower fan uses heat-resistant copper windings, anti-corrosion shafts and reinforced plastic fins to shrug off under-dash heat. Each unit endures vibration, voltage spike and thermal cycling tests, guaranteeing continuous 17.5A output that won\u2019t fade in traffic, won\u2019t squeal at startup and won\u2019t stall when you need maximum A/C during sweltering summer drives, keeping commutes factory-fresh\n\ud835\udc07\ud835\udc15\ud835\udc00\ud835\udc02 \ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc12\ud835\udc29\ud835\udc1e\ud835\udc1c\ud835\udc2c: \u2460Current (amps): 17.5A; \u2461Rotation Direction: CW; \u2462Stall Speed RPM: 3250RPM; \u2463Voltage: 13.5V; \u2464Terminal Count: 2; \u2465Teminal Gender: Male. \u3010Reference Number\u301188986838, 89019301, 89019320, GM3126130, 700191.\n\ud835\udc12\ud835\udc2e\ud835\udc29\ud835\udc29\ud835\udc28\ud835\udc2b\ud835\udc2d \ud835\udc12\ud835\udc1e\ud835\udc2b\ud835\udc2f\ud835\udc22\ud835\udc1c\ud835\udc1e: If you encounter any issues with the RoadNow HVAC blower motor\u2014such as compatibility concerns with your vehicle model, installation difficulties or errors, or potential quality problems\u2014please feel free to contact-us, RoadNow team will promptly provide tailored solutions to address your needs.\u3010Please Note\u3011Improper installation may lead to operational noise, so we strongly recommend professional installation to ensure optimal performance.\n\ud835\udc07\ud835\udc1a\ud835\udc2c\ud835\udc2c\ud835\udc25\ud835\udc1e-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e \ud835\udc08\ud835\udc27\ud835\udc2c\ud835\udc2d\ud835\udc1a\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc28\ud835\udc27: This HVAC blower motor features a tool-free, no-professional-required design\u2014no complex tools or specialized skills are needed for setup. It comes ready to install right out of the box, with no extra brackets to mount, saving you time and effort on installation. Plus, it requires zero additional maintenance after installation, letting you enjoy reliable airflow performance without follow-up hassle.\n\ud835\udc15\ud835\udc1e\ud835\udc21\ud835\udc22\ud835\udc1c\ud835\udc25\ud835\udc1e \ud835\udc0c\ud835\udc28\ud835\udc1d\ud835\udc1e\ud835\udc25 \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc11\ud835\udc1e\ud835\udc26\ud835\udc22\ud835\udc27\ud835\udc1d\ud835\udc1e\ud835\udc2b: Specifically engineered for use with the vehicle models listed in the \"Blower Motor Compatibility\" section (including Cadillac Escalade EXT 2003-2006, Chevrolet Avalanche 1500/2500 2003-2006, GMC Sierra series, Hummer H2 2003-2007, etc.). It is designed to match the exact specifications of these models, ensuring seamless fit and optimal functionality\u2014please confirm your vehicle model is within the listed range to avoid compatibility issues.",
+        "category_root": "Automotive",
+        "category_sub": "Blower, Air Conditioning, Blower Motors",
+        "description": "",
+        "product_type": "AUTO_PART",
+        "title": "RoadNow 700191 HVAC Blower Motor Fits for Cadillac Escalade EXT 2003-2006,for Chevy Avalanche 1500 2500,for Silverado 1500 2500 3500,for GMC Sierra 1500 2500 3500 Replacement Part 89019320 88986838"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "HVAC Blower Motor",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Blower",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Automotive",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGD6R7T2",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "FAIL",
+      "reasoning": "The module output has a taxonomy with three levels, which is within the allowed range. However, the levels are incorrectly ordered and categorized. 'Automotive' should be the root category (level 1), not level 3. The current structure does not accurately reflect a logical hierarchy, which suggests unnecessary categories or misplacement of categories.",
+      "input": {
+        "bullet_points": "\ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: RoadNow Blower replacement compatible with Cadillac Escalade EXT 2003-2006 | for Avalanche 1500 & 2500 2003-2006 | for Silverado 1500 & 2500 & 3500 2003-2006 | for Silverado 1500HD & 2500HD 2003-2006 | for GMC Sierra 1500 & 3500 2003-2006 | for GMC Sierra 2500 2007 | for GMC Sierra 1500HD 2003 2007 | for GMC Sierra 2500HD 2003-2006 | for Hummer H2 2003-2007.\n\ud835\udc01\ud835\udc1e\ud835\udc32\ud835\udc28\ud835\udc27\ud835\udc1d \ud835\udc04\ud835\udc31\ud835\udc1c\ud835\udc1e\ud835\udc25\ud835\udc25\ud835\udc1e\ud835\udc27\ud835\udc2d \ud835\udc10\ud835\udc2e\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: Dynamic-balanced design and sealed bearings push high CFM without the racket of high speed fans for cooling. Multi-stage testing keeps the 2-pin male connector, 17.5A draw and 13.5V feed within GM limits, giving whisper-quiet 3250RPM response, effectively prevents dust deposition while engine idle stays calm and battery reserves stay strong. Designed for heavy duty, it keeps airflow steady on steep climbs and hot interstate runs\n\ud835\udc11\ud835\udc1e\ud835\udc25\ud835\udc22\ud835\udc1a\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc22\ud835\udc27 \ud835\udc04\ud835\udc2f\ud835\udc1e\ud835\udc2b\ud835\udc32 \ud835\udc13\ud835\udc2e\ud835\udc2b\ud835\udc27: This automotive blower fan uses heat-resistant copper windings, anti-corrosion shafts and reinforced plastic fins to shrug off under-dash heat. Each unit endures vibration, voltage spike and thermal cycling tests, guaranteeing continuous 17.5A output that won\u2019t fade in traffic, won\u2019t squeal at startup and won\u2019t stall when you need maximum A/C during sweltering summer drives, keeping commutes factory-fresh\n\ud835\udc07\ud835\udc15\ud835\udc00\ud835\udc02 \ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc12\ud835\udc29\ud835\udc1e\ud835\udc1c\ud835\udc2c: \u2460Current (amps): 17.5A; \u2461Rotation Direction: CW; \u2462Stall Speed RPM: 3250RPM; \u2463Voltage: 13.5V; \u2464Terminal Count: 2; \u2465Teminal Gender: Male. \u3010Reference Number\u301188986838, 89019301, 89019320, GM3126130, 700191.\n\ud835\udc12\ud835\udc2e\ud835\udc29\ud835\udc29\ud835\udc28\ud835\udc2b\ud835\udc2d \ud835\udc12\ud835\udc1e\ud835\udc2b\ud835\udc2f\ud835\udc22\ud835\udc1c\ud835\udc1e: If you encounter any issues with the RoadNow HVAC blower motor\u2014such as compatibility concerns with your vehicle model, installation difficulties or errors, or potential quality problems\u2014please feel free to contact-us, RoadNow team will promptly provide tailored solutions to address your needs.\u3010Please Note\u3011Improper installation may lead to operational noise, so we strongly recommend professional installation to ensure optimal performance.\n\ud835\udc07\ud835\udc1a\ud835\udc2c\ud835\udc2c\ud835\udc25\ud835\udc1e-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e \ud835\udc08\ud835\udc27\ud835\udc2c\ud835\udc2d\ud835\udc1a\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc28\ud835\udc27: This HVAC blower motor features a tool-free, no-professional-required design\u2014no complex tools or specialized skills are needed for setup. It comes ready to install right out of the box, with no extra brackets to mount, saving you time and effort on installation. Plus, it requires zero additional maintenance after installation, letting you enjoy reliable airflow performance without follow-up hassle.\n\ud835\udc15\ud835\udc1e\ud835\udc21\ud835\udc22\ud835\udc1c\ud835\udc25\ud835\udc1e \ud835\udc0c\ud835\udc28\ud835\udc1d\ud835\udc1e\ud835\udc25 \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc11\ud835\udc1e\ud835\udc26\ud835\udc22\ud835\udc27\ud835\udc1d\ud835\udc1e\ud835\udc2b: Specifically engineered for use with the vehicle models listed in the \"Blower Motor Compatibility\" section (including Cadillac Escalade EXT 2003-2006, Chevrolet Avalanche 1500/2500 2003-2006, GMC Sierra series, Hummer H2 2003-2007, etc.). It is designed to match the exact specifications of these models, ensuring seamless fit and optimal functionality\u2014please confirm your vehicle model is within the listed range to avoid compatibility issues.",
+        "category_root": "Automotive",
+        "category_sub": "Blower, Air Conditioning, Blower Motors",
+        "description": "",
+        "product_type": "AUTO_PART",
+        "title": "RoadNow 700191 HVAC Blower Motor Fits for Cadillac Escalade EXT 2003-2006,for Chevy Avalanche 1500 2500,for Silverado 1500 2500 3500,for GMC Sierra 1500 2500 3500 Replacement Part 89019320 88986838"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "HVAC Blower Motor",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Blower",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Automotive",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGD6R7T2",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires that material/feature modifiers are not separate taxonomy levels and should be combined into a single product type. The module output separates 'HVAC Blower Motor' and 'Blower' into different levels, which violates the rubric's requirement to use one level for simple products. Therefore, the output does not meet the PASS conditions.",
+      "input": {
+        "bullet_points": "\ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: RoadNow Blower replacement compatible with Cadillac Escalade EXT 2003-2006 | for Avalanche 1500 & 2500 2003-2006 | for Silverado 1500 & 2500 & 3500 2003-2006 | for Silverado 1500HD & 2500HD 2003-2006 | for GMC Sierra 1500 & 3500 2003-2006 | for GMC Sierra 2500 2007 | for GMC Sierra 1500HD 2003 2007 | for GMC Sierra 2500HD 2003-2006 | for Hummer H2 2003-2007.\n\ud835\udc01\ud835\udc1e\ud835\udc32\ud835\udc28\ud835\udc27\ud835\udc1d \ud835\udc04\ud835\udc31\ud835\udc1c\ud835\udc1e\ud835\udc25\ud835\udc25\ud835\udc1e\ud835\udc27\ud835\udc2d \ud835\udc10\ud835\udc2e\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32: Dynamic-balanced design and sealed bearings push high CFM without the racket of high speed fans for cooling. Multi-stage testing keeps the 2-pin male connector, 17.5A draw and 13.5V feed within GM limits, giving whisper-quiet 3250RPM response, effectively prevents dust deposition while engine idle stays calm and battery reserves stay strong. Designed for heavy duty, it keeps airflow steady on steep climbs and hot interstate runs\n\ud835\udc11\ud835\udc1e\ud835\udc25\ud835\udc22\ud835\udc1a\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc22\ud835\udc27 \ud835\udc04\ud835\udc2f\ud835\udc1e\ud835\udc2b\ud835\udc32 \ud835\udc13\ud835\udc2e\ud835\udc2b\ud835\udc27: This automotive blower fan uses heat-resistant copper windings, anti-corrosion shafts and reinforced plastic fins to shrug off under-dash heat. Each unit endures vibration, voltage spike and thermal cycling tests, guaranteeing continuous 17.5A output that won\u2019t fade in traffic, won\u2019t squeal at startup and won\u2019t stall when you need maximum A/C during sweltering summer drives, keeping commutes factory-fresh\n\ud835\udc07\ud835\udc15\ud835\udc00\ud835\udc02 \ud835\udc01\ud835\udc25\ud835\udc28\ud835\udc30\ud835\udc1e\ud835\udc2b \ud835\udc0c\ud835\udc28\ud835\udc2d\ud835\udc28\ud835\udc2b \ud835\udc12\ud835\udc29\ud835\udc1e\ud835\udc1c\ud835\udc2c: \u2460Current (amps): 17.5A; \u2461Rotation Direction: CW; \u2462Stall Speed RPM: 3250RPM; \u2463Voltage: 13.5V; \u2464Terminal Count: 2; \u2465Teminal Gender: Male. \u3010Reference Number\u301188986838, 89019301, 89019320, GM3126130, 700191.\n\ud835\udc12\ud835\udc2e\ud835\udc29\ud835\udc29\ud835\udc28\ud835\udc2b\ud835\udc2d \ud835\udc12\ud835\udc1e\ud835\udc2b\ud835\udc2f\ud835\udc22\ud835\udc1c\ud835\udc1e: If you encounter any issues with the RoadNow HVAC blower motor\u2014such as compatibility concerns with your vehicle model, installation difficulties or errors, or potential quality problems\u2014please feel free to contact-us, RoadNow team will promptly provide tailored solutions to address your needs.\u3010Please Note\u3011Improper installation may lead to operational noise, so we strongly recommend professional installation to ensure optimal performance.\n\ud835\udc07\ud835\udc1a\ud835\udc2c\ud835\udc2c\ud835\udc25\ud835\udc1e-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e \ud835\udc08\ud835\udc27\ud835\udc2c\ud835\udc2d\ud835\udc1a\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc28\ud835\udc27: This HVAC blower motor features a tool-free, no-professional-required design\u2014no complex tools or specialized skills are needed for setup. It comes ready to install right out of the box, with no extra brackets to mount, saving you time and effort on installation. Plus, it requires zero additional maintenance after installation, letting you enjoy reliable airflow performance without follow-up hassle.\n\ud835\udc15\ud835\udc1e\ud835\udc21\ud835\udc22\ud835\udc1c\ud835\udc25\ud835\udc1e \ud835\udc0c\ud835\udc28\ud835\udc1d\ud835\udc1e\ud835\udc25 \ud835\udc02\ud835\udc28\ud835\udc26\ud835\udc29\ud835\udc1a\ud835\udc2d\ud835\udc22\ud835\udc1b\ud835\udc22\ud835\udc25\ud835\udc22\ud835\udc2d\ud835\udc32 \ud835\udc11\ud835\udc1e\ud835\udc26\ud835\udc22\ud835\udc27\ud835\udc1d\ud835\udc1e\ud835\udc2b: Specifically engineered for use with the vehicle models listed in the \"Blower Motor Compatibility\" section (including Cadillac Escalade EXT 2003-2006, Chevrolet Avalanche 1500/2500 2003-2006, GMC Sierra series, Hummer H2 2003-2007, etc.). It is designed to match the exact specifications of these models, ensuring seamless fit and optimal functionality\u2014please confirm your vehicle model is within the listed range to avoid compatibility issues.",
+        "category_root": "Automotive",
+        "category_sub": "Blower, Air Conditioning, Blower Motors",
+        "description": "",
+        "product_type": "AUTO_PART",
+        "title": "RoadNow 700191 HVAC Blower Motor Fits for Cadillac Escalade EXT 2003-2006,for Chevy Avalanche 1500 2500,for Silverado 1500 2500 3500,for GMC Sierra 1500 2500 3500 Replacement Part 89019320 88986838"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "HVAC Blower Motor",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Blower",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Automotive",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGBX24HW",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires exactly 3 levels: Product Type > Category > Department. The module output only provides 2 levels: 'Food Warming Mat' and 'Food Warmer', which are both product types. There is no category or department level provided, and the output does not meet the specific-to-broad order requirement.",
+      "input": {
+        "bullet_points": "Why Choose Us? Concerned about tabletop cracking? Our FYY Food Warming Mat included super heat-resistant mat blocks up to 50% of heat, safeguarding heat-sensitive granite, marble or wood surfaces from cracks and damage. \uff08Note: When using this product on heat-sensitive countertops, always place a heat-insulating pad underneath to prevent the countertop from cracking due to excessive heat.\uff09\nRapid Full-Surface Heating: Our food warming mat is powered by 500W and we adopt the graphene heating principle, which can generate heat quickly. Our thoughtfully designed graphene heating ensures quick and even distribution, no need to carefully position your food as it efficiently transfers heat.\nCustomized 6-Lever Heat Settings & 1-6H timer: Choose from 6 preset heating temperatures to meet your specific food temperature preferences and ensure an ideal dining experience. Your eating experience will be easily enhanced by our 6-level heat control and 1-6 hours timers, which guarantees that your food is kept at the ideal temperature.\nCapacity: This warm plate is a must-have for your kitchen. It can accommodate 6 8-inch plates. Keep your meals at the perfect temperature and enhance your dining convenience and enjoyment.\nPremium Silicone Nano Material: Our electric warming tray is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, combining durability and practicality. Comes with a soft storage strap for easy rolling and storage. Embrace portability and save space effortlessly. Perfect for small kitchen, RV travel, camping trips and other outdoor activities.\nVersatile Year-Round Use: Double as a quick defroster for meats/frozen goods and a winter face mask warmer - thaw food efficiently while keeping masks cozy for cold-weather comfort, all in one compact tray.",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "FYY Warming Mat for Food with Heat Resistant Pad, Prevent Countertop Cracks, Keep Meal Warm, Rapid and Full Surface Heating, 6 Temp Settings, 6H Timer, Upgraded Rollable Portable Food Warmer Mat Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGBX24HW",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output provides a taxonomy that describes the product type at both levels. 'Food Warming Mat' and 'Food Warmer' are both product categories/types, not features or marketing terms. Therefore, the output meets the PASS conditions of the rubric.",
+      "input": {
+        "bullet_points": "Why Choose Us? Concerned about tabletop cracking? Our FYY Food Warming Mat included super heat-resistant mat blocks up to 50% of heat, safeguarding heat-sensitive granite, marble or wood surfaces from cracks and damage. \uff08Note: When using this product on heat-sensitive countertops, always place a heat-insulating pad underneath to prevent the countertop from cracking due to excessive heat.\uff09\nRapid Full-Surface Heating: Our food warming mat is powered by 500W and we adopt the graphene heating principle, which can generate heat quickly. Our thoughtfully designed graphene heating ensures quick and even distribution, no need to carefully position your food as it efficiently transfers heat.\nCustomized 6-Lever Heat Settings & 1-6H timer: Choose from 6 preset heating temperatures to meet your specific food temperature preferences and ensure an ideal dining experience. Your eating experience will be easily enhanced by our 6-level heat control and 1-6 hours timers, which guarantees that your food is kept at the ideal temperature.\nCapacity: This warm plate is a must-have for your kitchen. It can accommodate 6 8-inch plates. Keep your meals at the perfect temperature and enhance your dining convenience and enjoyment.\nPremium Silicone Nano Material: Our electric warming tray is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, combining durability and practicality. Comes with a soft storage strap for easy rolling and storage. Embrace portability and save space effortlessly. Perfect for small kitchen, RV travel, camping trips and other outdoor activities.\nVersatile Year-Round Use: Double as a quick defroster for meats/frozen goods and a winter face mask warmer - thaw food efficiently while keeping masks cozy for cold-weather comfort, all in one compact tray.",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "FYY Warming Mat for Food with Heat Resistant Pad, Prevent Countertop Cracks, Keep Meal Warm, Rapid and Full Surface Heating, 6 Temp Settings, 6H Timer, Upgraded Rollable Portable Food Warmer Mat Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGBX24HW",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the rubric criterion as the hierarchy goes from specific to general. 'Food Warming Mat' is more specific than 'Food Warmer', which aligns with the requirement that Level 1 is the most specific and higher levels are broader.",
+      "input": {
+        "bullet_points": "Why Choose Us? Concerned about tabletop cracking? Our FYY Food Warming Mat included super heat-resistant mat blocks up to 50% of heat, safeguarding heat-sensitive granite, marble or wood surfaces from cracks and damage. \uff08Note: When using this product on heat-sensitive countertops, always place a heat-insulating pad underneath to prevent the countertop from cracking due to excessive heat.\uff09\nRapid Full-Surface Heating: Our food warming mat is powered by 500W and we adopt the graphene heating principle, which can generate heat quickly. Our thoughtfully designed graphene heating ensures quick and even distribution, no need to carefully position your food as it efficiently transfers heat.\nCustomized 6-Lever Heat Settings & 1-6H timer: Choose from 6 preset heating temperatures to meet your specific food temperature preferences and ensure an ideal dining experience. Your eating experience will be easily enhanced by our 6-level heat control and 1-6 hours timers, which guarantees that your food is kept at the ideal temperature.\nCapacity: This warm plate is a must-have for your kitchen. It can accommodate 6 8-inch plates. Keep your meals at the perfect temperature and enhance your dining convenience and enjoyment.\nPremium Silicone Nano Material: Our electric warming tray is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, combining durability and practicality. Comes with a soft storage strap for easy rolling and storage. Embrace portability and save space effortlessly. Perfect for small kitchen, RV travel, camping trips and other outdoor activities.\nVersatile Year-Round Use: Double as a quick defroster for meats/frozen goods and a winter face mask warmer - thaw food efficiently while keeping masks cozy for cold-weather comfort, all in one compact tray.",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "FYY Warming Mat for Food with Heat Resistant Pad, Prevent Countertop Cracks, Keep Meal Warm, Rapid and Full Surface Heating, 6 Temp Settings, 6H Timer, Upgraded Rollable Portable Food Warmer Mat Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGBX24HW",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output lists 'Food Warming Mat' and 'Food Warmer' as the product types, which accurately describe the product based on the input data. The product is a mat designed to warm food, fitting both categories provided in the output.",
+      "input": {
+        "bullet_points": "Why Choose Us? Concerned about tabletop cracking? Our FYY Food Warming Mat included super heat-resistant mat blocks up to 50% of heat, safeguarding heat-sensitive granite, marble or wood surfaces from cracks and damage. \uff08Note: When using this product on heat-sensitive countertops, always place a heat-insulating pad underneath to prevent the countertop from cracking due to excessive heat.\uff09\nRapid Full-Surface Heating: Our food warming mat is powered by 500W and we adopt the graphene heating principle, which can generate heat quickly. Our thoughtfully designed graphene heating ensures quick and even distribution, no need to carefully position your food as it efficiently transfers heat.\nCustomized 6-Lever Heat Settings & 1-6H timer: Choose from 6 preset heating temperatures to meet your specific food temperature preferences and ensure an ideal dining experience. Your eating experience will be easily enhanced by our 6-level heat control and 1-6 hours timers, which guarantees that your food is kept at the ideal temperature.\nCapacity: This warm plate is a must-have for your kitchen. It can accommodate 6 8-inch plates. Keep your meals at the perfect temperature and enhance your dining convenience and enjoyment.\nPremium Silicone Nano Material: Our electric warming tray is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, combining durability and practicality. Comes with a soft storage strap for easy rolling and storage. Embrace portability and save space effortlessly. Perfect for small kitchen, RV travel, camping trips and other outdoor activities.\nVersatile Year-Round Use: Double as a quick defroster for meats/frozen goods and a winter face mask warmer - thaw food efficiently while keeping masks cozy for cold-weather comfort, all in one compact tray.",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "FYY Warming Mat for Food with Heat Resistant Pad, Prevent Countertop Cracks, Keep Meal Warm, Rapid and Full Surface Heating, 6 Temp Settings, 6H Timer, Upgraded Rollable Portable Food Warmer Mat Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGBX24HW",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires the taxonomy to have at most 3 levels. The module output contains a taxonomy with 2 levels, which meets the PASS condition of having 1-3 levels only.",
+      "input": {
+        "bullet_points": "Why Choose Us? Concerned about tabletop cracking? Our FYY Food Warming Mat included super heat-resistant mat blocks up to 50% of heat, safeguarding heat-sensitive granite, marble or wood surfaces from cracks and damage. \uff08Note: When using this product on heat-sensitive countertops, always place a heat-insulating pad underneath to prevent the countertop from cracking due to excessive heat.\uff09\nRapid Full-Surface Heating: Our food warming mat is powered by 500W and we adopt the graphene heating principle, which can generate heat quickly. Our thoughtfully designed graphene heating ensures quick and even distribution, no need to carefully position your food as it efficiently transfers heat.\nCustomized 6-Lever Heat Settings & 1-6H timer: Choose from 6 preset heating temperatures to meet your specific food temperature preferences and ensure an ideal dining experience. Your eating experience will be easily enhanced by our 6-level heat control and 1-6 hours timers, which guarantees that your food is kept at the ideal temperature.\nCapacity: This warm plate is a must-have for your kitchen. It can accommodate 6 8-inch plates. Keep your meals at the perfect temperature and enhance your dining convenience and enjoyment.\nPremium Silicone Nano Material: Our electric warming tray is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, combining durability and practicality. Comes with a soft storage strap for easy rolling and storage. Embrace portability and save space effortlessly. Perfect for small kitchen, RV travel, camping trips and other outdoor activities.\nVersatile Year-Round Use: Double as a quick defroster for meats/frozen goods and a winter face mask warmer - thaw food efficiently while keeping masks cozy for cold-weather comfort, all in one compact tray.",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "FYY Warming Mat for Food with Heat Resistant Pad, Prevent Countertop Cracks, Keep Meal Warm, Rapid and Full Surface Heating, 6 Temp Settings, 6H Timer, Upgraded Rollable Portable Food Warmer Mat Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FGBX24HW",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The module output separates 'Food Warming Mat' and 'Food Warmer' into two taxonomy levels, which violates the rubric's requirement to combine material/feature modifiers into a single product type. The rubric specifies that simple products should use one level, and the output does not meet this condition.",
+      "input": {
+        "bullet_points": "Why Choose Us? Concerned about tabletop cracking? Our FYY Food Warming Mat included super heat-resistant mat blocks up to 50% of heat, safeguarding heat-sensitive granite, marble or wood surfaces from cracks and damage. \uff08Note: When using this product on heat-sensitive countertops, always place a heat-insulating pad underneath to prevent the countertop from cracking due to excessive heat.\uff09\nRapid Full-Surface Heating: Our food warming mat is powered by 500W and we adopt the graphene heating principle, which can generate heat quickly. Our thoughtfully designed graphene heating ensures quick and even distribution, no need to carefully position your food as it efficiently transfers heat.\nCustomized 6-Lever Heat Settings & 1-6H timer: Choose from 6 preset heating temperatures to meet your specific food temperature preferences and ensure an ideal dining experience. Your eating experience will be easily enhanced by our 6-level heat control and 1-6 hours timers, which guarantees that your food is kept at the ideal temperature.\nCapacity: This warm plate is a must-have for your kitchen. It can accommodate 6 8-inch plates. Keep your meals at the perfect temperature and enhance your dining convenience and enjoyment.\nPremium Silicone Nano Material: Our electric warming tray is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, combining durability and practicality. Comes with a soft storage strap for easy rolling and storage. Embrace portability and save space effortlessly. Perfect for small kitchen, RV travel, camping trips and other outdoor activities.\nVersatile Year-Round Use: Double as a quick defroster for meats/frozen goods and a winter face mask warmer - thaw food efficiently while keeping masks cozy for cold-weather comfort, all in one compact tray.",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "FYY Warming Mat for Food with Heat Resistant Pad, Prevent Countertop Cracks, Keep Meal Warm, Rapid and Full Surface Heating, 6 Temp Settings, 6H Timer, Upgraded Rollable Portable Food Warmer Mat Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FG258DCG",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because it only provides 2 levels instead of the required 3 levels: Product Type > Category > Department. Additionally, the levels provided are not clearly defined as specific product type, category, and department.",
+      "input": {
+        "bullet_points": "10-Second Full-Surface Heating: Homelove warming mat for food powered by 330W high-performance heat wire and upgraded technology for even heat distribution across the entire mat. It can achieve uniform and rapid heating of the entire board in just 10 seconds. Ready to serve in seconds\n7-Level Temperature Control & 8 Timer Option: The food warming mat can customize heat for any food or drink, from 104\u00b0F - 122\u00b0F - 140\u00b0F - 158\u00b0F - 176\u00b0F - 194\u00b0F - 212\u00b0F. Can adjust by touch \u201c+/-\u201d buttons to match your ideal serving temp! Also equipped with 1-8 hour auto-shutoff protects your mat and food\u2014set & forget for game days or dinner parties\nOne-Click High Heat & Auto-Memory Temperature Recall: This silicone electric warming tray designed with a \u201cWarm Dishes\u201d Button, touch for instant 212\u00b0F (100\u00b0C) heat\u2014no settings needed. Perfect for quickly reheating plates or keeping food hot before serving! It also has auto-memory function, smartly saves your last used setting\u2014automatically resumes your preferred heat level for daily coffee, meals, or entertaining\nChild Safety Lock for Worry-Free Use: Our food warmer enable one-touch locking to prevent accidental button presses\u2014keep kids safe from hot surfaces while maintaining perfect food temps during family meals\nFree Heat Insulating Pad Included: Protect delicate countertops (quartz, marble, wood) from heat damage\u2014simply place the pad under our warming mat for safe use on all surfaces. Premium bonus for worry-free entertaining!\nEasy to Clean & Storage: Our buffet plates warmer is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, can easily cleaned with a single wipe. Combining durability and flexibility, it is easy to roll up with the strap for space-saving storage. Perfect for RV travel, camping trips and other outdoor activities\nCapacity: The food warmer for parties buffet sized 25.2 x 14.96 inch (unfolded size), can hold 2 dinner plates (10\u201d-11\") or 6 salad plates (7\") or 8 bread plates (6\"). Keep every course perfectly warm for holiday feasts or Sunday brunch!\nYear-Round Kitchen & Home Helper: Beyond food warming: speed-defrost proteins, proof dough 2X faster, or warm masks! One mat equal to endless winter solutions. Versatile for every time, keeping the perfect temperature for family dinners, gatherings, events, parties, buffets, travel",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "Homelove Warming Mat for Food - Fast Full Surface Electric Warming Tray with 7 Temp-Settings & 8H Timer, Portable Roll Up Food Warmer with Heat Insulation Pad for Gatherings Parties Buffet XL-Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FG258DCG",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product type at both levels of the taxonomy. 'Food Warming Mat' and 'Food Warmer' are both product categories/types, not features or marketing terms. Therefore, the output meets the PASS conditions of the rubric.",
+      "input": {
+        "bullet_points": "10-Second Full-Surface Heating: Homelove warming mat for food powered by 330W high-performance heat wire and upgraded technology for even heat distribution across the entire mat. It can achieve uniform and rapid heating of the entire board in just 10 seconds. Ready to serve in seconds\n7-Level Temperature Control & 8 Timer Option: The food warming mat can customize heat for any food or drink, from 104\u00b0F - 122\u00b0F - 140\u00b0F - 158\u00b0F - 176\u00b0F - 194\u00b0F - 212\u00b0F. Can adjust by touch \u201c+/-\u201d buttons to match your ideal serving temp! Also equipped with 1-8 hour auto-shutoff protects your mat and food\u2014set & forget for game days or dinner parties\nOne-Click High Heat & Auto-Memory Temperature Recall: This silicone electric warming tray designed with a \u201cWarm Dishes\u201d Button, touch for instant 212\u00b0F (100\u00b0C) heat\u2014no settings needed. Perfect for quickly reheating plates or keeping food hot before serving! It also has auto-memory function, smartly saves your last used setting\u2014automatically resumes your preferred heat level for daily coffee, meals, or entertaining\nChild Safety Lock for Worry-Free Use: Our food warmer enable one-touch locking to prevent accidental button presses\u2014keep kids safe from hot surfaces while maintaining perfect food temps during family meals\nFree Heat Insulating Pad Included: Protect delicate countertops (quartz, marble, wood) from heat damage\u2014simply place the pad under our warming mat for safe use on all surfaces. Premium bonus for worry-free entertaining!\nEasy to Clean & Storage: Our buffet plates warmer is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, can easily cleaned with a single wipe. Combining durability and flexibility, it is easy to roll up with the strap for space-saving storage. Perfect for RV travel, camping trips and other outdoor activities\nCapacity: The food warmer for parties buffet sized 25.2 x 14.96 inch (unfolded size), can hold 2 dinner plates (10\u201d-11\") or 6 salad plates (7\") or 8 bread plates (6\"). Keep every course perfectly warm for holiday feasts or Sunday brunch!\nYear-Round Kitchen & Home Helper: Beyond food warming: speed-defrost proteins, proof dough 2X faster, or warm masks! One mat equal to endless winter solutions. Versatile for every time, keeping the perfect temperature for family dinners, gatherings, events, parties, buffets, travel",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "Homelove Warming Mat for Food - Fast Full Surface Electric Warming Tray with 7 Temp-Settings & 8H Timer, Portable Roll Up Food Warmer with Heat Insulation Pad for Gatherings Parties Buffet XL-Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FG258DCG",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the taxonomy levels go from specific to general. The module output shows 'Food Warming Mat' at level 1, which is more specific, and 'Food Warmer' at level 2, which is broader. This hierarchy order is correct according to the rubric's PASS conditions.",
+      "input": {
+        "bullet_points": "10-Second Full-Surface Heating: Homelove warming mat for food powered by 330W high-performance heat wire and upgraded technology for even heat distribution across the entire mat. It can achieve uniform and rapid heating of the entire board in just 10 seconds. Ready to serve in seconds\n7-Level Temperature Control & 8 Timer Option: The food warming mat can customize heat for any food or drink, from 104\u00b0F - 122\u00b0F - 140\u00b0F - 158\u00b0F - 176\u00b0F - 194\u00b0F - 212\u00b0F. Can adjust by touch \u201c+/-\u201d buttons to match your ideal serving temp! Also equipped with 1-8 hour auto-shutoff protects your mat and food\u2014set & forget for game days or dinner parties\nOne-Click High Heat & Auto-Memory Temperature Recall: This silicone electric warming tray designed with a \u201cWarm Dishes\u201d Button, touch for instant 212\u00b0F (100\u00b0C) heat\u2014no settings needed. Perfect for quickly reheating plates or keeping food hot before serving! It also has auto-memory function, smartly saves your last used setting\u2014automatically resumes your preferred heat level for daily coffee, meals, or entertaining\nChild Safety Lock for Worry-Free Use: Our food warmer enable one-touch locking to prevent accidental button presses\u2014keep kids safe from hot surfaces while maintaining perfect food temps during family meals\nFree Heat Insulating Pad Included: Protect delicate countertops (quartz, marble, wood) from heat damage\u2014simply place the pad under our warming mat for safe use on all surfaces. Premium bonus for worry-free entertaining!\nEasy to Clean & Storage: Our buffet plates warmer is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, can easily cleaned with a single wipe. Combining durability and flexibility, it is easy to roll up with the strap for space-saving storage. Perfect for RV travel, camping trips and other outdoor activities\nCapacity: The food warmer for parties buffet sized 25.2 x 14.96 inch (unfolded size), can hold 2 dinner plates (10\u201d-11\") or 6 salad plates (7\") or 8 bread plates (6\"). Keep every course perfectly warm for holiday feasts or Sunday brunch!\nYear-Round Kitchen & Home Helper: Beyond food warming: speed-defrost proteins, proof dough 2X faster, or warm masks! One mat equal to endless winter solutions. Versatile for every time, keeping the perfect temperature for family dinners, gatherings, events, parties, buffets, travel",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "Homelove Warming Mat for Food - Fast Full Surface Electric Warming Tray with 7 Temp-Settings & 8H Timer, Portable Roll Up Food Warmer with Heat Insulation Pad for Gatherings Parties Buffet XL-Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FG258DCG",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output lists 'Food Warming Mat' and 'Food Warmer' as the product types. These accurately describe the product, which is a warming mat designed to keep food warm, as indicated by the input data. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "bullet_points": "10-Second Full-Surface Heating: Homelove warming mat for food powered by 330W high-performance heat wire and upgraded technology for even heat distribution across the entire mat. It can achieve uniform and rapid heating of the entire board in just 10 seconds. Ready to serve in seconds\n7-Level Temperature Control & 8 Timer Option: The food warming mat can customize heat for any food or drink, from 104\u00b0F - 122\u00b0F - 140\u00b0F - 158\u00b0F - 176\u00b0F - 194\u00b0F - 212\u00b0F. Can adjust by touch \u201c+/-\u201d buttons to match your ideal serving temp! Also equipped with 1-8 hour auto-shutoff protects your mat and food\u2014set & forget for game days or dinner parties\nOne-Click High Heat & Auto-Memory Temperature Recall: This silicone electric warming tray designed with a \u201cWarm Dishes\u201d Button, touch for instant 212\u00b0F (100\u00b0C) heat\u2014no settings needed. Perfect for quickly reheating plates or keeping food hot before serving! It also has auto-memory function, smartly saves your last used setting\u2014automatically resumes your preferred heat level for daily coffee, meals, or entertaining\nChild Safety Lock for Worry-Free Use: Our food warmer enable one-touch locking to prevent accidental button presses\u2014keep kids safe from hot surfaces while maintaining perfect food temps during family meals\nFree Heat Insulating Pad Included: Protect delicate countertops (quartz, marble, wood) from heat damage\u2014simply place the pad under our warming mat for safe use on all surfaces. Premium bonus for worry-free entertaining!\nEasy to Clean & Storage: Our buffet plates warmer is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, can easily cleaned with a single wipe. Combining durability and flexibility, it is easy to roll up with the strap for space-saving storage. Perfect for RV travel, camping trips and other outdoor activities\nCapacity: The food warmer for parties buffet sized 25.2 x 14.96 inch (unfolded size), can hold 2 dinner plates (10\u201d-11\") or 6 salad plates (7\") or 8 bread plates (6\"). Keep every course perfectly warm for holiday feasts or Sunday brunch!\nYear-Round Kitchen & Home Helper: Beyond food warming: speed-defrost proteins, proof dough 2X faster, or warm masks! One mat equal to endless winter solutions. Versatile for every time, keeping the perfect temperature for family dinners, gatherings, events, parties, buffets, travel",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "Homelove Warming Mat for Food - Fast Full Surface Electric Warming Tray with 7 Temp-Settings & 8H Timer, Portable Roll Up Food Warmer with Heat Insulation Pad for Gatherings Parties Buffet XL-Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FG258DCG",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires the taxonomy to have at most 3 levels. The module output contains a taxonomy with only 2 levels, which meets the PASS conditions of having 1-3 levels only.",
+      "input": {
+        "bullet_points": "10-Second Full-Surface Heating: Homelove warming mat for food powered by 330W high-performance heat wire and upgraded technology for even heat distribution across the entire mat. It can achieve uniform and rapid heating of the entire board in just 10 seconds. Ready to serve in seconds\n7-Level Temperature Control & 8 Timer Option: The food warming mat can customize heat for any food or drink, from 104\u00b0F - 122\u00b0F - 140\u00b0F - 158\u00b0F - 176\u00b0F - 194\u00b0F - 212\u00b0F. Can adjust by touch \u201c+/-\u201d buttons to match your ideal serving temp! Also equipped with 1-8 hour auto-shutoff protects your mat and food\u2014set & forget for game days or dinner parties\nOne-Click High Heat & Auto-Memory Temperature Recall: This silicone electric warming tray designed with a \u201cWarm Dishes\u201d Button, touch for instant 212\u00b0F (100\u00b0C) heat\u2014no settings needed. Perfect for quickly reheating plates or keeping food hot before serving! It also has auto-memory function, smartly saves your last used setting\u2014automatically resumes your preferred heat level for daily coffee, meals, or entertaining\nChild Safety Lock for Worry-Free Use: Our food warmer enable one-touch locking to prevent accidental button presses\u2014keep kids safe from hot surfaces while maintaining perfect food temps during family meals\nFree Heat Insulating Pad Included: Protect delicate countertops (quartz, marble, wood) from heat damage\u2014simply place the pad under our warming mat for safe use on all surfaces. Premium bonus for worry-free entertaining!\nEasy to Clean & Storage: Our buffet plates warmer is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, can easily cleaned with a single wipe. Combining durability and flexibility, it is easy to roll up with the strap for space-saving storage. Perfect for RV travel, camping trips and other outdoor activities\nCapacity: The food warmer for parties buffet sized 25.2 x 14.96 inch (unfolded size), can hold 2 dinner plates (10\u201d-11\") or 6 salad plates (7\") or 8 bread plates (6\"). Keep every course perfectly warm for holiday feasts or Sunday brunch!\nYear-Round Kitchen & Home Helper: Beyond food warming: speed-defrost proteins, proof dough 2X faster, or warm masks! One mat equal to endless winter solutions. Versatile for every time, keeping the perfect temperature for family dinners, gatherings, events, parties, buffets, travel",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "Homelove Warming Mat for Food - Fast Full Surface Electric Warming Tray with 7 Temp-Settings & 8H Timer, Portable Roll Up Food Warmer with Heat Insulation Pad for Gatherings Parties Buffet XL-Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0FG258DCG",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes two separate taxonomy levels for 'Food Warming Mat' and 'Food Warmer', which violates the rubric criterion that requires material/feature modifiers to be combined into a single product type. The output should use one level for simple products, but it incorrectly separates them into two levels.",
+      "input": {
+        "bullet_points": "10-Second Full-Surface Heating: Homelove warming mat for food powered by 330W high-performance heat wire and upgraded technology for even heat distribution across the entire mat. It can achieve uniform and rapid heating of the entire board in just 10 seconds. Ready to serve in seconds\n7-Level Temperature Control & 8 Timer Option: The food warming mat can customize heat for any food or drink, from 104\u00b0F - 122\u00b0F - 140\u00b0F - 158\u00b0F - 176\u00b0F - 194\u00b0F - 212\u00b0F. Can adjust by touch \u201c+/-\u201d buttons to match your ideal serving temp! Also equipped with 1-8 hour auto-shutoff protects your mat and food\u2014set & forget for game days or dinner parties\nOne-Click High Heat & Auto-Memory Temperature Recall: This silicone electric warming tray designed with a \u201cWarm Dishes\u201d Button, touch for instant 212\u00b0F (100\u00b0C) heat\u2014no settings needed. Perfect for quickly reheating plates or keeping food hot before serving! It also has auto-memory function, smartly saves your last used setting\u2014automatically resumes your preferred heat level for daily coffee, meals, or entertaining\nChild Safety Lock for Worry-Free Use: Our food warmer enable one-touch locking to prevent accidental button presses\u2014keep kids safe from hot surfaces while maintaining perfect food temps during family meals\nFree Heat Insulating Pad Included: Protect delicate countertops (quartz, marble, wood) from heat damage\u2014simply place the pad under our warming mat for safe use on all surfaces. Premium bonus for worry-free entertaining!\nEasy to Clean & Storage: Our buffet plates warmer is made of premium flexible silicone nano material, which is splash-proof, stain-proof and oil-proof, can easily cleaned with a single wipe. Combining durability and flexibility, it is easy to roll up with the strap for space-saving storage. Perfect for RV travel, camping trips and other outdoor activities\nCapacity: The food warmer for parties buffet sized 25.2 x 14.96 inch (unfolded size), can hold 2 dinner plates (10\u201d-11\") or 6 salad plates (7\") or 8 bread plates (6\"). Keep every course perfectly warm for holiday feasts or Sunday brunch!\nYear-Round Kitchen & Home Helper: Beyond food warming: speed-defrost proteins, proof dough 2X faster, or warm masks! One mat equal to endless winter solutions. Versatile for every time, keeping the perfect temperature for family dinners, gatherings, events, parties, buffets, travel",
+        "category_root": "Industrial & Scientific",
+        "category_sub": "Food Warmers",
+        "description": "",
+        "product_type": "FOOD_OR_BEVERAGE_WARMER",
+        "title": "Homelove Warming Mat for Food - Fast Full Surface Electric Warming Tray with 7 Temp-Settings & 8H Timer, Portable Roll Up Food Warmer with Heat Insulation Pad for Gatherings Parties Buffet XL-Grey"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Food Warming Mat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Food Warmer",
+            "rank": 2
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F8W6V93G",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the rubric criterion by providing exactly 3 levels in the hierarchy: Level 1 is 'Down Jacket' (specific product type), Level 2 is 'Jacket' (category), and Level 3 is 'Men's Clothing / Apparel' (department). The order is specific-to-broad, as required.",
+      "input": {
+        "bullet_points": "Thorium Jacket: Warm, durable standalone down jacket\nEveryday: Technical outdoor functionality, comfort and durability brought to everyday designs.\nThorium: Versatile down insulated mid layers that provide durable warmth. Light by construction.\nDown Insulation: Highly efficient natural insulation that compacts well and offers excellent warmth to weight.",
+        "category_root": "Clothing, Shoes & Jewelry",
+        "category_sub": "Insulated",
+        "description": "Description\n\nA go-to for serious cold, The Thorium\u2019s the one you reach for when you need the warmth of down to keep you comfortable outside. Created for efficient performance, comfort, and durability, it\u2019s filled with warm, lofty responsibly-sourced 750 fill-power grey goose down and has a lightweight, abrasion-resistant Arato\u2122 30 nylon shell. Down Composite Mapping\u2122 strategically places Coreloft\u2122 synthetic insulation in areas prone to moisture, a bio-derived liner reduces petroleum use, a DWR treatment repels water, and multiple pockets provide storage.",
+        "product_type": "COAT",
+        "title": "Arc'teryx Thorium Jacket Men's | Warm Durable Standalone Down Jacket | Black, Large"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Down Jacket",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F8W6V93G",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product category/type at each level of the taxonomy. 'Down Jacket' and 'Jacket' are appropriate product types, and 'Men's Clothing / Apparel' is a suitable higher-level category. The taxonomy does not focus on features or use marketing terms, thus meeting the rubric's PASS conditions.",
+      "input": {
+        "bullet_points": "Thorium Jacket: Warm, durable standalone down jacket\nEveryday: Technical outdoor functionality, comfort and durability brought to everyday designs.\nThorium: Versatile down insulated mid layers that provide durable warmth. Light by construction.\nDown Insulation: Highly efficient natural insulation that compacts well and offers excellent warmth to weight.",
+        "category_root": "Clothing, Shoes & Jewelry",
+        "category_sub": "Insulated",
+        "description": "Description\n\nA go-to for serious cold, The Thorium\u2019s the one you reach for when you need the warmth of down to keep you comfortable outside. Created for efficient performance, comfort, and durability, it\u2019s filled with warm, lofty responsibly-sourced 750 fill-power grey goose down and has a lightweight, abrasion-resistant Arato\u2122 30 nylon shell. Down Composite Mapping\u2122 strategically places Coreloft\u2122 synthetic insulation in areas prone to moisture, a bio-derived liner reduces petroleum use, a DWR treatment repels water, and multiple pockets provide storage.",
+        "product_type": "COAT",
+        "title": "Arc'teryx Thorium Jacket Men's | Warm Durable Standalone Down Jacket | Black, Large"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Down Jacket",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F8W6V93G",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the rubric criterion as the taxonomy levels go from specific to general. Level 1 is 'Down Jacket', which is more specific than Level 2 'Jacket', and Level 3 'Men's Clothing / Apparel' is the most general. This hierarchy order is correct according to the rubric.",
+      "input": {
+        "bullet_points": "Thorium Jacket: Warm, durable standalone down jacket\nEveryday: Technical outdoor functionality, comfort and durability brought to everyday designs.\nThorium: Versatile down insulated mid layers that provide durable warmth. Light by construction.\nDown Insulation: Highly efficient natural insulation that compacts well and offers excellent warmth to weight.",
+        "category_root": "Clothing, Shoes & Jewelry",
+        "category_sub": "Insulated",
+        "description": "Description\n\nA go-to for serious cold, The Thorium\u2019s the one you reach for when you need the warmth of down to keep you comfortable outside. Created for efficient performance, comfort, and durability, it\u2019s filled with warm, lofty responsibly-sourced 750 fill-power grey goose down and has a lightweight, abrasion-resistant Arato\u2122 30 nylon shell. Down Composite Mapping\u2122 strategically places Coreloft\u2122 synthetic insulation in areas prone to moisture, a bio-derived liner reduces petroleum use, a DWR treatment repels water, and multiple pockets provide storage.",
+        "product_type": "COAT",
+        "title": "Arc'teryx Thorium Jacket Men's | Warm Durable Standalone Down Jacket | Black, Large"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Down Jacket",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F8W6V93G",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies the product as a 'Down Jacket', which aligns with the description and bullet points indicating it is a warm, durable standalone down jacket. The additional classifications of 'Jacket' and 'Men's Clothing / Apparel' are also accurate and appropriate for the product type.",
+      "input": {
+        "bullet_points": "Thorium Jacket: Warm, durable standalone down jacket\nEveryday: Technical outdoor functionality, comfort and durability brought to everyday designs.\nThorium: Versatile down insulated mid layers that provide durable warmth. Light by construction.\nDown Insulation: Highly efficient natural insulation that compacts well and offers excellent warmth to weight.",
+        "category_root": "Clothing, Shoes & Jewelry",
+        "category_sub": "Insulated",
+        "description": "Description\n\nA go-to for serious cold, The Thorium\u2019s the one you reach for when you need the warmth of down to keep you comfortable outside. Created for efficient performance, comfort, and durability, it\u2019s filled with warm, lofty responsibly-sourced 750 fill-power grey goose down and has a lightweight, abrasion-resistant Arato\u2122 30 nylon shell. Down Composite Mapping\u2122 strategically places Coreloft\u2122 synthetic insulation in areas prone to moisture, a bio-derived liner reduces petroleum use, a DWR treatment repels water, and multiple pockets provide storage.",
+        "product_type": "COAT",
+        "title": "Arc'teryx Thorium Jacket Men's | Warm Durable Standalone Down Jacket | Black, Large"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Down Jacket",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F8W6V93G",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The module output contains a taxonomy with exactly 3 levels, which meets the rubric's requirement of having at most 3 levels. There are no unnecessary categories added.",
+      "input": {
+        "bullet_points": "Thorium Jacket: Warm, durable standalone down jacket\nEveryday: Technical outdoor functionality, comfort and durability brought to everyday designs.\nThorium: Versatile down insulated mid layers that provide durable warmth. Light by construction.\nDown Insulation: Highly efficient natural insulation that compacts well and offers excellent warmth to weight.",
+        "category_root": "Clothing, Shoes & Jewelry",
+        "category_sub": "Insulated",
+        "description": "Description\n\nA go-to for serious cold, The Thorium\u2019s the one you reach for when you need the warmth of down to keep you comfortable outside. Created for efficient performance, comfort, and durability, it\u2019s filled with warm, lofty responsibly-sourced 750 fill-power grey goose down and has a lightweight, abrasion-resistant Arato\u2122 30 nylon shell. Down Composite Mapping\u2122 strategically places Coreloft\u2122 synthetic insulation in areas prone to moisture, a bio-derived liner reduces petroleum use, a DWR treatment repels water, and multiple pockets provide storage.",
+        "product_type": "COAT",
+        "title": "Arc'teryx Thorium Jacket Men's | Warm Durable Standalone Down Jacket | Black, Large"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Down Jacket",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F8W6V93G",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "FAIL",
+      "reasoning": "The module output separates 'Down Jacket' and 'Jacket' into different taxonomy levels, which violates the rubric criterion that material/feature modifiers should not be separate taxonomy levels. The product type should be combined into a single level, such as 'Down Jacket'.",
+      "input": {
+        "bullet_points": "Thorium Jacket: Warm, durable standalone down jacket\nEveryday: Technical outdoor functionality, comfort and durability brought to everyday designs.\nThorium: Versatile down insulated mid layers that provide durable warmth. Light by construction.\nDown Insulation: Highly efficient natural insulation that compacts well and offers excellent warmth to weight.",
+        "category_root": "Clothing, Shoes & Jewelry",
+        "category_sub": "Insulated",
+        "description": "Description\n\nA go-to for serious cold, The Thorium\u2019s the one you reach for when you need the warmth of down to keep you comfortable outside. Created for efficient performance, comfort, and durability, it\u2019s filled with warm, lofty responsibly-sourced 750 fill-power grey goose down and has a lightweight, abrasion-resistant Arato\u2122 30 nylon shell. Down Composite Mapping\u2122 strategically places Coreloft\u2122 synthetic insulation in areas prone to moisture, a bio-derived liner reduces petroleum use, a DWR treatment repels water, and multiple pockets provide storage.",
+        "product_type": "COAT",
+        "title": "Arc'teryx Thorium Jacket Men's | Warm Durable Standalone Down Jacket | Black, Large"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Down Jacket",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F4XFLDBP",
+      "rubric_id": "M06_three_level_hierarchy",
+      "criterion": "Three-Level Hierarchy",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires exactly 3 levels: Product Type, Category, and Department. The module output only provides 1 level, which is the Product Type ('Car Phone Holders & Mounts'). Therefore, it does not meet the PASS conditions as it is missing the Category and Department levels.",
+      "input": {
+        "bullet_points": "\u3010Strengthened Grip, Steady Hold\u3011The vacuum magnetic phone holder uses N52 magnets with 2800GF pull force and strong suction to lock your phone tightly in place. It stays secure even on bumps, sharp turns, and sudden stops. Mount it on smooth surfaces, or use the round base for textured surfaces.\n\u3010Flexible Angles, Compact Design\u3011 Adjust your vacuum suction phone holder to any angle with 360\u00b0 rotation and 270\u00b0 tilt. Mount it on your car\u2019s console, infotainment screen, or windshield, or use it anywhere you need. When not in use, fold it flat for easy storage and easy to carry anywhere.\n\u3010Mount Up in 3 Seconds\u3011 Secure your magnetic phone holder for car in just 3 seconds. Press the suction cup to remove air, then twist to lock and create strong vacuum suction. No tools, no hassle\u2014just a quick setup that gives your phone a firm, steady hold wherever you mount it.\n\u3010One Stand, Endless Uses\u3011 Use your vacuum suction magnetic phone holder for hands-free help anywhere\u2014GPS while driving, video calls at work, recipes in the kitchen, or workouts at the gym. Stable and reliable, it keeps your phone secure through all your daily activities.\n\u3010Wide Compatibility\u3011This vacuum magnetic phone stand works with iPhone 12/13/14/15/16 series and MagSafe cases. For non-MagSafe phones, use the included metal ring for secure attachment. Enjoy a stable, reliable magnetic hold anytime and anywhere.\n\u26a0\ufe0f Important Notice: \u26a0\ufe0f \u2705 For Smooth Yet Textured Surfaces: Use the included adhesive pad to ensure a secure mount. Avoid mounting on fluctuating or uneven surfaces. \u26a0\ufe0f For Non-Magnetic Phones and Cases: Use the included magnetic ring. \u274c Not Recommended: Mounting the adhesive pad on an uneven car dashboard. \u2753 How to Check Surface Smoothness Without the Adhesive Pad: Scratch a circle with your fingernail. If the surface feels smooth and makes no sound, it is suitable for mounting without the adhesive pad.\n\u3010Use on the dashboard\u3011: To ensure optimal performance of our products on the dashboard, it is essential to use them in conjunction with the included Round Base. The dashboard's texture may not be smooth enough to support direct attachment. The Round Base provides a stable and smooth surface. It must be securely affixed to the dashboard first. Once the Round Base is in place, it can effectively support the magnetic phone holder, allowing our products to function properly.",
+        "category_root": "Cell Phones & Accessories",
+        "category_sub": "Cradles",
+        "description": "",
+        "product_type": "PORTABLE_ELECTRONIC_DEVICE_MOUNT",
+        "title": "2026 Upgraded 360\u00b0 Vacuum Magnetic Car Phone Holder for Magsafe [96+LBS Strongest Suction & 2800gf Strongest Magnetic], Adjustable Car Phone Mount for Your Car/Gym/Mirror/Shower for iPhone & Android"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Car Phone Holders & Mounts",
+            "rank": 1
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F4XFLDBP",
+      "rubric_id": "M06_product_type_focused",
+      "criterion": "Product Type Focused",
+      "verdict": "PASS",
+      "reasoning": "The module output describes the product type as 'Car Phone Holders & Mounts', which aligns with the rubric's requirement to describe the product category/type. It does not focus on features or use marketing terms, thus meeting the PASS conditions.",
+      "input": {
+        "bullet_points": "\u3010Strengthened Grip, Steady Hold\u3011The vacuum magnetic phone holder uses N52 magnets with 2800GF pull force and strong suction to lock your phone tightly in place. It stays secure even on bumps, sharp turns, and sudden stops. Mount it on smooth surfaces, or use the round base for textured surfaces.\n\u3010Flexible Angles, Compact Design\u3011 Adjust your vacuum suction phone holder to any angle with 360\u00b0 rotation and 270\u00b0 tilt. Mount it on your car\u2019s console, infotainment screen, or windshield, or use it anywhere you need. When not in use, fold it flat for easy storage and easy to carry anywhere.\n\u3010Mount Up in 3 Seconds\u3011 Secure your magnetic phone holder for car in just 3 seconds. Press the suction cup to remove air, then twist to lock and create strong vacuum suction. No tools, no hassle\u2014just a quick setup that gives your phone a firm, steady hold wherever you mount it.\n\u3010One Stand, Endless Uses\u3011 Use your vacuum suction magnetic phone holder for hands-free help anywhere\u2014GPS while driving, video calls at work, recipes in the kitchen, or workouts at the gym. Stable and reliable, it keeps your phone secure through all your daily activities.\n\u3010Wide Compatibility\u3011This vacuum magnetic phone stand works with iPhone 12/13/14/15/16 series and MagSafe cases. For non-MagSafe phones, use the included metal ring for secure attachment. Enjoy a stable, reliable magnetic hold anytime and anywhere.\n\u26a0\ufe0f Important Notice: \u26a0\ufe0f \u2705 For Smooth Yet Textured Surfaces: Use the included adhesive pad to ensure a secure mount. Avoid mounting on fluctuating or uneven surfaces. \u26a0\ufe0f For Non-Magnetic Phones and Cases: Use the included magnetic ring. \u274c Not Recommended: Mounting the adhesive pad on an uneven car dashboard. \u2753 How to Check Surface Smoothness Without the Adhesive Pad: Scratch a circle with your fingernail. If the surface feels smooth and makes no sound, it is suitable for mounting without the adhesive pad.\n\u3010Use on the dashboard\u3011: To ensure optimal performance of our products on the dashboard, it is essential to use them in conjunction with the included Round Base. The dashboard's texture may not be smooth enough to support direct attachment. The Round Base provides a stable and smooth surface. It must be securely affixed to the dashboard first. Once the Round Base is in place, it can effectively support the magnetic phone holder, allowing our products to function properly.",
+        "category_root": "Cell Phones & Accessories",
+        "category_sub": "Cradles",
+        "description": "",
+        "product_type": "PORTABLE_ELECTRONIC_DEVICE_MOUNT",
+        "title": "2026 Upgraded 360\u00b0 Vacuum Magnetic Car Phone Holder for Magsafe [96+LBS Strongest Suction & 2800gf Strongest Magnetic], Adjustable Car Phone Mount for Your Car/Gym/Mirror/Shower for iPhone & Android"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Car Phone Holders & Mounts",
+            "rank": 1
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F4XFLDBP",
+      "rubric_id": "M06_hierarchy_correct",
+      "criterion": "Hierarchy Order Correct",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires a hierarchy from specific to general. The module output only provides one level ('Car Phone Holders & Mounts') without showing a broader category, such as 'Cell Phones & Accessories'. Therefore, it does not demonstrate a hierarchy from specific to general.",
+      "input": {
+        "bullet_points": "\u3010Strengthened Grip, Steady Hold\u3011The vacuum magnetic phone holder uses N52 magnets with 2800GF pull force and strong suction to lock your phone tightly in place. It stays secure even on bumps, sharp turns, and sudden stops. Mount it on smooth surfaces, or use the round base for textured surfaces.\n\u3010Flexible Angles, Compact Design\u3011 Adjust your vacuum suction phone holder to any angle with 360\u00b0 rotation and 270\u00b0 tilt. Mount it on your car\u2019s console, infotainment screen, or windshield, or use it anywhere you need. When not in use, fold it flat for easy storage and easy to carry anywhere.\n\u3010Mount Up in 3 Seconds\u3011 Secure your magnetic phone holder for car in just 3 seconds. Press the suction cup to remove air, then twist to lock and create strong vacuum suction. No tools, no hassle\u2014just a quick setup that gives your phone a firm, steady hold wherever you mount it.\n\u3010One Stand, Endless Uses\u3011 Use your vacuum suction magnetic phone holder for hands-free help anywhere\u2014GPS while driving, video calls at work, recipes in the kitchen, or workouts at the gym. Stable and reliable, it keeps your phone secure through all your daily activities.\n\u3010Wide Compatibility\u3011This vacuum magnetic phone stand works with iPhone 12/13/14/15/16 series and MagSafe cases. For non-MagSafe phones, use the included metal ring for secure attachment. Enjoy a stable, reliable magnetic hold anytime and anywhere.\n\u26a0\ufe0f Important Notice: \u26a0\ufe0f \u2705 For Smooth Yet Textured Surfaces: Use the included adhesive pad to ensure a secure mount. Avoid mounting on fluctuating or uneven surfaces. \u26a0\ufe0f For Non-Magnetic Phones and Cases: Use the included magnetic ring. \u274c Not Recommended: Mounting the adhesive pad on an uneven car dashboard. \u2753 How to Check Surface Smoothness Without the Adhesive Pad: Scratch a circle with your fingernail. If the surface feels smooth and makes no sound, it is suitable for mounting without the adhesive pad.\n\u3010Use on the dashboard\u3011: To ensure optimal performance of our products on the dashboard, it is essential to use them in conjunction with the included Round Base. The dashboard's texture may not be smooth enough to support direct attachment. The Round Base provides a stable and smooth surface. It must be securely affixed to the dashboard first. Once the Round Base is in place, it can effectively support the magnetic phone holder, allowing our products to function properly.",
+        "category_root": "Cell Phones & Accessories",
+        "category_sub": "Cradles",
+        "description": "",
+        "product_type": "PORTABLE_ELECTRONIC_DEVICE_MOUNT",
+        "title": "2026 Upgraded 360\u00b0 Vacuum Magnetic Car Phone Holder for Magsafe [96+LBS Strongest Suction & 2800gf Strongest Magnetic], Adjustable Car Phone Mount for Your Car/Gym/Mirror/Shower for iPhone & Android"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Car Phone Holders & Mounts",
+            "rank": 1
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F4XFLDBP",
+      "rubric_id": "M06_product_type_accurate",
+      "criterion": "Product Type Accurate",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the product types accurately describe the product. The module output categorizes the product as 'Car Phone Holders & Mounts,' which accurately describes the product as it is a vacuum magnetic car phone holder. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "bullet_points": "\u3010Strengthened Grip, Steady Hold\u3011The vacuum magnetic phone holder uses N52 magnets with 2800GF pull force and strong suction to lock your phone tightly in place. It stays secure even on bumps, sharp turns, and sudden stops. Mount it on smooth surfaces, or use the round base for textured surfaces.\n\u3010Flexible Angles, Compact Design\u3011 Adjust your vacuum suction phone holder to any angle with 360\u00b0 rotation and 270\u00b0 tilt. Mount it on your car\u2019s console, infotainment screen, or windshield, or use it anywhere you need. When not in use, fold it flat for easy storage and easy to carry anywhere.\n\u3010Mount Up in 3 Seconds\u3011 Secure your magnetic phone holder for car in just 3 seconds. Press the suction cup to remove air, then twist to lock and create strong vacuum suction. No tools, no hassle\u2014just a quick setup that gives your phone a firm, steady hold wherever you mount it.\n\u3010One Stand, Endless Uses\u3011 Use your vacuum suction magnetic phone holder for hands-free help anywhere\u2014GPS while driving, video calls at work, recipes in the kitchen, or workouts at the gym. Stable and reliable, it keeps your phone secure through all your daily activities.\n\u3010Wide Compatibility\u3011This vacuum magnetic phone stand works with iPhone 12/13/14/15/16 series and MagSafe cases. For non-MagSafe phones, use the included metal ring for secure attachment. Enjoy a stable, reliable magnetic hold anytime and anywhere.\n\u26a0\ufe0f Important Notice: \u26a0\ufe0f \u2705 For Smooth Yet Textured Surfaces: Use the included adhesive pad to ensure a secure mount. Avoid mounting on fluctuating or uneven surfaces. \u26a0\ufe0f For Non-Magnetic Phones and Cases: Use the included magnetic ring. \u274c Not Recommended: Mounting the adhesive pad on an uneven car dashboard. \u2753 How to Check Surface Smoothness Without the Adhesive Pad: Scratch a circle with your fingernail. If the surface feels smooth and makes no sound, it is suitable for mounting without the adhesive pad.\n\u3010Use on the dashboard\u3011: To ensure optimal performance of our products on the dashboard, it is essential to use them in conjunction with the included Round Base. The dashboard's texture may not be smooth enough to support direct attachment. The Round Base provides a stable and smooth surface. It must be securely affixed to the dashboard first. Once the Round Base is in place, it can effectively support the magnetic phone holder, allowing our products to function properly.",
+        "category_root": "Cell Phones & Accessories",
+        "category_sub": "Cradles",
+        "description": "",
+        "product_type": "PORTABLE_ELECTRONIC_DEVICE_MOUNT",
+        "title": "2026 Upgraded 360\u00b0 Vacuum Magnetic Car Phone Holder for Magsafe [96+LBS Strongest Suction & 2800gf Strongest Magnetic], Adjustable Car Phone Mount for Your Car/Gym/Mirror/Shower for iPhone & Android"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Car Phone Holders & Mounts",
+            "rank": 1
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F4XFLDBP",
+      "rubric_id": "M06_max_three_levels",
+      "criterion": "Maximum Three Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires the taxonomy to have at most 3 levels. The module output contains only 1 level, which is within the allowed range of 1-3 levels. Therefore, it meets the PASS conditions.",
+      "input": {
+        "bullet_points": "\u3010Strengthened Grip, Steady Hold\u3011The vacuum magnetic phone holder uses N52 magnets with 2800GF pull force and strong suction to lock your phone tightly in place. It stays secure even on bumps, sharp turns, and sudden stops. Mount it on smooth surfaces, or use the round base for textured surfaces.\n\u3010Flexible Angles, Compact Design\u3011 Adjust your vacuum suction phone holder to any angle with 360\u00b0 rotation and 270\u00b0 tilt. Mount it on your car\u2019s console, infotainment screen, or windshield, or use it anywhere you need. When not in use, fold it flat for easy storage and easy to carry anywhere.\n\u3010Mount Up in 3 Seconds\u3011 Secure your magnetic phone holder for car in just 3 seconds. Press the suction cup to remove air, then twist to lock and create strong vacuum suction. No tools, no hassle\u2014just a quick setup that gives your phone a firm, steady hold wherever you mount it.\n\u3010One Stand, Endless Uses\u3011 Use your vacuum suction magnetic phone holder for hands-free help anywhere\u2014GPS while driving, video calls at work, recipes in the kitchen, or workouts at the gym. Stable and reliable, it keeps your phone secure through all your daily activities.\n\u3010Wide Compatibility\u3011This vacuum magnetic phone stand works with iPhone 12/13/14/15/16 series and MagSafe cases. For non-MagSafe phones, use the included metal ring for secure attachment. Enjoy a stable, reliable magnetic hold anytime and anywhere.\n\u26a0\ufe0f Important Notice: \u26a0\ufe0f \u2705 For Smooth Yet Textured Surfaces: Use the included adhesive pad to ensure a secure mount. Avoid mounting on fluctuating or uneven surfaces. \u26a0\ufe0f For Non-Magnetic Phones and Cases: Use the included magnetic ring. \u274c Not Recommended: Mounting the adhesive pad on an uneven car dashboard. \u2753 How to Check Surface Smoothness Without the Adhesive Pad: Scratch a circle with your fingernail. If the surface feels smooth and makes no sound, it is suitable for mounting without the adhesive pad.\n\u3010Use on the dashboard\u3011: To ensure optimal performance of our products on the dashboard, it is essential to use them in conjunction with the included Round Base. The dashboard's texture may not be smooth enough to support direct attachment. The Round Base provides a stable and smooth surface. It must be securely affixed to the dashboard first. Once the Round Base is in place, it can effectively support the magnetic phone holder, allowing our products to function properly.",
+        "category_root": "Cell Phones & Accessories",
+        "category_sub": "Cradles",
+        "description": "",
+        "product_type": "PORTABLE_ELECTRONIC_DEVICE_MOUNT",
+        "title": "2026 Upgraded 360\u00b0 Vacuum Magnetic Car Phone Holder for Magsafe [96+LBS Strongest Suction & 2800gf Strongest Magnetic], Adjustable Car Phone Mount for Your Car/Gym/Mirror/Shower for iPhone & Android"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Car Phone Holders & Mounts",
+            "rank": 1
+          }
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F4XFLDBP",
+      "rubric_id": "M06_no_material_feature_levels",
+      "criterion": "No Material/Feature as Separate Levels",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that material/feature modifiers are not separate taxonomy levels and are combined into a single product type. The module output provides a single level taxonomy with 'Car Phone Holders & Mounts' as the product type, which combines the features and does not separate them into different levels. This meets the PASS conditions of the rubric.",
+      "input": {
+        "bullet_points": "\u3010Strengthened Grip, Steady Hold\u3011The vacuum magnetic phone holder uses N52 magnets with 2800GF pull force and strong suction to lock your phone tightly in place. It stays secure even on bumps, sharp turns, and sudden stops. Mount it on smooth surfaces, or use the round base for textured surfaces.\n\u3010Flexible Angles, Compact Design\u3011 Adjust your vacuum suction phone holder to any angle with 360\u00b0 rotation and 270\u00b0 tilt. Mount it on your car\u2019s console, infotainment screen, or windshield, or use it anywhere you need. When not in use, fold it flat for easy storage and easy to carry anywhere.\n\u3010Mount Up in 3 Seconds\u3011 Secure your magnetic phone holder for car in just 3 seconds. Press the suction cup to remove air, then twist to lock and create strong vacuum suction. No tools, no hassle\u2014just a quick setup that gives your phone a firm, steady hold wherever you mount it.\n\u3010One Stand, Endless Uses\u3011 Use your vacuum suction magnetic phone holder for hands-free help anywhere\u2014GPS while driving, video calls at work, recipes in the kitchen, or workouts at the gym. Stable and reliable, it keeps your phone secure through all your daily activities.\n\u3010Wide Compatibility\u3011This vacuum magnetic phone stand works with iPhone 12/13/14/15/16 series and MagSafe cases. For non-MagSafe phones, use the included metal ring for secure attachment. Enjoy a stable, reliable magnetic hold anytime and anywhere.\n\u26a0\ufe0f Important Notice: \u26a0\ufe0f \u2705 For Smooth Yet Textured Surfaces: Use the included adhesive pad to ensure a secure mount. Avoid mounting on fluctuating or uneven surfaces. \u26a0\ufe0f For Non-Magnetic Phones and Cases: Use the included magnetic ring. \u274c Not Recommended: Mounting the adhesive pad on an uneven car dashboard. \u2753 How to Check Surface Smoothness Without the Adhesive Pad: Scratch a circle with your fingernail. If the surface feels smooth and makes no sound, it is suitable for mounting without the adhesive pad.\n\u3010Use on the dashboard\u3011: To ensure optimal performance of our products on the dashboard, it is essential to use them in conjunction with the included Round Base. The dashboard's texture may not be smooth enough to support direct attachment. The Round Base provides a stable and smooth surface. It must be securely affixed to the dashboard first. Once the Round Base is in place, it can effectively support the magnetic phone holder, allowing our products to function properly.",
+        "category_root": "Cell Phones & Accessories",
+        "category_sub": "Cradles",
+        "description": "",
+        "product_type": "PORTABLE_ELECTRONIC_DEVICE_MOUNT",
+        "title": "2026 Upgraded 360\u00b0 Vacuum Magnetic Car Phone Holder for Magsafe [96+LBS Strongest Suction & 2800gf Strongest Magnetic], Adjustable Car Phone Mount for Your Car/Gym/Mirror/Shower for iPhone & Android"
+      },
+      "expected": {},
+      "output": {
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Car Phone Holders & Mounts",
+            "rank": 1
+          }
+        ]
+      }
+    }
+  ]
+}

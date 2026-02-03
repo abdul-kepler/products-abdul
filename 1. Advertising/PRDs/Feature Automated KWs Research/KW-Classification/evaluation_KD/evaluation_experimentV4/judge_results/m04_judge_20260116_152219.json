@@ -1,0 +1,1316 @@
+{
+  "experiment": "V2",
+  "module": "m04",
+  "model": "gpt-4o",
+  "rubrics_version": "v2",
+  "timestamp": "2026-01-16T15:22:19.773425",
+  "data_source": "/Users/katerynadavidenko/AI-Projects/KW-Classification/experiment_results/20260115_v1_01/M04_ClassifyCompetitorBrandKeywords/M04_ClassifyCompetitorBrandKeywords-v1.csv",
+  "summary": {
+    "pass": 20,
+    "fail": 0,
+    "error": 0
+  },
+  "pass_rate": 100.0,
+  "evaluations": [
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct CB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires a CB classification when the keyword contains a competitor brand name. The module correctly identified 'Le Creuset' in the keyword 'le creuset oven mitt', which matches a competitor entity. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "le creuset oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Le Creuset' which exactly matches competitor entity 'Le Creuset'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the own_brand specified in INPUT is never classified as CB. The own_brand is 'KitchenAid', and the keyword is 'le creuset oven mitt'. 'Le Creuset' is a competitor brand, not the own_brand. The module correctly identified 'Le Creuset' as a competitor and returned 'CB'. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "le creuset oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Le Creuset' which exactly matches competitor entity 'Le Creuset'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_case_insensitive_matching",
+      "criterion": "Case Insensitive Matching",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies 'Le Creuset' in the keyword as matching the competitor entity 'Le Creuset', which satisfies the case insensitive matching requirement of the rubric.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "le creuset oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Le Creuset' which exactly matches competitor entity 'Le Creuset'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_competitor_identified",
+      "criterion": "Competitor Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_competitor is the actual competitor found in the keyword. The module output correctly identifies 'Le Creuset' as the competitor in the keyword 'le creuset oven mitt', which matches the competitor entity 'Le Creuset' in the provided list. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "le creuset oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Le Creuset' which exactly matches competitor entity 'Le Creuset'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct CB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires a CB classification when the keyword contains a competitor brand name. The module correctly identified 'homwe' in the keyword, which matches the competitor entity 'HOMWE', and classified it as CB. This meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "homwe silicone oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'homwe' which exactly matches competitor entity 'HOMWE'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the own_brand specified in INPUT is never classified as CB. The own_brand is 'KitchenAid', and the keyword contains 'homwe', which is a competitor brand, not the own_brand. The module correctly classified the keyword as CB because it matches a competitor entity, which meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "homwe silicone oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'homwe' which exactly matches competitor entity 'HOMWE'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_case_insensitive_matching",
+      "criterion": "Case Insensitive Matching",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified 'homwe' in the keyword as matching the competitor entity 'HOMWE', demonstrating case insensitive matching as required by the rubric.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "homwe silicone oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'homwe' which exactly matches competitor entity 'HOMWE'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_competitor_identified",
+      "criterion": "Competitor Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_competitor field correctly identifies the competitor found in the keyword. The module output correctly identifies 'HOMWE' as the competitor from the keyword 'homwe silicone oven mitt', which matches the competitor entity 'HOMWE' in the provided list. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "homwe silicone oven mitt",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'homwe' which exactly matches competitor entity 'HOMWE'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct CB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires a CB classification when the keyword contains a competitor brand name. The module correctly identified 'gorilla grip' in the keyword 'gorilla grip oven mitts' as a match to the competitor entity 'GORILLA GRIP', thus meeting the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "gorilla grip oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'gorilla grip' which matches competitor entity 'GORILLA GRIP'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "The own_brand 'KitchenAid' is not present in the keyword 'gorilla grip oven mitts'. The keyword contains a competitor brand 'GORILLA GRIP', and the output correctly returns 'CB'. This meets the PASS conditions of the rubric.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "gorilla grip oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'gorilla grip' which matches competitor entity 'GORILLA GRIP'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_case_insensitive_matching",
+      "criterion": "Case Insensitive Matching",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies 'gorilla grip' in the keyword as matching the competitor entity 'GORILLA GRIP', demonstrating case insensitive matching as required by the rubric.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "gorilla grip oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'gorilla grip' which matches competitor entity 'GORILLA GRIP'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_competitor_identified",
+      "criterion": "Competitor Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_competitor is the actual competitor found in the keyword. The module output correctly identifies 'GORILLA GRIP' as the competitor entity from the keyword 'gorilla grip oven mitts', which is present in the provided list of competitor entities. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "gorilla grip oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'gorilla grip' which matches competitor entity 'GORILLA GRIP'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct CB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires a CB classification when the keyword contains a competitor brand name. The module correctly identified 'Martha Stewart' as a competitor brand in the keyword 'martha stewart oven mitts' and returned 'CB', which meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "martha stewart oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Martha Stewart' which exactly matches competitor entity 'Martha Stewart'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the own_brand specified in INPUT is never classified as CB. The own_brand is 'KitchenAid', and the keyword is 'martha stewart oven mitts', which does not contain 'KitchenAid'. The module correctly classified 'Martha Stewart' as a competitor brand, which is consistent with the rubric's PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "martha stewart oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Martha Stewart' which exactly matches competitor entity 'Martha Stewart'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_case_insensitive_matching",
+      "criterion": "Case Insensitive Matching",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies 'Martha Stewart' as a match with the competitor entity 'Martha Stewart', which aligns with the rubric's requirement for case-insensitive matching. The case of the letters does not affect the matching, thus meeting the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "martha stewart oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Martha Stewart' which exactly matches competitor entity 'Martha Stewart'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_competitor_identified",
+      "criterion": "Competitor Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_competitor is the actual competitor found in the keyword. The module output correctly identifies 'Martha Stewart' as the competitor, which is present in the competitor_entities list and matches the keyword. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "martha stewart oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'Martha Stewart' which exactly matches competitor entity 'Martha Stewart'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct CB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires a CB classification when the keyword contains a competitor brand name. The keyword 'all clad oven mitts' contains 'all clad', which matches the competitor entity 'All-Clad'. The module correctly classified the keyword as CB, meeting the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "all clad oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'all clad' which matches competitor entity 'All-Clad'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the own_brand 'KitchenAid' is not classified as CB. The keyword 'all clad oven mitts' contains 'All-Clad', which is a competitor brand, not the own_brand 'KitchenAid'. The module correctly classified the keyword as CB based on the presence of a competitor brand, meeting the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "all clad oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'all clad' which matches competitor entity 'All-Clad'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_case_insensitive_matching",
+      "criterion": "Case Insensitive Matching",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified 'all clad' in the keyword as matching the competitor entity 'All-Clad', demonstrating case insensitive matching as required by the rubric.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "all clad oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'all clad' which matches competitor entity 'All-Clad'."
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M04_competitor_identified",
+      "criterion": "Competitor Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_competitor field correctly identifies a competitor from the provided list based on the keyword. The module output correctly identifies 'All-Clad' as the competitor from the keyword 'all clad oven mitts', which matches the competitor entity 'All-Clad' in the provided list. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "competitor_entities": [
+          "Ove Glove",
+          "HOMWE",
+          "GORILLA GRIP",
+          "Grill Armor",
+          "Le Creuset",
+          "All-Clad",
+          "Frigidaire",
+          "San Jamar",
+          "Martha Stewart",
+          "XUKOKELY",
+          "QUWIN",
+          "sungwoo",
+          "FITFIV",
+          "LANAIQO",
+          "M MIAOYAN",
+          "KEGOUU",
+          "Kitchen Perfection",
+          "Win Change",
+          "Kitsure",
+          "MAD SHARK",
+          "ARCLIBER",
+          "Hovico",
+          "axusitt",
+          "Tayfeim",
+          "AUAUY",
+          "Wsedor",
+          "rorecay",
+          "CUSIRA",
+          "Big Red House",
+          "Best Brands",
+          "Ove Glove Extreme",
+          "OveGlo ve",
+          "Homwe",
+          "Gorilla Grip",
+          "GrillArmor",
+          "LeCreuset",
+          "All Clad"
+        ],
+        "keyword": "all clad oven mitts",
+        "own_brand": {
+          "entities": [
+            "KitchenAid",
+            "Kitchen Aid",
+            "Kitchenaid",
+            "KichenAid"
+          ],
+          "name": "KitchenAid"
+        }
+      },
+      "expected": {
+        "branding_scope_2": "CB"
+      },
+      "output": {
+        "branding_scope_2": "CB",
+        "reasoning": "Keyword contains 'all clad' which matches competitor entity 'All-Clad'."
+      }
+    }
+  ]
+}

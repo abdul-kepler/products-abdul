@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M06 - Generate Product Taxonomy</title>
+    <link rel="stylesheet" href="../shared-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../modules_data.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../PROGRESS_DASHBOARD.html" class="back-link">← Back to Dashboard</a> | <a href="index.html" class="back-link">All Modules</a>
+
+        <header>
+            <h1>M06 - Generate Product Taxonomy</h1>
+            <p>Extraction task: Generate hierarchical product type taxonomy</p>
+        </header>
+
+        <!-- Module Navigation -->
+        <nav class="nav-tabs">
+            <a href="m01.html" class="nav-tab ">M01</a>
+            <a href="m01a.html" class="nav-tab ">M01A</a>
+            <a href="m01b.html" class="nav-tab ">M01B</a>
+            <a href="m02.html" class="nav-tab ">M02</a>
+            <a href="m02b.html" class="nav-tab ">M02B</a>
+            <a href="m04.html" class="nav-tab ">M04</a>
+            <a href="m04b.html" class="nav-tab ">M04B</a>
+            <a href="m05.html" class="nav-tab ">M05</a>
+            <a href="m05b.html" class="nav-tab ">M05B</a>
+            <a href="m06.html" class="nav-tab active">M06</a>
+            <a href="m07.html" class="nav-tab ">M07</a>
+            <a href="m08.html" class="nav-tab ">M08</a>
+            <a href="m09.html" class="nav-tab ">M09</a>
+            <a href="m10.html" class="nav-tab ">M10</a>
+            <a href="m11.html" class="nav-tab ">M11</a>
+            <a href="m12.html" class="nav-tab ">M12</a>
+            <a href="m12b.html" class="nav-tab ">M12B</a>
+            <a href="m13.html" class="nav-tab ">M13</a>
+            <a href="m14.html" class="nav-tab ">M14</a>
+            <a href="m15.html" class="nav-tab ">M15</a>
+            <a href="m16.html" class="nav-tab ">M16</a>
+        </nav>
+
+        <!-- Module Info -->
+        <div class="module-info">
+            <div class="info-item">
+                <div class="info-label">Task Type</div>
+                <div class="info-value">Extraction</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Default Model</div>
+                <div class="info-value">gpt-4o-mini</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Dataset Records</div>
+                <div class="info-value">30</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Prompt Versions</div>
+                <div class="info-value">v1</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Braintrust ID</div>
+                <div class="info-value" style="font-size: 0.75rem;">ee5bb5ac-b613-4579-b462-a9b61455d34b</div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Charts -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Pass Rate by Prompt Version</h2>
+                <div class="chart-container"><canvas id="passRateChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h2>Model Comparison</h2>
+                <div class="chart-container"><canvas id="modelChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Version History Table -->
+        <div class="card">
+            <h2>Evaluation History</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Prompt Ver.</th>
+                        <th>Model</th>
+                        <th>Dataset</th>
+                        <th>Pass Rate</th>
+                        <th>Match Rate</th>
+                        <th>Pass/Fail</th>
+                        <th>Date</th>
+                        <th>Braintrust</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+            </table>
+        </div>
+
+        <!-- Binary Classification Metrics (only for classifier modules) -->
+        <div id="binaryMetricsSection" style="display: none;">
+            <div class="card">
+                <h2>Binary Classification Results</h2>
+                <!-- Info row: Prompt, Model, Dataset -->
+                <div id="binaryInfoRow" style="display: flex; gap: 20px; margin-bottom: 15px; flex-wrap: wrap;"></div>
+                <!-- Horizontal Confusion Matrix -->
+                <div id="confusionMatrix" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;"></div>
+                <!-- Metrics row -->
+                <div id="metricsDisplay" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;"></div>
+            </div>
+        </div>
+
+        <!-- Model Cost Matrix -->
+        <div class="card">
+            <h2>Model Cost Matrix</h2>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 15px;">
+                Estimated costs for 30 records (~1200 input + ~400 output tokens each)
+            </p>
+            <table class="model-matrix">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; width: 180px;">Model</th>
+                        <th>Input $/1M</th>
+                        <th>Output $/1M</th>
+                        <th>Est. Cost</th>
+                        <th>Quality</th>
+                        <th style="text-align: left; width: 300px;">Why Recommended</th>
+                    </tr>
+                </thead>
+                <tbody id="costMatrix"></tbody>
+            </table>
+            <div class="model-legend">
+                <div class="legend-item"><div class="legend-color recommended"></div>★ Recommended for this task</div>
+                <div class="legend-item"><div class="legend-color good"></div>Good value</div>
+                <div class="legend-item"><div class="legend-color moderate"></div>Moderate</div>
+                <div class="legend-item"><div class="legend-color expensive"></div>Expensive</div>
+            </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="card">
+            <h2>Improvement Suggestions</h2>
+            <div id="suggestions"></div>
+        </div>
+    </div>
+
+    <script>
+        // Module configuration
+        const moduleId = 'm06';
+        const taskType = 'Extraction';
+        const totalInput = 30 * 1200;
+        const totalOutput = 30 * 400;
+
+        // Task-specific model recommendations with reasons
+        const recommendations = {"GPT-4o-mini": "Best price/quality for extraction tasks. Handles structured JSON output reliably.", "Gemini 2.0 Flash": "Cheapest option at $0.10/1M input. Good for simple extractions with consistent schemas."};
+
+        // Filter data for this module from modules_data.js
+        // Exact match: m04 should NOT include m04b data
+        const evaluations = progressData
+            .filter(d => {
+                const mod = d.module.toLowerCase();
+                // Exact match or match module followed by underscore (for dataset naming)
+                return mod === moduleId || mod.startsWith(moduleId + '_');
+            })
+            .map(d => ({
+                version: d.prompt_version || 'v1',
+                model: d.model,
+                dataset: d.dataset_name || d.data_source,
+                passRate: d.pass_rate,
+                matchRate: d.match_rate || 0,
+                pass: d.summary?.pass || 0,
+                fail: d.summary?.fail || 0,
+                date: d.timestamp ? d.timestamp.split('T')[0] : '',
+                btName: d.braintrust_name || '',
+                btId: d.braintrust_id || ''
+            }))
+            .sort((a, b) => b.passRate - a.passRate);
+
+        // Get suggestions for this module
+        const modKey = moduleId.toUpperCase().replace(/[AB]$/, '');
+        const suggestions = suggestionsData
+            .filter(s => s.module === modKey || s.module === moduleId.toUpperCase())
+            .map(s => ({
+                rubric: s.rubric,
+                criticality: s.criticality || 'Medium',
+                passRate: s.passRate || 0,
+                issue: s.specificIssue || s.analysisSummary || '',
+                suggestion: s.detailedSuggestion || s.promptChange || s.rubricChange || '',
+                status: s.validated ? 'validated' : 'pending'
+            }));
+
+        // Model pricing with task-specific recommendations
+        const models = [
+            { name: 'GPT-4o-mini', provider: 'openai', input: 0.15, output: 0.60, quality: 85 },
+            { name: 'GPT-4o', provider: 'openai', input: 2.50, output: 10.00, quality: 95 },
+            { name: 'GPT-5', provider: 'openai', input: 10.00, output: 30.00, quality: 98 },
+            { name: 'Gemini 2.0 Flash', provider: 'google', input: 0.10, output: 0.40, quality: 82 },
+            { name: 'Gemini 1.5 Pro', provider: 'google', input: 1.25, output: 5.00, quality: 88 },
+            { name: 'o1-mini', provider: 'openai', input: 3.00, output: 12.00, quality: 92 },
+        ].map(m => ({
+            ...m,
+            recommended: recommendations[m.name] ? true : false,
+            reason: recommendations[m.name] || null
+        }));
+
+        // Calculate stats
+        const bestPassRate = evaluations.length > 0 ? Math.max(...evaluations.map(e => e.passRate)) : 0;
+        const latestEval = evaluations[0] || { pass: 0, fail: 0, passRate: 0 };
+        const firstEval = evaluations[evaluations.length - 1] || { passRate: 0 };
+        const improvement = latestEval.passRate - firstEval.passRate;
+
+        // Render stats grid
+        document.getElementById('statsGrid').innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value blue">${bestPassRate}%</div>
+                <div class="stat-label">Best Pass Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value ${improvement >= 0 ? 'green' : 'red'}">${improvement >= 0 ? '+' : ''}${improvement.toFixed(0)}%</div>
+                <div class="stat-label">Improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value green">${latestEval.pass}</div>
+                <div class="stat-label">Passing Tests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value red">${latestEval.fail}</div>
+                <div class="stat-label">Failing Tests</div>
+            </div>
+        `;
+
+        // Render history table
+        document.getElementById('historyTable').innerHTML = evaluations.length > 0
+            ? evaluations.map(e => {
+                const passColor = e.passRate >= 70 ? '#22c55e' : e.passRate >= 50 ? '#eab308' : '#ef4444';
+                const btLink = e.btName ? `https://www.braintrust.dev/app/KCC/p/Keyword-Classification-Pipeline-V1.1/experiments/${encodeURIComponent(e.btName)}` : '#';
+                return `
+                    <tr>
+                        <td><span class="version-badge ${e.version}">${e.version}</span></td>
+                        <td><span class="model-badge">${e.model}</span></td>
+                        <td style="font-size: 0.8rem; color: var(--text-secondary);">${e.dataset}</td>
+                        <td>
+                            <span style="color: ${passColor}; font-weight: 600;">${e.passRate}%</span>
+                            <div class="rate-bar" style="width: 60px; margin-top: 4px;">
+                                <div class="rate-bar-fill" style="width: ${e.passRate}%; background: ${passColor};"></div>
+                            </div>
+                        </td>
+                        <td>${e.matchRate}%</td>
+                        <td><span style="color: #22c55e;">${e.pass}</span> / <span style="color: #ef4444;">${e.fail}</span></td>
+                        <td style="font-size: 0.8rem;">${e.date}</td>
+                        <td>${e.btName ? `<a href="${btLink}" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-size: 0.8rem;">View ↗</a>` : '-'}</td>
+                    </tr>
+                `;
+            }).join('')
+            : '<tr><td colspan="8" style="text-align: center; color: var(--text-secondary);">No evaluation data available</td></tr>';
+
+        // Render cost matrix
+        document.getElementById('costMatrix').innerHTML = models.map(m => {
+            const cost = (totalInput / 1_000_000) * m.input + (totalOutput / 1_000_000) * m.output;
+            const costClass = m.recommended ? 'recommended' : cost < 0.05 ? 'good' : cost < 0.50 ? 'moderate' : 'expensive';
+            const providerBadge = `<span class="provider-badge ${m.provider}">${m.provider === 'openai' ? 'OpenAI' : 'Google'}</span>`;
+            const reasonCell = m.reason
+                ? `<span style="color: #22c55e;">★</span> <span style="color: var(--text-secondary); font-size: 0.8rem;">${m.reason}</span>`
+                : '<span style="color: #64748b;">-</span>';
+            return `
+                <tr>
+                    <td class="model-name">${m.name}${providerBadge}</td>
+                    <td style="color: var(--text-secondary);">$${m.input.toFixed(2)}</td>
+                    <td style="color: var(--text-secondary);">$${m.output.toFixed(2)}</td>
+                    <td class="cost-cell ${costClass}">$${cost.toFixed(4)}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <div style="width: 50px; height: 6px; background: #334155; border-radius: 3px;">
+                                <div style="width: ${m.quality}%; height: 100%; background: ${m.quality >= 90 ? '#22c55e' : '#3b82f6'}; border-radius: 3px;"></div>
+                            </div>
+                            <span style="font-size: 0.7rem; color: #94a3b8;">${m.quality}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: left;">${reasonCell}</td>
+                </tr>
+            `;
+        }).join('');
+
+        // Render suggestions
+        document.getElementById('suggestions').innerHTML = suggestions.length > 0
+            ? suggestions.map(s => {
+                const statusClass = s.status === 'validated' ? 'validated' : s.status === 'applied' ? 'validated' : '';
+                const priorityColor = s.criticality === 'High' ? '#ef4444' : s.criticality === 'Medium' ? '#eab308' : '#22c55e';
+                return `
+                    <div class="suggestion-item ${statusClass}">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong style="color: var(--text-primary);">${s.rubric}</strong>
+                            <div>
+                                <span style="font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: ${priorityColor}; color: white;">${s.criticality}</span>
+                                <span class="suggestion-status ${s.status}">${s.status}</span>
+                            </div>
+                        </div>
+                        ${s.passRate ? `<p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 6px;"><strong>Pass Rate:</strong> ${s.passRate}%</p>` : ''}
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 6px;">
+                            <strong>Issue:</strong> ${s.issue}
+                        </p>
+                        <p style="color: var(--accent-blue); font-size: 0.85rem;">
+                            <strong>Suggestion:</strong> ${s.suggestion}
+                        </p>
+                    </div>
+                `;
+            }).join('')
+            : '<p style="color: var(--text-secondary);">No suggestions available for this module.</p>';
+
+        // Render binary classification metrics (if available)
+        if (typeof binaryMetrics !== 'undefined' && binaryMetrics[moduleId]) {
+            const m = binaryMetrics[moduleId];
+            const labels = m.labels || {};
+            document.getElementById('binaryMetricsSection').style.display = 'block';
+
+            // Get experiment info from latest evaluation
+            const latest = evaluations[0] || {};
+            const promptVer = latest.version || 'v1';
+            const model = latest.model || '-';
+            const dataset = latest.dataset || '-';
+
+            // Compact table with all metrics in one row
+            const getColor = (val, t1 = 70, t2 = 50) => val >= t1 ? '#22c55e' : val >= t2 ? '#eab308' : '#ef4444';
+            const getMccColor = (val) => val >= 0.5 ? '#22c55e' : val >= 0.2 ? '#eab308' : '#ef4444';
+
+            // Labels for header (shorter)
+            const tpLbl = labels.tp || '';
+            const tnLbl = labels.tn && labels.tn !== '-' ? labels.tn : '';
+            const fpLbl = labels.fp && labels.fp !== '-' ? labels.fp : '';
+            const fnLbl = labels.fn || '';
+
+            const tableHtml = `
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 5px 4px; text-align: left; color: #64748b; font-weight: 500;">Prompt</th>
+                            <th style="padding: 5px 4px; text-align: left; color: #64748b; font-weight: 500;">Model</th>
+                            <th style="padding: 5px 4px; text-align: left; color: #64748b; font-weight: 500; max-width: 120px;">Dataset</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">N</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #22c55e; font-weight: 500;" title="${tpLbl}">TP</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #3b82f6; font-weight: 500;" title="${tnLbl}">TN</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #ef4444; font-weight: 500;" title="${fpLbl}">FP</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #eab308; font-weight: 500;" title="${fnLbl}">FN</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">Acc</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">Prec</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">Rec</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">F1</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">MCC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 6px 4px; text-align: left;"><span class="version-badge ${promptVer}" style="font-size: 0.65rem; padding: 2px 6px;">${promptVer}</span></td>
+                            <td style="padding: 6px 4px; text-align: left; color: #94a3b8;">${model}</td>
+                            <td style="padding: 6px 4px; text-align: left; color: #64748b; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${dataset}">${dataset}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600;">${m.total.toLocaleString()}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #22c55e;">${m.tp}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #3b82f6;">${m.tn}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #ef4444;">${m.fp}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #eab308;">${m.fn}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.accuracy)};">${m.accuracy}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.precision)};">${m.precision}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.recall)};">${m.recall}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.f1)};">${m.f1}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getMccColor(m.mcc)};">${m.mcc.toFixed(3)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.65rem; color: #64748b;">
+                    <span>TP=${tpLbl} TN=${tnLbl} FP=${fpLbl} FN=${fnLbl}</span>
+                    ${m.note ? `<span style="color: #eab308;"><em>${m.note}</em></span>` : ''}
+                </div>
+            `;
+            document.getElementById('confusionMatrix').innerHTML = tableHtml;
+            document.getElementById('binaryInfoRow').style.display = 'none';
+            document.getElementById('metricsDisplay').style.display = 'none';
+        }
+
+        // Charts
+        if (evaluations.length > 0) {
+            // Pass Rate Chart
+            const chartLabels = evaluations.map(e => `${e.version} (${e.model})`).reverse();
+            const chartData = evaluations.map(e => e.passRate).reverse();
+
+            new Chart(document.getElementById('passRateChart'), {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Pass Rate %',
+                        data: chartData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            // Model Comparison Chart
+            const modelStats = {};
+            evaluations.forEach(e => {
+                if (!modelStats[e.model]) modelStats[e.model] = { total: 0, count: 0 };
+                modelStats[e.model].total += e.passRate;
+                modelStats[e.model].count++;
+            });
+            const modelLabels = Object.keys(modelStats);
+            const modelAvgs = modelLabels.map(m => Math.round(modelStats[m].total / modelStats[m].count));
+            const barColors = ['#60a5fa', '#22c55e', '#a855f7', '#f59e0b', '#ef4444', '#06b6d4'];
+
+            new Chart(document.getElementById('modelChart'), {
+                type: 'bar',
+                data: {
+                    labels: modelLabels,
+                    datasets: [{
+                        label: 'Avg Pass Rate',
+                        data: modelAvgs,
+                        backgroundColor: barColors.slice(0, modelLabels.length),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        } else {
+            document.getElementById('passRateChart').parentElement.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 100px 0;">No evaluation data available</p>';
+            document.getElementById('modelChart').parentElement.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 100px 0;">No evaluation data available</p>';
+        }
+    </script>
+</body>
+</html>

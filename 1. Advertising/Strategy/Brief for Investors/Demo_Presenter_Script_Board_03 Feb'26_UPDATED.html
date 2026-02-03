@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Demo - Presenter Script (Updated)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background: #1a202c;
+        }
+        .container {
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        h1 { color: #1a365d; border-bottom: 4px solid #e53e3e; padding-bottom: 12px; margin-bottom: 8px; }
+        .subtitle { font-size: 1em; color: #718096; margin-bottom: 20px; }
+        h2 { color: #2c5282; margin-top: 30px; margin-bottom: 12px; padding: 10px 12px; background: #ebf8ff; border-left: 4px solid #3182ce; border-radius: 0 6px 6px 0; font-size: 1.1em; }
+        h3 { color: #4a5568; margin-top: 18px; margin-bottom: 8px; font-size: 1em; }
+        .meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; background: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 0.9em; }
+        .checklist { background: #fffaf0; border: 2px solid #ed8936; border-radius: 8px; padding: 20px; margin: 15px 0; }
+        .checklist h3 { color: #c05621; margin-top: 0; }
+        .checklist-item { display: flex; align-items: flex-start; margin: 8px 0; padding: 8px; background: white; border-radius: 4px; font-size: 0.9em; }
+        .checklist-item input { margin-right: 10px; margin-top: 3px; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85em; }
+        th, td { padding: 8px 10px; text-align: left; border: 1px solid #e2e8f0; }
+        th { background: #2d3748; color: white; }
+        tr:nth-child(even) { background: #f7fafc; }
+        .script-section { margin: 20px 0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }
+        .script-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .script-header h3 { color: white; margin: 0; font-size: 1em; }
+        .time-badge { background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 15px; font-size: 0.8em; }
+        .script-body { padding: 15px; }
+        .screen { background: #1a202c; color: #68d391; padding: 10px 15px; border-radius: 4px; font-family: monospace; margin: 10px 0; font-size: 0.85em; }
+        .screen::before { content: "SCREEN: "; color: #a0aec0; font-weight: bold; }
+        .action { background: #ebf8ff; border-left: 3px solid #3182ce; padding: 10px 15px; margin: 10px 0; font-size: 0.9em; }
+        .action::before { content: "DO: "; font-weight: bold; color: #2b6cb0; }
+        .say { background: #f0fff4; border-left: 3px solid #38a169; padding: 10px 15px; margin: 10px 0; font-size: 0.9em; }
+        .say::before { content: "SAY: "; font-weight: bold; color: #276749; }
+        .transition { background: #faf5ff; border-left: 3px solid #9f7aea; padding: 8px 12px; margin: 10px 0; font-style: italic; font-size: 0.9em; }
+        .note { background: #fffbeb; border-left: 3px solid #f6ad55; padding: 8px 12px; margin: 10px 0; font-size: 0.85em; }
+        .part-header { background: linear-gradient(90deg, #e53e3e 0%, #c53030 100%); color: white; padding: 15px; margin: 30px -35px 20px -35px; text-align: center; }
+        .part-header h2 { background: none; border: none; color: white; margin: 0; padding: 0; }
+        .quick-ref { background: #2d3748; color: white; padding: 20px; border-radius: 6px; margin: 20px 0; }
+        .quick-ref h3 { color: #68d391; margin-top: 0; border-bottom: 1px solid #4a5568; padding-bottom: 8px; }
+        .quick-ref table th { background: #4a5568; }
+        .quick-ref td { border-color: #4a5568; color: #e2e8f0; }
+        .footer { text-align: center; color: #718096; margin-top: 30px; padding-top: 15px; border-top: 2px solid #e2e8f0; font-size: 1.1em; }
+        hr { border: none; border-top: 2px dashed #e2e8f0; margin: 30px 0; }
+        ul, ol { margin: 8px 0 8px 20px; font-size: 0.9em; }
+        li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Investor Demo - Presenter Script</h1>
+        <p class="subtitle">KC Ad SaaS Platform - Board Presentation (Updated based on actual platform workflow)</p>
+
+        <div class="meta">
+            <p><strong>Date:</strong> February 3, 2026</p>
+            <p><strong>Duration:</strong> 10-15 minutes</p>
+            <p><strong>Presenter:</strong> Abdul</p>
+            <p><strong>Audience:</strong> Board / Investors</p>
+        </div>
+
+        <!-- PRE-DEMO CHECKLIST -->
+        <div class="checklist">
+            <h3>Pre-Demo Checklist (Do Today)</h3>
+            <div class="checklist-item"><input type="checkbox"> Have a test ASIN ready in ASIN Config with data</div>
+            <div class="checklist-item"><input type="checkbox"> KW Research completed for test ASIN (all 3 tabs approved)</div>
+            <div class="checklist-item"><input type="checkbox"> At least one campaign created and showing in Campaign Config</div>
+            <div class="checklist-item"><input type="checkbox"> KWs Config has data (campaigns must be enabled first)</div>
+            <div class="checklist-item"><input type="checkbox"> Screenshots ready as backup if system is slow</div>
+            <div class="checklist-item"><input type="checkbox"> Note specific numbers to mention (ACOS improvements, etc.)</div>
+        </div>
+
+        <hr>
+
+        <!-- OPENING -->
+        <div class="script-section">
+            <div class="script-header">
+                <h3>OPENING</h3>
+                <span class="time-badge">30 sec</span>
+            </div>
+            <div class="script-body">
+                <div class="screen">Portal homepage or title slide</div>
+                <div class="say">
+                    "Thank you for your time. I'm going to walk you through a live demo of our Ad SaaS Platform — the product that's now ready for rollout.
+                    <br><br>
+                    I'll show you the complete end-to-end workflow: from adding a product, to AI-powered research, to campaign creation and optimization. About 12-15 minutes."
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 1: PROBLEM -->
+        <div class="part-header">
+            <h2>PART 1: THE PROBLEM</h2>
+            <span style="font-size:0.9em;">1 minute</span>
+        </div>
+
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Context Setting</h3>
+                <span class="time-badge">1 min</span>
+            </div>
+            <div class="script-body">
+                <div class="say">
+                    "Managing Amazon PPC at scale is manual and time-consuming. Agencies manage hundreds of ASINs, thousands of keywords. Nobody can optimize 24/7.
+                    <br><br>
+                    Our platform automates the entire lifecycle — keyword research, competitor discovery, campaign creation, bid optimization, budget management — all in one system.
+                    <br><br>
+                    Let me show you how it works."
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 2: ACTIVE FEATURES -->
+        <div class="part-header">
+            <h2>PART 2: PLATFORM WALKTHROUGH</h2>
+            <span style="font-size:0.9em;">7-8 minutes</span>
+        </div>
+
+        <!-- Step 1: ASIN Config -->
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Step 1: ASIN Config (Central Hub)</h3>
+                <span class="time-badge">1 min</span>
+            </div>
+            <div class="script-body">
+                <div class="screen">Navigate to Amazon Ads → Campaign Management → ASIN Config</div>
+                <div class="action">Show the ASIN Config page with the test product visible</div>
+                <div class="say">
+                    "This is ASIN Config — the central hub for managing products.
+                    <br><br>
+                    Each row is a product. You can see: Target ACOS, Daily Budget, Auto Budget toggle, Auto Pacing, and the KW Research status.
+                    <br><br>
+                    The Target ACOS follows a hierarchy: ASIN level is the default, but you can override it at Campaign level or even Keyword level for granular control."
+                </div>
+                <div class="transition">"Let me show you how we add a new product..."</div>
+            </div>
+        </div>
+
+        <!-- Step 2: Add Product + Competitors -->
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Step 2: Adding Product & Competitor Discovery</h3>
+                <span class="time-badge">1.5 min</span>
+            </div>
+            <div class="script-body">
+                <div class="screen">Click Add button → Product selection → Competitor Discovery page</div>
+                <div class="action">Show the Add flow (or describe with screenshots if already done)</div>
+                <div class="say">
+                    "To add a product, click Add, select from your catalog, then move to competitor discovery.
+                    <br><br>
+                    You have two options for finding competitors:
+                    <br>1. Manual entry — if you know your competitors
+                    <br>2. AI-Powered Discovery — the system analyzes your product and finds relevant competitors with relevancy scores
+                    <br><br>
+                    You need at least 5 competitors selected. You can mix both methods."
+                </div>
+                <div class="note">If showing live: Click "Discover Competitors" to show AI discovery in action</div>
+                <div class="transition">"Once competitors are set, we run keyword research..."</div>
+            </div>
+        </div>
+
+        <!-- Step 3: KW Research -->
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Step 3: AI Keyword Research (3 Tabs)</h3>
+                <span class="time-badge">2.5 min</span>
+            </div>
+            <div class="script-body">
+                <div class="screen">ASIN Config → Click "Generate Research" → then "View Research"</div>
+                <div class="say">
+                    "Click 'Generate Research' to trigger AI-powered keyword analysis. Once complete, click 'View Research' to review.
+                    <br><br>
+                    The research has three tabs that need approval before campaigns are created:"
+                </div>
+
+                <h3>Tab 1: Branding Scope & KW-Product Relationship</h3>
+                <div class="action">Show Tab 1 with the classification table</div>
+                <div class="say">
+                    "Tab 1 classifies keywords on two dimensions:
+                    <br><br>
+                    <strong>Branding Scope:</strong>
+                    <br>• NB = Non-Branded (generic keywords)
+                    <br>• OB = Own Branded (your brand name)
+                    <br>• CB = Competitor Branded
+                    <br><br>
+                    <strong>Relationship:</strong>
+                    <br>• R = Relevant (direct product keywords)
+                    <br>• S = Substitute (alternative products)
+                    <br>• C = Complementary (related products)
+                    <br>• N = Negative (keywords to exclude)
+                    <br><br>
+                    You can Export for bulk editing, make changes, Import back, then Submit for approval."
+                </div>
+
+                <h3>Tab 2: Listing Attributes Ranking</h3>
+                <div class="action">Click to Tab 2</div>
+                <div class="say">
+                    "Tab 2 shows product attributes extracted from your listing — product type, variants, use cases.
+                    <br><br>
+                    You can adjust rankings to prioritize certain attributes in targeting. Review, modify if needed, Submit."
+                </div>
+
+                <h3>Tab 3: Keyword Groupings</h3>
+                <div class="action">Click to Tab 3</div>
+                <div class="say">
+                    "Tab 3 is where keywords are grouped by customer search intent.
+                    <br><br>
+                    Each group becomes a campaign. For example:
+                    <br>• Group 1: 'Diffuser Oil + Italy variant' — all keywords matching this intent
+                    <br>• Group 2: 'Diffuser Oil + Lemon scent' — different intent cluster
+                    <br><br>
+                    Relevant keywords can have multiple groups. Negative, Substitute, Complementary get one group each.
+                    <br><br>
+                    Once you Submit this tab — campaigns are automatically generated based on these groupings."
+                </div>
+
+                <div class="note"><strong>Acknowledge Status:</strong> "The feature is fully built. Current challenge is output accuracy — results need manual review. We've completed 2/3 of quality improvements, deploying this week. If satisfactory, we reduce manual review. If not, we wait for the remaining 1/3."</div>
+
+                <div class="transition">"Now let's see the campaigns that were generated..."</div>
+            </div>
+        </div>
+
+        <!-- Step 4: Campaign Config -->
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Step 4: Campaign Config</h3>
+                <span class="time-badge">1.5 min</span>
+            </div>
+            <div class="script-body">
+                <div class="screen">Navigate to Campaign Config tab</div>
+                <div class="action">Show the campaign list with auto-generated campaigns</div>
+                <div class="say">
+                    "Here are the campaigns auto-generated from the keyword groupings.
+                    <br><br>
+                    The naming convention tells you everything:
+                    <br>• <strong>OB-R2</strong> = Own Branded, Relevant keywords, Group 2
+                    <br>• <strong>SP-KW</strong> = Sponsored Product, Keyword targeting
+                    <br>• <strong>E</strong> at the end = Exact match
+                    <br><br>
+                    Each campaign shows:
+                    <br>• Target ACOS (optional — falls back to ASIN level if empty)
+                    <br>• Daily Budget (optional if Auto Budget is on)
+                    <br>• Status: PAUSED or ENABLED
+                    <br>• Targeting Spec: shows what customer intent this campaign targets"
+                </div>
+                <div class="action">Point to the Targeting Spec column</div>
+                <div class="say">
+                    "This 'Targeting Spec' column is key — it tells you which attributes/intents this campaign covers. Helps you decide which campaigns to activate.
+                    <br><br>
+                    <strong>Important:</strong> The first time you Submit with Status=ENABLED, campaigns are actually created on Amazon. After that, toggling just changes status."
+                </div>
+                <div class="transition">"Once campaigns are live, you get granular keyword control..."</div>
+            </div>
+        </div>
+
+        <!-- Step 5: KWs Config -->
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Step 5: KWs Config (Keyword-Level Control)</h3>
+                <span class="time-badge">1 min</span>
+            </div>
+            <div class="script-body">
+                <div class="screen">Navigate to KWs Config tab</div>
+                <div class="action">Show the keyword table with filters</div>
+                <div class="say">
+                    "KWs Config gives you control over individual keywords across all campaigns.
+                    <br><br>
+                    Key features:
+                    <br>• <strong>Bid Controls:</strong> Set Fixed Bid (won't change), Ceiling (max), Floor (min) — with expiry dates
+                    <br>• <strong>Target ACOS override:</strong> Set keyword-specific targets
+                    <br>• <strong>Performance metrics:</strong> ACOS, TOS%, CTR, CVR across multiple time windows
+                    <br><br>
+                    Filter by ASIN or Campaign. Export for bulk changes, Import back, Submit."
+                </div>
+                <div class="note">This tab only populates AFTER campaigns are enabled for the first time</div>
+            </div>
+        </div>
+
+        <!-- PART 3: PASSIVE FEATURES -->
+        <div class="part-header">
+            <h2>PART 3: AUTOMATION (Passive Features)</h2>
+            <span style="font-size:0.9em;">3-4 minutes</span>
+        </div>
+
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Automated Features Running in Background</h3>
+                <span class="time-badge">3-4 min</span>
+            </div>
+            <div class="script-body">
+                <div class="say">
+                    "Behind the scenes, several automation features are working continuously:"
+                </div>
+
+                <h3>1. Bid Optimization</h3>
+                <div class="say">
+                    "System adjusts bids based on TOS% (Top of Search) and ACOS performance.
+                    <br>• Low TOS → increase bid to get better placement
+                    <br>• High TOS → decrease bid to save cost
+                    <br>• ACOS breach (spending badly) → emergency drop to $0.02
+                    <br><br>
+                    Uses CVR waterfall — looks at conversion data at multiple levels to make intelligent decisions even with sparse data."
+                </div>
+                <div class="note">Mention: CVR estimation accuracy is still being improved — affects bid optimization quality</div>
+
+                <h3>2. Auto Budget Management</h3>
+                <div class="say">
+                    "Distributes ASIN-level budget across campaigns based on performance.
+                    <br>• Winners (ACOS ≤ target) get more budget
+                    <br>• Losers get reduced (max 20% reduction per cycle)
+                    <br>• Every campaign gets at least $5 minimum"
+                </div>
+
+                <h3>3. Harvesting & Negation</h3>
+                <div class="say">
+                    "Continuously optimizes targeting:
+                    <br>• <strong>Harvesting:</strong> High-performing search terms get promoted to dedicated campaigns
+                    <br>• <strong>Negation:</strong> Underperforming terms get added as negatives automatically"
+                </div>
+
+                <h3>4. Intelligent Pacing</h3>
+                <div class="say">
+                    "Decides which campaigns to activate and how to allocate budget.
+                    <br><br>
+                    Current release is a rule-based base model — establishes core workflow and validates direction.
+                    <br><br>
+                    Post-validation, we'll enhance with ML. The pacing workflow has multiple input/output chains — feedback from base model will guide which chain to enhance first."
+                </div>
+
+                <h3>5. High Performers Isolation</h3>
+                <div class="say">
+                    "Top 5% keywords by sales get their own 'solo' campaigns for maximum control. System auto-pauses duplicates to prevent self-competition."
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 4: CHALLENGES -->
+        <div class="part-header">
+            <h2>PART 4: CHALLENGES</h2>
+            <span style="font-size:0.9em;">2-3 minutes</span>
+        </div>
+
+        <div class="script-section">
+            <div class="script-header">
+                <h3>Current Status & Challenges</h3>
+                <span class="time-badge">2-3 min</span>
+            </div>
+            <div class="script-body">
+                <div class="say">
+                    "Let me be transparent about where we stand.
+                    <br><br>
+                    <strong>Pacing:</strong> Deployed 2 weeks ago. Base model in production. UAT pending alongside test runs.
+                    <br><br>
+                    <strong>KW Research Quality:</strong> Feature built, but accuracy needs improvement. Manual review is bottleneck. 2/3 of improvements ready to deploy. If satisfactory → reduced review → faster rollout. If not → wait for remaining 1/3.
+                    <br><br>
+                    <strong>CVR Estimation:</strong> Core enhancement affecting bid optimization, budget allocation, pacing. Current model uses historical averages — can't handle seasonality, price changes, sparse data. Fix is ML model with dozens of features (already identified). Challenges: needs ML expertise, R&D intensive.
+                    <br><br>
+                    <strong>Test Account Budget:</strong> 7 ASINs across 3-4 accounts. 1 rolled out, 2 more this week, rest conditional on performance. Current budget $300-500/month per ASIN — need $1,500-$3,000 for effective testing. Will prepare subsidy proposal.
+                    <br><br>
+                    <strong>Other:</strong> Reporting in 2 weeks. APDC (diagnostics) deferred. UI/UX improvements starting in 2-3 weeks — have mockups from Krell and Engineering based on competitor platforms."
+                </div>
+            </div>
+        </div>
+
+        <!-- CLOSING -->
+        <div class="script-section">
+            <div class="script-header" style="background: linear-gradient(135deg, #38a169 0%, #276749 100%);">
+                <h3>CLOSING</h3>
+                <span class="time-badge">30 sec</span>
+            </div>
+            <div class="script-body">
+                <div class="say">
+                    "To summarize: All 11 features are developed and deployed. Platform is functional end-to-end.
+                    <br><br>
+                    Key decision: Do we accelerate testing with a subsidy program, or proceed at current pace?
+                    <br><br>
+                    Happy to take questions."
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- QUICK REFERENCE -->
+        <div class="quick-ref">
+            <h3>Quick Reference - Platform Tabs</h3>
+            <table>
+                <tr><th>Tab</th><th>Purpose</th><th>Key Point to Mention</th></tr>
+                <tr><td>ASIN Config</td><td>Central hub, product management</td><td>Target ACOS hierarchy (ASIN→Campaign→KW)</td></tr>
+                <tr><td>KW Research Tab 1</td><td>Branding Scope + R/S/C/N</td><td>NB/OB/CB and R/S/C/N classifications</td></tr>
+                <tr><td>KW Research Tab 2</td><td>Listing Attributes</td><td>Extracted from product listing</td></tr>
+                <tr><td>KW Research Tab 3</td><td>Keyword Groupings</td><td>Groups = intent clusters = campaigns</td></tr>
+                <tr><td>Campaign Config</td><td>View/enable campaigns</td><td>First ENABLED submit creates on Amazon</td></tr>
+                <tr><td>KWs Config</td><td>Keyword-level control</td><td>Fixed/Ceiling/Floor bids with expiry</td></tr>
+                <tr><td>SearchTerm Config</td><td>Performance analysis</td><td>Read-focused, search term data</td></tr>
+            </table>
+        </div>
+
+        <div class="footer">
+            <strong>Good luck!</strong>
+        </div>
+    </div>
+</body>
+</html>

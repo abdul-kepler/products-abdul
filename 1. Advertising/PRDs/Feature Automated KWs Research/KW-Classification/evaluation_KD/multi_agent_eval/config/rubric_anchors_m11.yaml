@@ -1,0 +1,117 @@
+# Rubric Anchoring for M11 (Identify Hard Constraints)
+# Concrete examples for each score level to ensure consistent scoring
+
+module: M11
+task: "Identify hard constraints - features that MUST be present for the validated use"
+
+dimensions:
+  ACCURACY:
+    description: "Correctly identifies hard vs soft constraints"
+    anchors:
+      5: |
+        Example: For "wireless earbuds for listening to audio"
+        Output correctly identifies: "Bluetooth capability" as hard constraint
+        Output correctly rejects: "32hr battery" as soft (audio works with less battery)
+        Reasoning explicitly applies the "remove entirely" test
+      4: |
+        Correct identification with minor oversights
+        Example: Correctly identifies no hard constraints, but reasoning is slightly imprecise
+      3: |
+        Mixed accuracy - some correct, some incorrect classifications
+        Example: Correctly identifies 1 hard constraint but misses another obvious one
+      2: |
+        Multiple misclassifications
+        Example: Labels "Deep Bass Sound" as hard constraint (it's a quality feature)
+      1: |
+        Fundamentally wrong understanding
+        Example: Labels all features as hard constraints or none when obvious ones exist
+      0: |
+        Completely incorrect or missing response
+
+  COMPLETENESS:
+    description: "Addresses all relevant attributes in the analysis"
+    anchors:
+      5: |
+        Analyzes ALL provided attributes
+        Explains why each IS or ISN'T a hard constraint
+        Considers the validated use case explicitly
+      4: |
+        Covers most attributes (>80%)
+        May skip 1-2 minor attributes
+      3: |
+        Covers key attributes but misses some important ones
+        Example: Analyzes Bluetooth but skips "Water Resistant"
+      2: |
+        Only analyzes 2-3 attributes
+        Missing analysis of majority of features
+      1: |
+        Minimal analysis - 1 attribute only
+      0: |
+        No attribute analysis provided
+
+  CLARITY:
+    description: "Reasoning is structured and easy to follow"
+    anchors:
+      5: |
+        Clear structure: attribute → test → conclusion for each
+        Example: "1. Bluetooth 5.2: Remove entirely? → Still has Bluetooth 4.0 → NOT hard"
+        Explicit logic flow
+      4: |
+        Mostly clear with minor ambiguities
+        Structure is present but could be cleaner
+      3: |
+        Understandable but requires re-reading
+        Some logical jumps without explanation
+      2: |
+        Confusing structure
+        Mixes conclusions with reasoning
+      1: |
+        Very difficult to follow
+        Contradictory statements
+      0: |
+        Incomprehensible or missing
+
+  RELEVANCE:
+    description: "Focuses on the validated use case"
+    anchors:
+      5: |
+        Every conclusion tied back to validated use
+        Example: "For 'listening to audio', Bluetooth is essential because..."
+      4: |
+        Mostly relevant, occasional tangent
+      3: |
+        Addresses task but includes irrelevant analysis
+        Example: Discusses price when task is about features
+      2: |
+        Partially off-topic
+        Focuses on wrong aspects of product
+      1: |
+        Mostly irrelevant to the task
+      0: |
+        Completely off-topic
+
+  HELPFULNESS:
+    description: "Output is useful for the downstream task"
+    anchors:
+      5: |
+        Clear actionable output
+        Confidence score provided
+        Reasoning enables human verification
+      4: |
+        Useful output with minor gaps
+      3: |
+        Somewhat useful but requires interpretation
+      2: |
+        Limited usefulness
+        Missing key information for decision-making
+      1: |
+        Not useful for task
+      0: |
+        Harmful or misleading
+
+scoring_guidance: |
+  When scoring, ask:
+  1. Does the output apply the "remove entirely" test correctly?
+  2. Are ALL attributes considered?
+  3. Is the reasoning tied to the validated use case?
+  4. Would a human reach the same conclusion from this reasoning?

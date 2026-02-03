@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M04 - Classify Competitor Brand Keywords - Evaluation Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta { color: #888; font-size: 0.9rem; }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .card .value { font-size: 1.8rem; font-weight: bold; }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover { background: rgba(255,255,255,0.08); }
+        .rubric-title { font-weight: 600; }
+        .rubric-stats { display: flex; gap: 15px; align-items: center; }
+        .stat { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+        .stat.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .stat.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .rate { color: #00d9ff; }
+        .rubric-content { display: none; padding: 20px; }
+        .rubric-content.open { display: block; }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass { border-left-color: #00ff88; }
+        .eval-item.fail { border-left-color: #ff4757; }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id { font-family: monospace; color: #00d9ff; }
+        .verdict { font-weight: bold; padding: 2px 10px; border-radius: 4px; }
+        .verdict.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .verdict.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .output-box.expected h4 { color: #00ff88; }
+        .output-box.actual h4 { color: #00d9ff; }
+        .output-box pre {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .reasoning {
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+        }
+        a { color: #00d9ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>M04 - Classify Competitor Brand Keywords</h1>
+            <p class="meta">
+                Source: m04_judge_20260115_232226.json | Generated: 2026-01-15 23:22:26<br>
+                <a href="SUMMARY_DASHBOARD.html">&larr; Back to Summary</a>
+            </p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">80</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">40</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">40</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">50.0%</div>
+            </div>
+        </div>
+
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Correct CB/null Classification</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">7 Pass</span>
+                        <span class="stat fail">13 Fail</span>
+                        <span class="rate">35%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Le Creuset&#x27; which exactly matches competitor entity &#x27;Le Creuset&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;le creuset oven mitt&#x27; as containing the competitor brand &#x27;Le Creuset&#x27;, which meets the PASS condition for correct CB classification.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;homwe&#x27; which exactly matches competitor entity &#x27;HOMWE&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output returned &#x27;CB&#x27; for the keyword &#x27;homwe silicone oven mitt&#x27;, which contains &#x27;homwe&#x27;, a competitor brand. However, the keyword also includes &#x27;silicone oven mitt&#x27;, which is a generic term. According to the rubric, &#x27;CB&#x27; should only be returned if the keyword contains a competitor brand without any generic terms. Therefore, the output does not meet the criteria.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;gorilla grip&#x27; which matches competitor entity &#x27;GORILLA GRIP&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;gorilla grip&#x27; in the keyword, which matches the competitor entity &#x27;GORILLA GRIP&#x27;, thus fulfilling the CB classification requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Martha Stewart&#x27; which exactly matches competitor entity &#x27;Martha Stewart&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified &#x27;Martha Stewart&#x27; in the keyword, which matches a competitor brand, thus fulfilling the PASS condition for CB classification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;all clad&#x27; which matches competitor entity &#x27;All-Clad&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;all clad&#x27; in the keyword, which matches the competitor entity &#x27;All-Clad&#x27;, thus fulfilling the CB classification requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;oven mitts oxo&#x27; does not contain any competitor brand names, but the module output returned null instead of CB, which is incorrect as it should have returned null for a generic keyword.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for a keyword that does not contain any competitor brand names, which is correct. However, the expected output was &#x27;CB&#x27;, indicating a failure to correctly classify the keyword.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitt&#x27; which is generic and does not mention any competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for a keyword that does not contain any competitor brand, which is correct. However, it failed to recognize that the keyword &#x27;blue q oven mitt&#x27; does not contain any competitor brand, leading to a misclassification.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and does not contain any competitor brand mentions.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;sur la table oven mitts&#x27; does not contain any competitor brand names, yet the module returned null instead of CB, which violates the rubric&#x27;s requirement for correct classification.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and it does not match the own brand &#x27;KitchenAid&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the keyword &#x27;oxo oven mitt&#x27;, which does not contain any competitor brand names. However, it should have returned &#x27;CB&#x27; since the keyword does not contain a generic term and is not a competitor brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for a keyword that does not contain any competitor brand names, which is correct. However, the expected output was &#x27;CB&#x27;, indicating a failure to recognize that the keyword is generic and does not contain a competitor brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and &#x27;pioneer woman&#x27; is not in the competitor entities list.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;pioneer woman oven mitts&#x27; does not contain any competitor brand names, yet the module returned null instead of CB, which violates the rubric&#x27;s requirement for correct classification.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sonoma&#x27; which does not match any own brand entities, and &#x27;william sonoma&#x27; is a recognized competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output classified the keyword as &#x27;CB&#x27; despite &#x27;william sonoma&#x27; not being in the competitor brand list, which violates the rubric&#x27;s FAIL condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;cuisinart&#x27; which is not in the competitor_entities list, and it does not match the own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null (empty string) for a keyword that does not contain any competitor brand names, which is correct. However, the keyword &#x27;cuisinart&#x27; is a brand name and should have been classified as CB according to the rubric, leading to a FAIL condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null (empty string) for the keyword &#x27;aglucky ice makers countertop&#x27;, which contains &#x27;AGLUCKY&#x27;, a competitor brand. According to the rubric, it should have classified it as &#x27;CB&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;Frigidaire&#x27; in the keyword, which matches a competitor brand, thus fulfilling the PASS condition for CB classification.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null (empty string) for the keyword &#x27;aglucky nugget ice maker countertop&#x27;, which contains &#x27;AGLUCKY&#x27;, a competitor brand. According to the rubric, it should have classified it as &#x27;CB&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified &#x27;frigidaire&#x27; in the keyword, which matches the competitor brand &#x27;Frigidaire&#x27;, thus fulfilling the CB classification requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;zafro&#x27; which exactly matches competitor entity &#x27;ZAFRO&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified &#x27;zafro&#x27; in the keyword, which matches a competitor brand in a case-insensitive manner, thus fulfilling the PASS condition for correct CB classification.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sweetcrispy&#x27; which matches own brand &#x27;Sweetcrispy&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null (empty string) for a keyword that contains &#x27;sweetcrispy&#x27;, which is a competitor brand name. According to the rubric, it should have classified it as CB.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Own Brand Excluded</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">16 Pass</span>
+                        <span class="stat fail">4 Fail</span>
+                        <span class="rate">80%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Le Creuset&#x27; which exactly matches competitor entity &#x27;Le Creuset&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output classifies &#x27;KitchenAid&#x27; as CB despite the keyword containing &#x27;Le Creuset&#x27;, which is not an own brand. The exact own_brand &#x27;KitchenAid&#x27; is not present in the keyword, but the output incorrectly classifies &#x27;Le Creuset&#x27; as CB.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;homwe&#x27; which exactly matches competitor entity &#x27;HOMWE&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output classifies &#x27;KitchenAid&#x27; as CB despite the keyword containing &#x27;homwe&#x27;, which is a competitor. The own_brand &#x27;KitchenAid&#x27; is not excluded as required by the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;gorilla grip&#x27; which matches competitor entity &#x27;GORILLA GRIP&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;gorilla grip oven mitts&#x27;, so it meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Martha Stewart&#x27; which exactly matches competitor entity &#x27;Martha Stewart&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;martha stewart oven mitts&#x27;, therefore it meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;all clad&#x27; which matches competitor entity &#x27;All-Clad&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output classifies &#x27;KitchenAid&#x27; as CB, which is the exact own_brand specified in the input, and the keyword does not contain &#x27;KitchenAid&#x27; but does contain &#x27;All-Clad&#x27;, which is a competitor brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;oven mitts oxo&#x27;, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;oxo oven mitts&#x27;, so it meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitt&#x27; which is generic and does not mention any competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not mentioned in the keyword &#x27;blue q oven mitt&#x27;, so it meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and does not contain any competitor brand mentions.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not mentioned in the keyword &#x27;sur la table oven mitts&#x27;, so it meets the PASS condition of not having the own brand in the keyword.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and it does not match the own brand &#x27;KitchenAid&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;oxo oven mitt&#x27;, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;oxo silicone oven mitt&#x27;, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and &#x27;pioneer woman&#x27; is not in the competitor entities list.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;pioneer woman oven mitts&#x27;, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sonoma&#x27; which does not match any own brand entities, and &#x27;william sonoma&#x27; is a recognized competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output classifies &#x27;KitchenAid&#x27; as CB despite the keyword not containing it, which violates the rubric&#x27;s requirement that the own brand must not be classified as CB when it appears in the keyword.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;cuisinart&#x27; which is not in the competitor_entities list, and it does not match the own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;KitchenAid&#x27; is not present in the keyword &#x27;cuisinart oven mitts&#x27;, so it meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;Antarctic Star&#x27; is not present in the keyword &#x27;aglucky ice makers countertop&#x27;, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;Antarctic Star&#x27; is not present in the keyword, and the output correctly identifies &#x27;Frigidaire&#x27; as a competitor brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;Antarctic Star&#x27; is not present in the keyword, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;Antarctic Star&#x27; is not present in the keyword, and the output correctly identifies &#x27;Frigidaire&#x27; as a competitor brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;zafro&#x27; which exactly matches competitor entity &#x27;ZAFRO&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;Antarctic Star&#x27; is not present in the keyword, and the output does not classify it as CB.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sweetcrispy&#x27; which matches own brand &#x27;Sweetcrispy&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The own brand &#x27;Antarctic Star&#x27; is not present in the keyword &#x27;sweetcrispy countertop ice maker&#x27;, and the output is null, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Case Insensitive Matching</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">9 Pass</span>
+                        <span class="stat fail">11 Fail</span>
+                        <span class="rate">45%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Le Creuset&#x27; which exactly matches competitor entity &#x27;Le Creuset&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies &#x27;Le Creuset&#x27; in the keyword, which matches the competitor entity &#x27;Le Creuset&#x27; regardless of case differences.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;homwe&#x27; which exactly matches competitor entity &#x27;HOMWE&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identifies &#x27;homwe&#x27; in the keyword as matching &#x27;HOMWE&#x27; in the competitor entities, adhering to the case insensitive matching requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;gorilla grip&#x27; which matches competitor entity &#x27;GORILLA GRIP&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;gorilla grip&#x27; in the keyword as matching &#x27;GORILLA GRIP&#x27; from the competitor entities, fulfilling the case insensitive matching requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Martha Stewart&#x27; which exactly matches competitor entity &#x27;Martha Stewart&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies &#x27;Martha Stewart&#x27; in the keyword as matching the competitor entity &#x27;Martha Stewart&#x27;, fulfilling the case insensitive matching requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;all clad&#x27; which matches competitor entity &#x27;All-Clad&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identifies &#x27;All-Clad&#x27; as matching &#x27;all clad&#x27; in a case insensitive manner, fulfilling the rubric&#x27;s requirement for case insensitive brand matching.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output failed to recognize that &#x27;oxo&#x27; matches &#x27;OXO&#x27; in a case-insensitive manner, resulting in a missed match.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output failed to recognize that &#x27;oxo&#x27; should match &#x27;OXO&#x27;, which is a missed match due to case difference.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitt&#x27; which is generic and does not mention any competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not recognize &#x27;Homwe&#x27; and &#x27;HOMWE&#x27; as the same brand due to case differences, which is a missed match according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and does not contain any competitor brand mentions.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not recognize &#x27;HOMWE&#x27; and &#x27;Homwe&#x27; as matching brands due to case differences, which is a missed match according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and it does not match the own brand &#x27;KitchenAid&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output failed to recognize that &#x27;oxo&#x27; should match &#x27;OXO&#x27;, which is a missed match due to case difference, violating the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output failed to recognize that &#x27;oxo&#x27; should match &#x27;OXO&#x27;, which is a missed match due to case difference, violating the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and &#x27;pioneer woman&#x27; is not in the competitor entities list.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not recognize &#x27;HOMWE&#x27; and &#x27;Homwe&#x27; as the same brand due to case differences, which is a missed match according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sonoma&#x27; which does not match any own brand entities, and &#x27;william sonoma&#x27; is a recognized competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies that brand matching is case insensitive, as it recognizes &#x27;Homwe&#x27; and &#x27;HOMWE&#x27; as the same brand despite case differences. No missed matches due to case differences were found.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;cuisinart&#x27; which is not in the competitor_entities list, and it does not match the own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not recognize &#x27;HOMWE&#x27; and &#x27;Homwe&#x27; as matching brands due to case differences, which is a missed match according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not recognize &#x27;AGLUCKY&#x27; in the keyword as matching the own brand entity &#x27;AGLUCKY&#x27; due to case sensitivity, resulting in an empty branding scope.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies &#x27;Frigidaire&#x27; in the keyword, which matches the competitor entity &#x27;Frigidaire&#x27; regardless of case, fulfilling the case insensitive matching requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not correctly match the brand &#x27;AGLUCKY&#x27; in a case-insensitive manner, as it returned an empty string for &#x27;branding_scope_2&#x27; instead of &#x27;CB&#x27;, despite the keyword containing &#x27;AGLUCKY&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies &#x27;frigidaire&#x27; in the keyword as matching &#x27;Frigidaire&#x27; in the competitor entities, adhering to case insensitive matching.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;zafro&#x27; which exactly matches competitor entity &#x27;ZAFRO&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies that &#x27;zafro&#x27; matches &#x27;ZAFRO&#x27;, fulfilling the case insensitive matching requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sweetcrispy&#x27; which matches own brand &#x27;Sweetcrispy&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not correctly match &#x27;sweetcrispy&#x27; with &#x27;Sweetcrispy&#x27; in the branding scope, resulting in an empty output instead of &#x27;CB&#x27;.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Competitor Correctly Identified</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">8 Pass</span>
+                        <span class="stat fail">12 Fail</span>
+                        <span class="rate">40%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Le Creuset&#x27; which exactly matches competitor entity &#x27;Le Creuset&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;Le Creuset&#x27; as the matched competitor from the keyword, which is present in the provided competitor list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;homwe&#x27; which exactly matches competitor entity &#x27;HOMWE&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;HOMWE&#x27; as the competitor from the keyword &#x27;homwe silicone oven mitt&#x27;, which matches the provided list of competitor entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;gorilla grip&#x27; which matches competitor entity &#x27;GORILLA GRIP&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;GORILLA GRIP&#x27; as the competitor from the keyword &#x27;gorilla grip oven mitts&#x27;, which is present in the provided list of competitor entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Martha Stewart&#x27; which exactly matches competitor entity &#x27;Martha Stewart&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;Martha Stewart&#x27; as the matched competitor from the keyword, which is present in the provided competitor list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;all clad&#x27; which matches competitor entity &#x27;All-Clad&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;All-Clad&#x27; as the competitor from the keyword &#x27;all clad oven mitts&#x27;, which is present in the provided competitor list.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify a correct competitor from the provided list, as &#x27;oxo&#x27; is not included in the competitor_entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_competitor is not identified because &#x27;oxo&#x27; is not in the competitor_entities list, leading to a failure to meet the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitt&#x27; which is generic and does not mention any competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any competitor from the provided list, which is a requirement for passing the criterion.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and does not contain any competitor brand mentions.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any matched competitor from the provided list, which is a requirement for passing the criterion.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the provided competitor_entities list, and it does not match the own brand &#x27;KitchenAid&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify a competitor from the provided list, as &#x27;oxo&#x27; is not included in the competitor_entities. Therefore, it fails to meet the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oxo&#x27; which is not in the competitor_entities list, and does not match own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_competitor is not identified because &#x27;oxo&#x27; is not in the competitor_entities list, leading to a failure to meet the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;oven mitts&#x27; which does not match any own brand entities, and &#x27;pioneer woman&#x27; is not in the competitor entities list.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output states that &#x27;pioneer woman&#x27; is not in the competitor entities list, which is correct. Therefore, the matched competitor is incorrect, leading to a FAIL condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sonoma&#x27; which does not match any own brand entities, and &#x27;william sonoma&#x27; is a recognized competitor brand.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output incorrectly identifies &#x27;william sonoma&#x27; as a competitor, which is not listed in the provided competitor_entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;cuisinart&#x27; which is not in the competitor_entities list, and it does not match the own brand entities.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any competitor from the provided list, as &#x27;cuisinart&#x27; is not included in the competitor_entities. Therefore, it fails to meet the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched competitor &#x27;AGLUCKY&#x27; is not correctly identified as it is not in the provided list of competitors; the output should have indicated a competitor from the list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;Frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;Frigidaire&#x27; as the matched competitor from the keyword, which is present in the provided list of competitor entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;AGLUCKY&#x27; which matches own brand entity &#x27;AGLUCKY&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output incorrectly identifies &#x27;AGLUCKY&#x27; as the matched competitor, which is not in the provided list of competitors. The correct competitor should be &#x27;AGLUCKY&#x27; as it is present in the keyword, but it is not recognized as a valid competitor in the context of the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;frigidaire&#x27; which exactly matches competitor entity &#x27;Frigidaire&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;Frigidaire&#x27; as the matched competitor from the keyword &#x27;frigidaire ice maker countertop&#x27;, which is in the provided list of competitor entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;zafro&#x27; which exactly matches competitor entity &#x27;ZAFRO&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;ZAFRO&#x27; as the matched competitor from the keyword, which is present in the provided list of competitor entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;CB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_2&quot;: &quot;&quot;,
+  &quot;reasoning&quot;: &quot;Keyword contains &#x27;sweetcrispy&#x27; which matches own brand &#x27;Sweetcrispy&#x27;.&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output incorrectly identifies &#x27;Sweetcrispy&#x27; as a competitor, but &#x27;Sweetcrispy&#x27; is not listed as a valid competitor in the provided list. Therefore, it does not meet the PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>

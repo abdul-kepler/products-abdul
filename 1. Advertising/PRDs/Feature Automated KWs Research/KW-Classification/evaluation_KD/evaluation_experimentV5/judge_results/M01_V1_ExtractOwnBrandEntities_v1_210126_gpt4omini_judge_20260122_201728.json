@@ -1,0 +1,2792 @@
+{
+  "experiment": "V5",
+  "module": "m01_v1",
+  "model": "gpt-4o-mini",
+  "prompt_version": "v1",
+  "rubrics_version": "v5",
+  "timestamp": "2026-01-22T20:17:28.165227",
+  "data_source": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_V1_ExtractOwnBrandEntities_v1_210126_gpt4omini.csv",
+  "summary": {
+    "pass": 43,
+    "fail": 32,
+    "error": 0
+  },
+  "pass_rate": 57.333333333333336,
+  "evaluations": [
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'Mikasa' and its variations, which closely match the listing brand. Minor variations in casing are acceptable, and there are no completely wrong brand names extracted.",
+      "input": {
+        "brand_name": "Mikasa",
+        "bullet_points": "STRIKING PRESENTATION: a lovely tray with an alluring ridge pattern and curves that shine stunningly in the light.\nELEGANT CRYSTAL: this elegant and contemporary tray can be used to serve cold food or used as a decorative tray.\nBEAUTIFULLY CRAFTED: made of high-quality, lead-free crystal and comes packaged in a lovely gift box\nEYE-CATCHING: measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high\nEASY CARE: hand-wash to extend the life of your tray",
+        "description": "This elegant and timeless Estate Crystal Rectangular Tray by Mikasa can be used to serve appetizers, deserts, and more. Beautifully crafted of high-quality, lead-free crystal, this lovely tray has a brilliant design, alluring ridge pattern, and unique angles and curves that will shine stunningly in the light. Comes packaged in a lovely gift box and makes a great gift for housewarming parties, anniversaries, and more. Measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high. Hand-wash only.",
+        "manufacturer": "Lifetime Brands Inc.",
+        "title": "Mikasa Estate Crystal Glass Rectangular Serving Decorative Tray, 14.75 Inch"
+      },
+      "expected": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasaa",
+          "Mikasae",
+          "Lifetime Brands Inc.",
+          "lifetime brands inc."
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasa",
+          "Mikassaa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands are variations of 'Mikasa', which is present in the title, bullet points, and description. The output includes acceptable variations and does not introduce any non-existent brands.",
+      "input": {
+        "brand_name": "Mikasa",
+        "bullet_points": "STRIKING PRESENTATION: a lovely tray with an alluring ridge pattern and curves that shine stunningly in the light.\nELEGANT CRYSTAL: this elegant and contemporary tray can be used to serve cold food or used as a decorative tray.\nBEAUTIFULLY CRAFTED: made of high-quality, lead-free crystal and comes packaged in a lovely gift box\nEYE-CATCHING: measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high\nEASY CARE: hand-wash to extend the life of your tray",
+        "description": "This elegant and timeless Estate Crystal Rectangular Tray by Mikasa can be used to serve appetizers, deserts, and more. Beautifully crafted of high-quality, lead-free crystal, this lovely tray has a brilliant design, alluring ridge pattern, and unique angles and curves that will shine stunningly in the light. Comes packaged in a lovely gift box and makes a great gift for housewarming parties, anniversaries, and more. Measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high. Hand-wash only.",
+        "manufacturer": "Lifetime Brands Inc.",
+        "title": "Mikasa Estate Crystal Glass Rectangular Serving Decorative Tray, 14.75 Inch"
+      },
+      "expected": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasaa",
+          "Mikasae",
+          "Lifetime Brands Inc.",
+          "lifetime brands inc."
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasa",
+          "Mikassaa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, specifically variations of 'Mikasa', and does not contain any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "Mikasa",
+        "bullet_points": "STRIKING PRESENTATION: a lovely tray with an alluring ridge pattern and curves that shine stunningly in the light.\nELEGANT CRYSTAL: this elegant and contemporary tray can be used to serve cold food or used as a decorative tray.\nBEAUTIFULLY CRAFTED: made of high-quality, lead-free crystal and comes packaged in a lovely gift box\nEYE-CATCHING: measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high\nEASY CARE: hand-wash to extend the life of your tray",
+        "description": "This elegant and timeless Estate Crystal Rectangular Tray by Mikasa can be used to serve appetizers, deserts, and more. Beautifully crafted of high-quality, lead-free crystal, this lovely tray has a brilliant design, alluring ridge pattern, and unique angles and curves that will shine stunningly in the light. Comes packaged in a lovely gift box and makes a great gift for housewarming parties, anniversaries, and more. Measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high. Hand-wash only.",
+        "manufacturer": "Lifetime Brands Inc.",
+        "title": "Mikasa Estate Crystal Glass Rectangular Serving Decorative Tray, 14.75 Inch"
+      },
+      "expected": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasaa",
+          "Mikasae",
+          "Lifetime Brands Inc.",
+          "lifetime brands inc."
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasa",
+          "Mikassaa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains duplicate entries and variations of the brand name 'Mikasa' that do not meet the requirement for unique brand entities. Additionally, it includes a misspelling ('Mikassaa') which is not a recognized brand or trademark.",
+      "input": {
+        "brand_name": "Mikasa",
+        "bullet_points": "STRIKING PRESENTATION: a lovely tray with an alluring ridge pattern and curves that shine stunningly in the light.\nELEGANT CRYSTAL: this elegant and contemporary tray can be used to serve cold food or used as a decorative tray.\nBEAUTIFULLY CRAFTED: made of high-quality, lead-free crystal and comes packaged in a lovely gift box\nEYE-CATCHING: measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high\nEASY CARE: hand-wash to extend the life of your tray",
+        "description": "This elegant and timeless Estate Crystal Rectangular Tray by Mikasa can be used to serve appetizers, deserts, and more. Beautifully crafted of high-quality, lead-free crystal, this lovely tray has a brilliant design, alluring ridge pattern, and unique angles and curves that will shine stunningly in the light. Comes packaged in a lovely gift box and makes a great gift for housewarming parties, anniversaries, and more. Measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high. Hand-wash only.",
+        "manufacturer": "Lifetime Brands Inc.",
+        "title": "Mikasa Estate Crystal Glass Rectangular Serving Decorative Tray, 14.75 Inch"
+      },
+      "expected": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasaa",
+          "Mikasae",
+          "Lifetime Brands Inc.",
+          "lifetime brands inc."
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasa",
+          "Mikassaa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Mikasa' listed multiple times, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Mikasa",
+        "bullet_points": "STRIKING PRESENTATION: a lovely tray with an alluring ridge pattern and curves that shine stunningly in the light.\nELEGANT CRYSTAL: this elegant and contemporary tray can be used to serve cold food or used as a decorative tray.\nBEAUTIFULLY CRAFTED: made of high-quality, lead-free crystal and comes packaged in a lovely gift box\nEYE-CATCHING: measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high\nEASY CARE: hand-wash to extend the life of your tray",
+        "description": "This elegant and timeless Estate Crystal Rectangular Tray by Mikasa can be used to serve appetizers, deserts, and more. Beautifully crafted of high-quality, lead-free crystal, this lovely tray has a brilliant design, alluring ridge pattern, and unique angles and curves that will shine stunningly in the light. Comes packaged in a lovely gift box and makes a great gift for housewarming parties, anniversaries, and more. Measures 14-3/4 inches long by 6-7/8 inches wide by 1-3/8 inches high. Hand-wash only.",
+        "manufacturer": "Lifetime Brands Inc.",
+        "title": "Mikasa Estate Crystal Glass Rectangular Serving Decorative Tray, 14.75 Inch"
+      },
+      "expected": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasaa",
+          "Mikasae",
+          "Lifetime Brands Inc.",
+          "lifetime brands inc."
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Mikasa",
+          "mikasa",
+          "Mikasa",
+          "Mikassaa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa",
+          "Mikasa"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'Oerdoh' and its minor variations, which closely match the listing brand. The output meets the acceptable conditions for minor variations in casing and spacing.",
+      "input": {
+        "brand_name": "Oerdoh",
+        "bullet_points": "Premium Organic Beeswax Linen Cotton Construction: Crafted with breathable organic beeswax-coated linen, Oerdoh reusable sourdough bread bags naturally regulate moisture to keep homemade bread/crusty artisan loaves fresh for 48+ hours without plastic wrap.\nAirtight Zip-Lock Freshness Seal: Oerdoh Bread bags for homemade bread features upgraded sealing zipper technology to lock in freshness for sourdough starters, sandwich breads, and bakery-style baguettes \u2013 ideal for homesteading essentials storage and toaster bag convenience.\nXL Size for Versatile Bread Storage: Oerdoh bread bags for homemade bread sourdough extra-large 13in x 17in dimensions accommodate round no-knead bread, sandwich loaves, and rustic boules. 2 packs dedicated bags for daily sourdough maintenance and crust preservation.\nEco-Friendly Reusable Design: Oerdoh Bread Bag with washable food-grade fabric prevents cross-flavoring. Durable stitching withstands 100+ uses as sustainable alternative to disposable plastic bread bags for homemade bread enthusiasts.\nZero-Waste Kitchen Essential: Essential homesteading accessory meets USDA organic standards. Perfect gift for bakers \u2013 pairs with bread proofing baskets and kitchen towels for complete sourdough bread making kits.",
+        "description": "",
+        "manufacturer": "Oerdoh",
+        "title": "Oerdoh Bread Bags for Homemade Bread - 2 Packs XL Reusable Organic Beeswax Linen Cotton Sourdough Bag, Homesteading Essentials Sourdough Bags with Sealing Zip to Keep Fresh"
+      },
+      "expected": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdohh",
+          "Oerdohh",
+          "Oerdohh"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are based on the valid brand 'Oerdoh' present in the input data, including acceptable typo variations.",
+      "input": {
+        "brand_name": "Oerdoh",
+        "bullet_points": "Premium Organic Beeswax Linen Cotton Construction: Crafted with breathable organic beeswax-coated linen, Oerdoh reusable sourdough bread bags naturally regulate moisture to keep homemade bread/crusty artisan loaves fresh for 48+ hours without plastic wrap.\nAirtight Zip-Lock Freshness Seal: Oerdoh Bread bags for homemade bread features upgraded sealing zipper technology to lock in freshness for sourdough starters, sandwich breads, and bakery-style baguettes \u2013 ideal for homesteading essentials storage and toaster bag convenience.\nXL Size for Versatile Bread Storage: Oerdoh bread bags for homemade bread sourdough extra-large 13in x 17in dimensions accommodate round no-knead bread, sandwich loaves, and rustic boules. 2 packs dedicated bags for daily sourdough maintenance and crust preservation.\nEco-Friendly Reusable Design: Oerdoh Bread Bag with washable food-grade fabric prevents cross-flavoring. Durable stitching withstands 100+ uses as sustainable alternative to disposable plastic bread bags for homemade bread enthusiasts.\nZero-Waste Kitchen Essential: Essential homesteading accessory meets USDA organic standards. Perfect gift for bakers \u2013 pairs with bread proofing baskets and kitchen towels for complete sourdough bread making kits.",
+        "description": "",
+        "manufacturer": "Oerdoh",
+        "title": "Oerdoh Bread Bags for Homemade Bread - 2 Packs XL Reusable Organic Beeswax Linen Cotton Sourdough Bag, Homesteading Essentials Sourdough Bags with Sealing Zip to Keep Fresh"
+      },
+      "expected": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdohh",
+          "Oerdohh",
+          "Oerdohh"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes the brand entity 'Oerdoh' and its variations, without any standalone generic product words or product categories. Therefore, it meets the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Oerdoh",
+        "bullet_points": "Premium Organic Beeswax Linen Cotton Construction: Crafted with breathable organic beeswax-coated linen, Oerdoh reusable sourdough bread bags naturally regulate moisture to keep homemade bread/crusty artisan loaves fresh for 48+ hours without plastic wrap.\nAirtight Zip-Lock Freshness Seal: Oerdoh Bread bags for homemade bread features upgraded sealing zipper technology to lock in freshness for sourdough starters, sandwich breads, and bakery-style baguettes \u2013 ideal for homesteading essentials storage and toaster bag convenience.\nXL Size for Versatile Bread Storage: Oerdoh bread bags for homemade bread sourdough extra-large 13in x 17in dimensions accommodate round no-knead bread, sandwich loaves, and rustic boules. 2 packs dedicated bags for daily sourdough maintenance and crust preservation.\nEco-Friendly Reusable Design: Oerdoh Bread Bag with washable food-grade fabric prevents cross-flavoring. Durable stitching withstands 100+ uses as sustainable alternative to disposable plastic bread bags for homemade bread enthusiasts.\nZero-Waste Kitchen Essential: Essential homesteading accessory meets USDA organic standards. Perfect gift for bakers \u2013 pairs with bread proofing baskets and kitchen towels for complete sourdough bread making kits.",
+        "description": "",
+        "manufacturer": "Oerdoh",
+        "title": "Oerdoh Bread Bags for Homemade Bread - 2 Packs XL Reusable Organic Beeswax Linen Cotton Sourdough Bag, Homesteading Essentials Sourdough Bags with Sealing Zip to Keep Fresh"
+      },
+      "expected": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdohh",
+          "Oerdohh",
+          "Oerdohh"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are variations of the brand name 'Oerdoh', which is a trademarked name. There are no standalone generic words or phrases that would fail the test, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "Oerdoh",
+        "bullet_points": "Premium Organic Beeswax Linen Cotton Construction: Crafted with breathable organic beeswax-coated linen, Oerdoh reusable sourdough bread bags naturally regulate moisture to keep homemade bread/crusty artisan loaves fresh for 48+ hours without plastic wrap.\nAirtight Zip-Lock Freshness Seal: Oerdoh Bread bags for homemade bread features upgraded sealing zipper technology to lock in freshness for sourdough starters, sandwich breads, and bakery-style baguettes \u2013 ideal for homesteading essentials storage and toaster bag convenience.\nXL Size for Versatile Bread Storage: Oerdoh bread bags for homemade bread sourdough extra-large 13in x 17in dimensions accommodate round no-knead bread, sandwich loaves, and rustic boules. 2 packs dedicated bags for daily sourdough maintenance and crust preservation.\nEco-Friendly Reusable Design: Oerdoh Bread Bag with washable food-grade fabric prevents cross-flavoring. Durable stitching withstands 100+ uses as sustainable alternative to disposable plastic bread bags for homemade bread enthusiasts.\nZero-Waste Kitchen Essential: Essential homesteading accessory meets USDA organic standards. Perfect gift for bakers \u2013 pairs with bread proofing baskets and kitchen towels for complete sourdough bread making kits.",
+        "description": "",
+        "manufacturer": "Oerdoh",
+        "title": "Oerdoh Bread Bags for Homemade Bread - 2 Packs XL Reusable Organic Beeswax Linen Cotton Sourdough Bag, Homesteading Essentials Sourdough Bags with Sealing Zip to Keep Fresh"
+      },
+      "expected": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdohh",
+          "Oerdohh",
+          "Oerdohh"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Oerdohh' listed multiple times, which violates the rubric's condition of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Oerdoh",
+        "bullet_points": "Premium Organic Beeswax Linen Cotton Construction: Crafted with breathable organic beeswax-coated linen, Oerdoh reusable sourdough bread bags naturally regulate moisture to keep homemade bread/crusty artisan loaves fresh for 48+ hours without plastic wrap.\nAirtight Zip-Lock Freshness Seal: Oerdoh Bread bags for homemade bread features upgraded sealing zipper technology to lock in freshness for sourdough starters, sandwich breads, and bakery-style baguettes \u2013 ideal for homesteading essentials storage and toaster bag convenience.\nXL Size for Versatile Bread Storage: Oerdoh bread bags for homemade bread sourdough extra-large 13in x 17in dimensions accommodate round no-knead bread, sandwich loaves, and rustic boules. 2 packs dedicated bags for daily sourdough maintenance and crust preservation.\nEco-Friendly Reusable Design: Oerdoh Bread Bag with washable food-grade fabric prevents cross-flavoring. Durable stitching withstands 100+ uses as sustainable alternative to disposable plastic bread bags for homemade bread enthusiasts.\nZero-Waste Kitchen Essential: Essential homesteading accessory meets USDA organic standards. Perfect gift for bakers \u2013 pairs with bread proofing baskets and kitchen towels for complete sourdough bread making kits.",
+        "description": "",
+        "manufacturer": "Oerdoh",
+        "title": "Oerdoh Bread Bags for Homemade Bread - 2 Packs XL Reusable Organic Beeswax Linen Cotton Sourdough Bag, Homesteading Essentials Sourdough Bags with Sealing Zip to Keep Fresh"
+      },
+      "expected": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Oerdoh",
+          "oerdoh",
+          "Oerdohh",
+          "Oerdho",
+          "Oerdohh",
+          "Oerdohh",
+          "Oerdohh"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'itrusou' and 'Itrusou', which closely match the listing brand. Minor variations in casing are acceptable, and while there are some incorrect variations, the presence of correct matches satisfies the PASS conditions.",
+      "input": {
+        "brand_name": "itrusou",
+        "bullet_points": "Rapid Full-Surface Heating: Experience rapid and uniform warming across a large heating area. Our thoughtfully designed heating wire ensures quick and even distribution, allowing you to arrange your tableware freely.\nAdjustable 3-Level Temperature Control: Enjoy the convenience of precise temperature adjustment for both warming and heating. Our 3-level temperature control feature ensures your food is kept at the perfect temperature, enhancing your dining experience.\nPremium Silicone Nano Material: Crafted from top-tier flexible silicone nano material, our electric warming tray offers durability, splash-proof protection, stain resistance, and oil resistance. Fold and store without worrying about unsightly creases, ensuring lasting quality.\nCompact and Rollable Storage: Embrace portability and save space effortlessly. Roll up your food warming tray for convenient storage, making it the perfect companion for on-the-go lifestyles. Easily stow it in a bag for flexibility and compact storage.\nEnergy-Efficient Operation: Be environmentally conscious without compromising warmth. Our food warming plate consumes a mere 0.25 degrees per hour, providing efficient and cost-effective warmth for your meals, making it an eco-friendly choice.\nVersatile Year-Round Use: Beyond serving as a food warmer, our product is a versatile home assistant. Unlock a range of functionalities, from quick defrosting to warming facial masks and facilitating dough fermentation. Elevate your daily routine with a dynamic warming tray that adapts to your diverse needs throughout the year.\n365 Days of Trouble-Free Replacement: Our 1-year guarantee ensures that if any quality issues affect your purchase within the first 365 days, we provide seamless replacements. No repairs, just a swift exchange for a worry-free experience.",
+        "description": "",
+        "manufacturer": "itrusou",
+        "title": "iTRUSOU Electric Warming Tray - Whole-Surface Heating, Rollable & Portable, Premium Silicone Nano-Material, 3 Temperature Settings, Auto Shut-Off - Ideal for Gatherings, Parties, and Everyday Use"
+      },
+      "expected": {
+        "brand_entities": [
+          "itrusou",
+          "Itrusou",
+          "itrusouu"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "itrusou",
+          "itrusou",
+          "itrusouu",
+          "itrusoua",
+          "itrusouy",
+          "Itrusou",
+          "Itruosou",
+          "itrsou",
+          "itruosou"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes several variations of the brand name 'itrusou' that are not present in the input, such as 'itrusoua', 'itrusouy', 'Itruosou', 'itrsou', and 'itruosou'. These are not acceptable as they do not meet the criteria for valid brand extraction.",
+      "input": {
+        "brand_name": "itrusou",
+        "bullet_points": "Rapid Full-Surface Heating: Experience rapid and uniform warming across a large heating area. Our thoughtfully designed heating wire ensures quick and even distribution, allowing you to arrange your tableware freely.\nAdjustable 3-Level Temperature Control: Enjoy the convenience of precise temperature adjustment for both warming and heating. Our 3-level temperature control feature ensures your food is kept at the perfect temperature, enhancing your dining experience.\nPremium Silicone Nano Material: Crafted from top-tier flexible silicone nano material, our electric warming tray offers durability, splash-proof protection, stain resistance, and oil resistance. Fold and store without worrying about unsightly creases, ensuring lasting quality.\nCompact and Rollable Storage: Embrace portability and save space effortlessly. Roll up your food warming tray for convenient storage, making it the perfect companion for on-the-go lifestyles. Easily stow it in a bag for flexibility and compact storage.\nEnergy-Efficient Operation: Be environmentally conscious without compromising warmth. Our food warming plate consumes a mere 0.25 degrees per hour, providing efficient and cost-effective warmth for your meals, making it an eco-friendly choice.\nVersatile Year-Round Use: Beyond serving as a food warmer, our product is a versatile home assistant. Unlock a range of functionalities, from quick defrosting to warming facial masks and facilitating dough fermentation. Elevate your daily routine with a dynamic warming tray that adapts to your diverse needs throughout the year.\n365 Days of Trouble-Free Replacement: Our 1-year guarantee ensures that if any quality issues affect your purchase within the first 365 days, we provide seamless replacements. No repairs, just a swift exchange for a worry-free experience.",
+        "description": "",
+        "manufacturer": "itrusou",
+        "title": "iTRUSOU Electric Warming Tray - Whole-Surface Heating, Rollable & Portable, Premium Silicone Nano-Material, 3 Temperature Settings, Auto Shut-Off - Ideal for Gatherings, Parties, and Everyday Use"
+      },
+      "expected": {
+        "brand_entities": [
+          "itrusou",
+          "Itrusou",
+          "itrusouu"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "itrusou",
+          "itrusou",
+          "itrusouu",
+          "itrusoua",
+          "itrusouy",
+          "Itrusou",
+          "Itruosou",
+          "itrsou",
+          "itruosou"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes variations of the brand name 'itrusou' that are not recognized as valid brand entities, such as 'itrusoua', 'itrusouy', 'Itruosou', 'itrsou', and 'itruosou', which do not meet the requirement of only including actual brand entities.",
+      "input": {
+        "brand_name": "itrusou",
+        "bullet_points": "Rapid Full-Surface Heating: Experience rapid and uniform warming across a large heating area. Our thoughtfully designed heating wire ensures quick and even distribution, allowing you to arrange your tableware freely.\nAdjustable 3-Level Temperature Control: Enjoy the convenience of precise temperature adjustment for both warming and heating. Our 3-level temperature control feature ensures your food is kept at the perfect temperature, enhancing your dining experience.\nPremium Silicone Nano Material: Crafted from top-tier flexible silicone nano material, our electric warming tray offers durability, splash-proof protection, stain resistance, and oil resistance. Fold and store without worrying about unsightly creases, ensuring lasting quality.\nCompact and Rollable Storage: Embrace portability and save space effortlessly. Roll up your food warming tray for convenient storage, making it the perfect companion for on-the-go lifestyles. Easily stow it in a bag for flexibility and compact storage.\nEnergy-Efficient Operation: Be environmentally conscious without compromising warmth. Our food warming plate consumes a mere 0.25 degrees per hour, providing efficient and cost-effective warmth for your meals, making it an eco-friendly choice.\nVersatile Year-Round Use: Beyond serving as a food warmer, our product is a versatile home assistant. Unlock a range of functionalities, from quick defrosting to warming facial masks and facilitating dough fermentation. Elevate your daily routine with a dynamic warming tray that adapts to your diverse needs throughout the year.\n365 Days of Trouble-Free Replacement: Our 1-year guarantee ensures that if any quality issues affect your purchase within the first 365 days, we provide seamless replacements. No repairs, just a swift exchange for a worry-free experience.",
+        "description": "",
+        "manufacturer": "itrusou",
+        "title": "iTRUSOU Electric Warming Tray - Whole-Surface Heating, Rollable & Portable, Premium Silicone Nano-Material, 3 Temperature Settings, Auto Shut-Off - Ideal for Gatherings, Parties, and Everyday Use"
+      },
+      "expected": {
+        "brand_entities": [
+          "itrusou",
+          "Itrusou",
+          "itrusouu"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "itrusou",
+          "itrusou",
+          "itrusouu",
+          "itrusoua",
+          "itrusouy",
+          "Itrusou",
+          "Itruosou",
+          "itrsou",
+          "itruosou"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes several entries that are not brand or trademark names, such as 'itrusoua', 'itrusouy', 'Itruosou', 'itrsou', and 'itruosou', which do not meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "itrusou",
+        "bullet_points": "Rapid Full-Surface Heating: Experience rapid and uniform warming across a large heating area. Our thoughtfully designed heating wire ensures quick and even distribution, allowing you to arrange your tableware freely.\nAdjustable 3-Level Temperature Control: Enjoy the convenience of precise temperature adjustment for both warming and heating. Our 3-level temperature control feature ensures your food is kept at the perfect temperature, enhancing your dining experience.\nPremium Silicone Nano Material: Crafted from top-tier flexible silicone nano material, our electric warming tray offers durability, splash-proof protection, stain resistance, and oil resistance. Fold and store without worrying about unsightly creases, ensuring lasting quality.\nCompact and Rollable Storage: Embrace portability and save space effortlessly. Roll up your food warming tray for convenient storage, making it the perfect companion for on-the-go lifestyles. Easily stow it in a bag for flexibility and compact storage.\nEnergy-Efficient Operation: Be environmentally conscious without compromising warmth. Our food warming plate consumes a mere 0.25 degrees per hour, providing efficient and cost-effective warmth for your meals, making it an eco-friendly choice.\nVersatile Year-Round Use: Beyond serving as a food warmer, our product is a versatile home assistant. Unlock a range of functionalities, from quick defrosting to warming facial masks and facilitating dough fermentation. Elevate your daily routine with a dynamic warming tray that adapts to your diverse needs throughout the year.\n365 Days of Trouble-Free Replacement: Our 1-year guarantee ensures that if any quality issues affect your purchase within the first 365 days, we provide seamless replacements. No repairs, just a swift exchange for a worry-free experience.",
+        "description": "",
+        "manufacturer": "itrusou",
+        "title": "iTRUSOU Electric Warming Tray - Whole-Surface Heating, Rollable & Portable, Premium Silicone Nano-Material, 3 Temperature Settings, Auto Shut-Off - Ideal for Gatherings, Parties, and Everyday Use"
+      },
+      "expected": {
+        "brand_entities": [
+          "itrusou",
+          "Itrusou",
+          "itrusouu"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "itrusou",
+          "itrusou",
+          "itrusouu",
+          "itrusoua",
+          "itrusouy",
+          "Itrusou",
+          "Itruosou",
+          "itrsou",
+          "itruosou"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'itrusou' listed three times, which violates the rubric's condition of having no exact string duplicates.",
+      "input": {
+        "brand_name": "itrusou",
+        "bullet_points": "Rapid Full-Surface Heating: Experience rapid and uniform warming across a large heating area. Our thoughtfully designed heating wire ensures quick and even distribution, allowing you to arrange your tableware freely.\nAdjustable 3-Level Temperature Control: Enjoy the convenience of precise temperature adjustment for both warming and heating. Our 3-level temperature control feature ensures your food is kept at the perfect temperature, enhancing your dining experience.\nPremium Silicone Nano Material: Crafted from top-tier flexible silicone nano material, our electric warming tray offers durability, splash-proof protection, stain resistance, and oil resistance. Fold and store without worrying about unsightly creases, ensuring lasting quality.\nCompact and Rollable Storage: Embrace portability and save space effortlessly. Roll up your food warming tray for convenient storage, making it the perfect companion for on-the-go lifestyles. Easily stow it in a bag for flexibility and compact storage.\nEnergy-Efficient Operation: Be environmentally conscious without compromising warmth. Our food warming plate consumes a mere 0.25 degrees per hour, providing efficient and cost-effective warmth for your meals, making it an eco-friendly choice.\nVersatile Year-Round Use: Beyond serving as a food warmer, our product is a versatile home assistant. Unlock a range of functionalities, from quick defrosting to warming facial masks and facilitating dough fermentation. Elevate your daily routine with a dynamic warming tray that adapts to your diverse needs throughout the year.\n365 Days of Trouble-Free Replacement: Our 1-year guarantee ensures that if any quality issues affect your purchase within the first 365 days, we provide seamless replacements. No repairs, just a swift exchange for a worry-free experience.",
+        "description": "",
+        "manufacturer": "itrusou",
+        "title": "iTRUSOU Electric Warming Tray - Whole-Surface Heating, Rollable & Portable, Premium Silicone Nano-Material, 3 Temperature Settings, Auto Shut-Off - Ideal for Gatherings, Parties, and Everyday Use"
+      },
+      "expected": {
+        "brand_entities": [
+          "itrusou",
+          "Itrusou",
+          "itrusouu"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "itrusou",
+          "itrusou",
+          "itrusouu",
+          "itrusoua",
+          "itrusouy",
+          "Itrusou",
+          "Itruosou",
+          "itrsou",
+          "itruosou"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'kate spade new york', which matches the listing brand. Minor variations in spelling and casing are present, but they do not disqualify the extraction as they are acceptable under the rubric.",
+      "input": {
+        "brand_name": "kate spade new york",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": "kate spade new york",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade newyork",
+          "katespade new york",
+          "katespade",
+          "katespadee",
+          "kate spade",
+          "kate spadee",
+          "katespade newyork"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade new york",
+          "kate spade new yor",
+          "kate spade new yrok",
+          "kate spade new yrok",
+          "katespade",
+          "katespade new york",
+          "katespade new yor",
+          "katespade new yrok",
+          "katespade new yrok"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes several misspellings of the brand name 'kate spade new york' (e.g., 'new yor', 'new yrok') that do not meet the acceptable typo/spelling variations as they deviate significantly from the original brand name.",
+      "input": {
+        "brand_name": "kate spade new york",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": "kate spade new york",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade newyork",
+          "katespade new york",
+          "katespade",
+          "katespadee",
+          "kate spade",
+          "kate spadee",
+          "katespade newyork"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade new york",
+          "kate spade new yor",
+          "kate spade new yrok",
+          "kate spade new yrok",
+          "katespade",
+          "katespade new york",
+          "katespade new yor",
+          "katespade new yrok",
+          "katespade new yrok"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the brand name 'kate spade new york' and does not contain any standalone generic product words or product categories. Therefore, it meets the PASS conditions.",
+      "input": {
+        "brand_name": "kate spade new york",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": "kate spade new york",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade newyork",
+          "katespade new york",
+          "katespade",
+          "katespadee",
+          "kate spade",
+          "kate spadee",
+          "katespade newyork"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade new york",
+          "kate spade new yor",
+          "kate spade new yrok",
+          "kate spade new yrok",
+          "katespade",
+          "katespade new york",
+          "katespade new yor",
+          "katespade new yrok",
+          "katespade new yrok"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are variations of the brand name 'kate spade new york', which is a trademarked brand. There are no standalone generic words or phrases that would cause a failure according to the rubric.",
+      "input": {
+        "brand_name": "kate spade new york",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": "kate spade new york",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade newyork",
+          "katespade new york",
+          "katespade",
+          "katespadee",
+          "kate spade",
+          "kate spadee",
+          "katespade newyork"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade new york",
+          "kate spade new yor",
+          "kate spade new yrok",
+          "kate spade new yrok",
+          "katespade",
+          "katespade new york",
+          "katespade new yor",
+          "katespade new yrok",
+          "katespade new yrok"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The output contains exact string duplicates, specifically 'kate spade new york' and 'kate spade new yrok', which appear more than once.",
+      "input": {
+        "brand_name": "kate spade new york",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": "kate spade new york",
+        "title": "kate spade new york Deco Dot 12-Piece Dinnerware Set"
+      },
+      "expected": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade newyork",
+          "katespade new york",
+          "katespade",
+          "katespadee",
+          "kate spade",
+          "kate spadee",
+          "katespade newyork"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "kate spade new york",
+          "kate spade new york",
+          "kate spade new yor",
+          "kate spade new yrok",
+          "kate spade new yrok",
+          "katespade",
+          "katespade new york",
+          "katespade new yor",
+          "katespade new yrok",
+          "katespade new yrok"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'Binmotor' and its minor variations, which closely match the listing brand. There are no instances of completely wrong brand names, and the output meets the acceptable variations in casing and spelling.",
+      "input": {
+        "brand_name": "Binmotor",
+        "bullet_points": "\u3010Fit Your Vehicle Exactly\u3011These custom floor liners fit for Camry 2012-2017. Binmotor car floor mats are accurately scanned by professional 3D laser scanner to make the car floor mats and the original car data accurately match. What's more, details such as throttle and brake were noted during the design process, which will not affect you when you drive.\n\u3010TPE Material\u3011Binmotor car floor mats are made of high quality Thermoplastic Elastomer(TPE) materials, which makes car floor mats both soft and durable. This kind of high quality materials even in hot weather does not melt.\n\u3010Anti-slip Design\u3011The car floor mats are fixed with buckles on the back, so the mat always stay in place, which gives your foot more traction & comfort. The Binmotor floor mats promise you a safer and perfect driving experience.\n\u3010All-Weather Protection\u3011Our floor mats are designed with a high edge that help contain rain, snow, muddy fallen leaves, food debris, liquids or debris, giving your car perfect protection in all weather and keeping your car clean. Binmotor vehicles floor liners are designed to stand up to the most extreme weather conditions. Multiple tests prove that it won't crack, curl or break down.\n\u3010Easy To Clean\u3011Binmotor floor mats are waterproof, just wipe smudges off with a damp cloth or wash and dried. They are incredibly easy to clean.",
+        "description": "",
+        "manufacturer": "Binmotor",
+        "title": "Binmotor-Floor Mats for Toyota Camry 2012-2017, Front & 2nd Row,TPE All Weather Car Accessories Mats Camry Custom Fit Liners Waterproof, Nonslip"
+      },
+      "expected": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Binmoter",
+          "Bimotor",
+          "Binmoto"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Bimotor",
+          "Binmoto",
+          "Binmotr",
+          "Binmotr",
+          "Binmotorr"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are either valid forms of the brand 'Binmotor' or acceptable typo/spelling variations. The brand 'Binmotor' is present in the title and bullet points, meeting the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Binmotor",
+        "bullet_points": "\u3010Fit Your Vehicle Exactly\u3011These custom floor liners fit for Camry 2012-2017. Binmotor car floor mats are accurately scanned by professional 3D laser scanner to make the car floor mats and the original car data accurately match. What's more, details such as throttle and brake were noted during the design process, which will not affect you when you drive.\n\u3010TPE Material\u3011Binmotor car floor mats are made of high quality Thermoplastic Elastomer(TPE) materials, which makes car floor mats both soft and durable. This kind of high quality materials even in hot weather does not melt.\n\u3010Anti-slip Design\u3011The car floor mats are fixed with buckles on the back, so the mat always stay in place, which gives your foot more traction & comfort. The Binmotor floor mats promise you a safer and perfect driving experience.\n\u3010All-Weather Protection\u3011Our floor mats are designed with a high edge that help contain rain, snow, muddy fallen leaves, food debris, liquids or debris, giving your car perfect protection in all weather and keeping your car clean. Binmotor vehicles floor liners are designed to stand up to the most extreme weather conditions. Multiple tests prove that it won't crack, curl or break down.\n\u3010Easy To Clean\u3011Binmotor floor mats are waterproof, just wipe smudges off with a damp cloth or wash and dried. They are incredibly easy to clean.",
+        "description": "",
+        "manufacturer": "Binmotor",
+        "title": "Binmotor-Floor Mats for Toyota Camry 2012-2017, Front & 2nd Row,TPE All Weather Car Accessories Mats Camry Custom Fit Liners Waterproof, Nonslip"
+      },
+      "expected": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Binmoter",
+          "Bimotor",
+          "Binmoto"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Bimotor",
+          "Binmoto",
+          "Binmotr",
+          "Binmotr",
+          "Binmotorr"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the actual brand name 'Binmotor' and does not contain any standalone generic product words or product categories. All entries are acceptable brand entities.",
+      "input": {
+        "brand_name": "Binmotor",
+        "bullet_points": "\u3010Fit Your Vehicle Exactly\u3011These custom floor liners fit for Camry 2012-2017. Binmotor car floor mats are accurately scanned by professional 3D laser scanner to make the car floor mats and the original car data accurately match. What's more, details such as throttle and brake were noted during the design process, which will not affect you when you drive.\n\u3010TPE Material\u3011Binmotor car floor mats are made of high quality Thermoplastic Elastomer(TPE) materials, which makes car floor mats both soft and durable. This kind of high quality materials even in hot weather does not melt.\n\u3010Anti-slip Design\u3011The car floor mats are fixed with buckles on the back, so the mat always stay in place, which gives your foot more traction & comfort. The Binmotor floor mats promise you a safer and perfect driving experience.\n\u3010All-Weather Protection\u3011Our floor mats are designed with a high edge that help contain rain, snow, muddy fallen leaves, food debris, liquids or debris, giving your car perfect protection in all weather and keeping your car clean. Binmotor vehicles floor liners are designed to stand up to the most extreme weather conditions. Multiple tests prove that it won't crack, curl or break down.\n\u3010Easy To Clean\u3011Binmotor floor mats are waterproof, just wipe smudges off with a damp cloth or wash and dried. They are incredibly easy to clean.",
+        "description": "",
+        "manufacturer": "Binmotor",
+        "title": "Binmotor-Floor Mats for Toyota Camry 2012-2017, Front & 2nd Row,TPE All Weather Car Accessories Mats Camry Custom Fit Liners Waterproof, Nonslip"
+      },
+      "expected": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Binmoter",
+          "Bimotor",
+          "Binmoto"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Bimotor",
+          "Binmoto",
+          "Binmotr",
+          "Binmotr",
+          "Binmotorr"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the module output are variations of the brand name 'Binmotor', which is a trademarked brand. Therefore, they meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Binmotor",
+        "bullet_points": "\u3010Fit Your Vehicle Exactly\u3011These custom floor liners fit for Camry 2012-2017. Binmotor car floor mats are accurately scanned by professional 3D laser scanner to make the car floor mats and the original car data accurately match. What's more, details such as throttle and brake were noted during the design process, which will not affect you when you drive.\n\u3010TPE Material\u3011Binmotor car floor mats are made of high quality Thermoplastic Elastomer(TPE) materials, which makes car floor mats both soft and durable. This kind of high quality materials even in hot weather does not melt.\n\u3010Anti-slip Design\u3011The car floor mats are fixed with buckles on the back, so the mat always stay in place, which gives your foot more traction & comfort. The Binmotor floor mats promise you a safer and perfect driving experience.\n\u3010All-Weather Protection\u3011Our floor mats are designed with a high edge that help contain rain, snow, muddy fallen leaves, food debris, liquids or debris, giving your car perfect protection in all weather and keeping your car clean. Binmotor vehicles floor liners are designed to stand up to the most extreme weather conditions. Multiple tests prove that it won't crack, curl or break down.\n\u3010Easy To Clean\u3011Binmotor floor mats are waterproof, just wipe smudges off with a damp cloth or wash and dried. They are incredibly easy to clean.",
+        "description": "",
+        "manufacturer": "Binmotor",
+        "title": "Binmotor-Floor Mats for Toyota Camry 2012-2017, Front & 2nd Row,TPE All Weather Car Accessories Mats Camry Custom Fit Liners Waterproof, Nonslip"
+      },
+      "expected": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Binmoter",
+          "Bimotor",
+          "Binmoto"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Bimotor",
+          "Binmoto",
+          "Binmotr",
+          "Binmotr",
+          "Binmotorr"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Binmotr' listed three times, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Binmotor",
+        "bullet_points": "\u3010Fit Your Vehicle Exactly\u3011These custom floor liners fit for Camry 2012-2017. Binmotor car floor mats are accurately scanned by professional 3D laser scanner to make the car floor mats and the original car data accurately match. What's more, details such as throttle and brake were noted during the design process, which will not affect you when you drive.\n\u3010TPE Material\u3011Binmotor car floor mats are made of high quality Thermoplastic Elastomer(TPE) materials, which makes car floor mats both soft and durable. This kind of high quality materials even in hot weather does not melt.\n\u3010Anti-slip Design\u3011The car floor mats are fixed with buckles on the back, so the mat always stay in place, which gives your foot more traction & comfort. The Binmotor floor mats promise you a safer and perfect driving experience.\n\u3010All-Weather Protection\u3011Our floor mats are designed with a high edge that help contain rain, snow, muddy fallen leaves, food debris, liquids or debris, giving your car perfect protection in all weather and keeping your car clean. Binmotor vehicles floor liners are designed to stand up to the most extreme weather conditions. Multiple tests prove that it won't crack, curl or break down.\n\u3010Easy To Clean\u3011Binmotor floor mats are waterproof, just wipe smudges off with a damp cloth or wash and dried. They are incredibly easy to clean.",
+        "description": "",
+        "manufacturer": "Binmotor",
+        "title": "Binmotor-Floor Mats for Toyota Camry 2012-2017, Front & 2nd Row,TPE All Weather Car Accessories Mats Camry Custom Fit Liners Waterproof, Nonslip"
+      },
+      "expected": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Binmoter",
+          "Bimotor",
+          "Binmoto"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Binmotor",
+          "binmotor",
+          "Binmotr",
+          "Bimotor",
+          "Binmoto",
+          "Binmotr",
+          "Binmotr",
+          "Binmotorr"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'Aeagle' and its minor variations, which closely match the listing brand 'Aeagle'. The output meets the acceptable conditions for casing and variations.",
+      "input": {
+        "brand_name": "Aeagle",
+        "bullet_points": "Vehicle Fitment: Compatible with 2003-2007 GMC Sierra, 2003-2011 GMC Yukon, 2007-2013 Cadillac Escalade ESV, 2003-2006 Chevrolet Silverado, 2003-2011 Chevrolet Suburban\nReference Number: Compatible with 700191, 89019320, 89019301\nPremium Quality: Designed to keep your vehicle's HVAC system in top shape; Durable Material: Material of rotor punching plate is silicon steel. Enameled wire is used copper enameled wire.\nEasy to Install: Same Dimensions as your part, Directly Fit; Stable characteristics and high reliability; Larger Air Volume and Lower Noise\nAttention: Please check the descriptions and compatibility chart to ensure that the replacement fits your auto before your purchasing.",
+        "description": "",
+        "manufacturer": "AEagle",
+        "title": "AC Heater Blower Motor w/Fan Compatible with 700191 2003-2014 Silverado Suburban Tahoe Avalanche/GMC Sierra Yukon/Cadillac Escalade, Replaces for 75748 20760618 89019320 89019301"
+      },
+      "expected": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegale",
+          "Aegle",
+          "AEagle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegle",
+          "Aegale",
+          "Aeagel",
+          "AEagle"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Aeagel', which is a made-up variation of the brand and does not exist in the input data. This violates the rubric's FAIL condition of extracting a completely different brand not present in the input.",
+      "input": {
+        "brand_name": "Aeagle",
+        "bullet_points": "Vehicle Fitment: Compatible with 2003-2007 GMC Sierra, 2003-2011 GMC Yukon, 2007-2013 Cadillac Escalade ESV, 2003-2006 Chevrolet Silverado, 2003-2011 Chevrolet Suburban\nReference Number: Compatible with 700191, 89019320, 89019301\nPremium Quality: Designed to keep your vehicle's HVAC system in top shape; Durable Material: Material of rotor punching plate is silicon steel. Enameled wire is used copper enameled wire.\nEasy to Install: Same Dimensions as your part, Directly Fit; Stable characteristics and high reliability; Larger Air Volume and Lower Noise\nAttention: Please check the descriptions and compatibility chart to ensure that the replacement fits your auto before your purchasing.",
+        "description": "",
+        "manufacturer": "AEagle",
+        "title": "AC Heater Blower Motor w/Fan Compatible with 700191 2003-2014 Silverado Suburban Tahoe Avalanche/GMC Sierra Yukon/Cadillac Escalade, Replaces for 75748 20760618 89019320 89019301"
+      },
+      "expected": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegale",
+          "Aegle",
+          "AEagle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegle",
+          "Aegale",
+          "Aeagel",
+          "AEagle"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities and does not contain any standalone generic product words or product categories. All entries in the brand_entities list are variations of the brand name 'Aeagle', which is acceptable.",
+      "input": {
+        "brand_name": "Aeagle",
+        "bullet_points": "Vehicle Fitment: Compatible with 2003-2007 GMC Sierra, 2003-2011 GMC Yukon, 2007-2013 Cadillac Escalade ESV, 2003-2006 Chevrolet Silverado, 2003-2011 Chevrolet Suburban\nReference Number: Compatible with 700191, 89019320, 89019301\nPremium Quality: Designed to keep your vehicle's HVAC system in top shape; Durable Material: Material of rotor punching plate is silicon steel. Enameled wire is used copper enameled wire.\nEasy to Install: Same Dimensions as your part, Directly Fit; Stable characteristics and high reliability; Larger Air Volume and Lower Noise\nAttention: Please check the descriptions and compatibility chart to ensure that the replacement fits your auto before your purchasing.",
+        "description": "",
+        "manufacturer": "AEagle",
+        "title": "AC Heater Blower Motor w/Fan Compatible with 700191 2003-2014 Silverado Suburban Tahoe Avalanche/GMC Sierra Yukon/Cadillac Escalade, Replaces for 75748 20760618 89019320 89019301"
+      },
+      "expected": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegale",
+          "Aegle",
+          "AEagle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegle",
+          "Aegale",
+          "Aeagel",
+          "AEagle"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are variations of the brand name 'Aeagle', which is a trademarked name. There are no standalone generic words or phrases that would cause a FAIL condition.",
+      "input": {
+        "brand_name": "Aeagle",
+        "bullet_points": "Vehicle Fitment: Compatible with 2003-2007 GMC Sierra, 2003-2011 GMC Yukon, 2007-2013 Cadillac Escalade ESV, 2003-2006 Chevrolet Silverado, 2003-2011 Chevrolet Suburban\nReference Number: Compatible with 700191, 89019320, 89019301\nPremium Quality: Designed to keep your vehicle's HVAC system in top shape; Durable Material: Material of rotor punching plate is silicon steel. Enameled wire is used copper enameled wire.\nEasy to Install: Same Dimensions as your part, Directly Fit; Stable characteristics and high reliability; Larger Air Volume and Lower Noise\nAttention: Please check the descriptions and compatibility chart to ensure that the replacement fits your auto before your purchasing.",
+        "description": "",
+        "manufacturer": "AEagle",
+        "title": "AC Heater Blower Motor w/Fan Compatible with 700191 2003-2014 Silverado Suburban Tahoe Avalanche/GMC Sierra Yukon/Cadillac Escalade, Replaces for 75748 20760618 89019320 89019301"
+      },
+      "expected": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegale",
+          "Aegle",
+          "AEagle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegle",
+          "Aegale",
+          "Aeagel",
+          "AEagle"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'AEagle' listed twice, which violates the rubric's condition of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Aeagle",
+        "bullet_points": "Vehicle Fitment: Compatible with 2003-2007 GMC Sierra, 2003-2011 GMC Yukon, 2007-2013 Cadillac Escalade ESV, 2003-2006 Chevrolet Silverado, 2003-2011 Chevrolet Suburban\nReference Number: Compatible with 700191, 89019320, 89019301\nPremium Quality: Designed to keep your vehicle's HVAC system in top shape; Durable Material: Material of rotor punching plate is silicon steel. Enameled wire is used copper enameled wire.\nEasy to Install: Same Dimensions as your part, Directly Fit; Stable characteristics and high reliability; Larger Air Volume and Lower Noise\nAttention: Please check the descriptions and compatibility chart to ensure that the replacement fits your auto before your purchasing.",
+        "description": "",
+        "manufacturer": "AEagle",
+        "title": "AC Heater Blower Motor w/Fan Compatible with 700191 2003-2014 Silverado Suburban Tahoe Avalanche/GMC Sierra Yukon/Cadillac Escalade, Replaces for 75748 20760618 89019320 89019301"
+      },
+      "expected": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegale",
+          "Aegle",
+          "AEagle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Aeagle",
+          "aeagle",
+          "Aegle",
+          "Aegale",
+          "Aeagel",
+          "AEagle"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'RILLEC' and its minor variations, which closely match the listing brand. The output meets the acceptable conditions for extraction.",
+      "input": {
+        "brand_name": "RILLEC",
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "description": "",
+        "manufacturer": "RILLEC",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILLECC",
+          "RILIEC",
+          "RILC"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILIEC",
+          "RILC",
+          "RILIEC",
+          "RILEC",
+          "RILECC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are either the exact brand 'RILLEC' or acceptable typo/spelling variations of it, which are present in the input data.",
+      "input": {
+        "brand_name": "RILLEC",
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "description": "",
+        "manufacturer": "RILLEC",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILLECC",
+          "RILIEC",
+          "RILC"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILIEC",
+          "RILC",
+          "RILIEC",
+          "RILEC",
+          "RILECC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the actual brand name 'RILLEC' and does not contain any standalone generic product words or product categories, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "RILLEC",
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "description": "",
+        "manufacturer": "RILLEC",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILLECC",
+          "RILIEC",
+          "RILC"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILIEC",
+          "RILC",
+          "RILIEC",
+          "RILEC",
+          "RILECC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains duplicate entries and variations of the brand name that do not conform to the expected output format. The expected output lists unique brand entities, while the actual output includes duplicates and incorrect variations.",
+      "input": {
+        "brand_name": "RILLEC",
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "description": "",
+        "manufacturer": "RILLEC",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILLECC",
+          "RILIEC",
+          "RILC"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILIEC",
+          "RILC",
+          "RILIEC",
+          "RILEC",
+          "RILECC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'RILIEC' listed twice, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "RILLEC",
+        "bullet_points": "\u3010CUSTOM FIT\u3011Car floor mats & cargo liner are Compatible with 2012 2013 2014 2015 2016 2017 Camry LE/SE/XLE/XSE/Hybrid.The 3D laser scanning technology accurately fits the floor curvature, which is fully in line with the original vehicle data.\n\u3010ALL WEATHER PROTECTION\uff0cSAFETY UPGRADE\u3011The deeply sculpted channels and raised edge can effectively trap liquids, snow, and sand to keep your car and shoes clean. Even in wet conditions, the buckles can effectively prevent the carpet floor mats from slipping. The mats are available for children and the elderly.\n\u3010 EASY TO CLEAN,NON-SLIP\u3011The textured skid-resistant surface is easily cleaned. Neither cumbersome vacuum cleaners nor harsh chemicals are needed; You just take a few minutes to wash off with water hose or damp cloth.\n\u3010TPE MATERIAL\uff0cEASY TO INSTALL\u3011Floor liners are made with non-toxic and odorless TPE material, ensuring 115% safety even in extreme hot weather. The product contains no latex, cadmium, lead, or any harmful PVC\u2019s,free of heavy metals. High tensity TPE material not only provides a superb feel and extreme wear-resistance, but also remains flexible in even the harshest of cold weather.\n\u3010WHY CHOOSE RILLEC\u3011We provide quality after-sales service for automotive floor mats. Should you have any questions, please feel free to contact us. We promise 100% satisfaction to every customer.",
+        "description": "",
+        "manufacturer": "RILLEC",
+        "title": "RILLEC Floor Mats & Cargo Liner for 2012-2017 Toyota Camry, All Weather Protection Accessories Custom Full Set Liners Include 1st & 2nd Row Automotive Floor Mats TPE Winter Slush Car Mats"
+      },
+      "expected": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILLECC",
+          "RILIEC",
+          "RILC"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RILLEC",
+          "rillec",
+          "RILIEC",
+          "RILC",
+          "RILIEC",
+          "RILEC",
+          "RILECC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes 'Transformers' and 'Hasbro', which closely match the brand name in the listing. Minor variations in casing and spelling are present, but they do not disqualify the extraction as the main brand is correctly identified.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "Hasbro",
+          "Cyber Commander Series",
+          "Optimus Prime",
+          "Tranformers",
+          "Transformors",
+          "Transformer Toys",
+          "Optimus Primee",
+          "Optimus Prine",
+          "OptimusPrime",
+          "Cyber Commander",
+          "Cyber Command Series",
+          "Hasbroo",
+          "Hasbro Toys"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Transformerss",
+          "Transfomer",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroo",
+          "Hasbroo"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes multiple variations of the brand 'Transformers' and 'Hasbro', but it also contains several misspellings and variations that do not meet the acceptable criteria for typo/spelling variations. Specifically, 'Transfomers', 'Transformerss', 'Transfomer', and 'Hasbroo' are not acceptable variations as they deviate too far from the original brand names.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "Hasbro",
+          "Cyber Commander Series",
+          "Optimus Prime",
+          "Tranformers",
+          "Transformors",
+          "Transformer Toys",
+          "Optimus Primee",
+          "Optimus Prine",
+          "OptimusPrime",
+          "Cyber Commander",
+          "Cyber Command Series",
+          "Hasbroo",
+          "Hasbro Toys"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Transformerss",
+          "Transfomer",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroo",
+          "Hasbroo"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes multiple instances of the brand name 'Transformers' and its variations, but it also contains generic terms like 'transformers' (lowercase) which do not qualify as brand entities. Additionally, there are misspellings and duplicates that do not represent valid brand entities.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "Hasbro",
+          "Cyber Commander Series",
+          "Optimus Prime",
+          "Tranformers",
+          "Transformors",
+          "Transformer Toys",
+          "Optimus Primee",
+          "Optimus Prine",
+          "OptimusPrime",
+          "Cyber Commander",
+          "Cyber Command Series",
+          "Hasbroo",
+          "Hasbro Toys"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Transformerss",
+          "Transfomer",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroo",
+          "Hasbroo"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes generic terms and misspellings that do not meet the criteria for trademarked entities. Specifically, 'transformers' (lowercase) and various misspellings do not qualify as brand names, and the presence of 'Hasbroo' (a misspelling) also fails to meet the trademark requirement.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "Hasbro",
+          "Cyber Commander Series",
+          "Optimus Prime",
+          "Tranformers",
+          "Transformors",
+          "Transformer Toys",
+          "Optimus Primee",
+          "Optimus Prine",
+          "OptimusPrime",
+          "Cyber Commander",
+          "Cyber Command Series",
+          "Hasbroo",
+          "Hasbro Toys"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Transformerss",
+          "Transfomer",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroo",
+          "Hasbroo"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The output contains the exact string 'Hasbroo' listed three times, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "Hasbro",
+          "Cyber Commander Series",
+          "Optimus Prime",
+          "Tranformers",
+          "Transformors",
+          "Transformer Toys",
+          "Optimus Primee",
+          "Optimus Prine",
+          "OptimusPrime",
+          "Cyber Commander",
+          "Cyber Command Series",
+          "Hasbroo",
+          "Hasbro Toys"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Transformerss",
+          "Transfomer",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroo",
+          "Hasbroo"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes several variations of the brand name 'Marsflex' and 'Marsmotor', but it does not include the exact brand name 'Marsflex' as required. Additionally, the variations 'Marsfex', 'Marsfleex', and 'Marsfles' are not acceptable as they deviate too far from the original brand name.",
+      "input": {
+        "brand_name": "Marsflex",
+        "bullet_points": "Attention: This blower motor is a front blower motor. If you need a rear blower motor, then this product is not suitable for you\nApplication for Chevy: Marsflex front blower motor compatible for 2003,2005-2006 Silverado 1500 HD, 2003-2005 Avalanche 1500, 2003-2005 Avalanche 2500, 2003-2006 Silverado 1500, 2003-2006 Silverado 2500, 2003-2006 Silverado 2500 HD, 2003-2006 Silverado 3500, 2003-2011 Suburban 1500, 2003-2011 Suburban 2500\nApplication for GMC: Marsflex front blower motor compatible for 2003,2005-2007 Sierra 1500 HD, 2003-2007 Sierra 1500, 2003-2004 Sierra 2500, 2003-2007 Sierra 2500 HD, 2003-2006 Sierra 3500, 2003-2011 Yukon, 2003-2011 Yukon XL 1500, 2003-2011 Yukon XL 2500\nApplication for Cadillac: Marsflex front blower motor compatible for 2009-2013 Escalade, 2007-2013 Escalade ESV, 2003-2011 Escalade EXT\nReplace OE Number: 700191, 89019320, 88986838, 89023346, 89019301, PM2728, PM9201, 5169, 3010033, 15-80387, 15-81124. Do check your car model in the \"amazonconfirmedfit\" in the top left corner before ordering\nEnergy-efficient Motor: Marsflex front HVAC blower motor can work fine at each speed with at least 80,000 hours a service life. Rigorous mechanical and electrical testing ensure smooth operation of the motor. High-quality motor armature provides strong protection against destructive current peaks and overvoltage, greatly improved the safety of passengers\nAdvantage: The upgraded fan effectively prevents dust deposition, larger air volume can restore fresh air quickly inside the car; rigorous mechanical and electrical testing\uff0cbalanced testing ensure the strong and long-term operation of the motor, quieter, more energy-efficient, more durable to meet the comfort level of passengers; heater blower motor is perfectly protected by safe and reliable packaging, the foam shims are firmly sealed to the housing to reduce the entry of impurities and make the blower motor work more efficiently; Marsflex heater blower motor can work fine at each speed with a service life of at least 80,000 hours\nWarranty: 1-year warranty. Package includes 1 AC blower motor with fan Cage. Do not hesitate to contact us if you have any doubts or queries",
+        "description": "",
+        "manufacturer": "\u200eMarsmotor",
+        "title": "Marsflex Front Blower Motor 700191 for 2003-2011 Chevy Silverado Avalanche Suburban, for GMC Sierra Yukon, 2004 2005 2006 2007 2008 2009 2010 Automotive Replacement Blower Motor Fan OE: 88986838"
+      },
+      "expected": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleks",
+          "Marsfexx",
+          "Marsflexx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotorr",
+          "Marsmotar",
+          "Marsmotorrs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleex",
+          "Marsfles",
+          "Marsflx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotr",
+          "Marsmoto"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands in the module output, including 'Marsflex' and 'Marsmotor', are present in the input data. The variations such as 'Marsfex', 'Marsfleex', and 'Marsmoto' are acceptable typo/spelling variations of the valid brands.",
+      "input": {
+        "brand_name": "Marsflex",
+        "bullet_points": "Attention: This blower motor is a front blower motor. If you need a rear blower motor, then this product is not suitable for you\nApplication for Chevy: Marsflex front blower motor compatible for 2003,2005-2006 Silverado 1500 HD, 2003-2005 Avalanche 1500, 2003-2005 Avalanche 2500, 2003-2006 Silverado 1500, 2003-2006 Silverado 2500, 2003-2006 Silverado 2500 HD, 2003-2006 Silverado 3500, 2003-2011 Suburban 1500, 2003-2011 Suburban 2500\nApplication for GMC: Marsflex front blower motor compatible for 2003,2005-2007 Sierra 1500 HD, 2003-2007 Sierra 1500, 2003-2004 Sierra 2500, 2003-2007 Sierra 2500 HD, 2003-2006 Sierra 3500, 2003-2011 Yukon, 2003-2011 Yukon XL 1500, 2003-2011 Yukon XL 2500\nApplication for Cadillac: Marsflex front blower motor compatible for 2009-2013 Escalade, 2007-2013 Escalade ESV, 2003-2011 Escalade EXT\nReplace OE Number: 700191, 89019320, 88986838, 89023346, 89019301, PM2728, PM9201, 5169, 3010033, 15-80387, 15-81124. Do check your car model in the \"amazonconfirmedfit\" in the top left corner before ordering\nEnergy-efficient Motor: Marsflex front HVAC blower motor can work fine at each speed with at least 80,000 hours a service life. Rigorous mechanical and electrical testing ensure smooth operation of the motor. High-quality motor armature provides strong protection against destructive current peaks and overvoltage, greatly improved the safety of passengers\nAdvantage: The upgraded fan effectively prevents dust deposition, larger air volume can restore fresh air quickly inside the car; rigorous mechanical and electrical testing\uff0cbalanced testing ensure the strong and long-term operation of the motor, quieter, more energy-efficient, more durable to meet the comfort level of passengers; heater blower motor is perfectly protected by safe and reliable packaging, the foam shims are firmly sealed to the housing to reduce the entry of impurities and make the blower motor work more efficiently; Marsflex heater blower motor can work fine at each speed with a service life of at least 80,000 hours\nWarranty: 1-year warranty. Package includes 1 AC blower motor with fan Cage. Do not hesitate to contact us if you have any doubts or queries",
+        "description": "",
+        "manufacturer": "\u200eMarsmotor",
+        "title": "Marsflex Front Blower Motor 700191 for 2003-2011 Chevy Silverado Avalanche Suburban, for GMC Sierra Yukon, 2004 2005 2006 2007 2008 2009 2010 Automotive Replacement Blower Motor Fan OE: 88986838"
+      },
+      "expected": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleks",
+          "Marsfexx",
+          "Marsflexx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotorr",
+          "Marsmotar",
+          "Marsmotorrs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleex",
+          "Marsfles",
+          "Marsflx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotr",
+          "Marsmoto"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, specifically variations of 'Marsflex' and 'Marsmotor', without any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "Marsflex",
+        "bullet_points": "Attention: This blower motor is a front blower motor. If you need a rear blower motor, then this product is not suitable for you\nApplication for Chevy: Marsflex front blower motor compatible for 2003,2005-2006 Silverado 1500 HD, 2003-2005 Avalanche 1500, 2003-2005 Avalanche 2500, 2003-2006 Silverado 1500, 2003-2006 Silverado 2500, 2003-2006 Silverado 2500 HD, 2003-2006 Silverado 3500, 2003-2011 Suburban 1500, 2003-2011 Suburban 2500\nApplication for GMC: Marsflex front blower motor compatible for 2003,2005-2007 Sierra 1500 HD, 2003-2007 Sierra 1500, 2003-2004 Sierra 2500, 2003-2007 Sierra 2500 HD, 2003-2006 Sierra 3500, 2003-2011 Yukon, 2003-2011 Yukon XL 1500, 2003-2011 Yukon XL 2500\nApplication for Cadillac: Marsflex front blower motor compatible for 2009-2013 Escalade, 2007-2013 Escalade ESV, 2003-2011 Escalade EXT\nReplace OE Number: 700191, 89019320, 88986838, 89023346, 89019301, PM2728, PM9201, 5169, 3010033, 15-80387, 15-81124. Do check your car model in the \"amazonconfirmedfit\" in the top left corner before ordering\nEnergy-efficient Motor: Marsflex front HVAC blower motor can work fine at each speed with at least 80,000 hours a service life. Rigorous mechanical and electrical testing ensure smooth operation of the motor. High-quality motor armature provides strong protection against destructive current peaks and overvoltage, greatly improved the safety of passengers\nAdvantage: The upgraded fan effectively prevents dust deposition, larger air volume can restore fresh air quickly inside the car; rigorous mechanical and electrical testing\uff0cbalanced testing ensure the strong and long-term operation of the motor, quieter, more energy-efficient, more durable to meet the comfort level of passengers; heater blower motor is perfectly protected by safe and reliable packaging, the foam shims are firmly sealed to the housing to reduce the entry of impurities and make the blower motor work more efficiently; Marsflex heater blower motor can work fine at each speed with a service life of at least 80,000 hours\nWarranty: 1-year warranty. Package includes 1 AC blower motor with fan Cage. Do not hesitate to contact us if you have any doubts or queries",
+        "description": "",
+        "manufacturer": "\u200eMarsmotor",
+        "title": "Marsflex Front Blower Motor 700191 for 2003-2011 Chevy Silverado Avalanche Suburban, for GMC Sierra Yukon, 2004 2005 2006 2007 2008 2009 2010 Automotive Replacement Blower Motor Fan OE: 88986838"
+      },
+      "expected": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleks",
+          "Marsfexx",
+          "Marsflexx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotorr",
+          "Marsmotar",
+          "Marsmotorrs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleex",
+          "Marsfles",
+          "Marsflx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotr",
+          "Marsmoto"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes variations of the brand name 'Marsflex' and 'Marsmotor', but it fails to include all the necessary variations listed in the expected output. Specifically, it misses 'Marsfleks', 'Marsfexx', 'Marsflexx', 'Marsmotorr', 'Marsmotar', and 'Marsmotorrs', which are important for the 'Can I buy this on Amazon?' test.",
+      "input": {
+        "brand_name": "Marsflex",
+        "bullet_points": "Attention: This blower motor is a front blower motor. If you need a rear blower motor, then this product is not suitable for you\nApplication for Chevy: Marsflex front blower motor compatible for 2003,2005-2006 Silverado 1500 HD, 2003-2005 Avalanche 1500, 2003-2005 Avalanche 2500, 2003-2006 Silverado 1500, 2003-2006 Silverado 2500, 2003-2006 Silverado 2500 HD, 2003-2006 Silverado 3500, 2003-2011 Suburban 1500, 2003-2011 Suburban 2500\nApplication for GMC: Marsflex front blower motor compatible for 2003,2005-2007 Sierra 1500 HD, 2003-2007 Sierra 1500, 2003-2004 Sierra 2500, 2003-2007 Sierra 2500 HD, 2003-2006 Sierra 3500, 2003-2011 Yukon, 2003-2011 Yukon XL 1500, 2003-2011 Yukon XL 2500\nApplication for Cadillac: Marsflex front blower motor compatible for 2009-2013 Escalade, 2007-2013 Escalade ESV, 2003-2011 Escalade EXT\nReplace OE Number: 700191, 89019320, 88986838, 89023346, 89019301, PM2728, PM9201, 5169, 3010033, 15-80387, 15-81124. Do check your car model in the \"amazonconfirmedfit\" in the top left corner before ordering\nEnergy-efficient Motor: Marsflex front HVAC blower motor can work fine at each speed with at least 80,000 hours a service life. Rigorous mechanical and electrical testing ensure smooth operation of the motor. High-quality motor armature provides strong protection against destructive current peaks and overvoltage, greatly improved the safety of passengers\nAdvantage: The upgraded fan effectively prevents dust deposition, larger air volume can restore fresh air quickly inside the car; rigorous mechanical and electrical testing\uff0cbalanced testing ensure the strong and long-term operation of the motor, quieter, more energy-efficient, more durable to meet the comfort level of passengers; heater blower motor is perfectly protected by safe and reliable packaging, the foam shims are firmly sealed to the housing to reduce the entry of impurities and make the blower motor work more efficiently; Marsflex heater blower motor can work fine at each speed with a service life of at least 80,000 hours\nWarranty: 1-year warranty. Package includes 1 AC blower motor with fan Cage. Do not hesitate to contact us if you have any doubts or queries",
+        "description": "",
+        "manufacturer": "\u200eMarsmotor",
+        "title": "Marsflex Front Blower Motor 700191 for 2003-2011 Chevy Silverado Avalanche Suburban, for GMC Sierra Yukon, 2004 2005 2006 2007 2008 2009 2010 Automotive Replacement Blower Motor Fan OE: 88986838"
+      },
+      "expected": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleks",
+          "Marsfexx",
+          "Marsflexx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotorr",
+          "Marsmotar",
+          "Marsmotorrs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleex",
+          "Marsfles",
+          "Marsflx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotr",
+          "Marsmoto"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates in the brand entities list. All entries are unique, and case variations are allowed.",
+      "input": {
+        "brand_name": "Marsflex",
+        "bullet_points": "Attention: This blower motor is a front blower motor. If you need a rear blower motor, then this product is not suitable for you\nApplication for Chevy: Marsflex front blower motor compatible for 2003,2005-2006 Silverado 1500 HD, 2003-2005 Avalanche 1500, 2003-2005 Avalanche 2500, 2003-2006 Silverado 1500, 2003-2006 Silverado 2500, 2003-2006 Silverado 2500 HD, 2003-2006 Silverado 3500, 2003-2011 Suburban 1500, 2003-2011 Suburban 2500\nApplication for GMC: Marsflex front blower motor compatible for 2003,2005-2007 Sierra 1500 HD, 2003-2007 Sierra 1500, 2003-2004 Sierra 2500, 2003-2007 Sierra 2500 HD, 2003-2006 Sierra 3500, 2003-2011 Yukon, 2003-2011 Yukon XL 1500, 2003-2011 Yukon XL 2500\nApplication for Cadillac: Marsflex front blower motor compatible for 2009-2013 Escalade, 2007-2013 Escalade ESV, 2003-2011 Escalade EXT\nReplace OE Number: 700191, 89019320, 88986838, 89023346, 89019301, PM2728, PM9201, 5169, 3010033, 15-80387, 15-81124. Do check your car model in the \"amazonconfirmedfit\" in the top left corner before ordering\nEnergy-efficient Motor: Marsflex front HVAC blower motor can work fine at each speed with at least 80,000 hours a service life. Rigorous mechanical and electrical testing ensure smooth operation of the motor. High-quality motor armature provides strong protection against destructive current peaks and overvoltage, greatly improved the safety of passengers\nAdvantage: The upgraded fan effectively prevents dust deposition, larger air volume can restore fresh air quickly inside the car; rigorous mechanical and electrical testing\uff0cbalanced testing ensure the strong and long-term operation of the motor, quieter, more energy-efficient, more durable to meet the comfort level of passengers; heater blower motor is perfectly protected by safe and reliable packaging, the foam shims are firmly sealed to the housing to reduce the entry of impurities and make the blower motor work more efficiently; Marsflex heater blower motor can work fine at each speed with a service life of at least 80,000 hours\nWarranty: 1-year warranty. Package includes 1 AC blower motor with fan Cage. Do not hesitate to contact us if you have any doubts or queries",
+        "description": "",
+        "manufacturer": "\u200eMarsmotor",
+        "title": "Marsflex Front Blower Motor 700191 for 2003-2011 Chevy Silverado Avalanche Suburban, for GMC Sierra Yukon, 2004 2005 2006 2007 2008 2009 2010 Automotive Replacement Blower Motor Fan OE: 88986838"
+      },
+      "expected": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleks",
+          "Marsfexx",
+          "Marsflexx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotorr",
+          "Marsmotar",
+          "Marsmotorrs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Marsflex",
+          "marsflex",
+          "Marsfex",
+          "Marsfleex",
+          "Marsfles",
+          "Marsflx",
+          "Marsmotor",
+          "marsmotor",
+          "Marsmotr",
+          "Marsmoto"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'VAHOIALD' and its minor variations, which closely match the listing brand. The output meets the PASS conditions as there are no failures in brand extraction.",
+      "input": {
+        "brand_name": "VAHOIALD",
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "description": "",
+        "manufacturer": "VAHOIALD",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "Vahoiald"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "VAHOIALD",
+          "VAHOIALD",
+          "Vahoiald",
+          "Vahoialdd"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are derived from the valid brand 'VAHOIALD' present in the input data, including acceptable typo variations and case variations.",
+      "input": {
+        "brand_name": "VAHOIALD",
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "description": "",
+        "manufacturer": "VAHOIALD",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "Vahoiald"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "VAHOIALD",
+          "VAHOIALD",
+          "Vahoiald",
+          "Vahoialdd"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities (VAHOIALD and its variations) without any standalone generic product words or product categories, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "VAHOIALD",
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "description": "",
+        "manufacturer": "VAHOIALD",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "Vahoiald"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "VAHOIALD",
+          "VAHOIALD",
+          "Vahoiald",
+          "Vahoialdd"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are variations of the brand name 'VAHOIALD', which is a trademarked brand. There are no standalone generic words or phrases that would fail the test, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "VAHOIALD",
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "description": "",
+        "manufacturer": "VAHOIALD",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "Vahoiald"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "VAHOIALD",
+          "VAHOIALD",
+          "Vahoiald",
+          "Vahoialdd"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'VAHOIALD' three times, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "VAHOIALD",
+        "bullet_points": "Latest Digital Camera Built-in Fill Light : This compact digital camera is paired with a powerful CMOS processor and image stabilization to help you take & record the most exciting moments in 44 MP quality images & FHD 1080P quality videos anywhere, anytime. Plus, there is also a built-in fill light to help you take high quality pictures even in low light&dark settings, making this the perfect camera for all indoors/outdoors situations.\nLong-Lasting Battery Life & 16X Digital Zoom :This point and shoot camera will retain its battery charge even after long use. The controls and functions are easy to operate making this the perfect choice for children, teens and younger. This kids camera supports 16x digital zoom, you can zoom in or out the subject by pressing the W/T button for taking still photos to zoom in or out on distant objects and capture all the details you need.\nMultifunctional & Portable Digital Camera: This cheap digital camera is slim enough to fit in your pocket. You'll easily be able to take it with you on all your indoor/outdoor activities and adventures and ideal for beginners, children and teenagers. This kids digital camera is equipped with 20 filters, anti-shaking, self-timer, continuous shooting, date stamp, time-lapse recording, smile capture, internal MIC and speaker (recording sound videos), great for your daily photography needs.\nWEBCAM & PAUSE FUNCTION : More than just a FHD 1080p digital camera, it also works as a webcam for video calls and vlogging. Connect the camera to the computer, press shutter and power button at the same time and the camera will automatically turn on webcam mode for all your video calling and live streaming needs. The pause function allows you to pause when seeing playback videos.\nA Must Have Photography Device : This digital camera with SD card made from high-quality materials, this retro camera is safe and durable. Perfect for all ages to develop & improve their photographic abilities and observation skills. Our dedicated and experienced 24/7 support team is available for all after purchase troubleshooting, questions and technical help.",
+        "description": "",
+        "manufacturer": "VAHOIALD",
+        "title": "Digital Camera, Latest FHD 1080P Digital Camera for Teens with SD Card Anti Shake Point and Shoot Cameras Portable 16X Zoom Compact Small Cameras for Kids Boys Girls Seniors with Wrist Strap"
+      },
+      "expected": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "Vahoiald"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "VAHOIALD",
+          "vahoiald",
+          "VAHOIALDD",
+          "VAHOIALD",
+          "VAHOIALD",
+          "Vahoiald",
+          "Vahoialdd"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names 'Krlun' and 'YPC' match the listing brand, and minor variations in casing are acceptable. The output includes valid variations of the brand names, fulfilling the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Krlun",
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "description": "",
+        "manufacturer": "YPC",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlunh",
+          "Krlunx",
+          "YPC",
+          "ypc",
+          "YPCs",
+          "YPCy",
+          "YPCx"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlun",
+          "Krlun",
+          "Krlun",
+          "YPC",
+          "ypc",
+          "YPCY",
+          "YPC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "The extracted brands 'Krlun' and 'YPC' are present in the input data, meeting the PASS conditions. Variations of the brands are also acceptable as they are derived from the actual brand names.",
+      "input": {
+        "brand_name": "Krlun",
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "description": "",
+        "manufacturer": "YPC",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlunh",
+          "Krlunx",
+          "YPC",
+          "ypc",
+          "YPCs",
+          "YPCy",
+          "YPCx"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlun",
+          "Krlun",
+          "Krlun",
+          "YPC",
+          "ypc",
+          "YPCY",
+          "YPC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities 'Krlun' and 'YPC' in various cases, with no standalone generic product words or product categories included. Therefore, it meets the PASS conditions.",
+      "input": {
+        "brand_name": "Krlun",
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "description": "",
+        "manufacturer": "YPC",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlunh",
+          "Krlunx",
+          "YPC",
+          "ypc",
+          "YPCs",
+          "YPCy",
+          "YPCx"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlun",
+          "Krlun",
+          "Krlun",
+          "YPC",
+          "ypc",
+          "YPCY",
+          "YPC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the module output are brand names or variations of the brand names 'Krlun' and 'YPC', which are acceptable according to the rubric. There are no standalone generic words or phrases that would cause a failure.",
+      "input": {
+        "brand_name": "Krlun",
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "description": "",
+        "manufacturer": "YPC",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlunh",
+          "Krlunx",
+          "YPC",
+          "ypc",
+          "YPCs",
+          "YPCy",
+          "YPCx"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlun",
+          "Krlun",
+          "Krlun",
+          "YPC",
+          "ypc",
+          "YPCY",
+          "YPC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Krlun' and 'YPC' listed multiple times, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Krlun",
+        "bullet_points": "High Resolution Imaging: It can shoot FHD 4K videos and 48 MP pictures with natural color images. It supports 16x digital zoom, no need for complicated manual settings while delivering natural color images automatically. One second to press the shutter, it's easy for starters and kids\nMini-size & Easy to use - Special mini-size design,a 5-13 years kid can easily figure out. this point and shoot camera is small and lightweight, fits in kids' hands perfectly. 4.1x2.1x3 inch, 81g, perfect size and light weight for kids to carry, comes with a lanyard, making it convenient for kids to carry anywhere! Great girls toys. The clear simple settings and features of the portable mini digital camera make it easy for them to freely capture all fun memories with friends, family\nEncourage Creative - The point and shoot camera allows you to customize pictures. 21 pcs creative filter effects to take Vintage photos. The multifunctional compact pocket digital camera for beginners also supports time stamp, time-lapse, slow motion, continuous shoot, motion detection, face detection, sealf-timer, webcam, playback on computer or camera, etc\nSafe Materials & Powerful-Made of high-grade and friendly reliable materials, the kid camera is safe and non-toxic, durable and withstands drops.With powerful 1000mAh rechargeable batteries, you can record up to 180 min videos on a single charge\nPackage Llist: The digital camera comes with a digital camera*1, 32GB card*1\uff08in equipment), Type C cable*1, lanyard*1, camera bag*1, manual*1. It is a perfect gift for boys, girls, teens on birthdays, Christmas, travel or any important events, a first real camera for kids who love to take videos, vlogging and pictures",
+        "description": "",
+        "manufacturer": "YPC",
+        "title": "Krlun Digital Camera, FHD 4K Digital Point and Shoot Camera with 16X Zoom Anti Shake, 48MP Compact Small Camera with 32GB Card for Boys Girls Kids"
+      },
+      "expected": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlunh",
+          "Krlunx",
+          "YPC",
+          "ypc",
+          "YPCs",
+          "YPCy",
+          "YPCx"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Krlun",
+          "krlun",
+          "Krlunn",
+          "Krlun",
+          "Krlun",
+          "Krlun",
+          "YPC",
+          "ypc",
+          "YPCY",
+          "YPC"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'SnailBread' and its minor variations, which closely match the listing brand 'SnailBread'. The output meets the PASS conditions as it correctly identifies the brand with acceptable variations.",
+      "input": {
+        "brand_name": "SnailBread",
+        "bullet_points": "NATURAL BEESWAX PRESERVATION: Our cotton bags with food-grade beeswax, keeping bread fresh for days longer than conventional storage methods\nPERFECT FOR ARTISAN LOAVES: Generous 13\"x17\" size accommodates large sourdough boules, batards, and other craft bread shapes. Ample room for proper air circulation around your bread\nFREEZER-SAFE STORAGE: These beeswax cotton bags are ideal for freezing bread. The natural coating prevents freezer burn and maintains flavor. Perfect for bulk baking or preserving extra loaves for future enjoyment in freezer\nEASY CARE & LONGEVITY: Simply wipe clean with cool water and air dry. With proper care, these bags can last for months of regular use\nIDEAL BAKER'S GIFT: This set of 2 beeswax bread bags is perfect for sharing or gifting. Beautifully crafted and practical, it's a thoughtful present for holidays, housewarmings, or the sourdough enthusiast in your life. A unique gift for any bread lover\nNOTE: At room temperature, bread/fresh products can only be stored in the beeswax bag for 2 days. For longer storage, please refrigerate the bread/fresh products along with the bag",
+        "description": "",
+        "manufacturer": "SNAILBREAD",
+        "title": "Reusable Beeswax Bread Bags for Sourdough: XL Eco-Friendly Fresh Food Storage (13x17in, 2 Pack) | Moisture Lock, Sustainable Homemade Bread Preservation"
+      },
+      "expected": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SNAILBREAD"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SnailBred",
+          "SNAILBREAD"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are either exact matches or acceptable typo variations of the brand 'SnailBread' as found in the input data. The brand is present in the title and manufacturer fields, meeting the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "SnailBread",
+        "bullet_points": "NATURAL BEESWAX PRESERVATION: Our cotton bags with food-grade beeswax, keeping bread fresh for days longer than conventional storage methods\nPERFECT FOR ARTISAN LOAVES: Generous 13\"x17\" size accommodates large sourdough boules, batards, and other craft bread shapes. Ample room for proper air circulation around your bread\nFREEZER-SAFE STORAGE: These beeswax cotton bags are ideal for freezing bread. The natural coating prevents freezer burn and maintains flavor. Perfect for bulk baking or preserving extra loaves for future enjoyment in freezer\nEASY CARE & LONGEVITY: Simply wipe clean with cool water and air dry. With proper care, these bags can last for months of regular use\nIDEAL BAKER'S GIFT: This set of 2 beeswax bread bags is perfect for sharing or gifting. Beautifully crafted and practical, it's a thoughtful present for holidays, housewarmings, or the sourdough enthusiast in your life. A unique gift for any bread lover\nNOTE: At room temperature, bread/fresh products can only be stored in the beeswax bag for 2 days. For longer storage, please refrigerate the bread/fresh products along with the bag",
+        "description": "",
+        "manufacturer": "SNAILBREAD",
+        "title": "Reusable Beeswax Bread Bags for Sourdough: XL Eco-Friendly Fresh Food Storage (13x17in, 2 Pack) | Moisture Lock, Sustainable Homemade Bread Preservation"
+      },
+      "expected": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SNAILBREAD"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SnailBred",
+          "SNAILBREAD"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, specifically variations of 'SnailBread', and does not contain any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "SnailBread",
+        "bullet_points": "NATURAL BEESWAX PRESERVATION: Our cotton bags with food-grade beeswax, keeping bread fresh for days longer than conventional storage methods\nPERFECT FOR ARTISAN LOAVES: Generous 13\"x17\" size accommodates large sourdough boules, batards, and other craft bread shapes. Ample room for proper air circulation around your bread\nFREEZER-SAFE STORAGE: These beeswax cotton bags are ideal for freezing bread. The natural coating prevents freezer burn and maintains flavor. Perfect for bulk baking or preserving extra loaves for future enjoyment in freezer\nEASY CARE & LONGEVITY: Simply wipe clean with cool water and air dry. With proper care, these bags can last for months of regular use\nIDEAL BAKER'S GIFT: This set of 2 beeswax bread bags is perfect for sharing or gifting. Beautifully crafted and practical, it's a thoughtful present for holidays, housewarmings, or the sourdough enthusiast in your life. A unique gift for any bread lover\nNOTE: At room temperature, bread/fresh products can only be stored in the beeswax bag for 2 days. For longer storage, please refrigerate the bread/fresh products along with the bag",
+        "description": "",
+        "manufacturer": "SNAILBREAD",
+        "title": "Reusable Beeswax Bread Bags for Sourdough: XL Eco-Friendly Fresh Food Storage (13x17in, 2 Pack) | Moisture Lock, Sustainable Homemade Bread Preservation"
+      },
+      "expected": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SNAILBREAD"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SnailBred",
+          "SNAILBREAD"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the module output are variations of the brand name 'SnailBread', which is a trademarked brand. Therefore, they meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "SnailBread",
+        "bullet_points": "NATURAL BEESWAX PRESERVATION: Our cotton bags with food-grade beeswax, keeping bread fresh for days longer than conventional storage methods\nPERFECT FOR ARTISAN LOAVES: Generous 13\"x17\" size accommodates large sourdough boules, batards, and other craft bread shapes. Ample room for proper air circulation around your bread\nFREEZER-SAFE STORAGE: These beeswax cotton bags are ideal for freezing bread. The natural coating prevents freezer burn and maintains flavor. Perfect for bulk baking or preserving extra loaves for future enjoyment in freezer\nEASY CARE & LONGEVITY: Simply wipe clean with cool water and air dry. With proper care, these bags can last for months of regular use\nIDEAL BAKER'S GIFT: This set of 2 beeswax bread bags is perfect for sharing or gifting. Beautifully crafted and practical, it's a thoughtful present for holidays, housewarmings, or the sourdough enthusiast in your life. A unique gift for any bread lover\nNOTE: At room temperature, bread/fresh products can only be stored in the beeswax bag for 2 days. For longer storage, please refrigerate the bread/fresh products along with the bag",
+        "description": "",
+        "manufacturer": "SNAILBREAD",
+        "title": "Reusable Beeswax Bread Bags for Sourdough: XL Eco-Friendly Fresh Food Storage (13x17in, 2 Pack) | Moisture Lock, Sustainable Homemade Bread Preservation"
+      },
+      "expected": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SNAILBREAD"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SnailBred",
+          "SNAILBREAD"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'SnailBred' listed twice, which violates the rubric's condition of having no exact string duplicates.",
+      "input": {
+        "brand_name": "SnailBread",
+        "bullet_points": "NATURAL BEESWAX PRESERVATION: Our cotton bags with food-grade beeswax, keeping bread fresh for days longer than conventional storage methods\nPERFECT FOR ARTISAN LOAVES: Generous 13\"x17\" size accommodates large sourdough boules, batards, and other craft bread shapes. Ample room for proper air circulation around your bread\nFREEZER-SAFE STORAGE: These beeswax cotton bags are ideal for freezing bread. The natural coating prevents freezer burn and maintains flavor. Perfect for bulk baking or preserving extra loaves for future enjoyment in freezer\nEASY CARE & LONGEVITY: Simply wipe clean with cool water and air dry. With proper care, these bags can last for months of regular use\nIDEAL BAKER'S GIFT: This set of 2 beeswax bread bags is perfect for sharing or gifting. Beautifully crafted and practical, it's a thoughtful present for holidays, housewarmings, or the sourdough enthusiast in your life. A unique gift for any bread lover\nNOTE: At room temperature, bread/fresh products can only be stored in the beeswax bag for 2 days. For longer storage, please refrigerate the bread/fresh products along with the bag",
+        "description": "",
+        "manufacturer": "SNAILBREAD",
+        "title": "Reusable Beeswax Bread Bags for Sourdough: XL Eco-Friendly Fresh Food Storage (13x17in, 2 Pack) | Moisture Lock, Sustainable Homemade Bread Preservation"
+      },
+      "expected": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SNAILBREAD"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "SnailBread",
+          "snailbread",
+          "SnailBred",
+          "SnailBreaad",
+          "SnailBred",
+          "SNAILBREAD"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names match or closely match the listing brand 'McKesson', including acceptable minor variations in casing and spelling.",
+      "input": {
+        "brand_name": "McKesson",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": null,
+        "title": "McKesson Sterile Irrigation Tray Piston Syringe 100122"
+      },
+      "expected": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessn",
+          "McKessonn"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessonn"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand 'McKesson' appears in the title of the input data, and the variations provided are acceptable as they include typo/spelling variations of the valid brand.",
+      "input": {
+        "brand_name": "McKesson",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": null,
+        "title": "McKesson Sterile Irrigation Tray Piston Syringe 100122"
+      },
+      "expected": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessn",
+          "McKessonn"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessonn"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, specifically variations of 'McKesson', and does not contain any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "McKesson",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": null,
+        "title": "McKesson Sterile Irrigation Tray Piston Syringe 100122"
+      },
+      "expected": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessn",
+          "McKessonn"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessonn"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the module output are variations of the brand name 'McKesson', which is a trademarked brand. Therefore, they meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "McKesson",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": null,
+        "title": "McKesson Sterile Irrigation Tray Piston Syringe 100122"
+      },
+      "expected": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessn",
+          "McKessonn"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessonn"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The brand entity 'McKesson' appears in the output, and it is an exact string duplicate of itself, violating the rubric's condition of having no exact string duplicates.",
+      "input": {
+        "brand_name": "McKesson",
+        "bullet_points": "",
+        "description": "",
+        "manufacturer": null,
+        "title": "McKesson Sterile Irrigation Tray Piston Syringe 100122"
+      },
+      "expected": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessn",
+          "McKessonn"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "McKesson",
+          "mckesson",
+          "McKessson",
+          "McKessan",
+          "McKessonn"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names include 'NANYI' and its minor variations such as 'nanyi', which closely match the listing brand. Although there are some incorrect variations, the presence of the correct brand name satisfies the PASS conditions.",
+      "input": {
+        "brand_name": "NANYI",
+        "bullet_points": "Preserve Freshness Naturally \u2013 Reusable Beeswax Bread Bags Keep your homemade bread fresh for longer with our reusable beeswax bread bags. The natural beeswax lining creates a breathable barrier, locking in moisture while maintaining the perfect texture and taste of your sourdough, artisan, and homemade bread\nEco-Friendly & Sustainable \u2013 A Greener Choice Crafted from natural beeswax and durable fabric, these bread storage bags are a zero-waste alternative to plastic wraps and paper bags. Reusable and biodegradable, they help reduce food waste and support an earth-friendly lifestyle\nFreezer & Refrigerator Safe \u2013 Versatile Storage Solution Designed for both countertop and cold storage, our beeswax-lined bread bags protect your loaves from drying out while keeping them fresh. Store your bread in the freezer or refrigerator without compromising its flavor or texture\nStylish & Practical \u2013 Elegant Design with Secure Closure Featuring a modern, elegant print and secure closure, these homemade bread storage bags add a touch of sophistication to your kitchen. Lightweight and space-saving, they are perfect for neatly storing bread without taking up counter space\nEasy to Clean & Reuse \u2013 Simple Maintenance Cleaning is effortless\u2014simply turn the bag inside out, rinse with cold water and mild soap, then air dry. Designed for long-term use, these reusable bread bags provide a convenient, sustainable solution for everyday baking enthusiasts",
+        "description": "",
+        "manufacturer": "NANYI",
+        "title": "2-Pack Reusable Beeswax Bread Bags for Sourdough & Homemade Bread\uff0cCotton Waxed Bags Keeps Fresh Longer(Ivory Loaf)"
+      },
+      "expected": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NAYNI"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NANY",
+          "NANII",
+          "NANYIY",
+          "NANYI",
+          "NANYY",
+          "NANYI",
+          "NANAI"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes several variations of the brand name 'NANYI' that are not acceptable according to the rubric, such as 'NANY', 'NANII', 'NANYY', and 'NANAI', which do not match the original brand or its acceptable variations.",
+      "input": {
+        "brand_name": "NANYI",
+        "bullet_points": "Preserve Freshness Naturally \u2013 Reusable Beeswax Bread Bags Keep your homemade bread fresh for longer with our reusable beeswax bread bags. The natural beeswax lining creates a breathable barrier, locking in moisture while maintaining the perfect texture and taste of your sourdough, artisan, and homemade bread\nEco-Friendly & Sustainable \u2013 A Greener Choice Crafted from natural beeswax and durable fabric, these bread storage bags are a zero-waste alternative to plastic wraps and paper bags. Reusable and biodegradable, they help reduce food waste and support an earth-friendly lifestyle\nFreezer & Refrigerator Safe \u2013 Versatile Storage Solution Designed for both countertop and cold storage, our beeswax-lined bread bags protect your loaves from drying out while keeping them fresh. Store your bread in the freezer or refrigerator without compromising its flavor or texture\nStylish & Practical \u2013 Elegant Design with Secure Closure Featuring a modern, elegant print and secure closure, these homemade bread storage bags add a touch of sophistication to your kitchen. Lightweight and space-saving, they are perfect for neatly storing bread without taking up counter space\nEasy to Clean & Reuse \u2013 Simple Maintenance Cleaning is effortless\u2014simply turn the bag inside out, rinse with cold water and mild soap, then air dry. Designed for long-term use, these reusable bread bags provide a convenient, sustainable solution for everyday baking enthusiasts",
+        "description": "",
+        "manufacturer": "NANYI",
+        "title": "2-Pack Reusable Beeswax Bread Bags for Sourdough & Homemade Bread\uff0cCotton Waxed Bags Keeps Fresh Longer(Ivory Loaf)"
+      },
+      "expected": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NAYNI"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NANY",
+          "NANII",
+          "NANYIY",
+          "NANYI",
+          "NANYY",
+          "NANYI",
+          "NANAI"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes variations of the brand name 'NANYI' but also includes 'NANY' and 'NANII', which are not valid brand entities as they do not match the actual brand name or its trademarked variations. This violates the rubric's requirement for only actual brand entities.",
+      "input": {
+        "brand_name": "NANYI",
+        "bullet_points": "Preserve Freshness Naturally \u2013 Reusable Beeswax Bread Bags Keep your homemade bread fresh for longer with our reusable beeswax bread bags. The natural beeswax lining creates a breathable barrier, locking in moisture while maintaining the perfect texture and taste of your sourdough, artisan, and homemade bread\nEco-Friendly & Sustainable \u2013 A Greener Choice Crafted from natural beeswax and durable fabric, these bread storage bags are a zero-waste alternative to plastic wraps and paper bags. Reusable and biodegradable, they help reduce food waste and support an earth-friendly lifestyle\nFreezer & Refrigerator Safe \u2013 Versatile Storage Solution Designed for both countertop and cold storage, our beeswax-lined bread bags protect your loaves from drying out while keeping them fresh. Store your bread in the freezer or refrigerator without compromising its flavor or texture\nStylish & Practical \u2013 Elegant Design with Secure Closure Featuring a modern, elegant print and secure closure, these homemade bread storage bags add a touch of sophistication to your kitchen. Lightweight and space-saving, they are perfect for neatly storing bread without taking up counter space\nEasy to Clean & Reuse \u2013 Simple Maintenance Cleaning is effortless\u2014simply turn the bag inside out, rinse with cold water and mild soap, then air dry. Designed for long-term use, these reusable bread bags provide a convenient, sustainable solution for everyday baking enthusiasts",
+        "description": "",
+        "manufacturer": "NANYI",
+        "title": "2-Pack Reusable Beeswax Bread Bags for Sourdough & Homemade Bread\uff0cCotton Waxed Bags Keeps Fresh Longer(Ivory Loaf)"
+      },
+      "expected": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NAYNI"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NANY",
+          "NANII",
+          "NANYIY",
+          "NANYI",
+          "NANYY",
+          "NANYI",
+          "NANAI"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes several variations of the brand name 'NANYI' that are not valid brand entities, such as 'NANY', 'NANII', 'NANYY', and 'NANAI'. These do not meet the criteria for brand/trademark names, leading to a failure in the 'Can I buy this on Amazon?' test.",
+      "input": {
+        "brand_name": "NANYI",
+        "bullet_points": "Preserve Freshness Naturally \u2013 Reusable Beeswax Bread Bags Keep your homemade bread fresh for longer with our reusable beeswax bread bags. The natural beeswax lining creates a breathable barrier, locking in moisture while maintaining the perfect texture and taste of your sourdough, artisan, and homemade bread\nEco-Friendly & Sustainable \u2013 A Greener Choice Crafted from natural beeswax and durable fabric, these bread storage bags are a zero-waste alternative to plastic wraps and paper bags. Reusable and biodegradable, they help reduce food waste and support an earth-friendly lifestyle\nFreezer & Refrigerator Safe \u2013 Versatile Storage Solution Designed for both countertop and cold storage, our beeswax-lined bread bags protect your loaves from drying out while keeping them fresh. Store your bread in the freezer or refrigerator without compromising its flavor or texture\nStylish & Practical \u2013 Elegant Design with Secure Closure Featuring a modern, elegant print and secure closure, these homemade bread storage bags add a touch of sophistication to your kitchen. Lightweight and space-saving, they are perfect for neatly storing bread without taking up counter space\nEasy to Clean & Reuse \u2013 Simple Maintenance Cleaning is effortless\u2014simply turn the bag inside out, rinse with cold water and mild soap, then air dry. Designed for long-term use, these reusable bread bags provide a convenient, sustainable solution for everyday baking enthusiasts",
+        "description": "",
+        "manufacturer": "NANYI",
+        "title": "2-Pack Reusable Beeswax Bread Bags for Sourdough & Homemade Bread\uff0cCotton Waxed Bags Keeps Fresh Longer(Ivory Loaf)"
+      },
+      "expected": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NAYNI"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NANY",
+          "NANII",
+          "NANYIY",
+          "NANYI",
+          "NANYY",
+          "NANYI",
+          "NANAI"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains exact string duplicates of 'NANYI', which appears three times, violating the rubric's requirement for no exact duplicates.",
+      "input": {
+        "brand_name": "NANYI",
+        "bullet_points": "Preserve Freshness Naturally \u2013 Reusable Beeswax Bread Bags Keep your homemade bread fresh for longer with our reusable beeswax bread bags. The natural beeswax lining creates a breathable barrier, locking in moisture while maintaining the perfect texture and taste of your sourdough, artisan, and homemade bread\nEco-Friendly & Sustainable \u2013 A Greener Choice Crafted from natural beeswax and durable fabric, these bread storage bags are a zero-waste alternative to plastic wraps and paper bags. Reusable and biodegradable, they help reduce food waste and support an earth-friendly lifestyle\nFreezer & Refrigerator Safe \u2013 Versatile Storage Solution Designed for both countertop and cold storage, our beeswax-lined bread bags protect your loaves from drying out while keeping them fresh. Store your bread in the freezer or refrigerator without compromising its flavor or texture\nStylish & Practical \u2013 Elegant Design with Secure Closure Featuring a modern, elegant print and secure closure, these homemade bread storage bags add a touch of sophistication to your kitchen. Lightweight and space-saving, they are perfect for neatly storing bread without taking up counter space\nEasy to Clean & Reuse \u2013 Simple Maintenance Cleaning is effortless\u2014simply turn the bag inside out, rinse with cold water and mild soap, then air dry. Designed for long-term use, these reusable bread bags provide a convenient, sustainable solution for everyday baking enthusiasts",
+        "description": "",
+        "manufacturer": "NANYI",
+        "title": "2-Pack Reusable Beeswax Bread Bags for Sourdough & Homemade Bread\uff0cCotton Waxed Bags Keeps Fresh Longer(Ivory Loaf)"
+      },
+      "expected": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NAYNI"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "NANYI",
+          "nanyi",
+          "NANYIY",
+          "NANY",
+          "NANII",
+          "NANYIY",
+          "NANYI",
+          "NANYY",
+          "NANYI",
+          "NANAI"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Resolve Designs' as a brand entity, which is incorrect since it is the manufacturer, not the brand. Additionally, 'RxCrus' and 'RxCrussh' are incorrect variations of the brand name. The output fails to extract the brand correctly as per the rubric.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "RxCrush",
+          "RX Crush",
+          "Rx crush",
+          "Rx-Crush",
+          "RXCrush",
+          "Rx Crushes",
+          "Rx Crusch",
+          "Rx Crushh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrussh",
+          "Resolve Designs",
+          "resolve designs",
+          "ResolveDesigns",
+          "ResolveDesgins"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Resolve Designs', which is a manufacturer name and not a brand extracted from the input. This violates the criterion of not hallucinating brands, as 'Resolve Designs' is not a brand associated with the product.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "RxCrush",
+          "RX Crush",
+          "Rx crush",
+          "Rx-Crush",
+          "RXCrush",
+          "Rx Crushes",
+          "Rx Crusch",
+          "Rx Crushh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrussh",
+          "Resolve Designs",
+          "resolve designs",
+          "ResolveDesigns",
+          "ResolveDesgins"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Resolve Designs', which is a standalone generic term for a manufacturer and not an actual brand entity. This violates the rubric's condition of not including standalone generic product words.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "RxCrush",
+          "RX Crush",
+          "Rx crush",
+          "Rx-Crush",
+          "RXCrush",
+          "Rx Crushes",
+          "Rx Crusch",
+          "Rx Crushh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrussh",
+          "Resolve Designs",
+          "resolve designs",
+          "ResolveDesigns",
+          "ResolveDesgins"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Resolve Designs', which is a brand name, but it also contains variations of 'RxCrush' that do not match the expected output. Additionally, 'RxCrus' and 'RxCrussh' are not valid brand names. The presence of these incorrect variations leads to a failure to meet the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "RxCrush",
+          "RX Crush",
+          "Rx crush",
+          "Rx-Crush",
+          "RXCrush",
+          "Rx Crushes",
+          "Rx Crusch",
+          "Rx Crushh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrussh",
+          "Resolve Designs",
+          "resolve designs",
+          "ResolveDesigns",
+          "ResolveDesgins"
+        ]
+      }
+    },
+    {
+      "sample_id": "",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates in the brand entities list. Case variations are present, but they are counted as different entities, which aligns with the rubric's requirements.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "RxCrush",
+          "RX Crush",
+          "Rx crush",
+          "Rx-Crush",
+          "RXCrush",
+          "Rx Crushes",
+          "Rx Crusch",
+          "Rx Crushh"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrussh",
+          "Resolve Designs",
+          "resolve designs",
+          "ResolveDesigns",
+          "ResolveDesgins"
+        ]
+      }
+    }
+  ]
+}

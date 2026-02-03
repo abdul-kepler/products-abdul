@@ -1,0 +1,68 @@
+{
+  "braintrust_experiment_id": "b7f2dafb-d6aa-4da8-bece-f1e6b25e1c5e",
+  "braintrust_experiment_name": "M05B_ClassifyNonBrandedKeywords_gemini",
+  "created": "2026-01-25 19:14:18.317000+00:00",
+  "model": "gemini-2.0-flash",
+  "temperature": 0,
+  "dataset_id": "a6e9b14a-702e-4ab8-bc82-1d30583a2d19",
+  "dataset_name": "M05B_ClassifyNonBrandedKeywords_PathB_V1.1",
+  "dataset_version": "1000196473845186531",
+  "prompt_id": "13992af2-a571-4d45-84ca-aedc11eecf1e",
+  "prompt_version": "1000196549454468554",
+  "prompt_session_id": "594ad3d0-64a4-4e7e-a6d8-7824cb0677d8",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_5b_ClassifyNonBrandedKeywords_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "branding_scope_3",
+          "found_term",
+          "source",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "If branded, source: 'own' or competitor brand name"
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why this classification was chosen"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "found_term": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "If branded, the brand term found"
+          },
+          "branding_scope_3": {
+            "enum": [
+              "NB",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "NB if keyword is non-branded, null if branded"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 337,
+  "downloaded_at": "2026-01-26T01:53:57.274808"
+}

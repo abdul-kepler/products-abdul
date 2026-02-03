@@ -1,0 +1,62 @@
+{
+  "braintrust_experiment_id": "12b05ae7-e0c4-48c8-a7bb-e07b3cc1b95a",
+  "braintrust_experiment_name": "M16_ComplementaryCheck_V1.1_v1",
+  "created": "2026-01-15T22:31:40.360Z",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "af991abf-dce7-4155-b279-6b98cae77f86",
+  "dataset_name": "M16_CheckComplementary_V1.1",
+  "dataset_version": "1000196473827274173",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_16_ComplementaryCheck_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "used_together",
+          "classification",
+          "relationship",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Explanation of why products are or aren't used together"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "relationship": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Description of how the products are used together, or null if not complementary"
+          },
+          "used_together": {
+            "type": "boolean",
+            "description": "Whether the keyword's product is commonly used together with the ASIN"
+          },
+          "classification": {
+            "enum": [
+              "C",
+              "N"
+            ],
+            "type": "string",
+            "description": "C for COMPLEMENTARY if used together, N for NEGATIVE if not"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

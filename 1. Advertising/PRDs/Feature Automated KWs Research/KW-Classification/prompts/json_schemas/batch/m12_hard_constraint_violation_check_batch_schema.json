@@ -1,0 +1,66 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_12_HardConstraintViolationCheck_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Constraint violation check results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being checked"
+              },
+              "violates_constraint": {
+                "type": "boolean",
+                "description": "Whether the keyword explicitly violates any hard constraint"
+              },
+              "violated_constraint": {
+                "type": ["object", "null"],
+                "properties": {
+                  "attribute": {
+                    "type": "string",
+                    "description": "The hard constraint attribute that was violated"
+                  },
+                  "keyword_value": {
+                    "type": "string",
+                    "description": "The value specified in the keyword"
+                  },
+                  "product_value": {
+                    "type": "string",
+                    "description": "The product's hard constraint value"
+                  }
+                },
+                "required": ["attribute", "keyword_value", "product_value"],
+                "additionalProperties": false,
+                "description": "Details of the violated constraint, or null if no violation"
+              },
+              "relevancy": {
+                "type": ["string", "null"],
+                "enum": ["N", null],
+                "description": "N for NEGATIVE if violates, null if no violation"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why constraint was or wasn't violated"
+              }
+            },
+            "required": ["keyword", "violates_constraint", "violated_constraint", "relevancy", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "braintrust_experiment_id": "73f99280-160d-42ca-929f-a99e8fc140f8",
+  "braintrust_experiment_name": "M13_ProductTypeCheck_sonnet",
+  "created": "2026-01-26 00:06:47.232000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "25532e83-5425-401e-9a3a-50782d574776",
+  "dataset_name": "M13_CheckProductType_V1.1",
+  "dataset_version": "1000196496371836001",
+  "prompt_id": "d49b911c-9770-4f80-ae9c-e5672056c10f",
+  "prompt_version": "1000196550371456641",
+  "prompt_session_id": "cad305bf-23dd-4a5f-b240-ba34db0a0f1f",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_13_ProductTypeCheck_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "same_type",
+          "keyword_product_type",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Explanation of why product types match or don't match"
+          },
+          "same_type": {
+            "type": "boolean",
+            "description": "Whether the keyword asks for the same product type as the ASIN"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "keyword_product_type": {
+            "type": "string",
+            "description": "The product type detected from the keyword"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 439,
+  "downloaded_at": "2026-01-26T02:17:16.204054"
+}

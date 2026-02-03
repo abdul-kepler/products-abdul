@@ -1,0 +1,35 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_15_SubstituteCheck_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "same_primary_use": {
+          "type": "boolean",
+          "description": "Whether the different product type satisfies the same primary use"
+        },
+        "relevancy": {
+          "type": ["string", "null"],
+          "enum": ["S", null],
+          "description": "S for SUBSTITUTE if same use, null if different use (passes to M16)"
+        },
+        "keyword_product_type": {
+          "type": "string",
+          "description": "The product type detected from the keyword"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Explanation of why it is or isn't a substitute"
+        }
+      },
+      "required": ["same_primary_use", "relevancy", "keyword_product_type", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

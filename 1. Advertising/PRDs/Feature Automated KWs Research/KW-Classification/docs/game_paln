@@ -1,0 +1,163 @@
+End-to-End Production Flywheel Plan
+
+Goal:  Build a system that not only produces a valid baseline, but can be measured honestly, improved systematically, and kept stable and cost-efficient in production.
+
+Phase 0a  — Qualitative Discovery (Analyze)
+
+Prevent confirmation bias before rules exist
+
+Step 0 — Pre-Prompt Review(Open Coding & Qualitative Discovery)
+Owner: PM  Support: Kate
+What happens
+Review ~100 raw keyword + product context examples  (no rules, no prompts, no model output)
+Manually identify and document:
+ambiguous cases where classification is unclear
+context-dependent keywords where meaning changes by product
+edge cases where simple rules would likely break
+decision dimensions that affect classification (brand reference, compatibility intent, product type, etc.)
+Continue until theoretical saturation:
+reviewing more examples does not reveal new ambiguity patterns
+Why this step is critical
+You cannot define good rules if you don’t understand how the system fails
+Prevents “designing rules for imagined problems”
+Output
+Raw open-coding notes
+
+
+Phase 0b— Alignment & Rule Definition (Analyze)
+
+Step 1 — Rule Definition Informed by Failure Taxonomy
+Owner: PM  Support: Kate
+What happens
+Cluster open-coding notes into 3–5 decision-risk categories (axial coding)
+Use these categories to define:
+OB / CB / NB; R/C/S/N and other rules
+edge cases
+exclusions
+Lock the Source of Truth for tagging logic
+Why PM
+This defines business correctness
+Requires a single accountable decision-maker
+Output
+Tagging Logic v2 (Source of Truth)
+Failure taxonomy (versioned)
+
+
+Phase 1 — Dataset Validation (Analyze)
+
+Step 2 — Golden Dataset Audit
+Owner: Alexandra
+What happens
+Audit golden dataset for:
+label balance
+duplicates
+inconsistencies with rules
+Flag questionable expected outputs
+Why Alexandra
+Data quality is a statistical problem
+Neutral ownership avoids bias
+Output
+Annotated dataset with flagged issues
+
+Step 3 — Disputed Label Resolution
+Owner: PM  Support: Alexandra
+What happens
+Review all flagged cases
+Decide final expected labels
+Lock dataset version
+Output
+Validated Golden Dataset v1 (locked)
+
+
+Phase 2 — Prompt Modularization & Evaluation Design (Analyze → Measure)
+
+Step 4 — Prompt Modularization
+Owner: Kostya
+What happens
+Decompose legacy logic into 16 modular prompts
+Each prompt maps to one logical responsibility
+Integrate patterns from golden dataset
+Output
+Module 01–16 prompt specs
+
+Step 5 — Evaluation Readiness & Evaluator Selection
+Owner: Kate
+What happens
+For each module, explicitly decide:
+Code-based evaluator (objective rules: OB/CB/NB, schema checks)
+LLM-as-Judge (subjective rules: relevance, substitution)
+Define Pass / Fail criteria
+Define Rubricks  (Rubric acts as the specific "rulebook" that an LLM-as-Judge follows to determine whether a trace passes or fails a particular criterion. It operationalizes the qualitative failure taxonomy discovered during your axial coding phase by providing the judge with precise definitions and illustrative few-shot examples to ground its reasoning)
+Why this matters
+Prevents misuse of LLM judges where deterministic checks suffice
+Ensures metrics are explainable
+Output
+Module → Evaluator mapping
+Judge specifications
+
+
+Phase 3 — Baseline Execution (Measure)
+
+Step 6 — Baseline Inference Run
+Owner: Kostya
+What happens
+Run golden dataset through 16-module system
+Upload traces to Braintrust
+Output
+Baseline runs
+
+Step 7 — Baseline Evaluator Implementation
+Owner: Kate
+What happens
+Implement evaluators:
+code-based checks
+simple LLM judges (binary)
+No calibration yet
+Output
+Raw baseline metrics
+
+
+Phase 4 — Human Agreement Gate (Measure)
+
+Step 8 — Independent Human Labeling
+Owners: PM, Kate, Alexandra
+What happens
+IIndependently label 20–30 shared keyword-level cases( each case = keyword + product context, sampled across multiple ASINs)
++ Finalized "Objective" Rubric (well-specified rubric that operationalizes your taxonomy. Labelers cannot work from memory or vibes; they need a document containing: - Clear Task & Criterion - Precise Pass/Fail Definitions - Illustrative Few-Shot Examples - Binary Enforcement (Force a binary "Pass/Fail" decision for each specific rule rather than a 1–5 scale) 
+No discussion during labeling
+Output
+Human-labeled dataset
+
+Step 9 — Cohen’s Kappa
+Owner: Kostya/Alexandra
+What happens
+Compute κ
+Interpret agreement level   Why we need it
+Quantifying Rubric Stability: It is the standard for categorical data (like Pass/Fail) to measure inter-annotator agreement
+ Surfacing Ambiguity: If the Kappa score is low (generally below 0.6), it serves as a signal that your evaluation criteria are poorly specified
+A "Gate" for Automation: Achieving a Kappa score ≥ 0.6 (Substantial Agreement) is a critical milestone. It validates that the human standard is stable enough to be used as the ground truth for "training" and validating automated LLM-as-Judge evaluators 
+Decision
+κ insufficient → return to Step 1
+κ sufficient → proceed
+Output
+Validated agreement signal
+  
+Phase 5 — Baseline Review
+
+Step 10 — Analyze baseline results
+& error patterns
+Owners: Kostya, Kate
+
+
+Step 11 — Present baseline & roadmap
+to management
+Owners: Kostya, Kate
+
+Step 12 — Baseline Review & Approval
+Owner: PM
+What happens
+Present:
+κ (human agreement)
+baseline errors
+failure taxonomy
+Approve move to statistical measurement

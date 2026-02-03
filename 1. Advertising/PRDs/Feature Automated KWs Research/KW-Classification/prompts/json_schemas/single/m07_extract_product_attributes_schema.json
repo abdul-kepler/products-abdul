@@ -1,0 +1,39 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_7_ExtractProductAttributes_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "variants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Product variants: color, size, model, flavor, storage, etc. Include both Keepa hints AND extracted from listing text."
+        },
+        "use_cases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Use cases: gaming, business, travel, cooking, etc. Extract from listing text and specific_uses hint."
+        },
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Target audiences: professionals, students, gamers, etc. Extract from listing text and target_audience hint."
+        }
+      },
+      "required": [
+        "variants",
+        "use_cases",
+        "audiences"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

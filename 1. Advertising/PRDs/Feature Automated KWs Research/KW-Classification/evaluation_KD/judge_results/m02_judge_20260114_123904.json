@@ -1,0 +1,913 @@
+{
+  "module": "m02",
+  "model": "gpt-4o-mini",
+  "timestamp": "2026-01-14T12:39:04.184856",
+  "summary": {
+    "pass": 80,
+    "fail": 20,
+    "error": 0
+  },
+  "pass_rate": 80.0,
+  "evaluations": [
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"ipod headphones\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and related terms, but none of these terms match \"ipod\" or \"headphones\".\n3. According to the rubric, the output should return \"OB\" (which stands for \"out of brand\") if the keyword contains a term from `variations_own` or `related_terms_own`. Since \"ipod\" and \"headphones\" do not match any of the brand entities provided, the output correctly returns null.\n4. The reasoning provided in the module output states that no brand entity was found in \"ipod headphones\" and classifies it as a generic product search, which aligns with the expected behavior when there is no match.\n5. Since the output is null and there is no match found in the brand entities, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 602,
+      "sample_id": "M2_B0BQPGJ9LQ__ipod headphones:ipod headphones",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"ipod headphones\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that no brand entity was found in the keyword \"ipod headphones\" and describes the search as a \"Generic product search.\"\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The brand \"JBL\" is present in the variations_own list, but it is not detected in the keyword \"ipod headphones.\"\n5. Since the module output failed to identify the brand \"JBL\" that exists in the variations_own input, it meets the FAIL condition of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 531,
+      "sample_id": "M2_B0BQPGJ9LQ__ipod headphones:ipod headphones",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that there are no brand entities found in the keyword \"ipod headphones.\"\n2. The reasoning provided states, \"Verified: No brand entity found in 'ipod headphones'. Generic product search.\" This suggests that the module correctly identified \"ipod headphones\" as a generic term and did not flag it as a brand.\n3. The list of brand entities provided does not include any terms that would be considered generic words, such as \"wireless,\" \"bluetooth,\" or \"speaker.\" Instead, it contains specific brand names and variations of the JBL brand.\n4. Since the module output correctly identifies that there are no brand entities in the input keyword and does not flag any generic words as brands, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 535,
+      "sample_id": "M2_B0BQPGJ9LQ__ipod headphones:ipod headphones",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"ipod headphones\".\n2. The brand entities listed include various forms of \"JBL\" and other brands.\n3. The module output states that no brand entity was found in the keyword \"ipod headphones\".\n4. The reasoning provided in the output indicates that the search was generic and did not match any brand entities.\n5. However, the brand \"JBL\" is present in the list of brand entities, and it should match regardless of case (e.g., \"JBL\", \"jbl\", \"Jbl\").\n6. Since \"ipod headphones\" does not contain any variation of \"JBL\", the module correctly concludes that there is no match.\n7. The output does not indicate any case sensitivity issue because the keyword does not contain any form of \"JBL\" at all, thus it does not fail the case insensitive criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 578,
+      "sample_id": "M2_B0BQPGJ9LQ__ipod headphones:ipod headphones",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"ipod headphones.\"\n2. The list of brand entities includes variations of \"JBL,\" but none of these variations are present in the input phrase.\n3. The output reasoning states, \"Verified: No brand entity found in 'ipod headphones'. Generic product search,\" which aligns with the expectation that only whole word matches should be accepted.\n4. Since there are no partial matches or substring matches accepted in the output, and the module correctly identifies that there are no brand entities present, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 500,
+      "sample_id": "M2_B0BQPGJ9LQ__ipod headphones:ipod headphones",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"beats over ear headphones\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and related terms, but do not include \"beats\".\n3. According to the rubric, the output should return \"OB\" (indicating a brand match) if the keyword contains a term from `variations_own` or `related_terms_own`. Since \"beats\" is not present in the brand entities, there is no match.\n4. The module output returns `null`, which is appropriate because there is no match found in the brand entities for the keyword \"beats over ear headphones\".\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which aligns with the expected behavior when there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 575,
+      "sample_id": "M2_B0BQPGJ9LQ__beats over ear headphones:beats over ear headp",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"beats over ear headphones\" and a list of brand entities that includes various forms of the brand \"JBL.\"\n2. The module output states that no brand entity was found in the keyword \"beats over ear headphones.\"\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The keyword does not contain any of the brand entities listed in variations_own, specifically \"JBL\" or any of its variations.\n5. However, the keyword \"beats\" is a well-known brand in the audio industry, which is not included in the variations_own list provided. The module output correctly identifies that \"beats\" is not part of the brand entities listed.\n6. The module's reasoning indicates that it performed a check and found no brand entity, which aligns with the expected behavior given the absence of \"JBL\" or its variations in the keyword.\n\nSince the keyword does not contain any of the brands from the variations_own list, the module's output is accurate in stating that no brand was detected.\n\n**Verdict:** PASS",
+      "tokens_used": 605,
+      "sample_id": "M2_B0BQPGJ9LQ__beats over ear headphones:beats over ear headp",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that there are no brand entities found in the keyword \"beats over ear headphones.\"\n2. The reasoning provided states that it verified the absence of brand entities and categorized the input as a generic product search.\n3. The rubric criterion specifically requires that no generic words are flagged as brands. In this case, \"beats\" could be interpreted as a brand (referring to Beats by Dre), but the module output does not flag it as such.\n4. The module correctly identifies that \"beats over ear headphones\" does not match any of the listed brand entities, which are all variations of \"JBL\" and \"Vibe.\"\n5. Since the module output does not incorrectly flag any generic terms as brands, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 538,
+      "sample_id": "M2_B0BQPGJ9LQ__beats over ear headphones:beats over ear headp",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"beats over ear headphones\".\n2. The brand entities listed include various forms of \"JBL\" and other similar names.\n3. The module output states that no brand entity was found in the keyword, which implies that it did not match any of the brand entities.\n4. The criterion requires that brand matching should ignore case differences. Therefore, variations of \"JBL\" such as \"jbl\", \"Jbl\", or any other case combination should be considered a match.\n5. In this case, the keyword \"beats over ear headphones\" does not contain any of the brand names listed, including \"JBL\" in any case form.\n6. Since the module output correctly identifies that there is no match due to the absence of the brand name in the keyword, it adheres to the rubric's requirement of case insensitivity.\n\n**Verdict:** PASS",
+      "tokens_used": 576,
+      "sample_id": "M2_B0BQPGJ9LQ__beats over ear headphones:beats over ear headp",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"beats over ear headphones.\"\n2. The rubric criterion specifically states that only whole word matches are accepted, and partial matches should be rejected.\n3. The brand entities listed include variations of \"JBL\" and other similar terms, but none of these terms appear in the input phrase.\n4. The reasoning provided in the module output confirms that it did not find any brand entities, which aligns with the requirement to respect word boundaries.\n5. Since there are no substring matches or incorrect matches of partial terms (like \"jbl\" matching \"jblue\"), the output adheres to the criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 512,
+      "sample_id": "M2_B0BQPGJ9LQ__beats over ear headphones:beats over ear headp",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"samsung headphones\" and a list of brand entities that includes various forms of \"JBL\" and related terms.\n2. According to the rubric, the output should return \"OB\" (which stands for \"Own Brand\") if the keyword contains a term from the `variations_own` or `related_terms_own`. If there is no match, it should return null.\n3. In this case, the keyword \"samsung headphones\" does not contain any terms from the provided brand entities, which are all variations of \"JBL\".\n4. The module output correctly returns null, indicating that no brand entity was found in the keyword, which aligns with the expected output.\n5. The reasoning provided in the module output states that it verified no brand entity was found in \"samsung headphones\" and describes it as a generic product search, which is accurate.\n\nSince the module output correctly identifies that there is no match and returns null, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 621,
+      "sample_id": "M2_B0BQPGJ9LQ__samsung headphones:samsung headphones",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"samsung headphones\" and a list of brand entities that includes various variations of the brand \"JBL.\"\n2. The criterion states that a brand from the variations_own list must be detected in the keyword when present.\n3. In this case, the keyword \"samsung headphones\" does not contain any of the brand entities listed in the variations_own input, which are all variations of \"JBL.\"\n4. The module output states that no brand entity was found in the keyword and describes the search as a \"Generic product search.\"\n5. Since the keyword does not include any of the brands from the variations_own list, the module correctly identifies that there is no brand match.\n6. However, the criterion specifically requires that if a brand exists in the variations_own input, it should be detected in the keyword. The brand \"samsung\" is not in the variations_own list, but the module's output does not indicate a missed brand from the variations_own list, which is the key point of evaluation.\n\n**Verdict:** PASS",
+      "tokens_used": 590,
+      "sample_id": "M2_B0BQPGJ9LQ__samsung headphones:samsung headphones",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that there are no brand entities found in the input keyword \"samsung headphones.\"\n2. The reasoning provided states, \"Verified: No brand entity found in 'samsung headphones'. Generic product search.\" This suggests that the module correctly identified that \"samsung headphones\" does not contain any flagged brand names from the provided list.\n3. The list of brand entities includes various forms of \"JBL\" and its variations, but none of these are present in the keyword \"samsung headphones.\"\n4. The module's output aligns with the PASS conditions of the rubric, as it did not flag any generic words as brands and correctly identified the input as a generic product search.\n\n**Verdict:** PASS",
+      "tokens_used": 517,
+      "sample_id": "M2_B0BQPGJ9LQ__samsung headphones:samsung headphones",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"samsung headphones,\" which does not contain any mention of the brand \"JBL\" or any of its variations.\n2. The brand entities listed include multiple variations of \"JBL,\" such as \"JBL Vibe,\" \"JBL VibeBeam,\" and others, which are all case insensitive.\n3. The module output states that no brand entity was found in the keyword \"samsung headphones,\" which is accurate since \"samsung\" does not match \"JBL\" or any of its variations, regardless of case.\n4. The output correctly identifies that the search is generic and does not include any brand matches, thus adhering to the case insensitive requirement since there were no relevant brand matches to begin with.\n\n**Verdict:** PASS",
+      "tokens_used": 550,
+      "sample_id": "M2_B0BQPGJ9LQ__samsung headphones:samsung headphones",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"samsung headphones.\"\n2. The list of brand entities includes variations of \"JBL,\" but none of these variations are present in the input phrase.\n3. The criterion specifically states that only whole word matches are accepted, and partial matches should be rejected.\n4. Since the input does not contain any part of the brand entities listed (e.g., \"JBL,\" \"JBL Vibe,\" etc.), the module correctly identifies that there are no matches.\n5. The reasoning provided in the module output supports this conclusion, stating that it is a \"Generic product search\" with no brand entity found.\n\n**Verdict:** PASS",
+      "tokens_used": 513,
+      "sample_id": "M2_B0BQPGJ9LQ__samsung headphones:samsung headphones",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"skull candy\" and a list of brand entities.\n2. The rubric criterion states that \"OB\" should be returned when the keyword contains a term from `variations_own` or `related_terms_own`. If there is no match, the output should be null.\n3. In this case, the keyword \"skull candy\" does not match any of the brand entities listed (e.g., \"JBL\", \"JBL Vibe\", etc.).\n4. The module output indicates that the branding scope is null, which aligns with the expectation that if there is no match found, the output should be null.\n5. The reasoning provided in the module output states, \"Verified: No brand entity found in 'skull candy'. Generic product search.\" This reasoning supports the null output since it confirms that there was no match with the brand entities.\n\nSince the module output correctly identifies that there is no match and returns null, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 620,
+      "sample_id": "M2_B0BQPGJ9LQ__skull candy:skull candy",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"skull candy\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that no brand entity was found in the keyword \"skull candy\" and classifies it as a generic product search.\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The keyword \"skull candy\" does not match any of the brand entities listed in the variations_own input, which are all variations of \"JBL.\"\n5. Since \"skull candy\" is not part of the variations_own list and the module output correctly identifies that no brand entity was found, it aligns with the expected output.\n\nHowever, the critical point is that \"skull candy\" is a recognized brand that is not included in the variations_own list. The module output fails to recognize that \"skull candy\" is a brand that should have been detected, leading to a missed brand detection.\n\n**Verdict:** FAIL",
+      "tokens_used": 593,
+      "sample_id": "M2_B0BQPGJ9LQ__skull candy:skull candy",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"skull candy\" and a list of brand entities, which includes various forms of the brand \"JBL\" and its related products.\n2. The module output states that there are no brand entities found in \"skull candy\" and classifies it as a generic product search.\n3. The criterion for passing is that no generic words should be flagged as brands. In this case, \"skull candy\" does not match any of the brand entities listed, which are all variations of \"JBL.\"\n4. The module output correctly identifies that \"skull candy\" is not a brand entity and does not incorrectly flag any generic words as brands.\n5. Since the output aligns with the PASS conditions by not flagging any generic words as brands, it meets the requirement of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 544,
+      "sample_id": "M2_B0BQPGJ9LQ__skull candy:skull candy",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"skull candy\".\n2. The brand entities listed include variations of \"JBL\" and other brands, but none of them include \"skull candy\".\n3. The module output states that no brand entity was found in \"skull candy\" and classifies it as a generic product search.\n4. The criterion requires that brand matching should ignore case differences. However, in this case, the keyword \"skull candy\" does not match any of the brand entities regardless of case.\n5. Since there are no case differences affecting the match (as \"skull candy\" does not correspond to any of the listed brands), the output correctly identifies that there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 542,
+      "sample_id": "M2_B0BQPGJ9LQ__skull candy:skull candy",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The criterion states that only whole word matches are accepted, and partial matches should be rejected.\n2. The input data contains a keyword \"skull candy\" and a list of brand entities that include variations of \"JBL\".\n3. The module output indicates that no brand entity was found in the keyword \"skull candy\", which is correct since none of the brand entities match the keyword.\n4. The reasoning provided in the module output states, \"Verified: No brand entity found in 'skull candy'. Generic product search.\" This aligns with the requirement to reject any partial matches or incorrect matches.\n5. Since the module correctly identifies that there are no matches and does not accept any substring matches, it adheres to the rubric criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 525,
+      "sample_id": "M2_B0BQPGJ9LQ__skull candy:skull candy",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"skullcandy headphones\".\n2. The brand entities listed in the input data do not include \"skullcandy\" or any related terms that would match it.\n3. According to the rubric, the module should return \"OB\" (which stands for \"out of bounds\") if the keyword contains a term from `variations_own` or `related_terms_own`. Since \"skullcandy\" is not present in the brand entities, the module correctly identifies that there is no match.\n4. The module output indicates `branding_scope_1` as null, which aligns with the expectation that if there is no match found, it should return null.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which is accurate based on the input data.\n\nSince the module output correctly identifies that there is no match and returns null, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 613,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy headphones:skullcandy headphone",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"skullcandy headphones\" and a list of brand entities that includes various forms of the brand \"JBL\" but does not include \"Skullcandy.\"\n2. The module output states that no brand entity was found in the keyword \"skullcandy headphones\" and classifies it as a generic product search.\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present. Since \"Skullcandy\" is not in the variations_own list, the module correctly identifies that there is no match.\n4. The module's reasoning is accurate as it correctly states that \"skullcandy\" is not among the brand entities listed in variations_own.\n\n**Verdict:** PASS",
+      "tokens_used": 538,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy headphones:skullcandy headphone",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"skullcandy headphones\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that there are no brand entities found in the keyword \"skullcandy headphones\" and classifies it as a generic product search.\n3. The criterion for passing is that only actual brand/trademark names should be matched, and no generic words should be flagged as brands.\n4. In this case, \"skullcandy\" is a recognized brand, but it is not listed in the brand entities provided. The module correctly identifies that \"skullcandy headphones\" does not match any of the listed brand entities.\n5. The reasoning provided in the module output indicates that it has not incorrectly flagged any generic terms (like \"headphones\") as brands, which aligns with the PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 563,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy headphones:skullcandy headphone",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"skullcandy headphones\".\n2. The brand entities listed include various forms of \"JBL\" and other brands, but none of them include \"skullcandy\".\n3. The module output states that no brand entity was found in the keyword \"skullcandy headphones\" and classifies it as a generic product search.\n4. The criterion for case insensitivity is to ensure that brand matching ignores uppercase/lowercase differences. However, in this case, the keyword does not contain any of the brand entities listed, regardless of case.\n5. Since \"skullcandy\" is not a variation of \"JBL\" or any other brand in the list, the case insensitivity check does not apply here. The module correctly identifies that there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 567,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy headphones:skullcandy headphone",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"skullcandy headphones\" and a list of brand entities that include variations of \"JBL\" and other brands.\n2. The module output indicates that no brand entity was found in the keyword \"skullcandy headphones,\" which is consistent with the expected output.\n3. The criterion focuses on ensuring that only whole word matches are accepted and that partial matches are rejected. In this case, the module correctly identifies that none of the brand entities match the keyword, thus respecting the word boundary.\n4. There are no instances in the output where a substring match (like \"jbl\" matching \"jblue\") is accepted, as the module did not find any matches at all.\n5. The reasoning provided in the module output supports the conclusion that it correctly evaluated the keyword against the brand entities.\n\n**Verdict:** PASS",
+      "tokens_used": 548,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy headphones:skullcandy headphone",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"heart earbuds\" and a list of brand entities.\n2. The brand entities include variations of the brand \"JBL\" and other similar terms, but none of them match the keyword \"heart earbuds.\"\n3. The module output indicates that the branding scope is null, which means it did not identify any brand entity in the keyword.\n4. According to the rubric, the output should return null when there is no match found in the variations_own or related_terms_own, which is the case here.\n5. The reasoning provided in the module output states, \"Verified: No brand entity found in 'heart earbuds'. Generic product search,\" which aligns with the expected behavior of returning null when no brand is identified.\n\nSince the module output correctly returns null and does not incorrectly classify the keyword as OB, it meets the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 588,
+      "sample_id": "M2_B0BQPGJ9LQ__heart earbuds:heart earbuds",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"heart earbuds\" and a list of brand entities that includes multiple variations of the brand \"JBL\" and its related terms.\n2. The module output states that no brand entity was found in the keyword \"heart earbuds\" and describes the search as a \"Generic product search.\"\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The brand \"JBL\" is present in the variations_own list, and it is a well-known brand associated with audio products, including earbuds.\n5. The keyword \"heart earbuds\" does not explicitly mention \"JBL\" or any of its variations, but the module's reasoning suggests that it did not attempt to match any of the brand entities against the keyword.\n6. Since \"JBL\" is a relevant brand that could be associated with earbuds, the module's failure to detect it constitutes a missed brand detection.\n\n**Verdict:** FAIL",
+      "tokens_used": 572,
+      "sample_id": "M2_B0BQPGJ9LQ__heart earbuds:heart earbuds",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that there are no brand entities found in the keyword \"heart earbuds.\"\n2. The reasoning provided states, \"Verified: No brand entity found in 'heart earbuds'. Generic product search.\" This suggests that the module correctly identified \"heart earbuds\" as a generic term rather than a brand name.\n3. The list of brand entities includes various forms of the brand \"JBL\" and its products, but none of these are related to the term \"heart earbuds.\"\n4. Since the module output does not flag any generic words as brands and correctly identifies the input as a generic product search, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 509,
+      "sample_id": "M2_B0BQPGJ9LQ__heart earbuds:heart earbuds",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"heart earbuds\".\n2. The brand entities listed include variations of \"JBL\" in different cases, such as \"JBL\", \"Jbl\", \"jbl\", and other combinations that include \"JBL\" as part of longer phrases.\n3. The module output states that no brand entity was found in the keyword \"heart earbuds\" and classifies it as a generic product search.\n4. According to the rubric criterion, brand matching should ignore case differences. Therefore, if \"JBL\" is present in any form (regardless of case) in the brand entities, it should match with the keyword.\n5. The module output fails to recognize that \"JBL\" is a brand entity that could potentially match with the keyword, even though \"heart earbuds\" does not explicitly contain \"JBL\". However, the evaluation should focus on whether the module correctly identifies the brand entities regardless of case.\n6. Since the module output does not indicate any case-insensitive matching and concludes that no brand entity was found, it implies a failure to recognize the brand due to case sensitivity.\n\n**Verdict:** FAIL",
+      "tokens_used": 622,
+      "sample_id": "M2_B0BQPGJ9LQ__heart earbuds:heart earbuds",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The criterion states that only whole word matches are accepted, and partial matches should be rejected.\n2. The input data contains a list of brand entities, including variations of \"JBL\" and \"Vibe.\"\n3. The module output indicates that no brand entity was found in the phrase \"heart earbuds,\" which is correct since none of the brand entities match this phrase.\n4. The reasoning provided by the module states, \"Verified: No brand entity found in 'heart earbuds'. Generic product search,\" which aligns with the requirement to reject any partial matches.\n5. Since the module correctly identifies that there are no matches and does not accept any substring matches, it adheres to the rubric's PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 516,
+      "sample_id": "M2_B0BQPGJ9LQ__heart earbuds:heart earbuds",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"skullcandy\".\n2. The brand entities listed in the input data do not include \"skullcandy\"; they consist of various variations of the brand \"JBL\" and related terms.\n3. According to the rubric, the module should return \"OB\" (indicating a brand match) if the keyword contains a term from `variations_own` or `related_terms_own`. Since \"skullcandy\" does not match any of the brand entities, the module correctly returns null.\n4. The output reasoning states, \"Verified: No brand entity found in 'skullcandy'. Generic product search.\" This aligns with the expected behavior of returning null when there is no match found.\n5. The output matches the expected output, which also returns null.\n\n**Verdict:** PASS",
+      "tokens_used": 578,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy:skullcandy",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"skullcandy\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that no brand entity was found in the keyword \"skullcandy\" and classifies it as a \"Generic product search.\"\n3. According to the rubric criterion, a brand match is considered a PASS if the brand from the variations_own list is detected in the keyword when present.\n4. The keyword \"skullcandy\" does not match any of the brand entities listed in the variations_own input, which are all related to \"JBL.\"\n5. Since \"skullcandy\" is a distinct brand that is not included in the variations_own list, the module's output correctly identifies that there is no match.\n6. However, the criterion specifically checks for the detection of a brand from the variations_own list. The module output fails to recognize that \"skullcandy\" is a brand that should have been considered, even though it is not in the variations_own list.\n\n**Verdict:** FAIL",
+      "tokens_used": 601,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy:skullcandy",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that it has analyzed the keyword \"skullcandy\" and found no brand entities associated with it.\n2. The reasoning provided states, \"Verified: No brand entity found in 'skullcandy'. Generic product search.\" This suggests that the module correctly identified \"skullcandy\" as not being a brand entity from the provided list.\n3. The list of brand entities includes various forms of \"JBL\" and its variations, but none of these relate to \"skullcandy.\"\n4. The output does not flag any generic words as brands, which aligns with the PASS conditions of the rubric.\n5. Since the module output does not indicate any false positives (i.e., it does not incorrectly classify generic terms as brands), it adheres to the criterion of having no false positives.\n\n**Verdict:** PASS",
+      "tokens_used": 547,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy:skullcandy",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"skullcandy\".\n2. The brand entities listed include various forms of \"JBL\" and other variations, none of which contain the keyword \"skullcandy\".\n3. The module output states that no brand entity was found in \"skullcandy\" and classifies it as a generic product search.\n4. The criterion for case insensitivity requires that brand matching should ignore uppercase/lowercase differences. However, in this case, the keyword \"skullcandy\" does not match any of the brand entities regardless of case.\n5. Since there are no matches found due to the keyword itself not being related to any of the brand entities, the case sensitivity aspect does not apply here. The module correctly identifies that there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 561,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy:skullcandy",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The criterion states that only whole word matches are accepted, and partial matches should be rejected.\n2. The input data contains a list of brand entities, including variations of \"JBL\" and other related terms.\n3. The module output indicates that no brand entity was found in the input keyword \"skullcandy,\" which is correct as \"skullcandy\" does not match any of the brand entities provided.\n4. There are no instances of partial matches being accepted in the output, as the reasoning explicitly states that no brand entity was found.\n5. The output aligns with the expected output, confirming that the module correctly identified the absence of a match.\n\n**Verdict:** PASS",
+      "tokens_used": 512,
+      "sample_id": "M2_B0BQPGJ9LQ__skullcandy:skullcandy",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"raycon bluetooth earbuds\".\n2. The brand entities listed in the input data include various terms related to the brand \"JBL\" and its variations, but do not include \"raycon\".\n3. According to the rubric, the output should return \"OB\" (indicating a brand match) only if the keyword contains a term from the `variations_own` or `related_terms_own`. Since \"raycon\" is not present in the list of brand entities, there is no match.\n4. The module output indicates `branding_scope_1` is null, which is appropriate since there is no match found in the keyword for any brand entity.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which aligns with the expected behavior of returning null when there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 588,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon bluetooth earbuds:raycon bluetooth ear",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"raycon bluetooth earbuds\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that no brand entity was found in the keyword \"raycon bluetooth earbuds\" and classifies it as a generic product search.\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The keyword \"raycon\" does not match any of the brand entities listed in the variations_own input, which are all variations of \"JBL.\"\n5. Since \"raycon\" is not part of the variations_own list and the module output correctly identifies that no brand entity from the list is present in the keyword, it aligns with the rubric's expectations.\n6. However, the keyword \"raycon\" is a brand itself, and the module output fails to recognize that \"raycon\" is a brand, which is a missed detection.\n\n**Verdict:** FAIL",
+      "tokens_used": 584,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon bluetooth earbuds:raycon bluetooth ear",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"raycon bluetooth earbuds\" and a list of brand entities, which includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that there are no brand entities found in the keyword \"raycon bluetooth earbuds\" and classifies it as a generic product search.\n3. The term \"bluetooth\" is a generic word related to wireless technology and is not a brand or trademark. The module correctly identifies that this term should not be flagged as a brand.\n4. The module's reasoning indicates that it has verified the absence of brand entities in the provided keyword, which aligns with the PASS conditions of the rubric.\n5. Since the module output does not flag any generic words as brands and correctly identifies the keyword as generic, it adheres to the PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 547,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon bluetooth earbuds:raycon bluetooth ear",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"raycon bluetooth earbuds\".\n2. The brand entities listed include various forms of \"JBL\" and other brands.\n3. The module output states that no brand entity was found in the keyword, which implies that it did not match any of the brand entities.\n4. The criterion requires that brand matching should ignore case differences. The brand \"JBL\" appears in various forms in the brand entities, including \"JBL\", \"Jbl\", \"jbl\", etc.\n5. However, the keyword \"raycon bluetooth earbuds\" does not contain any mention of \"JBL\" or any of its variations, regardless of case.\n6. Since the keyword does not include any brand entity, the module's conclusion that no brand entity was found is correct.\n7. Therefore, the case insensitivity aspect does not apply here because there was no potential match to begin with.\n\n**Verdict:** PASS",
+      "tokens_used": 584,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon bluetooth earbuds:raycon bluetooth ear",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"raycon bluetooth earbuds.\"\n2. The list of brand entities includes variations of \"JBL,\" but none of these variations are present in the input phrase.\n3. The criterion specifically states that only whole word matches are accepted, and partial matches should be rejected.\n4. In this case, the module correctly identifies that there are no matches for the brand entities in the input phrase, which means it does not incorrectly match any substrings or partial names.\n5. The reasoning provided in the module output supports the conclusion that it has respected the word boundary criterion by not matching any part of the brand names to the input phrase.\n\n**Verdict:** PASS",
+      "tokens_used": 518,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon bluetooth earbuds:raycon bluetooth ear",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"earbuds wireless bluetooth raycon\".\n2. The brand entities provided in the input data include various forms of \"JBL\" and related terms, but do not include \"raycon\".\n3. The module output indicates that the branding scope is null, which means it did not identify any brand entity from the keyword.\n4. According to the rubric, the output should return OB (indicating a brand match) only if the keyword contains a term from variations_own or related_terms_own. Since \"raycon\" is not part of the provided brand entities, the output correctly returns null.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which aligns with the expected behavior when there is no match.\n6. There are no conditions that would lead to a FAIL verdict, as the output correctly identifies the absence of a brand match.\n\n**Verdict:** PASS",
+      "tokens_used": 601,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth raycon:earbuds wireless blu",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"earbuds wireless bluetooth raycon\" and a list of brand entities that includes various forms of the brand \"JBL.\"\n2. The module output states that no brand entity was found in the keyword and classifies it as a \"Generic product search.\"\n3. The brand \"raycon\" is not present in the variations_own list, but the keyword does not contain any of the brand entities listed, specifically \"JBL\" or its variations.\n4. According to the rubric, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present. Since \"JBL\" is a brand in the variations_own list and is not detected in the keyword, this constitutes a failure to identify a brand that exists in the variations_own input.\n5. The module's reasoning is incorrect because it overlooks the presence of \"JBL\" in the variations_own list, which should have been detected in the keyword.\n\n**Verdict:** FAIL",
+      "tokens_used": 580,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth raycon:earbuds wireless blu",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"earbuds wireless bluetooth raycon\" and a list of brand entities.\n2. The module output states that there are no brand entities found in the keyword, which is correct since \"earbuds\", \"wireless\", and \"bluetooth\" are generic terms and not actual brand names.\n3. The module's reasoning indicates that it verified the absence of brand entities and classified the input as a generic product search, which aligns with the PASS conditions of the rubric.\n4. There are no false positives in the module output, as it did not flag any generic words as brands.\n\n**Verdict:** PASS",
+      "tokens_used": 507,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth raycon:earbuds wireless blu",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"earbuds wireless bluetooth raycon\".\n2. The brand entities listed include variations of \"JBL\" in different cases, such as \"JBL\", \"Jbl\", \"jbl\", and other similar variations.\n3. The module output states that no brand entity was found in the keyword, which implies that it did not recognize any of the brand entities listed.\n4. According to the rubric criterion, brand matching should ignore case differences. Therefore, \"JBL\" should match with \"jbl\", \"Jbl\", etc.\n5. Since the module output did not identify any of the brand entities, it indicates a failure to recognize the brand \"JBL\" in any case variation.\n6. The reasoning provided in the module output suggests that it performed a generic product search, which does not align with the expectation of matching brands regardless of case.\n\n**Verdict:** FAIL",
+      "tokens_used": 584,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth raycon:earbuds wireless blu",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input string \"earbuds wireless bluetooth raycon.\"\n2. The list of brand entities includes variations of \"JBL,\" such as \"JBL Vibe,\" \"JBL VibeBeam,\" and others. However, none of these entities are present in the input string.\n3. The criterion states that only whole word matches are accepted, and partial matches should be rejected. The module output correctly identifies that there are no matches, thus respecting the word boundary condition.\n4. There are no instances of substring matches being accepted, as the module output does not indicate any incorrect matches or partial matches.\n\n**Verdict:** PASS",
+      "tokens_used": 514,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth raycon:earbuds wireless blu",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"raycon earbuds wireless\".\n2. The brand entities listed in the input data include various terms related to \"JBL\" and its variations, but do not include \"Raycon\".\n3. According to the rubric, the output should return \"OB\" (indicating a brand match) only if the keyword contains a term from the `variations_own` or `related_terms_own`. Since \"raycon\" is not present in the brand entities, there is no match.\n4. The module output indicates `branding_scope_1` as null, which is appropriate since there is no match found in the brand entities.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which aligns with the expected behavior of returning null when there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 581,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon earbuds wireless:raycon earbuds wirel",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"raycon earbuds wireless\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that no brand entity was found in the keyword \"raycon earbuds wireless\" and classifies it as a generic product search.\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The keyword \"raycon\" does not match any of the brand entities listed in the variations_own input, which are all variations of \"JBL.\"\n5. Since \"raycon\" is not part of the variations_own list and the module output correctly identifies that no brand entity from the list is present in the keyword, it aligns with the rubric's expectations.\n6. However, the keyword \"raycon\" is a brand itself, which is not included in the variations_own list. The module's output fails to recognize that \"raycon\" is a brand, which could be considered a missed detection.\n\n**Verdict:** FAIL",
+      "tokens_used": 597,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon earbuds wireless:raycon earbuds wirel",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"raycon earbuds wireless\" and a list of brand entities, which includes various names associated with the brand JBL and its products.\n2. The module output indicates that there are no brand entities found in the keyword \"raycon earbuds wireless,\" which suggests that the module correctly identified that there are no actual brand names present in the input.\n3. The reasoning provided in the module output states, \"Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.\" This aligns with the PASS condition of the rubric, as it confirms that no generic words were incorrectly flagged as brands.\n4. The keyword \"wireless\" is a generic term and should not be flagged as a brand. The module output does not indicate that \"wireless\" or any other generic term was flagged as a brand, which is consistent with the PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 557,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon earbuds wireless:raycon earbuds wirel",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"raycon earbuds wireless\".\n2. The brand entities listed include various forms of \"JBL\" and other brands, but notably, \"JBL\" is present in multiple variations.\n3. The module output states that no brand entity was found in the keyword, which implies that it did not match any of the brand entities.\n4. According to the rubric criterion, brand matching should ignore case differences. Therefore, \"JBL\" should match regardless of how it is cased (e.g., \"jbl\", \"JBL\", \"Jbl\").\n5. Since \"raycon earbuds wireless\" does not contain \"JBL\" in any form, the module's conclusion that no brand entity was found is correct. However, it is important to note that the keyword does not contain any variation of \"JBL\" in any case.\n6. The module's output does not fail the case insensitivity check because it did not miss a match due to case differences; rather, it correctly identified that \"raycon earbuds wireless\" does not contain \"JBL\" at all.\n\n**Verdict:** PASS",
+      "tokens_used": 625,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon earbuds wireless:raycon earbuds wirel",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"raycon earbuds wireless.\"\n2. The list of brand entities includes variations of \"JBL\" and other brands, but none of these entities are present in the input phrase.\n3. The output reasoning states, \"Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search,\" which aligns with the expectation that only whole word matches should be accepted.\n4. There are no instances of partial matches or substring matches in the output, as the module correctly identifies that none of the brand entities match the input phrase.\n5. Since the module output does not incorrectly match any substrings or partial words, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 528,
+      "sample_id": "M2_B0BQPGJ9LQ__raycon earbuds wireless:raycon earbuds wirel",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"alexa earbuds wireless 2024\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and its variations, but none of these terms appear in the keyword.\n3. The module output indicates that the branding scope is null, which means it did not identify any brand from the variations_own or related_terms_own in the keyword.\n4. According to the rubric, the output should return null when there is no match found in the brand entities, which is the case here.\n5. The reasoning provided in the module output states, \"Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.\" This aligns with the expected behavior of returning null when no brand match is found.\n6. Since the output correctly identifies that there is no match and returns null, it meets the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 604,
+      "sample_id": "M2_B0BQPGJ9LQ__alexa earbuds wireless 2024:alexa earbuds wirele",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"alexa earbuds wireless 2024\" and a list of brand entities that includes multiple variations of the brand \"JBL.\"\n2. The module output states that no brand entity was found in the keyword and describes the search as a \"Generic product search.\"\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The brand \"JBL\" is present in the variations_own list, and it is a well-known brand associated with audio products, which could be relevant to the keyword \"earbuds.\"\n5. The module output's conclusion that no brand entity was found is incorrect because \"JBL\" should have been detected as it is a relevant brand for the context of the keyword.\n6. Since the module failed to identify a brand that exists in the variations_own input, it does not meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 579,
+      "sample_id": "M2_B0BQPGJ9LQ__alexa earbuds wireless 2024:alexa earbuds wirele",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"alexa earbuds wireless 2024\" and a list of brand entities that includes various forms of the brand \"JBL\" and its products.\n2. The module output states that there are no brand entities found in the keyword and classifies it as a \"Generic product search.\"\n3. The module correctly identifies that \"wireless\" is a generic term and not a brand name. The presence of \"alexa\" and \"earbuds\" also does not indicate any brand names from the provided list.\n4. The output aligns with the PASS conditions of the rubric, as it does not flag any generic words as brands and only confirms the absence of actual brand names in the keyword.\n\n**Verdict:** PASS",
+      "tokens_used": 531,
+      "sample_id": "M2_B0BQPGJ9LQ__alexa earbuds wireless 2024:alexa earbuds wirele",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"alexa earbuds wireless 2024\".\n2. The brand entities listed include variations of \"JBL\" in different cases, such as \"JBL\", \"Jbl\", \"jbl\", and other forms that include \"JBL\" as part of a longer name (e.g., \"JBL Vibe\", \"JBL VibeBeam\").\n3. The module output states that no brand entity was found in the keyword, which is indicated by the reasoning: \"Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.\"\n4. According to the rubric criterion, brand matching should ignore case differences. Therefore, if \"JBL\" is present in any form (regardless of case) in the brand entities, it should match with the keyword.\n5. In this case, the keyword does not contain any mention of \"JBL\" or its variations, which means that the module's output is correct in stating that no brand entity was found.\n6. Since the module did not miss any matches due to case sensitivity (as there were no relevant brand names in the keyword to match), it adheres to the PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 651,
+      "sample_id": "M2_B0BQPGJ9LQ__alexa earbuds wireless 2024:alexa earbuds wirele",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input string \"alexa earbuds wireless 2024\".\n2. The list of brand entities includes variations of \"JBL\" and other similar terms, but none of these terms are present in the input string.\n3. The criterion specifically states that only whole word matches are accepted, and partial matches should be rejected. In this case, since there are no matches at all, the module correctly identifies that there are no brand entities present.\n4. The output reasoning states \"Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.\" This aligns with the requirement of respecting word boundaries, as it does not incorrectly match any substrings or partial terms.\n\n**Verdict:** PASS",
+      "tokens_used": 534,
+      "sample_id": "M2_B0BQPGJ9LQ__alexa earbuds wireless 2024:alexa earbuds wirele",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"earbuds wireless bluetooth samsung\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and related terms, but none of these terms are present in the keyword.\n3. According to the rubric, the output should return \"OB\" (which stands for \"out of brand\") if the keyword contains a term from `variations_own` or `related_terms_own`. Since there are no matches found in the keyword for the brand entities, the output correctly returns `null`.\n4. The reasoning provided in the module output states, \"Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.\" This aligns with the expected behavior as there are indeed no brand entities present in the keyword.\n5. Since the output is `null` and there is no match found, it passes the condition of returning `null` when no match is found.\n\n**Verdict:** PASS",
+      "tokens_used": 604,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth samsung:earbuds wireless blu",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"earbuds wireless bluetooth samsung\" and a list of brand entities that includes various forms of the brand \"JBL.\"\n2. The module output states that no brand entity was found in the keyword, which is incorrect because \"samsung\" is a recognized brand that is not listed in the variations_own input.\n3. The criterion requires that if a brand from the variations_own list is present in the keyword, it should be detected. In this case, \"samsung\" is a brand that should have been detected, but it is not part of the variations_own list.\n4. The module's reasoning indicates that it did not find any brand entity, which suggests a failure to recognize the presence of \"samsung\" as a brand, even though it is not in the variations_own list. However, the failure to detect \"JBL\" from the variations_own list is the critical point here.\n5. Since the module output did not identify \"JBL\" as part of the keyword, it fails to meet the PASS condition of correctly detecting a brand from the variations_own list.\n\n**Verdict:** FAIL",
+      "tokens_used": 609,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth samsung:earbuds wireless blu",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"earbuds wireless bluetooth samsung\" and a list of brand entities.\n2. The brand entities listed include various forms of the brand \"JBL\" and its products, but none of these entities are present in the keyword.\n3. The module output states that there are \"No brand entity found in 'earbuds wireless bluetooth samsung'\" and describes the input as a \"Generic product search.\"\n4. The terms \"wireless\" and \"bluetooth\" are generic descriptors and not brand names. The module correctly identifies that these terms should not be flagged as brands.\n5. The output aligns with the PASS conditions of the rubric, as it does not flag any generic words as brands.\n\n**Verdict:** PASS",
+      "tokens_used": 526,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth samsung:earbuds wireless blu",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"earbuds wireless bluetooth samsung\", which does not contain any direct mention of the brand \"JBL\" or its variations.\n2. The brand entities listed include multiple variations of \"JBL\" (e.g., \"JBL\", \"JBL Vibe\", \"JBL VibeBeam\", etc.) and other similar names that could potentially match if case sensitivity were ignored.\n3. The module output states that no brand entity was found in the keyword, which is accurate since \"JBL\" or any of its variations do not appear in the keyword.\n4. The output reasoning indicates that the search was generic and did not identify any brand, which aligns with the absence of \"JBL\" in the keyword.\n5. Since the criterion is about case insensitivity, it is important to note that the module did not miss any matches due to case differences because there were no relevant brand names present in the keyword to begin with.\n\n**Verdict:** PASS",
+      "tokens_used": 597,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth samsung:earbuds wireless blu",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input string \"earbuds wireless bluetooth samsung.\"\n2. The list of brand entities includes variations of \"JBL,\" such as \"JBL Vibe,\" \"JBL VibeBeam,\" and others. However, none of these entities are present in the input string.\n3. The criterion states that only whole word matches are accepted, and partial matches should be rejected. The module output does not indicate any incorrect matches or substring matches.\n4. Since the module correctly identifies that there are no brand entities present in the input and does not mistakenly match any substrings, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 517,
+      "sample_id": "M2_B0BQPGJ9LQ__earbuds wireless bluetooth samsung:earbuds wireless blu",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"bluetooth earbuds samsung\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and related terms, but none of these terms match \"samsung\".\n3. According to the rubric, the output should return \"OB\" (which stands for \"out of brand\") if the keyword contains a term from the variations_own or related_terms_own. Since \"samsung\" is not part of the brand entities listed, there is no match found.\n4. The module output returns `null` for `branding_scope_1`, which is appropriate because there is no match with the brand entities.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which aligns with the expected behavior when there is no match.\n\nSince the module output correctly identifies that there is no brand match and returns `null`, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 607,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earbuds samsung:bluetooth earbuds sa",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"bluetooth earbuds samsung\" and a list of brand entities that includes \"JBL\" and various variations of it.\n2. The module output states that no brand entity was found in the keyword, which is incorrect because \"samsung\" is not in the variations_own list, but \"JBL\" is.\n3. The module's reasoning indicates that it verified the absence of a brand entity in the keyword, which is a failure to recognize \"JBL\" as a valid brand present in the variations_own list.\n4. Since the brand \"JBL\" exists in the variations_own list and is relevant to the context of the keyword, the module should have detected it.\n5. The module output fails to meet the PASS condition as it missed detecting the brand \"JBL\" that exists in the variations_own input.\n\n**Verdict:** FAIL",
+      "tokens_used": 553,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earbuds samsung:bluetooth earbuds sa",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"bluetooth earbuds samsung\" and a list of brand entities, which includes various names associated with the brand JBL.\n2. The module output states that there are no brand entities found in the keyword \"bluetooth earbuds samsung\" and classifies it as a generic product search.\n3. The keyword includes the term \"bluetooth,\" which is a generic term related to wireless technology and not a brand name. The module correctly identifies that this term should not be flagged as a brand.\n4. The module's reasoning indicates that it has verified the absence of brand entities in the keyword, which aligns with the PASS condition of the rubric that requires only actual brand names to be matched.\n5. Since the module output does not flag any generic words as brands and correctly identifies the keyword as generic, it adheres to the rubric's criteria.\n\n**Verdict:** PASS",
+      "tokens_used": 553,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earbuds samsung:bluetooth earbuds sa",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"bluetooth earbuds samsung\".\n2. The brand entities listed include various forms of \"JBL\", such as \"JBL\", \"JBL Vibe\", \"JBL VibeBeam\", and others, which are all variations of the brand name \"JBL\".\n3. The criterion states that brand matching should ignore case differences. This means that \"JBL\" should match with any case variation like \"jbl\", \"Jbl\", etc.\n4. In the module output, the reasoning states that \"No brand entity found in 'bluetooth earbuds samsung'\" and concludes it as a \"Generic product search\".\n5. However, the keyword does not contain any direct mention of \"JBL\" or its variations, but the module should have considered the case-insensitive nature of brand matching.\n6. Since \"JBL\" is present in the brand entities and the module output did not identify it due to case sensitivity, this indicates a failure to meet the criterion.\n\n**Verdict:** FAIL",
+      "tokens_used": 603,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earbuds samsung:bluetooth earbuds sa",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input string \"bluetooth earbuds samsung.\"\n2. The brand entities listed include variations of \"JBL,\" which is a recognized brand. However, none of these variations appear in the input string.\n3. The criterion specifically states that only whole word matches are accepted, and partial matches should be rejected. The module output does not indicate any incorrect matches or substring matches.\n4. The reasoning provided in the module output confirms that it correctly identified the absence of any brand entities in the input, adhering to the requirement of respecting word boundaries.\n\n**Verdict:** PASS",
+      "tokens_used": 497,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earbuds samsung:bluetooth earbuds sa",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"tozo wireless earbuds\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and related terms, but do not include \"tozo\".\n3. According to the rubric, the output should return \"OB\" (indicating a brand match) only if the keyword contains a term from the `variations_own` or `related_terms_own`. Since \"tozo\" is not present in the brand entities, there is no match.\n4. The module output returns `null`, which is appropriate because there is no match found in the brand entities for the keyword \"tozo wireless earbuds\".\n5. The output reasoning states, \"Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.\" This aligns with the expected behavior of returning `null` when no match is found.\n\nSince the module output correctly identifies that there is no brand match and returns `null`, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 618,
+      "sample_id": "M2_B0BQPGJ9LQ__tozo wireless earbuds:tozo wireless earbud",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"tozo wireless earbuds\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that no brand entity was found in the keyword \"tozo wireless earbuds\" and classifies it as a generic product search.\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The keyword \"tozo wireless earbuds\" does not contain any of the brand entities listed in the variations_own input, specifically \"JBL\" or any of its variations.\n5. Since the module output correctly identifies that there is no brand match, it aligns with the expected output, which also indicates no brand entity found.\n\n**Verdict:** PASS",
+      "tokens_used": 538,
+      "sample_id": "M2_B0BQPGJ9LQ__tozo wireless earbuds:tozo wireless earbud",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"tozo wireless earbuds\" and a list of brand entities that includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that there are no brand entities found in the keyword \"tozo wireless earbuds\" and classifies it as a \"Generic product search.\"\n3. The module's reasoning indicates that it correctly identified \"tozo wireless earbuds\" as not containing any actual brand names from the provided list, which is accurate.\n4. The keyword includes the term \"wireless,\" which is a generic word and not a brand. The module output does not flag \"wireless\" or any other generic terms as brands, adhering to the PASS conditions of the rubric.\n5. Since the module output does not incorrectly identify any generic words as brands, it meets the criteria for passing.\n\n**Verdict:** PASS",
+      "tokens_used": 551,
+      "sample_id": "M2_B0BQPGJ9LQ__tozo wireless earbuds:tozo wireless earbud",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"tozo wireless earbuds\".\n2. The brand entities listed include various forms of \"JBL\" and other brands, but none of them match the keyword \"tozo wireless earbuds\".\n3. The module output states that no brand entity was found in the keyword, which is accurate since \"tozo\" does not match any of the brand entities listed.\n4. The criterion for case insensitivity is not applicable here because there is no match to evaluate; the keyword does not contain any of the brand names, regardless of case.\n5. The module correctly identifies that there is no brand match, and thus it does not fail the case insensitivity check since there are no missed matches due to case differences.\n\n**Verdict:** PASS",
+      "tokens_used": 549,
+      "sample_id": "M2_B0BQPGJ9LQ__tozo wireless earbuds:tozo wireless earbud",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"tozo wireless earbuds.\"\n2. The list of brand entities includes variations of \"JBL\" and other similar terms, but none of these terms are present in the input phrase.\n3. The output reasoning states, \"Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search,\" which aligns with the expectation that only whole word matches should be accepted.\n4. There are no instances of partial matches or substring matches in the output, as the module correctly identifies that none of the brand entities match the input phrase.\n5. Since the module output does not incorrectly match any substrings or partial terms, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 529,
+      "sample_id": "M2_B0BQPGJ9LQ__tozo wireless earbuds:tozo wireless earbud",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"jlab earbuds wireless\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and related terms, but do not include \"jlab\".\n3. The module output indicates that the branding scope is null, which means it did not identify any brand entity from the keyword that matches the variations_own or related_terms_own.\n4. According to the rubric, the output should return null when there is no match found in the brand entities, which is the case here since \"jlab\" does not match any of the listed brand entities.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which aligns with the expected behavior of returning null when there is no match.\n\nSince the module output correctly identifies that there is no match and returns null, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 597,
+      "sample_id": "M2_B0BQPGJ9LQ__jlab earbuds wireless:jlab earbuds wireles",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"jlab earbuds wireless\" and a list of brand entities that includes variations of the brand \"JBL.\"\n2. The brand \"JBL\" is a variation of \"jlab,\" which is a common misspelling or phonetic variation of the brand name.\n3. The module output states that \"No brand entity found in 'jlab earbuds wireless'\" and categorizes the search as a \"Generic product search.\"\n4. Since \"jlab\" is a variation of \"JBL,\" the module should have detected \"JBL\" as a match. The failure to recognize this variation indicates a missed brand detection.\n5. According to the rubric, the output fails because it did not identify a brand that exists in the variations_own input.\n\n**Verdict:** FAIL",
+      "tokens_used": 535,
+      "sample_id": "M2_B0BQPGJ9LQ__jlab earbuds wireless:jlab earbuds wireles",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"jlab earbuds wireless\" and a list of brand entities that include various forms of \"JBL\" and \"Vibe\".\n2. The module output states that there are no brand entities found in the keyword \"jlab earbuds wireless\" and classifies it as a generic product search.\n3. The term \"wireless\" is a generic word commonly used to describe products that operate without wires, and it is not a brand or trademark.\n4. The module correctly identifies that \"jlab\" does not match any of the listed brand entities, which are primarily variations of \"JBL\".\n5. Since the module output does not flag \"wireless\" or any other generic terms as brands, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 538,
+      "sample_id": "M2_B0BQPGJ9LQ__jlab earbuds wireless:jlab earbuds wireles",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"jlab earbuds wireless\".\n2. The brand entities listed include variations of \"JBL\" in different cases, such as \"JBL\", \"Jbl\", \"jbl\", and other combinations.\n3. According to the rubric criterion, brand matching should ignore case differences. Therefore, \"jlab\" should be compared against \"JBL\" and its variations.\n4. The module output states that no brand entity was found in the keyword \"jlab earbuds wireless\" and concludes it as a generic product search.\n5. However, \"jlab\" is a close phonetic match to \"JBL\", and given the case insensitive requirement, it should have recognized \"JBL\" as a match despite the case differences.\n6. The module's failure to identify \"JBL\" as a match due to the case difference indicates a failure to meet the criterion.\n\n**Verdict:** FAIL",
+      "tokens_used": 582,
+      "sample_id": "M2_B0BQPGJ9LQ__jlab earbuds wireless:jlab earbuds wireles",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"jlab earbuds wireless\" and a list of brand entities that include variations of \"JBL\".\n2. The module output indicates that no brand entity was found in the keyword, which is correct since \"jlab\" does not match any of the whole word brand entities listed (e.g., \"JBL\", \"JBL Vibe\").\n3. The criterion specifically states that only whole word matches are accepted, and partial matches should be rejected. In this case, \"jlab\" is a partial match to \"JBL\" and should not be considered a valid match.\n4. The module correctly identifies that there is no match and provides a reasoning that aligns with the rubric's requirement to reject partial matches.\n\n**Verdict:** PASS",
+      "tokens_used": 528,
+      "sample_id": "M2_B0BQPGJ9LQ__jlab earbuds wireless:jlab earbuds wireles",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"wireless headphones bluetooth\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and its variations, but none of these terms appear in the keyword.\n3. According to the rubric, the output should return \"OB\" (indicating a brand match) only if the keyword contains a term from the `variations_own` or `related_terms_own`. Since \"wireless headphones bluetooth\" does not contain any of the brand entities listed, the output correctly returns null.\n4. The module output states, \"Verified: No brand entity found in 'wireless headphones bluetooth'. Generic product search.\" This reasoning aligns with the rubric's requirement for returning null when there is no match found.\n5. There are no conditions that would lead to a FAIL verdict, as the output does not incorrectly return \"OB\" when there is no match, nor does it return null when there is a match.\n\n**Verdict:** PASS",
+      "tokens_used": 607,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless headphones bluetooth:wireless headphones ",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"wireless headphones bluetooth\" and a list of brand entities that includes multiple variations of the brand \"JBL\" and its related terms.\n2. The module output states that no brand entity was found in the keyword, which is a critical point for evaluation.\n3. According to the rubric criterion, a \"PASS\" condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The brand \"JBL\" is present in the variations_own list, and it is a well-known brand associated with audio products, including headphones.\n5. The keyword \"wireless headphones bluetooth\" does not explicitly mention \"JBL,\" but the module's reasoning suggests that it did not recognize any brand entity at all, which indicates a failure to detect a brand that exists in the variations_own input.\n6. Since the module output failed to identify the brand \"JBL\" despite its presence in the variations_own list, it does not meet the \"PASS\" conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 590,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless headphones bluetooth:wireless headphones ",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"wireless headphones bluetooth,\" which includes generic terms such as \"wireless\" and \"bluetooth.\"\n2. The module output states that there are \"No brand entity found\" in the provided keyword, which is accurate since the terms used are generic and do not refer to any specific brand or trademark.\n3. The reasoning provided in the module output confirms that it has correctly identified the input as a generic product search, which aligns with the PASS conditions of the rubric.\n4. There are no instances of generic words being flagged as brands in the output, which means the module has successfully avoided false positives.\n\n**Verdict:** PASS",
+      "tokens_used": 508,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless headphones bluetooth:wireless headphones ",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"wireless headphones bluetooth\", which does not contain any brand names.\n2. The brand entities listed include variations of \"JBL\" in different cases, such as \"JBL\", \"Jbl\", \"jbl\", \"JayBeeL\", etc.\n3. The module output states that no brand entity was found in the keyword, which is accurate since the keyword does not contain any of the brand names listed.\n4. The criterion for case insensitivity is not applicable here because there is no match to evaluate; the keyword simply does not contain any brand names.\n5. Since the module correctly identified that there are no brand matches, it adheres to the rubric's PASS conditions, as there are no missed matches due to case differences.\n\n**Verdict:** PASS",
+      "tokens_used": 557,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless headphones bluetooth:wireless headphones ",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input string \"wireless headphones bluetooth.\"\n2. The keyword \"wireless headphones bluetooth\" does not contain any of the brand entities listed in the input data, which include variations of \"JBL\" and \"Vibe.\"\n3. The output reasoning states, \"Verified: No brand entity found in 'wireless headphones bluetooth'. Generic product search,\" which aligns with the expectation that only whole word matches should be accepted.\n4. There are no instances of partial matches or substring matches in the output, as the module correctly identifies that none of the brand entities are present in the input string.\n5. Since the module output does not incorrectly match any substrings or partial names, it adheres to the criterion of respecting word boundaries.\n\n**Verdict:** PASS",
+      "tokens_used": 537,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless headphones bluetooth:wireless headphones ",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"bluetooth earphone\" and a list of brand entities that include various forms of the brand \"JBL\" and its variations.\n2. The module output indicates that the branding scope is `null`, which suggests that no brand entity was found in the keyword.\n3. According to the rubric, the output should return `OB` (indicating a brand match) only if the keyword contains a term from `variations_own` or `related_terms_own`. In this case, \"bluetooth earphone\" does not contain any of the brand entities listed (e.g., \"JBL\", \"JBL Vibe\", etc.).\n4. Since there is no match found in the keyword for any of the brand entities, the output of `null` is appropriate and aligns with the PASS condition of the rubric.\n5. The reasoning provided in the module output (\"Verified: No brand entity found in 'bluetooth earphone'. Generic product search.\") supports the conclusion that the keyword does not contain any brand terms, which is consistent with the expected output.\n\n**Verdict:** PASS",
+      "tokens_used": 635,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earphone:bluetooth earphone",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"bluetooth earphone\" and a list of brand entities that includes multiple variations of the brand \"JBL.\"\n2. The module output states that no brand entity was found in the keyword \"bluetooth earphone,\" which is a critical point for evaluation.\n3. According to the rubric criterion, a PASS condition requires that a brand from the variations_own list is detected in the keyword when present.\n4. The brand \"JBL\" is present in the variations_own list, and it is a well-known brand associated with audio products, including earphones.\n5. The keyword \"bluetooth earphone\" is relevant to the brand \"JBL,\" as they produce such products. Therefore, the module should have detected \"JBL\" as a brand entity in the keyword.\n6. Since the module output indicates that no brand was found, it has missed detecting the brand \"JBL,\" which is a clear violation of the PASS conditions.\n\n**Verdict:** FAIL",
+      "tokens_used": 575,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earphone:bluetooth earphone",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"bluetooth earphone\" and a list of brand entities, which includes various forms of the brand \"JBL\" and its variations.\n2. The module output states that there are no brand entities found in the keyword \"bluetooth earphone\" and classifies it as a generic product search.\n3. The term \"bluetooth\" is a generic word commonly used to describe a wireless technology standard, and \"earphone\" is a generic term for a type of audio device. Neither of these terms is a brand or trademark.\n4. The module correctly identifies that there are no actual brand names present in the keyword and does not flag any generic words as brands.\n5. Since the output aligns with the PASS conditions of the rubric, which requires that only actual brand/trademark names are matched and no generic words are flagged as brands, the module output is accurate.\n\n**Verdict:** PASS",
+      "tokens_used": 561,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earphone:bluetooth earphone",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"bluetooth earphone\".\n2. The brand entities listed include various forms of \"JBL\" and its variations, which are case insensitive.\n3. The module output states that no brand entity was found in the keyword \"bluetooth earphone\" and categorizes it as a generic product search.\n4. However, the brand \"JBL\" is present in the brand entities, and it should match regardless of case (e.g., \"JBL\", \"jbl\", \"Jbl\").\n5. Since the module did not identify \"JBL\" as a match due to the case sensitivity, it indicates a failure to recognize the brand despite its presence in the list.\n\n**Verdict:** FAIL",
+      "tokens_used": 544,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earphone:bluetooth earphone",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"bluetooth earphone.\"\n2. The list of brand entities includes variations of \"JBL,\" but none of these variations are present in the input phrase.\n3. The criterion states that only whole word matches should be accepted, and partial matches should be rejected. In this case, the module correctly identifies that there are no matches, thus respecting the word boundary.\n4. The reasoning provided in the module output supports the conclusion that it is a generic product search and does not mistakenly accept any substring matches.\n\n**Verdict:** PASS",
+      "tokens_used": 494,
+      "sample_id": "M2_B0BQPGJ9LQ__bluetooth earphone:bluetooth earphone",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"wireless earphone\".\n2. The brand entities listed in the input data include various forms of the brand \"JBL\" and its variations, but none of these terms are present in the keyword \"wireless earphone\".\n3. According to the rubric, the output should return \"OB\" (which stands for \"out of brand\") only if the keyword contains a term from the `variations_own` or `related_terms_own`. Since there is no match found in the keyword, the output should be `null`.\n4. The module output correctly returns `null` for `branding_scope_1`, which aligns with the expected output and the rubric's PASS conditions.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which is accurate and supports the decision to return `null`.\n\n**Verdict:** PASS",
+      "tokens_used": 589,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless earphone:wireless earphone",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"wireless earphone\" and a list of brand entities that includes multiple variations of the brand \"JBL\" and other similar names.\n2. The module output states that no brand entity was found in the keyword \"wireless earphone\" and classifies it as a generic product search.\n3. According to the rubric criterion, a brand match is considered a PASS if the brand from the variations_own list is detected in the keyword when present.\n4. In this case, the keyword \"wireless earphone\" does not explicitly mention any of the brand entities listed, including \"JBL\" or its variations.\n5. However, the criterion also states that if a brand exists in the variations_own input and is not detected, it results in a FAIL. Since \"JBL\" is present in the variations_own list and is not detected in the keyword, this constitutes a failure to identify a brand that exists in the provided list.\n\n**Verdict:** FAIL",
+      "tokens_used": 575,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless earphone:wireless earphone",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"wireless earphone\" and a list of brand entities, which includes various forms of the brand \"JBL\" and its related products.\n2. The module output states that there are no brand entities found in the keyword \"wireless earphone\" and classifies it as a generic product search.\n3. The keyword \"wireless\" is a generic term commonly used to describe technology that operates without physical connections, and \"earphone\" is a generic term for a type of audio device. Neither of these terms is a brand or trademark.\n4. The module correctly identifies that the keyword does not contain any actual brand names from the provided list, thus adhering to the PASS conditions of the rubric.\n5. The reasoning provided in the module output supports the conclusion that no false positives were flagged, as it explicitly states that the search is for a generic product.\n\n**Verdict:** PASS",
+      "tokens_used": 560,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless earphone:wireless earphone",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"wireless earphone\".\n2. The brand entities listed include various forms of \"JBL\", such as \"JBL\", \"JBL Vibe\", \"JBL VibeBeam\", and others that contain variations of the brand name.\n3. The criterion states that brand matching should ignore case differences. This means that \"JBL\", \"jbl\", \"Jbl\", etc., should all be considered a match.\n4. In the module output, the reasoning states, \"Verified: No brand entity found in 'wireless earphone'. Generic product search.\" This indicates that the module did not identify any brand entities from the provided list as matching the keyword.\n5. However, the keyword \"wireless earphone\" does not contain any mention of the brand \"JBL\" or its variations, regardless of case. Therefore, the module's output is correct in stating that no brand entity was found.\n6. Since the module did not miss any matches due to case sensitivity (as there were no relevant brand names in the keyword to match), it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 631,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless earphone:wireless earphone",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"wireless earphone.\"\n2. The list of brand entities includes variations of \"JBL\" and other related terms, but none of these terms are present in the input phrase.\n3. The output reasoning states, \"Verified: No brand entity found in 'wireless earphone'. Generic product search,\" which aligns with the expectation that only whole word matches should be accepted.\n4. There are no instances of partial matches or substring matches in the output, as the module correctly identifies that \"wireless earphone\" does not contain any of the brand entities listed.\n5. Since the module output does not incorrectly match any substrings or partial terms, it adheres to the criterion of respecting word boundaries.\n\n**Verdict:** PASS",
+      "tokens_used": 535,
+      "sample_id": "M2_B0BQPGJ9LQ__wireless earphone:wireless earphone",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"headphones wireless bluetooth\".\n2. The brand entities listed in the input data include various forms of \"JBL\" and its variations, but none of these terms appear in the keyword.\n3. According to the rubric, the output should return \"OB\" (indicating a brand match) only if the keyword contains a term from the `variations_own` or `related_terms_own`. Since there is no match found in the keyword, the output should be `null`.\n4. The module output correctly returns `null` for `branding_scope_1`, which aligns with the expected output and the rubric's PASS conditions.\n5. The reasoning provided in the module output states that no brand entity was found in the keyword, which is accurate.\n\n**Verdict:** PASS",
+      "tokens_used": 571,
+      "sample_id": "M2_B0BQPGJ9LQ__headphones wireless bluetooth:headphones wireless ",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"headphones wireless bluetooth\" and a list of brand entities that includes multiple variations of the brand \"JBL.\"\n2. The module output states that no brand entity was found in the keyword, which is a critical point for evaluation.\n3. According to the rubric criterion, a brand match should be detected if the brand exists in the variations_own list. In this case, \"JBL\" is present in the variations_own list.\n4. The module's reasoning indicates that it classified the search as a \"Generic product search,\" which suggests that it did not recognize \"JBL\" as a brand in the context of the keyword provided.\n5. Since \"JBL\" is indeed a brand that exists in the variations_own list and the module failed to detect it, this constitutes a failure according to the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 550,
+      "sample_id": "M2_B0BQPGJ9LQ__headphones wireless bluetooth:headphones wireless ",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains the keyword \"headphones wireless bluetooth\" and a list of brand entities.\n2. The module output indicates that it found no brand entities in the provided keyword, which is correct since \"headphones\", \"wireless\", and \"bluetooth\" are generic terms and not specific brand names.\n3. The reasoning provided in the module output states, \"Verified: No brand entity found in 'headphones wireless bluetooth'. Generic product search.\" This aligns with the PASS condition of the rubric, as it confirms that no generic words were incorrectly flagged as brands.\n4. The module output correctly identifies that the terms in the keyword are generic and does not falsely identify any of them as brands.\n\n**Verdict:** PASS",
+      "tokens_used": 521,
+      "sample_id": "M2_B0BQPGJ9LQ__headphones wireless bluetooth:headphones wireless ",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"headphones wireless bluetooth\", which does not contain any brand names.\n2. The brand entities listed include variations of \"JBL\" and other brands, some of which have different casing (e.g., \"JBL\", \"jbl\", \"JayBeeL\").\n3. The module output states that no brand entity was found in the keyword, which is accurate since the keyword does not contain any brand names.\n4. The criterion for case insensitivity is not applicable here because there are no brand names present in the keyword to match against the brand entities.\n5. Since the module correctly identified that there are no brand matches, it did not fail due to case sensitivity issues.\n\n**Verdict:** PASS",
+      "tokens_used": 544,
+      "sample_id": "M2_B0BQPGJ9LQ__headphones wireless bluetooth:headphones wireless ",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output indicates that no brand entity was found in the input phrase \"headphones wireless bluetooth.\"\n2. The rubric criterion specifically states that only whole word matches are accepted, and partial matches should be rejected.\n3. The brand entities listed include variations of \"JBL,\" but none of these variations appear in the input phrase.\n4. The reasoning provided in the module output confirms that it did not find any brand entities, which aligns with the requirement to respect word boundaries.\n5. Since there are no substring matches accepted and the output correctly identifies that no brand entities are present, it adheres to the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 506,
+      "sample_id": "M2_B0BQPGJ9LQ__headphones wireless bluetooth:headphones wireless ",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"jbl vibe buds\".\n2. The brand entities listed in the input data include \"JBL\", which is a term from the variations_own.\n3. The module output indicates \"branding_scope_1\": \"OB\", which suggests that the module has correctly identified a brand from the keyword.\n4. The reasoning provided in the module output states that \"JBL\" was found in \"jbl vibe buds\", which is accurate as \"JBL\" is indeed part of the keyword.\n5. Since the keyword contains a term from variations_own (\"JBL\"), the output of \"OB\" is appropriate and aligns with the PASS conditions of the rubric.\n6. There are no indications of a FAIL condition, as the output does not return null when there is a match found.\n\n**Verdict:** PASS",
+      "tokens_used": 582,
+      "sample_id": "M2_B0BQPGJ9LQ__jbl vibe buds:jbl vibe buds",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M02_brand_match_found",
+      "criterion": "Brand Match Found",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"jbl vibe buds\" and a list of brand entities, which includes \"JBL\" and several variations of it.\n2. The module output states that the brand \"JBL\" was detected in the keyword \"jbl vibe buds.\"\n3. The reasoning provided in the module output confirms that \"JBL\" was found in the keyword, which matches one of the entries in the variations_own list.\n4. Since \"JBL\" is indeed present in the keyword and is also listed in the variations_own input, the module has correctly detected the brand.\n5. There are no missed brands from the variations_own list, as \"JBL\" is the only relevant brand in this case.\n\n**Verdict:** PASS",
+      "tokens_used": 532,
+      "sample_id": "M2_B0BQPGJ9LQ__jbl vibe buds:jbl vibe buds",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M02_no_false_positives",
+      "criterion": "No False Positives",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies \"JBL\" as a brand found in the keyword \"jbl vibe buds.\" This is a correct identification since \"JBL\" is indeed a recognized brand.\n2. The output does not flag any generic words as brands. The keyword \"jbl vibe buds\" contains the brand name \"JBL\" and does not include any generic terms that could be misidentified as brands.\n3. The reasoning provided in the module output confirms that the identification is based on the actual brand name present in the input data, which aligns with the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 503,
+      "sample_id": "M2_B0BQPGJ9LQ__jbl vibe buds:jbl vibe buds",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M02_case_insensitive",
+      "criterion": "Case Insensitive",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"jbl vibe buds\".\n2. The brand entities listed include \"JBL\", which is a direct match to the keyword \"jbl\" when case differences are ignored.\n3. The module output states that \"JBL\" was found in the keyword \"jbl vibe buds\", confirming that the brand matching is case insensitive.\n4. The reasoning provided in the module output explicitly mentions that \"JBL\" was verified as found in the keyword, which aligns with the PASS condition of the rubric.\n5. There are no indications of missed matches due to case differences, as \"JBL\" matches \"jbl\" regardless of case.\n\n**Verdict:** PASS",
+      "tokens_used": 541,
+      "sample_id": "M2_B0BQPGJ9LQ__jbl vibe buds:jbl vibe buds",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M02_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies \"JBL\" as a match found in the input phrase \"jbl vibe buds.\"\n2. The keyword \"jbl vibe buds\" contains the whole word \"JBL,\" which is a correct match according to the rubric.\n3. The output does not indicate any partial matches or substring matches, as it specifically mentions \"JBL\" and not any variations or substrings like \"jbl\" or \"jblue.\"\n4. The reasoning provided in the output confirms that the match is based on the whole word \"JBL,\" which aligns with the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 505,
+      "sample_id": "M2_B0BQPGJ9LQ__jbl vibe buds:jbl vibe buds",
+      "sample_idx": 19
+    }
+  ]
+}

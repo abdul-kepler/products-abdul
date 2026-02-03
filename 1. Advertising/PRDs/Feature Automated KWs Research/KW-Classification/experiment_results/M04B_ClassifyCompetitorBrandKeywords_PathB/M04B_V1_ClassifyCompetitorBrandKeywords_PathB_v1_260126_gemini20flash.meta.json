@@ -1,0 +1,68 @@
+{
+  "braintrust_experiment_id": "0c5db527-86f4-4a83-bfcf-78bbea6d57ff",
+  "braintrust_experiment_name": "M04B_ClassifyCompetitorBrandKeywords_gemini",
+  "created": "2026-01-25 18:07:31.452000+00:00",
+  "model": "gemini-2.0-flash",
+  "temperature": 0,
+  "dataset_id": "6173da1f-a3e4-4b1b-adb2-fabb2651b84f",
+  "dataset_name": "M04B_ClassifyCompetitorBrandKeywords_PathB",
+  "dataset_version": "1000196491375989978",
+  "prompt_id": "ea373bc4-c807-4eff-9c39-e4189b03268e",
+  "prompt_version": "1000196549298528966",
+  "prompt_session_id": "7543f2cb-ab5c-4368-b830-2e9203cac897",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_4b_ClassifyCompetitorBrandKeywords_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "branding_scope_2",
+          "matched_term",
+          "matched_competitor",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why this classification was chosen"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "matched_term": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The competitor brand term found in the keyword"
+          },
+          "branding_scope_2": {
+            "enum": [
+              "CB",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "CB if keyword matches competitor brand, null otherwise"
+          },
+          "matched_competitor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Name of the matched competitor brand"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 629,
+  "downloaded_at": "2026-01-26T01:50:26.743667"
+}

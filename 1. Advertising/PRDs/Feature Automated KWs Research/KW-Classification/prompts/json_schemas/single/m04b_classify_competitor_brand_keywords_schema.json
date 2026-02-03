@@ -1,0 +1,35 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_4b_ClassifyCompetitorBrandKeywords_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "branding_scope_2": {
+          "type": ["string", "null"],
+          "enum": ["CB", null],
+          "description": "CB if keyword matches competitor brand, null otherwise"
+        },
+        "matched_term": {
+          "type": ["string", "null"],
+          "description": "The competitor brand term found in the keyword"
+        },
+        "matched_competitor": {
+          "type": ["string", "null"],
+          "description": "Name of the matched competitor brand"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Brief explanation of why this classification was chosen"
+        }
+      },
+      "required": ["branding_scope_2", "matched_term", "matched_competitor", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

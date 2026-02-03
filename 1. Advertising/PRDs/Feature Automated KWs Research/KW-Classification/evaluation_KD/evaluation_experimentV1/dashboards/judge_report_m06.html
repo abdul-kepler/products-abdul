@@ -1,0 +1,3132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Judge Report - M06</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .tab.active {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: #00d9ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .rubric-title {
+            font-weight: 600;
+        }
+        .rubric-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .stat {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .stat.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .stat.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+            transition: width 0.3s;
+        }
+        .rubric-content {
+            display: none;
+            padding: 20px;
+        }
+        .rubric-content.open {
+            display: block;
+        }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass {
+            border-left-color: #00ff88;
+        }
+        .eval-item.fail {
+            border-left-color: #ff4757;
+        }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id {
+            font-family: monospace;
+            color: #00d9ff;
+        }
+        .verdict {
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+        .verdict.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .verdict.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .reasoning {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #aaa;
+            white-space: pre-wrap;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .output-box.expected h4 {
+            color: #00ff88;
+        }
+        .output-box.actual h4 {
+            color: #00d9ff;
+        }
+        .output-content {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .input-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .input-section h4 {
+            font-size: 0.8rem;
+            color: #ffa502;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .input-content {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .input-field {
+            margin-bottom: 8px;
+        }
+        .input-field strong {
+            color: #ccc;
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible-header:hover {
+            opacity: 0.8;
+        }
+        .collapsible-content {
+            display: none;
+        }
+        .collapsible-content.open {
+            display: block;
+        }
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+        .toggle-icon.open {
+            transform: rotate(90deg);
+        }
+        .match-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .match-indicator.exact {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .match-indicator.partial {
+            background: rgba(255, 165, 2, 0.2);
+            color: #ffa502;
+        }
+        .match-indicator.mismatch {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .match-details {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        .match-details .overlap {
+            color: #00ff88;
+        }
+        .match-details .missing {
+            color: #ff4757;
+        }
+        .match-details .extra {
+            color: #ffa502;
+        }
+        .sample-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .sample-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .sample-content {
+            display: none;
+            padding: 15px;
+        }
+        .sample-content.open {
+            display: block;
+        }
+        .mini-eval {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .mini-eval:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .detail-modal.open {
+            display: block;
+        }
+        .modal-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LLM Judge Report - M06</h1>
+            <p class="meta">Model: gpt-4o-mini | Generated: 2026-01-14 00:08:22</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">48</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">23</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">25</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">47.9%</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('by-rubric')">By Rubric</div>
+            <div class="tab" onclick="showTab('by-sample')">By Sample</div>
+        </div>
+
+        <div id="by-rubric" class="tab-content active">
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M06_three_level_hierarchy')">
+                    <span class="rubric-title">Three-Level Hierarchy</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">11 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 8.333333333333332%"></div>
+                        </div>
+                        <span>8%</span>
+                    </div>
+                </div>
+                <div id="M06_three_level_hierarchy" class="rubric-content">
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The output is structured as a taxonomy with three levels, which is a requirement of the rubric.
+2. The first level (level 1) is labeled as &quot;True Wireless Earbuds,&quot; which is a specific product type. This should ideally represent a broader category.
+3. The second level (level 2) is &quot;Wireless Earphones,&quot; which is a subcategory of the first level. This is logically ordered as it is more specific than the first level.
+4. The third level (level 3) is &quot;Earphones,&quot; which is even more specific than the second level. This maintains the hierarchy from broad to specific.
+5. However, the hierarchy is not correctly structured according to the rubric&#x27;s requirements. The first level should represent a broader category (like &quot;Electronics&quot;), while the subsequent levels should represent subcategories and product types. Instead, the first level is a product type, which is not in line with the expected hierarchy.
+
+Given that the hierarchy is incorrectly ordered and does not follow the required structure of category &gt; subcategory &gt; product type, the output fails to meet the rubric criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a three-level hierarchy consisting of Category, Subcategory, and Product Type.
+2. In the provided module output, there is only one level present, which is &quot;Water Bottle&quot; classified as level 1.
+3. The output does not include the broader category (Category) or the subcategory (Subcategory) that would logically precede the product type.
+4. Since the output is missing both the Category and Subcategory levels, it fails to meet the requirement of having all three levels present.
+5. Additionally, the hierarchy is not logically ordered from broad to specific, as it only presents a single product type without context.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with three levels, which is a requirement for passing the criterion.
+2. The first level is labeled as &quot;Kitchen Sink Caddy,&quot; which is a specific product type rather than a broad category. This should ideally represent a broader category such as &quot;Home &amp; Kitchen.&quot;
+3. The second level is &quot;Caddy Organizer,&quot; which is also a specific product type and does not represent a subcategory. A subcategory should be broader than the product type but narrower than the category.
+4. The third level is &quot;Kitchen Storage &amp; Organization Accessories,&quot; which is correctly identified as a product type but is placed at the third level instead of being a category or subcategory.
+5. The hierarchy is not logically ordered from broad to specific. The first level should be a broad category, the second level should be a subcategory, and the third level should be a specific product type.
+
+Given these points, the output fails to meet the rubric&#x27;s requirements for a three-level hierarchy.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The output is structured into three levels, which is a requirement for passing the criterion.
+2. The first level is &quot;Puffer Jacket / Puffy Coat,&quot; which can be considered a product type. However, it should ideally represent a broader category.
+3. The second level is &quot;Jacket,&quot; which is a subcategory of the first level. This is logically ordered as it narrows down the type of product.
+4. The third level is &quot;Men&#x27;s Clothing / Apparel,&quot; which is broader than the previous levels and represents a category. However, it is not a product type but rather a category of clothing, which is not aligned with the expected hierarchy.
+5. The hierarchy should ideally follow a structure of Category &gt; Subcategory &gt; Product Type, but the output presents the levels in a way that does not adhere to this logical order. The first level should be a broader category, not a product type.
+
+Given these observations, the output fails to meet the rubric&#x27;s requirements for a logically ordered hierarchy.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The output provided contains a taxonomy structure, but it only includes one level: &quot;level 1&quot; with the product type &quot;Car Phone Holders &amp; Mounts.&quot;
+2. According to the rubric, a valid output must have three levels: category, subcategory, and product type.
+3. The output is missing both the category and subcategory levels, which are essential for a complete three-level hierarchy.
+4. The hierarchy is not logically ordered from broad to specific because it does not include the necessary levels to establish such an order.
+
+Given these points, the output fails to meet the requirements of the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a three-level hierarchy consisting of a category, subcategory, and product type.
+2. In the provided module output, there are two levels present:
+   - Level 1: &quot;Ice Maker&quot; (which appears to be the product type)
+   - Level 2: &quot;Appliances&quot; (which appears to be the category)
+3. The expected structure should be:
+   - Level 1: Category (broadest)
+   - Level 2: Subcategory (more specific)
+   - Level 3: Product Type (most specific)
+4. In the module output, &quot;Ice Maker&quot; is listed as level 1, which should be the product type, and &quot;Appliances&quot; is listed as level 2, which should be the category. This indicates a reversal of the hierarchy.
+5. Additionally, there is no third level present, which is required for a complete three-level hierarchy.
+6. Therefore, the output fails to meet the conditions of the rubric as it is missing the correct hierarchy and does not include all three required levels.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The output is structured as a taxonomy with three levels, which is a requirement of the rubric.
+2. The first level is &quot;Pencil Eyeliner,&quot; which is a specific type of eyeliner, indicating a product type.
+3. The second level is &quot;Eyeliner,&quot; which is a broader category that encompasses various types of eyeliners, thus serving as a subcategory.
+4. The third level is &quot;Eye Makeup,&quot; which is an even broader category that includes all types of eye makeup products, making it the category level.
+5. The hierarchy is logically ordered from the most specific (product type) to the most general (category), which aligns with the rubric&#x27;s requirements.
+
+Since all three levels are present and the hierarchy is correctly ordered from specific to broad, the output meets the PASS conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a three-level hierarchy consisting of Category, Subcategory, and Product Type.
+2. In the provided module output, there is only one level present, which is &quot;level 1&quot; with the product type &quot;Oven Mitt.&quot;
+3. The output does not include the broader category (Category) or the subcategory (Subcategory) levels, which are essential for fulfilling the three-level hierarchy requirement.
+4. Since the output is missing two of the three required levels, it fails to meet the conditions for a PASS.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a three-level hierarchy consisting of a category, subcategory, and product type.
+2. In the module output, the taxonomy is structured as follows:
+   - Level 1: &quot;Serving Tray&quot; (product type)
+   - Level 2: &quot;Trays&quot; (product type)
+   - Level 3: &quot;Home &amp; Kitchen&quot; (product type)
+3. The expected hierarchy should be organized from broad to specific, meaning the category should be at the highest level, followed by the subcategory, and then the product type.
+4. In the module output, the levels are incorrectly assigned:
+   - &quot;Serving Tray&quot; is a specific product type, but it is placed at level 1.
+   - &quot;Trays&quot; is also a product type and is placed at level 2.
+   - &quot;Home &amp; Kitchen,&quot; which is the broadest category, is incorrectly placed at level 3.
+5. The output fails to present the required three levels in the correct order, as it does not follow the logical hierarchy of category &gt; subcategory &gt; product type.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The output is structured as a taxonomy with three levels, which is a requirement of the rubric.
+2. The first level (level 1) is labeled &quot;Transformer&quot; and is categorized as a product type. However, it should represent a broader category rather than a specific product type.
+3. The second level (level 2) is labeled &quot;Action Figure,&quot; which is a subcategory of toys, and it is correctly placed under the first level.
+4. The third level (level 3) is labeled &quot;Toys,&quot; which is a broader category than the previous levels and should ideally be at the first level.
+5. The hierarchy is not logically ordered from broad to specific. The correct order should have &quot;Toys &amp; Games&quot; as the category at the first level, followed by &quot;Action Figures, Collectible Toys&quot; as the subcategory, and finally &quot;Transformer&quot; as the specific product type.
+
+Since the hierarchy is incorrect and does not follow the required structure of Category &gt; Subcategory &gt; Product Type, the output fails to meet the rubric criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a three-level hierarchy consisting of a category, subcategory, and product type.
+2. In the provided module output, there are two levels present:
+   - Level 1: &quot;ENFit Syringe&quot; (which is labeled as a product type)
+   - Level 2: &quot;Syringe&quot; (also labeled as a product type)
+3. The expected structure should have a clear distinction between category, subcategory, and product type. However, the output does not include a category level or a subcategory level, which are essential for fulfilling the three-level hierarchy requirement.
+4. Additionally, the hierarchy is not logically ordered from broad to specific, as both levels are labeled as product types without a clear categorization.
+5. Since the output is missing the category and subcategory levels, it fails to meet the PASS conditions outlined in the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_three_level_hierarchy_M6_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_three_level_hierarchy_M6_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_three_level_hierarchy_M6_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_three_level_hierarchy_M6_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires a three-level hierarchy consisting of a category, subcategory, and product type.
+2. In the provided module output, there are two levels present, but they are both labeled as &quot;product_type&quot; which indicates a lack of distinction between category and subcategory.
+3. The first level is labeled &quot;ENFit Syringe&quot; and the second level is labeled &quot;Syringe.&quot; However, neither of these levels corresponds to a category or subcategory as required by the rubric.
+4. The expected output indicates that only one level is present, which is also not sufficient to meet the three-level requirement.
+5. Since the output is missing both the category and subcategory levels, it fails to meet the conditions for a PASS.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M06_product_type_focused')">
+                    <span class="rubric-title">Product Type Focused</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">7 Pass</span>
+                        <span class="stat fail">5 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 58.333333333333336%"></div>
+                        </div>
+                        <span>58%</span>
+                    </div>
+                </div>
+                <div id="M06_product_type_focused" class="rubric-content">
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that includes &quot;True Wireless Earbuds,&quot; &quot;Wireless Earphones,&quot; and &quot;Earphones.&quot;
+2. The first entry, &quot;True Wireless Earbuds,&quot; is a specific product category that describes the type of product rather than its features. However, the term &quot;True Wireless&quot; can be considered a feature descriptor, as it implies a specific technology used in the earbuds.
+3. The second entry, &quot;Wireless Earphones,&quot; also includes the term &quot;Wireless,&quot; which is a feature-based descriptor rather than a pure product category.
+4. The third entry, &quot;Earphones,&quot; is a more general product category and aligns with the requirement to describe what the product is.
+5. Overall, the taxonomy includes terms that are feature-based (&quot;True Wireless&quot; and &quot;Wireless&quot;), which violates the rubric&#x27;s PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product as a &quot;Water Bottle.&quot;
+2. The term &quot;Water Bottle&quot; is a clear product category/type and does not describe any specific features of the product.
+3. There are no feature-based descriptions or marketing terms present in the taxonomy. The output strictly adheres to the requirement of describing what the product is, rather than how it functions or any promotional language.
+4. The taxonomy aligns with the PASS conditions outlined in the rubric, as it describes the product category without including any features or marketing terms.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product as &quot;Kitchen Sink Caddy,&quot; &quot;Caddy Organizer,&quot; and &quot;Kitchen Storage &amp; Organization Accessories.&quot;
+2. The first level, &quot;Kitchen Sink Caddy,&quot; describes the product type accurately without including any features or marketing terms. This aligns with the rubric&#x27;s requirement for a product category/type.
+3. The second level, &quot;Caddy Organizer,&quot; also maintains focus on the product type and does not include any feature descriptions or marketing language.
+4. The third level, &quot;Kitchen Storage &amp; Organization Accessories,&quot; continues to describe the product category without referencing specific features or promotional terms.
+5. Overall, the taxonomy does not include any feature-based descriptions or marketing terms, adhering to the rubric&#x27;s PASS conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product as a &quot;Puffer Jacket / Puffy Coat,&quot; which is a clear product type and aligns with the requirement to describe what the product is.
+2. The subsequent levels further classify the product as a &quot;Jacket&quot; and &quot;Men&#x27;s Clothing / Apparel,&quot; which continue to focus on the type of product rather than its features.
+3. There are no feature descriptions included in the taxonomy, such as &quot;wireless,&quot; &quot;bluetooth,&quot; or any marketing terms that would detract from the focus on product type.
+4. The taxonomy adheres to the PASS conditions by clearly defining the product category/type without incorporating any feature-based or marketing language.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product as &quot;Car Phone Holders &amp; Mounts.&quot;
+2. This classification describes the product type, which is a category of products designed to hold phones in vehicles.
+3. The taxonomy does not include any feature descriptions or marketing terms. It avoids terms like &quot;wireless,&quot; &quot;bluetooth,&quot; or &quot;premium,&quot; which would indicate a feature-based taxonomy.
+4. The classification aligns with the PASS conditions of the rubric, as it focuses on what the product is (a type of holder/mount) rather than its features or marketing language.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that includes &quot;Ice Maker&quot; as the primary product type, which accurately describes the product category.
+2. The second level of the taxonomy includes &quot;Appliances,&quot; which is a broader category that encompasses various types of products, including ice makers. While this is not a feature description, it does not strictly adhere to the requirement of focusing solely on the product type.
+3. The rubric specifies that the taxonomy should describe what the product is, not include additional categories that may dilute the focus on the specific product type. Including &quot;Appliances&quot; could be seen as unnecessary for the purpose of defining the product type.
+4. There are no feature descriptions or marketing terms present in the taxonomy, which aligns with the PASS conditions.
+
+Given that the inclusion of &quot;Appliances&quot; as a second level may detract from the focused description of the product type, it does not fully meet the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product as &quot;Pencil Eyeliner,&quot; &quot;Eyeliner,&quot; and &quot;Eye Makeup.&quot; 
+2. Each level of the taxonomy describes the product type without including any feature-based descriptions or marketing terms. For example, &quot;Pencil Eyeliner&quot; is a clear product category, and it does not reference any specific features like &quot;waterproof&quot; or &quot;smudge-proof.&quot;
+3. The taxonomy adheres to the PASS conditions outlined in the rubric, as it focuses solely on what the product is (its category/type) rather than its features or marketing language.
+4. There are no indications of feature-based taxonomy or marketing terms present in the output.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product as &quot;Oven Mitt,&quot; which is a clear product type.
+2. The taxonomy does not include any feature descriptions or marketing terms. It strictly identifies the product category without mentioning attributes like &quot;heat resistant&quot; or &quot;silicone.&quot;
+3. The output aligns with the PASS conditions of the rubric, as it describes the product category/type without incorporating any features or marketing language.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that includes &quot;Serving Tray&quot; as the primary product type, which accurately describes the category/type of the product.
+2. The second level includes &quot;Trays,&quot; which is a broader category that still aligns with the product type but is somewhat redundant since &quot;Serving Tray&quot; is already specified at level 1.
+3. The third level includes &quot;Home &amp; Kitchen,&quot; which is a category that describes the general area where the product is used but does not specifically define the product type itself.
+4. The output does not include any feature descriptions or marketing terms, which aligns with the PASS conditions of the rubric.
+5. However, the inclusion of &quot;Trays&quot; and &quot;Home &amp; Kitchen&quot; at levels 2 and 3 introduces unnecessary classifications that do not strictly adhere to the requirement of focusing solely on the product type.
+
+Given that the taxonomy includes additional levels that do not strictly describe the product type and could be seen as diluting the focus on what the product is, it does not fully meet the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that categorizes the product into three levels: &quot;Transformer,&quot; &quot;Action Figure,&quot; and &quot;Toys.&quot;
+2. Each level describes the product type without including any specific features or marketing terms. For example, &quot;Transformer&quot; refers to the type of toy, while &quot;Action Figure&quot; and &quot;Toys&quot; further categorize it without mentioning any features like &quot;wireless&quot; or &quot;premium.&quot;
+3. The taxonomy adheres to the PASS conditions outlined in the rubric, as it focuses on what the product is (its category/type) rather than its features or marketing language.
+4. There are no indications of feature-based taxonomy or marketing terms present in the output.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy that includes two levels of product types: &quot;ENFit Syringe&quot; at level 1 and &quot;Syringe&quot; at level 2.
+2. According to the rubric, the taxonomy should describe the product category/type without including features or marketing terms.
+3. The term &quot;ENFit Syringe&quot; at level 1 is a specific product name that includes a brand or feature descriptor (&quot;ENFit&quot;), which does not align with the requirement to focus solely on the product type. This indicates a feature-based taxonomy rather than a general product category.
+4. The second level, &quot;Syringe,&quot; correctly identifies the product type without any features or marketing terms, which aligns with the rubric&#x27;s PASS conditions.
+5. However, since the first level includes a feature-based term, the overall taxonomy fails to meet the criterion of being product type focused.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_product_type_focused_M6_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_product_type_focused_M6_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_product_type_focused_M6_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_product_type_focused_M6_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_product_type_focused_M6_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy with two levels: &quot;ENFit Syringe&quot; at level 1 and &quot;Syringe&quot; at level 2.
+2. According to the rubric, the taxonomy should describe the product category/type without including feature-based descriptions or marketing terms.
+3. The term &quot;ENFit&quot; in &quot;ENFit Syringe&quot; can be considered a feature or a specific branding term related to the syringe&#x27;s design and intended use, which does not align with the requirement to focus solely on the product type.
+4. The second level, &quot;Syringe,&quot; is appropriate as it describes the general category of the product without any features or marketing terms.
+5. However, the presence of &quot;ENFit Syringe&quot; at level 1 introduces a feature-based taxonomy, which violates the rubric&#x27;s conditions.
+
+Given that the taxonomy includes a feature-based term, it does not meet the criteria for a PASS.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M06_no_brands_in_taxonomy')">
+                    <span class="rubric-title">No Brands in Taxonomy</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">9 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                        <span>75%</span>
+                    </div>
+                </div>
+                <div id="M06_no_brands_in_taxonomy" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion states that there should be no brand names in the taxonomy levels.
+2. The module output provides a taxonomy with three levels of product types: &quot;True Wireless Earbuds,&quot; &quot;Wireless Earphones,&quot; and &quot;Earphones.&quot;
+3. Each of these terms is generic and does not include any brand names. They refer to types of products rather than specific brands or models.
+4. The expected output is identical to the module output, confirming that the taxonomy is correctly formatted without brand mentions.
+
+Since the taxonomy levels contain only generic product type terminology and no brand names, the output meets the PASS conditions outlined in the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with a single entry at level 1, which specifies the product type as &quot;Water Bottle.&quot;
+2. The rubric criterion requires that no brand names appear in the taxonomy levels. 
+3. The term &quot;Water Bottle&quot; is a generic product type terminology and does not include any brand names.
+4. The taxonomy does not mention any specific brands or brand-related terms, adhering to the PASS conditions outlined in the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with three levels, each containing a product type.
+2. The first level has &quot;Kitchen Sink Caddy&quot; as the product type. This term includes &quot;Caddy,&quot; which is a generic term, but &quot;Kitchen Sink&quot; is more specific and could imply a brand association with certain products.
+3. The second level lists &quot;Caddy Organizer,&quot; which is a generic term and does not mention any brand, thus passing this level.
+4. The third level states &quot;Kitchen Storage &amp; Organization Accessories,&quot; which is also a generic term and does not include any brand names.
+5. Overall, while the second and third levels pass the criterion, the first level&#x27;s use of &quot;Kitchen Sink Caddy&quot; raises concerns about potential brand association, as &quot;Sink Caddy&quot; could be interpreted as a specific product type associated with certain brands.
+
+Given that the first level includes a term that could imply brand association, the output does not fully meet the criterion of having no brand names in the taxonomy levels.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with three levels of product types.
+2. At level 1, the product type is &quot;Puffer Jacket / Puffy Coat.&quot; This is a generic term describing the type of clothing without mentioning any specific brand.
+3. At level 2, the product type is &quot;Jacket,&quot; which is also a generic term and does not reference any brand.
+4. At level 3, the product type is &quot;Men&#x27;s Clothing / Apparel,&quot; which again is a broad category and does not include any brand names.
+5. Throughout the taxonomy, there are no mentions of specific brands or brand names, adhering to the rubric&#x27;s PASS conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion states that there should be no brand names in the taxonomy levels.
+2. The module output provides a taxonomy with a single entry: &quot;Car Phone Holders &amp; Mounts&quot; as the product type.
+3. The term &quot;Car Phone Holders &amp; Mounts&quot; is a generic category name and does not include any specific brand names.
+4. Since the output adheres to the PASS conditions by using pure category names without brand mentions, it meets the requirement of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with two levels.
+2. At level 1, the product type is listed as &quot;Ice Maker,&quot; which is a generic term and does not include any brand name. This aligns with the PASS conditions.
+3. At level 2, the product type is listed as &quot;Appliances,&quot; which is also a generic category and does not mention any brand. This too aligns with the PASS conditions.
+4. There are no brand names present in either level of the taxonomy, fulfilling the requirement of the rubric criterion.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with three levels: &quot;Pencil Eyeliner,&quot; &quot;Eyeliner,&quot; and &quot;Eye Makeup.&quot;
+2. Each of these terms is a generic product type and does not include any brand names.
+3. The terms used are purely descriptive of the product category and do not reference any specific brands, which aligns with the PASS conditions outlined in the rubric.
+4. There are no mentions of brand names such as &quot;Revlon&quot; or any other specific brand in the taxonomy levels.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a taxonomy with a single entry at level 1.
+2. The product type listed is &quot;Oven Mitt,&quot; which is a generic term and does not include any brand names.
+3. The taxonomy does not mention any specific brands or brand-related terms, adhering to the requirement of using pure category names.
+4. The output aligns with the PASS conditions outlined in the rubric, as it consists solely of generic product type terminology without any brand mentions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion states that there should be no brand names in the taxonomy levels. The output provided must consist solely of generic category names without any brand mentions.
+2. In the module output, the taxonomy levels include:
+   - Level 1: &quot;Serving Tray&quot;
+   - Level 2: &quot;Trays&quot;
+   - Level 3: &quot;Home &amp; Kitchen&quot;
+3. Each of these entries is a generic product type or category name. There are no brand names mentioned in any of the taxonomy levels.
+4. The expected output also includes a simplified taxonomy with only the &quot;Serving Tray&quot; at level 1, which aligns with the requirement for generic terminology.
+5. Since the module output does not contain any brand names and adheres to the conditions set forth in the rubric, it meets the criteria for a PASS.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion states that there should be no brand names in the taxonomy levels.
+2. The module output provides a taxonomy with three levels:
+   - Level 1: &quot;Transformer&quot;
+   - Level 2: &quot;Action Figure&quot;
+   - Level 3: &quot;Toys&quot;
+3. Analyzing each level:
+   - Level 1: &quot;Transformer&quot; is a term that refers to a type of toy but is also associated with the brand &quot;Transformers.&quot; However, it is used here in a generic sense to describe a category of toys rather than a specific brand name.
+   - Level 2: &quot;Action Figure&quot; is a generic term for a type of toy and does not reference any brand.
+   - Level 3: &quot;Toys&quot; is also a generic term and does not reference any brand.
+4. Since none of the levels explicitly mention a brand name and the terms used can be considered generic product type terminology, the output adheres to the PASS conditions of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains a taxonomy with two levels.
+2. At level 1, the product type is listed as &quot;ENFit Syringe.&quot; The term &quot;ENFit&quot; is a brand name, which violates the rubric criterion that states no brand names should appear in taxonomy levels.
+3. At level 2, the product type is &quot;Syringe,&quot; which is a generic term and complies with the rubric.
+4. However, since the presence of a brand name at level 1 (&quot;ENFit Syringe&quot;) is sufficient to determine that the output fails the criterion, the overall evaluation must consider this violation.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_no_brands_in_taxonomy_M6_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_no_brands_in_taxonomy_M6_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_no_brands_in_taxonomy_M6_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_no_brands_in_taxonomy_M6_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains a taxonomy with two levels.
+2. At level 1, the product type is listed as &quot;ENFit Syringe.&quot; The term &quot;ENFit&quot; is a brand name associated with a specific type of syringe, which violates the rubric criterion of having no brand names in taxonomy levels.
+3. At level 2, the product type is &quot;Syringe,&quot; which is a generic term and does not contain any brand names. However, the presence of a brand name at level 1 is sufficient to determine that the output fails the criterion.
+4. According to the rubric, any mention of a brand name in the taxonomy results in a failure, regardless of the other levels.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M06_appropriate_specificity')">
+                    <span class="rubric-title">Appropriate Specificity</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">6 Pass</span>
+                        <span class="stat fail">6 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50.0%"></div>
+                        </div>
+                        <span>50%</span>
+                    </div>
+                </div>
+                <div id="M06_appropriate_specificity" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy of product types related to the input data.
+2. The first level of the taxonomy identifies the product type as &quot;True Wireless Earbuds.&quot; This is specific enough to be useful and accurately describes the product, which is a type of earbud that operates without wires.
+3. The second level lists &quot;Wireless Earphones,&quot; which is also a specific category but slightly broader than the first level. It still maintains relevance to the product type.
+4. The third level, &quot;Earphones,&quot; is more generic and does not provide the specificity required for the product type, as it could refer to any type of earphones, including wired ones.
+5. The output does not include overly specific details such as model numbers or features, which aligns with the PASS conditions of the rubric.
+6. Overall, the first two levels of specificity meet the criteria for appropriate specificity, while the third level is too generic.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output specifies the product type as &quot;Water Bottle.&quot; 
+2. This term is specific enough to identify the actual product being described, which is a water bottle designed for travel and sports use.
+3. The specificity of &quot;Water Bottle&quot; aligns with what one would expect in an Amazon category, as it clearly indicates the type of product without being overly generic (like &quot;BOTTLE&quot;) or overly specific (like including model numbers or features).
+4. The output does not include any unnecessary details or features that would detract from the clarity of the product type.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a product type of &quot;Kitchen Sink Caddy&quot; at level 1. This is specific enough to identify the actual product, as it clearly indicates that it is a caddy designed for use in a kitchen sink context. This aligns with the PASS condition of identifying the actual product type.
+
+2. At level 2, the product type is &quot;Caddy Organizer.&quot; While this is somewhat specific, it is less clear than the first level. It does not specify that it is for the kitchen sink, which could lead to ambiguity. However, it still retains a level of specificity that is useful.
+
+3. At level 3, the product type is &quot;Kitchen Storage &amp; Organization Accessories.&quot; This is a broader category and does not specifically identify the product type. It is more generic and could encompass a wide range of products, which does not meet the PASS condition.
+
+4. Comparing the module output to the expected output, the expected output specifies &quot;Sink Caddy Organizer&quot; and &quot;Kitchen Caddy Organizer,&quot; which are more precise than the module&#x27;s outputs. The expected output also uses &quot;Kitchen Storage and Organization,&quot; which is slightly more specific than the module&#x27;s output.
+
+5. Overall, while the first level of the module output is specific enough to pass, the second and third levels do not maintain the same level of specificity required by the rubric. The presence of a generic term at level 3 is particularly concerning.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output identifies the product type as &quot;Puffer Jacket / Puffy Coat,&quot; which is specific enough to be useful. This aligns with the PASS condition of identifying the actual product type.
+2. The term &quot;Puffer Jacket / Puffy Coat&quot; is a common descriptor that would be found in an Amazon category, making it appropriate for the context of online retail.
+3. The output also includes &quot;Jacket&quot; and &quot;Men&#x27;s Clothing / Apparel&quot; as additional levels of specificity. While &quot;Jacket&quot; is somewhat generic, it is still a valid classification under the broader category of clothing. &quot;Men&#x27;s Clothing / Apparel&quot; is also a valid classification but is less specific than the first level.
+4. The output does not include any model numbers or overly specific features, which aligns with the PASS conditions. 
+
+Overall, the product type is specific enough to be useful and matches what would be expected in an Amazon category.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output specifies the product type as &quot;Car Phone Holders &amp; Mounts.&quot; 
+2. This designation is specific enough to identify the actual product category, which is useful for potential customers looking for a phone holder or mount for their car.
+3. The specificity aligns with what one would expect in an Amazon category, as it clearly indicates the type of product without being overly generic (like just &quot;Electronics&quot;) or overly specific (like including model numbers or features).
+4. The product type does not include unnecessary details or features, maintaining a clear focus on the category of the product.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output identifies the product type as &quot;Ice Maker,&quot; which is a specific enough term to describe the actual product being evaluated. This aligns with the PASS condition of identifying the actual product.
+2. The output also includes a second level of taxonomy with &quot;Appliances,&quot; which is too generic. According to the rubric, a product type should not be overly generic, and &quot;Appliances&quot; does not provide specific information about the product.
+3. The expected output only includes &quot;Ice Maker&quot; at level 1, which is appropriate and meets the specificity requirement. The inclusion of &quot;Appliances&quot; at level 2 detracts from the overall specificity of the product type.
+4. Since the output includes a generic category that does not meet the specificity requirement, it fails to fully comply with the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy with three levels of product types: &quot;Pencil Eyeliner,&quot; &quot;Eyeliner,&quot; and &quot;Eye Makeup.&quot;
+2. The first level, &quot;Pencil Eyeliner,&quot; is specific enough to identify the actual product type, which is a type of eyeliner that comes in pencil form. This matches the specificity expected in an Amazon category.
+3. The second level, &quot;Eyeliner,&quot; is also specific but slightly less so than the first level. However, it still accurately describes the product type and is commonly used in product categorization.
+4. The third level, &quot;Eye Makeup,&quot; is more generic and encompasses a broader category of products, which does not meet the specificity requirement as it could refer to various types of eye makeup products.
+5. Overall, the first two levels of product types meet the criteria for appropriate specificity, while the third level does not. However, since the first two levels are sufficient to identify the product type effectively, the output can still be considered useful.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output specifies the product type as &quot;Oven Mitt,&quot; which is a clear and identifiable product category.
+2. The term &quot;Oven Mitt&quot; is specific enough to be useful for potential customers, as it directly describes the product being sold.
+3. The specificity of &quot;Oven Mitt&quot; aligns with what one would expect to see in an Amazon category, as it is neither too generic (like &quot;Kitchenware&quot;) nor too specific (which would include model numbers or features).
+4. The product type does not include any unnecessary details or overly broad classifications, thus meeting the criteria for appropriate specificity.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output identifies &quot;Serving Tray&quot; as the product type at level 1, which is specific enough to be useful and aligns with the expected output. This matches the PASS condition of identifying the actual product type.
+2. The additional entries at level 2 (&quot;Trays&quot;) and level 3 (&quot;Home &amp; Kitchen&quot;) are too generic. &quot;Trays&quot; does not specify the type of tray, and &quot;Home &amp; Kitchen&quot; is a broad category that does not provide useful specificity for the product.
+3. According to the rubric, the presence of overly generic categories at levels 2 and 3 leads to a failure in meeting the criterion of appropriate specificity, as the product type should not include overly broad or generic classifications.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides a taxonomy with three levels of product types: &quot;Transformer,&quot; &quot;Action Figure,&quot; and &quot;Toys.&quot;
+2. The first level, &quot;Transformer,&quot; is too generic. It does not specify the actual product type, as it could refer to any Transformer toy, not just the specific Optimus Prime action figure.
+3. The second level, &quot;Action Figure,&quot; is more specific and aligns with the product type of the Optimus Prime figure. However, it is still somewhat generic as it does not identify the specific character or series.
+4. The third level, &quot;Toys,&quot; is too broad and does not provide useful specificity for identifying the product.
+5. According to the rubric, the product type must identify the actual product and match what would be seen in an Amazon category. The output fails to meet these criteria because it does not provide a specific enough product type that would be useful for a consumer looking for this particular item.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides two levels of product types: &quot;ENFit Syringe&quot; at level 1 and &quot;Syringe&quot; at level 2.
+2. The first level, &quot;ENFit Syringe,&quot; is too specific because it includes a brand name and a specific type of syringe, which may not be necessary for general categorization. This level of specificity does not align with the rubric&#x27;s requirement for product types to be useful without being overly detailed.
+3. The second level, &quot;Syringe,&quot; is more generic and aligns with the rubric&#x27;s PASS conditions as it identifies the actual product type without unnecessary details. However, since the first level is too specific, it detracts from the overall appropriateness of the output.
+4. The expected output only includes &quot;Syringe&quot; at level 1, which is a more suitable categorization according to the rubric.
+
+Given that the first level of specificity does not meet the criteria for appropriate specificity, the overall output fails to meet the rubric&#x27;s requirements.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M6_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M06_appropriate_specificity_M6_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M06_appropriate_specificity_M6_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M06_appropriate_specificity_M6_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M06_appropriate_specificity_M6_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output provides two levels of product types: &quot;ENFit Syringe&quot; at level 1 and &quot;Syringe&quot; at level 2.
+2. The first product type, &quot;ENFit Syringe,&quot; is specific and identifies the type of syringe being referred to, which is useful for potential buyers looking for this specific product.
+3. However, the term &quot;Syringe&quot; at level 2 is too generic and does not provide additional specificity beyond what is already conveyed by &quot;ENFit Syringe.&quot; It could refer to any type of syringe, which does not meet the requirement for appropriate specificity.
+4. The expected output only includes &quot;Syringe&quot; at level 1, which is also generic but aligns with the requirement to identify the product type without being overly specific or including unnecessary details.
+5. The module output fails to meet the criterion because it includes a level 2 product type that is too generic, while the level 1 product type is acceptable.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="by-sample" class="tab-content">
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0BQPGJ9LQ')">
+                    <span class="sample-id">M6_B0BQPGJ9LQ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0BQPGJ9LQ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0BQPGJ9LQ')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0BQPGJ9LQ')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0BQPGJ9LQ')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0BQPGJ9LQ')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0BZYCJK89')">
+                    <span class="sample-id">M6_B0BZYCJK89</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0BZYCJK89" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0BZYCJK89')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0BZYCJK89')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0BZYCJK89')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0BZYCJK89')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0CJ4WZXQF')">
+                    <span class="sample-id">M6_B0CJ4WZXQF</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0CJ4WZXQF" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0CJ4WZXQF')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0CJ4WZXQF')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0CJ4WZXQF')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0CJ4WZXQF')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0D6YNWLTS')">
+                    <span class="sample-id">M6_B0D6YNWLTS</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0D6YNWLTS" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0D6YNWLTS')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0D6YNWLTS')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0D6YNWLTS')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0D6YNWLTS')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0DSHWLXG6')">
+                    <span class="sample-id">M6_B0DSHWLXG6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0DSHWLXG6" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0DSHWLXG6')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0DSHWLXG6')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0DSHWLXG6')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0DSHWLXG6')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0F42MT8JX')">
+                    <span class="sample-id">M6_B0F42MT8JX</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0F42MT8JX" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0F42MT8JX')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0F42MT8JX')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0F42MT8JX')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0F42MT8JX')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B000H3I2JG')">
+                    <span class="sample-id">M6_B000H3I2JG</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">4 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B000H3I2JG" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B000H3I2JG')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B000H3I2JG')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B000H3I2JG')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B000H3I2JG')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B08J8GZXKZ')">
+                    <span class="sample-id">M6_B08J8GZXKZ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B08J8GZXKZ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B08J8GZXKZ')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B08J8GZXKZ')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B08J8GZXKZ')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B08J8GZXKZ')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B09LCKZBTW')">
+                    <span class="sample-id">M6_B09LCKZBTW</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B09LCKZBTW" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B09LCKZBTW')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B09LCKZBTW')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B09LCKZBTW')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B09LCKZBTW')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B077YYP739')">
+                    <span class="sample-id">M6_B077YYP739</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B077YYP739" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B077YYP739')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B077YYP739')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B077YYP739')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B077YYP739')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0CVQJY9C6')">
+                    <span class="sample-id">M6_B0CVQJY9C6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">4 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0CVQJY9C6" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0CVQJY9C6')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0CVQJY9C6')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0CVQJY9C6')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0CVQJY9C6')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M6_B0C9SPJ9ZQ')">
+                    <span class="sample-id">M6_B0C9SPJ9ZQ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">4 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M6_B0C9SPJ9ZQ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M06_three_level_hierarchy', 'M6_B0C9SPJ9ZQ')">
+                        <span>Three-Level Hierarchy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_product_type_focused', 'M6_B0C9SPJ9ZQ')">
+                        <span>Product Type Focused</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_no_brands_in_taxonomy', 'M6_B0C9SPJ9ZQ')">
+                        <span>No Brands in Taxonomy</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M06_appropriate_specificity', 'M6_B0C9SPJ9ZQ')">
+                        <span>Appropriate Specificity</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleRubric(rubricId) {
+            document.getElementById(rubricId).classList.toggle('open');
+        }
+
+        function toggleSample(sampleId) {
+            document.getElementById('sample-' + sampleId).classList.toggle('open');
+        }
+
+        function toggleCollapsible(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + '_icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

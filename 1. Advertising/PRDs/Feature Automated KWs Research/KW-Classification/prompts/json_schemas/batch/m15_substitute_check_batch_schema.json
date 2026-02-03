@@ -1,0 +1,50 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_15_SubstituteCheck_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Substitute check results for each keyword in the batch (different product type)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being checked"
+              },
+              "same_primary_use": {
+                "type": "boolean",
+                "description": "Whether the different product type satisfies the same primary use"
+              },
+              "relevancy": {
+                "type": ["string", "null"],
+                "enum": ["S", null],
+                "description": "S for SUBSTITUTE if same use, null if different use (passes to M16)"
+              },
+              "keyword_product_type": {
+                "type": "string",
+                "description": "The product type detected from the keyword"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why it is or isn't a substitute"
+              }
+            },
+            "required": ["keyword", "same_primary_use", "relevancy", "keyword_product_type", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

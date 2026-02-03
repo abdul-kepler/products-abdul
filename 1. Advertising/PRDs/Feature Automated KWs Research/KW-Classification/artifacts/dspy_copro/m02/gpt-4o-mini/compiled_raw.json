@@ -1,0 +1,23 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [],
+  "signature": {
+    "instructions": "You are tasked with classifying Amazon PPC keywords to determine if they contain a seller's own brand. Please follow these precise steps to ensure accurate verification and classification:\n\n1. **Character Listing**: For the provided 'keyword', list out each character, followed by listing the characters for each 'brand_entity' under consideration.\n\n2. **Exact Substring Match Check**: Verify if a brand entity is contained in the keyword by checking:\n   - If ALL characters of the brand appear consecutively in the keyword.\n   - If they appear in the same order (case-insensitive). \n   - If this match is verified character by character, document the process just as illustrated in the examples.\n\n3. **Classification Outcome**: Based on your verification results, categorize the branding scope:\n   - Return **branding_scope_1 = 'OB'** if any brand entity is verified as found in the keyword. \n   - Return **branding_scope_1 = null** if no brand entity is found, or if the keyword is generic, contains a different brand, or no exact character match can be verified.\n\n4. **Forbidden Actions**: Do not make claims about brand containment without verification, avoid semantic or fuzzy matching, and do not generate assertions without 100% certainty.\n\n5. **Known False Positives**: Recognize and return null for specific keyword patterns such as ASINs, PPC terms, match types, and purely numerical entries.\n\nFinally, ensure your output is formatted as valid JSON, including the branding scope, confidence level (0 to 1), and a reasoning statement explaining the verification result clearly.",
+    "fields": [
+      {
+        "prefix": "Keyword:",
+        "description": "${keyword}"
+      },
+      {
+        "prefix": "Brand Entities:",
+        "description": "${brand_entities}"
+      },
+      {
+        "prefix": "Return JSON with verification evidence:",
+        "description": "${branding_scope_1}"
+      }
+    ]
+  },
+  "lm": null
+}

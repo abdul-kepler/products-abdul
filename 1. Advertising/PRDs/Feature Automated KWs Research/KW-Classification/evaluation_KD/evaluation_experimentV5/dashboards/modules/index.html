@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Dashboards - Keyword Classification Pipeline</title>
+    <link rel="stylesheet" href="../shared-styles.css">
+    <style>
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .module-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+        }
+        .module-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .module-card .module-id {
+            background: var(--accent-blue);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .module-card .module-type {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .module-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        .module-card .stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        .module-card .stat {
+            text-align: center;
+        }
+        .module-card .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .module-card .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .pass-rate-high { color: var(--accent-green); }
+        .pass-rate-medium { color: var(--accent-yellow); }
+        .pass-rate-low { color: var(--accent-red); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../PROGRESS_DASHBOARD.html" class="back-link" style="display: inline-block; margin-bottom: 15px; color: var(--accent-blue); text-decoration: none;">← Back to Progress Dashboard</a>
+        <header>
+            <h1>Module Dashboards</h1>
+            <p>Keyword Classification Pipeline V1.1 - LLM Judge Evaluation Results</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value blue" id="totalModules">22</div>
+                <div class="stat-label">Total Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value green" id="avgPassRate">--</div>
+                <div class="stat-label">Avg Pass Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value yellow" id="needsWork">--</div>
+                <div class="stat-label">Needs Improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value green" id="excellent">--</div>
+                <div class="stat-label">Excellent (90%+)</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Brand Extraction & Classification (M01-M05)</h2>
+        <div class="module-grid" id="brandModules"></div>
+
+        <h2 class="section-title">Taxonomy & Attributes (M06-M08)</h2>
+        <div class="module-grid" id="taxonomyModules"></div>
+
+        <h2 class="section-title">Classification Pipeline (M09-M16)</h2>
+        <div class="module-grid" id="pipelineModules"></div>
+    </div>
+
+    <script>
+        // Module definitions with latest evaluation data
+        const modules = [
+            // Brand Extraction
+            { id: 'M01', name: 'Extract Own Brand Entities', type: 'extraction', file: 'm01.html', passRate: 70, dataset: 50, versions: 3 },
+            { id: 'M01A', name: 'Extract Own Brand Variations', type: 'generation', file: 'm01a.html', passRate: 90, dataset: 50, versions: 2 },
+            { id: 'M01B', name: 'Extract Brand Related Terms', type: 'extraction', file: 'm01b.html', passRate: 73, dataset: 50, versions: 1 },
+            { id: 'M02', name: 'Classify Own Brand Keywords', type: 'binary_classifier', file: 'm02.html', passRate: 100, dataset: 1000, versions: 1 },
+            { id: 'M02B', name: 'Classify Own Brand (Path B)', type: 'binary_classifier', file: 'm02b.html', passRate: 100, dataset: 1000, versions: 1 },
+            { id: 'M04', name: 'Classify Competitor Keywords', type: 'binary_classifier', file: 'm04.html', passRate: 60, dataset: 4700, versions: 1 },
+            { id: 'M04B', name: 'Classify Competitor (Path B)', type: 'binary_classifier', file: 'm04b.html', passRate: 60, dataset: 4700, versions: 1 },
+            { id: 'M05', name: 'Classify Non-Branded Keywords', type: 'binary_classifier', file: 'm05.html', passRate: 100, dataset: 4700, versions: 1 },
+            { id: 'M05B', name: 'Classify Non-Branded (Path B)', type: 'binary_classifier', file: 'm05b.html', passRate: 100, dataset: 4700, versions: 1 },
+            // Taxonomy
+            { id: 'M06', name: 'Generate Product Taxonomy', type: 'extraction', file: 'm06.html', passRate: 65, dataset: 30, versions: 1 },
+            { id: 'M07', name: 'Extract Product Attributes', type: 'extraction', file: 'm07.html', passRate: 75, dataset: 30, versions: 1 },
+            { id: 'M08', name: 'Assign Attribute Ranks', type: 'ranking', file: 'm08.html', passRate: 7.5, dataset: 30, versions: 2 },
+            // Pipeline
+            { id: 'M09', name: 'Identify Primary Intended Use', type: 'extraction', file: 'm09.html', passRate: 62.5, dataset: 100, versions: 1 },
+            { id: 'M10', name: 'Validate Primary Intended Use', type: 'validation', file: 'm10.html', passRate: 20, dataset: 100, versions: 1 },
+            { id: 'M11', name: 'Identify Hard Constraints', type: 'extraction', file: 'm11.html', passRate: 52.9, dataset: 100, versions: 1 },
+            { id: 'M12', name: 'Hard Constraint Violation Check', type: 'classifier', file: 'm12.html', passRate: 60, dataset: 4000, versions: 1 },
+            { id: 'M12B', name: 'Hard Constraint Check (Path B)', type: 'classifier', file: 'm12b.html', passRate: 60, dataset: 4000, versions: 1 },
+            { id: 'M13', name: 'Product Type Check', type: 'classifier', file: 'm13.html', passRate: 90, dataset: 4000, versions: 1 },
+            { id: 'M14', name: 'Primary Use Check Same Type', type: 'classifier', file: 'm14.html', passRate: 100, dataset: 2000, versions: 1 },
+            { id: 'M15', name: 'Substitute Check', type: 'classifier', file: 'm15.html', passRate: 95, dataset: 1800, versions: 1 },
+            { id: 'M16', name: 'Complementary Check', type: 'classifier', file: 'm16.html', passRate: 75, dataset: 1500, versions: 1 },
+        ];
+
+        function getPassRateClass(rate) {
+            if (rate >= 80) return 'pass-rate-high';
+            if (rate >= 50) return 'pass-rate-medium';
+            return 'pass-rate-low';
+        }
+
+        function renderModuleCard(module) {
+            return `
+                <a href="${module.file}" class="module-card">
+                    <h3>
+                        <span class="module-id">${module.id}</span>
+                        ${module.name}
+                    </h3>
+                    <span class="module-type">${module.type.replace('_', ' ')}</span>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value ${getPassRateClass(module.passRate)}">${module.passRate}%</div>
+                            <div class="stat-label">Pass Rate</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${module.dataset.toLocaleString()}</div>
+                            <div class="stat-label">Records</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${module.versions}</div>
+                            <div class="stat-label">Versions</div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        // Render modules by category
+        const brandIds = ['M01', 'M01A', 'M01B', 'M02', 'M02B', 'M04', 'M04B', 'M05', 'M05B'];
+        const taxonomyIds = ['M06', 'M07', 'M08'];
+        const pipelineIds = ['M09', 'M10', 'M11', 'M12', 'M12B', 'M13', 'M14', 'M15', 'M16'];
+
+        document.getElementById('brandModules').innerHTML =
+            modules.filter(m => brandIds.includes(m.id)).map(renderModuleCard).join('');
+        document.getElementById('taxonomyModules').innerHTML =
+            modules.filter(m => taxonomyIds.includes(m.id)).map(renderModuleCard).join('');
+        document.getElementById('pipelineModules').innerHTML =
+            modules.filter(m => pipelineIds.includes(m.id)).map(renderModuleCard).join('');
+
+        // Calculate stats
+        const avgPassRate = (modules.reduce((sum, m) => sum + m.passRate, 0) / modules.length).toFixed(1);
+        const needsWork = modules.filter(m => m.passRate < 70).length;
+        const excellent = modules.filter(m => m.passRate >= 90).length;
+
+        document.getElementById('avgPassRate').textContent = avgPassRate + '%';
+        document.getElementById('needsWork').textContent = needsWork;
+        document.getElementById('excellent').textContent = excellent;
+    </script>
+</body>
+</html>

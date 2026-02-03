@@ -1,0 +1,353 @@
+# Likert Scale Rubrics for Multi-Agent Evaluation
+# ================================================
+# 0-5 scoring criteria for each module (M01-M16)
+# Used by JudgeAgent for structured evaluation
+
+version: "1.0"
+created: "2026-01-26"
+
+# =============================================================================
+# UNIVERSAL LIKERT SCALE
+# =============================================================================
+scale:
+  0:
+    label: "Completely Wrong/Missing"
+    description: "Output is entirely incorrect, missing, or fundamentally broken"
+  1:
+    label: "Major Issues"
+    description: "Output has severe problems that make it largely unusable"
+  2:
+    label: "Significant Problems"
+    description: "Output has notable issues affecting core functionality"
+  3:
+    label: "Acceptable with Issues"
+    description: "Output meets minimum requirements but has clear room for improvement"
+  4:
+    label: "Good with Minor Issues"
+    description: "Output is solid with only small, non-critical problems"
+  5:
+    label: "Excellent/Perfect"
+    description: "Output fully meets or exceeds all requirements"
+
+# =============================================================================
+# UNIVERSAL CRITERIA (Apply to all modules)
+# =============================================================================
+universal_criteria:
+  accuracy:
+    question: "Is the output factually correct?"
+    anchors:
+      0: "Completely wrong information"
+      1: "Multiple factual errors"
+      2: "Some factual errors"
+      3: "Mostly correct with minor errors"
+      4: "Almost entirely correct"
+      5: "Perfectly accurate"
+
+  relevance:
+    question: "Does the output address the input appropriately?"
+    anchors:
+      0: "Completely off-topic or unrelated"
+      1: "Barely addresses the input"
+      2: "Partially relevant, missing key aspects"
+      3: "Addresses most of the input"
+      4: "Highly relevant with minor gaps"
+      5: "Perfectly addresses all aspects of input"
+
+  completeness:
+    question: "Is all required information present?"
+    anchors:
+      0: "Missing all required elements"
+      1: "Most required elements missing"
+      2: "Several required elements missing"
+      3: "Has core elements, missing some details"
+      4: "Nearly complete, minor omissions"
+      5: "All required information present"
+
+  clarity:
+    question: "Is the output clear and well-structured?"
+    anchors:
+      0: "Incomprehensible or malformed"
+      1: "Very confusing or poorly structured"
+      2: "Difficult to understand in places"
+      3: "Understandable but could be clearer"
+      4: "Clear with minor ambiguities"
+      5: "Crystal clear and well-organized"
+
+  reasoning:
+    question: "Is the reasoning/justification sound?"
+    anchors:
+      0: "No reasoning or completely flawed"
+      1: "Severely flawed logic"
+      2: "Notable logical gaps"
+      3: "Reasonable but incomplete logic"
+      4: "Strong reasoning with minor gaps"
+      5: "Flawless logical reasoning"
+
+# =============================================================================
+# MODULE-SPECIFIC RUBRICS
+# =============================================================================
+modules:
+
+  # ---------------------------------------------------------------------------
+  # M01: Extract Own Brand Entities
+  # ---------------------------------------------------------------------------
+  M01:
+    name: "Extract Own Brand Entities"
+    primary_criteria:
+      - accuracy
+      - completeness
+    specific_checks:
+      - "Brand name matches listing brand field"
+      - "No hallucinated brands (brands not in input)"
+      - "No generic product words as brand entities"
+      - "Product lines correctly identified as sub-brands"
+    scoring_notes: |
+      - Score 5: All brand entities correctly extracted, no extras, no hallucinations
+      - Score 4: Primary brand correct, minor variations acceptable
+      - Score 3: Primary brand correct but missing sub-brands or has minor extras
+      - Score 2: Primary brand has issues or significant extras
+      - Score 1: Wrong primary brand or many hallucinations
+      - Score 0: No brand extracted or completely wrong
+
+  # ---------------------------------------------------------------------------
+  # M01a: Extract Own Brand Variations
+  # ---------------------------------------------------------------------------
+  M01a:
+    name: "Extract Own Brand Variations"
+    primary_criteria:
+      - completeness
+      - accuracy
+    specific_checks:
+      - "Generated plausible variations"
+      - "Includes abbreviations, misspellings"
+      - "No completely unrelated terms"
+    scoring_notes: |
+      - Score 5: Comprehensive set of realistic variations
+      - Score 4: Good variations, might miss some edge cases
+      - Score 3: Basic variations present, missing creativity
+      - Score 2: Limited variations or some unrealistic ones
+      - Score 1: Very few or mostly wrong variations
+      - Score 0: No variations or completely off-base
+
+  # ---------------------------------------------------------------------------
+  # M01b: Extract Brand Related Terms
+  # ---------------------------------------------------------------------------
+  M01b:
+    name: "Extract Brand Related Terms"
+    primary_criteria:
+      - relevance
+      - completeness
+    specific_checks:
+      - "Terms are actually related to the brand"
+      - "Includes product lines, slogans, associated terms"
+      - "No generic unrelated terms"
+
+  # ---------------------------------------------------------------------------
+  # M02: Classify Own Brand Keywords
+  # ---------------------------------------------------------------------------
+  M02:
+    name: "Classify Own Brand Keywords"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Classification matches expected branding scope"
+      - "Reasoning supports the classification"
+      - "Edge cases handled appropriately"
+    scoring_notes: |
+      - Score 5: Correct classification with solid reasoning
+      - Score 4: Correct classification, reasoning could be stronger
+      - Score 3: Classification reasonable but debatable
+      - Score 2: Classification likely wrong, weak reasoning
+      - Score 1: Wrong classification with flawed reasoning
+      - Score 0: No classification or completely wrong
+
+  # ---------------------------------------------------------------------------
+  # M04: Classify Competitor Brand Keywords
+  # ---------------------------------------------------------------------------
+  M04:
+    name: "Classify Competitor Brand Keywords"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Correctly identifies competitor brands"
+      - "Classification (CB vs non-CB) is accurate"
+      - "Reasoning demonstrates brand knowledge"
+
+  # ---------------------------------------------------------------------------
+  # M05: Classify Non-Branded Keywords
+  # ---------------------------------------------------------------------------
+  M05:
+    name: "Classify Non-Branded Keywords"
+    primary_criteria:
+      - accuracy
+      - completeness
+    specific_checks:
+      - "Correctly identifies non-branded keywords"
+      - "No brand keywords misclassified as non-branded"
+      - "Generic terms properly categorized"
+
+  # ---------------------------------------------------------------------------
+  # M06: Generate Product Type Taxonomy
+  # ---------------------------------------------------------------------------
+  M06:
+    name: "Generate Product Type Taxonomy"
+    primary_criteria:
+      - completeness
+      - clarity
+    specific_checks:
+      - "Taxonomy hierarchy is logical"
+      - "Covers major product types"
+      - "Categories are mutually exclusive"
+      - "Appropriate level of granularity"
+
+  # ---------------------------------------------------------------------------
+  # M07: Extract Product Attributes
+  # ---------------------------------------------------------------------------
+  M07:
+    name: "Extract Product Attributes"
+    primary_criteria:
+      - completeness
+      - accuracy
+    specific_checks:
+      - "All relevant attributes extracted"
+      - "Attribute values are correct"
+      - "No hallucinated attributes"
+
+  # ---------------------------------------------------------------------------
+  # M08: Assign Attribute Ranks
+  # ---------------------------------------------------------------------------
+  M08:
+    name: "Assign Attribute Ranks"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Ranks reflect attribute importance"
+      - "Ranking logic is consistent"
+      - "Primary attributes ranked higher"
+
+  # ---------------------------------------------------------------------------
+  # M09: Identify Primary Intended Use
+  # ---------------------------------------------------------------------------
+  M09:
+    name: "Identify Primary Intended Use"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Primary use is correctly identified"
+      - "Use case makes sense for the product"
+      - "Secondary uses distinguished from primary"
+
+  # ---------------------------------------------------------------------------
+  # M10: Validate Primary Intended Use
+  # ---------------------------------------------------------------------------
+  M10:
+    name: "Validate Primary Intended Use"
+    primary_criteria:
+      - accuracy
+      - completeness
+    specific_checks:
+      - "Validation logic is sound"
+      - "Edge cases considered"
+      - "False positives/negatives minimized"
+
+  # ---------------------------------------------------------------------------
+  # M11: Identify Hard Constraints
+  # ---------------------------------------------------------------------------
+  M11:
+    name: "Identify Hard Constraints"
+    primary_criteria:
+      - completeness
+      - accuracy
+    specific_checks:
+      - "All hard constraints identified"
+      - "Constraints are actually hard (not soft)"
+      - "No missing critical constraints"
+      - "Format requirements captured"
+    scoring_notes: |
+      - Score 5: All hard constraints correctly identified
+      - Score 4: Core constraints found, minor edge cases missed
+      - Score 3: Most constraints found, some soft constraints included
+      - Score 2: Missing important constraints
+      - Score 1: Few constraints found, many errors
+      - Score 0: No constraints or completely wrong
+
+  # ---------------------------------------------------------------------------
+  # M12: Hard Constraint Violation Check
+  # ---------------------------------------------------------------------------
+  M12:
+    name: "Hard Constraint Violation Check"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Violations correctly detected"
+      - "False positives minimized"
+      - "Violation severity assessed"
+
+  # ---------------------------------------------------------------------------
+  # M13: Product Type Check
+  # ---------------------------------------------------------------------------
+  M13:
+    name: "Product Type Check"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Product type correctly validated"
+      - "Mismatches properly flagged"
+      - "Reasoning supports decision"
+
+  # ---------------------------------------------------------------------------
+  # M14: Primary Use Check (Same Type)
+  # ---------------------------------------------------------------------------
+  M14:
+    name: "Primary Use Check (Same Type)"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Primary use alignment verified"
+      - "Type consistency maintained"
+      - "Edge cases handled"
+
+  # ---------------------------------------------------------------------------
+  # M15: Substitute Check
+  # ---------------------------------------------------------------------------
+  M15:
+    name: "Substitute Check"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Substitutes correctly identified"
+      - "Non-substitutes properly rejected"
+      - "Reasoning demonstrates understanding"
+
+  # ---------------------------------------------------------------------------
+  # M16: Complementary Check
+  # ---------------------------------------------------------------------------
+  M16:
+    name: "Complementary Check"
+    primary_criteria:
+      - accuracy
+      - reasoning
+    specific_checks:
+      - "Complementary products correctly identified"
+      - "Non-complementary properly rejected"
+      - "Reasoning shows product relationship understanding"
+
+# =============================================================================
+# PASS/FAIL THRESHOLD
+# =============================================================================
+thresholds:
+  pass_overall: 3.0              # Overall score >= 3.0 to pass
+  pass_per_criterion: 2          # Each criterion must be >= 2
+
+  # For comparison with binary evaluation
+  binary_mapping:
+    pass: [3, 4, 5]              # Likert scores that map to PASS
+    fail: [0, 1, 2]              # Likert scores that map to FAIL

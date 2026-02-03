@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improvement Suggestions - KW Classification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f7fa;
+            padding: 25px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Summary Cards */
+        .summary-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .summary-card .label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .summary-card .value.critical { color: #c0392b; }
+        .summary-card .value.high { color: #e74c3c; }
+        .summary-card .value.medium { color: #f39c12; }
+        .summary-card .value.low { color: #27ae60; }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: white;
+            color: #666;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .filter-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-tab.active {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .filter-tab.critical.active { background: #c0392b; }
+        .filter-tab.high.active { background: #e74c3c; }
+        .filter-tab.medium.active { background: #f39c12; }
+        .filter-tab.low.active { background: #27ae60; }
+
+        /* Issue Cards */
+        .issues-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .criticality-section {
+            margin-bottom: 30px;
+        }
+
+        .criticality-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+
+        .criticality-header.critical { border-color: #c0392b; }
+        .criticality-header.high { border-color: #e74c3c; }
+        .criticality-header.medium { border-color: #f39c12; }
+        .criticality-header.low { border-color: #27ae60; }
+
+        .criticality-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .criticality-badge.critical { background: #c0392b; }
+        .criticality-badge.high { background: #e74c3c; }
+        .criticality-badge.medium { background: #f39c12; }
+        .criticality-badge.low { background: #27ae60; }
+
+        .criticality-title {
+            font-size: 18px;
+            color: #1a1a2e;
+        }
+
+        .criticality-count {
+            font-size: 13px;
+            color: #888;
+            margin-left: auto;
+        }
+
+        .issue-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid;
+        }
+
+        .issue-card.critical { border-left-color: #c0392b; }
+        .issue-card.high { border-left-color: #e74c3c; }
+        .issue-card.medium { border-left-color: #f39c12; }
+        .issue-card.low { border-left-color: #27ae60; }
+
+        .issue-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .module-badge {
+            background: #1a1a2e;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .issue-type-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .issue-type-badge.prompt { background: #fff3cd; color: #856404; }
+        .issue-type-badge.model { background: #f8d7da; color: #721c24; }
+
+        .analysis-summary {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .issue-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .issue-field {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .issue-field-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .issue-field-value {
+            font-size: 12px;
+            color: #333;
+            font-family: 'Monaco', 'Menlo', monospace;
+            word-break: break-word;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .specific-issue {
+            grid-column: span 3;
+            background: #e8f4fc;
+            border-left: 3px solid #3498db;
+        }
+
+        .specific-issue .issue-field-value {
+            font-family: inherit;
+            font-size: 13px;
+            color: #2980b9;
+            font-weight: 500;
+        }
+
+        /* Recommendations */
+        .recommendations-panel {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .recommendations-panel h2 {
+            font-size: 18px;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4ecdc4;
+        }
+
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .rec-item {
+            background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .rec-item.critical { border-left-color: #c0392b; }
+        .rec-item.high { border-left-color: #e74c3c; }
+        .rec-item.medium { border-left-color: #f39c12; }
+
+        .rec-module {
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+
+        .rec-text {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .rec-impact {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Improvement Suggestions</h1>
+        <p>Issues to fix sorted by criticality - based on module pass rates and issue type</p>
+    </div>
+
+    <div class="summary-row" id="summaryRow"></div>
+
+    <div class="recommendations-panel">
+        <h2>Top Priority Recommendations</h2>
+        <div class="rec-grid" id="recommendationsGrid"></div>
+    </div>
+
+    <div class="filter-tabs" id="filterTabs"></div>
+
+    <div class="issues-container" id="issuesContainer"></div>
+
+    <script>
+        // Issues data from analysis
+        const issuesData = [
+            // CRITICAL - M10 (13% pass rate)
+            { module: "M10", criticality: "Critical", issueType: "Prompt Issue", analysisSummary: "FAIL - null output", specificIssue: "Model returned null/empty output - 70% of samples affected", expectedOutput: "Kitchen sink item organization", actualOutput: "null" },
+            { module: "M10", criticality: "Critical", issueType: "Prompt Issue", analysisSummary: "FAIL - format issue", specificIssue: "Output format does not match expected - contains adjectives", expectedOutput: "Listening to audio", actualOutput: "audio listening for music and calls" },
+            { module: "M10", criticality: "Critical", issueType: "Prompt Issue", analysisSummary: "FAIL - description issue", specificIssue: "Describes product not function", expectedOutput: "Carrying drinks for hydration", actualOutput: "portable drink hydration storage" },
+
+            // HIGH - M03 (40% pass rate)
+            { module: "M03", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - count issue", specificIssue: "Only 3 competitors returned (needs 5-10)", expectedOutput: '["Bose", "Sony", "Anker", "Beats", "Samsung"]', actualOutput: '["Bose", "Sony", "Anker"]' },
+            { module: "M03", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - hallucination", specificIssue: "Invented brand names not real competitors", expectedOutput: '["Bose", "Sony", "Anker"]', actualOutput: '["SoundMax Pro", "AudioTech Elite"]' },
+
+            // HIGH - M08 (40% pass rate)
+            { module: "M08", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - ranking issue", specificIssue: "Wrong structure or duplicate ranks", expectedOutput: '{"attr1": 1, "attr2": 2, "attr3": 3}', actualOutput: '{"attr1": 1, "attr2": 1, "attr3": 2}' },
+            { module: "M08", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - ranking issue", specificIssue: "Ranks not sequential 1-5", expectedOutput: '{"Wireless": 1, "Bass": 2}', actualOutput: '[{"attribute": "Wireless", "rank": 1}, ...]' },
+
+            // HIGH - M11 (37% pass rate)
+            { module: "M11", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - constraint issue", specificIssue: "Soft preferences marked as hard constraints", expectedOutput: '{"hard_constraints": []}', actualOutput: '{"hard_constraints": ["Bluetooth 5.2", "Deep Bass"]}' },
+            { module: "M11", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - count issue", specificIssue: "Too many constraints (should be 0-1 for most products)", expectedOutput: '["Medium (Size)"]', actualOutput: '["Water Repellent", "Insulated"]' },
+
+            // HIGH - M15 (47% pass rate)
+            { module: "M15", criticality: "High", issueType: "Model Issue", analysisSummary: "FAIL - wrong classification", specificIssue: "Travel mug should be substitute for water bottle", expectedOutput: '{"is_substitute": true}', actualOutput: '{"is_substitute": false}' },
+            { module: "M15", criticality: "High", issueType: "Prompt Issue", analysisSummary: "FAIL - null output", specificIssue: "Model returned empty for substitute check", expectedOutput: "S", actualOutput: "null" },
+
+            // MEDIUM - M04 (55% pass rate)
+            { module: "M04", criticality: "Medium", issueType: "Prompt Issue", analysisSummary: "FAIL - wrong classification", specificIssue: "OXO not detected as competitor brand", expectedOutput: '{"branding_scope": "CB", "matched": "OXO"}', actualOutput: '{"branding_scope": null}' },
+            { module: "M04", criticality: "Medium", issueType: "Model Issue", analysisSummary: "FAIL - matching error", specificIssue: "Word boundary matching failed", expectedOutput: "CB", actualOutput: "CB (wrong match)" },
+
+            // MEDIUM - M06 (60% pass rate)
+            { module: "M06", criticality: "Medium", issueType: "Prompt Issue", analysisSummary: "FAIL - structure issue", specificIssue: "Missing taxonomy levels (need exactly 3)", expectedOutput: '["Water Bottle", "Drinkware", "Kitchen"]', actualOutput: '["Insulated Water Bottle", "Water Bottle"]' },
+            { module: "M06", criticality: "Medium", issueType: "Model Issue", analysisSummary: "FAIL - brand in taxonomy", specificIssue: "Brand name included in product type", expectedOutput: '["Earbuds", "Audio", "Electronics"]', actualOutput: '["JBL Earbuds", "Audio"]' },
+
+            // MEDIUM - M07 (62% pass rate)
+            { module: "M07", criticality: "Medium", issueType: "Prompt Issue", analysisSummary: "FAIL - format issue", specificIssue: "Audiences should be '-' for general products", expectedOutput: '{"audiences": ["-"]}', actualOutput: '{"audiences": ["Adults", "Music Lovers"]}' },
+            { module: "M07", criticality: "Medium", issueType: "Prompt Issue", analysisSummary: "FAIL - null output", specificIssue: "Model returned empty attributes", expectedOutput: '{"variants": ["12hr battery"]}', actualOutput: "null" },
+
+            // MEDIUM - M12 (65% pass rate)
+            { module: "M12", criticality: "Medium", issueType: "Model Issue", analysisSummary: "FAIL - reasoning error", specificIssue: "Reasoning doesn't match conclusion", expectedOutput: '{"violation": true}', actualOutput: '{"violation": false}' },
+            { module: "M12", criticality: "Medium", issueType: "Model Issue", analysisSummary: "FAIL - violation detection", specificIssue: "Constraint violation not detected", expectedOutput: '{"classification": "X"}', actualOutput: '{"classification": "R"}' },
+
+            // LOW - M01 (70% pass rate)
+            { module: "M01", criticality: "Low", issueType: "Prompt Issue", analysisSummary: "FAIL - duplicates found", specificIssue: "Output contains duplicate strings", expectedOutput: '["Owala", "FreeSip", "Owalaa"]', actualOutput: '["Owala", "FreeSip", "FreeSip", "FreeSip"]' },
+            { module: "M01", criticality: "Low", issueType: "Prompt Issue", analysisSummary: "FAIL - hallucination", specificIssue: "Brand not in input: Town & Country Living", expectedOutput: '["KitchenAid"]', actualOutput: '["KitchenAid", "Town & Country Living"]' },
+
+            // LOW - M02 (80% pass rate)
+            { module: "M02", criticality: "Low", issueType: "Prompt Issue", analysisSummary: "FAIL - wrong classification", specificIssue: "Incorrect OB/null classification", expectedOutput: '{"branding_scope": "OB"}', actualOutput: '{"branding_scope": null}' },
+
+            // LOW - M09 (78% pass rate)
+            { module: "M09", criticality: "Low", issueType: "Prompt Issue", analysisSummary: "FAIL - format issue", specificIssue: "Contains brand/tech names in output", expectedOutput: '"personal audio listening"', actualOutput: '"JBL Bluetooth audio streaming"' },
+
+            // LOW - M13 (87% pass rate)
+            { module: "M13", criticality: "Low", issueType: "Model Issue", analysisSummary: "FAIL - synonym error", specificIssue: "Synonym not recognized: earphones = earbuds", expectedOutput: '{"same_type": true}', actualOutput: '{"same_type": false}' },
+
+            // LOW - M16 (83% pass rate)
+            { module: "M16", criticality: "Low", issueType: "Model Issue", analysisSummary: "FAIL - classification error", specificIssue: "Same category != complementary", expectedOutput: '{"is_complementary": false}', actualOutput: '{"is_complementary": true}' }
+        ];
+
+        // Top recommendations
+        const recommendations = [
+            { module: "M10", priority: "critical", text: "Fix null output issue - 70% of samples return empty", impact: "Would improve pass rate from 13% to ~50%" },
+            { module: "M10", priority: "critical", text: "Add NO adjectives rule with examples", impact: "Format issues account for 20% of failures" },
+            { module: "M03", priority: "high", text: "Enforce 5-10 competitor count strictly", impact: "Count issues are 30% of M03 failures" },
+            { module: "M03", priority: "high", text: "Add grounding instruction - only REAL brands", impact: "Hallucination is 25% of M03 failures" },
+            { module: "M08", priority: "high", text: "Restructure prompt for {attribute: rank} format", impact: "Would fix 60% of ranking issues" },
+            { module: "M11", priority: "high", text: "Add clear hard vs soft constraint distinction", impact: "Most products should have 0-1 hard constraints" },
+            { module: "M15", priority: "high", text: "Improve substitute vs complementary distinction", impact: "Add 60% overlap rule examples" },
+            { module: "M04", priority: "medium", text: "Add common brand detection beyond competitor list", impact: "Would catch OXO, KitchenAid, etc." },
+            { module: "M06", priority: "medium", text: "Add 'MUST have exactly 3 levels' instruction", impact: "Structure issues are 50% of M06 failures" }
+        ];
+
+        // Count issues by criticality
+        const criticalityCounts = {
+            Critical: issuesData.filter(i => i.criticality === 'Critical').length,
+            High: issuesData.filter(i => i.criticality === 'High').length,
+            Medium: issuesData.filter(i => i.criticality === 'Medium').length,
+            Low: issuesData.filter(i => i.criticality === 'Low').length
+        };
+
+        // Render summary cards
+        function renderSummary() {
+            const container = document.getElementById('summaryRow');
+            container.innerHTML = `
+                <div class="summary-card">
+                    <div class="label">Critical</div>
+                    <div class="value critical">${criticalityCounts.Critical}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">High</div>
+                    <div class="value high">${criticalityCounts.High}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">Medium</div>
+                    <div class="value medium">${criticalityCounts.Medium}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">Low</div>
+                    <div class="value low">${criticalityCounts.Low}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="label">Total Issues</div>
+                    <div class="value">${issuesData.length}</div>
+                </div>
+            `;
+        }
+
+        // Render recommendations
+        function renderRecommendations() {
+            const container = document.getElementById('recommendationsGrid');
+            container.innerHTML = recommendations.map(rec => `
+                <div class="rec-item ${rec.priority}">
+                    <div class="rec-module">${rec.module}</div>
+                    <div class="rec-text">${rec.text}</div>
+                    <div class="rec-impact">${rec.impact}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render filter tabs
+        let activeFilter = 'all';
+        function renderFilterTabs() {
+            const container = document.getElementById('filterTabs');
+            container.innerHTML = `
+                <button class="filter-tab ${activeFilter === 'all' ? 'active' : ''}" onclick="filterIssues('all')">All Issues</button>
+                <button class="filter-tab critical ${activeFilter === 'Critical' ? 'active' : ''}" onclick="filterIssues('Critical')">Critical (${criticalityCounts.Critical})</button>
+                <button class="filter-tab high ${activeFilter === 'High' ? 'active' : ''}" onclick="filterIssues('High')">High (${criticalityCounts.High})</button>
+                <button class="filter-tab medium ${activeFilter === 'Medium' ? 'active' : ''}" onclick="filterIssues('Medium')">Medium (${criticalityCounts.Medium})</button>
+                <button class="filter-tab low ${activeFilter === 'Low' ? 'active' : ''}" onclick="filterIssues('Low')">Low (${criticalityCounts.Low})</button>
+            `;
+        }
+
+        // Filter issues
+        function filterIssues(criticality) {
+            activeFilter = criticality;
+            renderFilterTabs();
+            renderIssues();
+        }
+
+        // Render issues
+        function renderIssues() {
+            const container = document.getElementById('issuesContainer');
+            const filteredData = activeFilter === 'all'
+                ? issuesData
+                : issuesData.filter(i => i.criticality === activeFilter);
+
+            if (filteredData.length === 0) {
+                container.innerHTML = '<div class="no-results">No issues found for this filter</div>';
+                return;
+            }
+
+            // Group by criticality
+            const grouped = {};
+            filteredData.forEach(issue => {
+                if (!grouped[issue.criticality]) {
+                    grouped[issue.criticality] = [];
+                }
+                grouped[issue.criticality].push(issue);
+            });
+
+            // Order: Critical, High, Medium, Low
+            const order = ['Critical', 'High', 'Medium', 'Low'];
+
+            container.innerHTML = order
+                .filter(crit => grouped[crit])
+                .map(crit => `
+                    <div class="criticality-section">
+                        <div class="criticality-header ${crit.toLowerCase()}">
+                            <span class="criticality-badge ${crit.toLowerCase()}">${crit}</span>
+                            <span class="criticality-title">${crit} Priority Issues</span>
+                            <span class="criticality-count">${grouped[crit].length} issues</span>
+                        </div>
+                        ${grouped[crit].map(issue => renderIssueCard(issue)).join('')}
+                    </div>
+                `).join('');
+        }
+
+        function renderIssueCard(issue) {
+            const issueTypeClass = issue.issueType.includes('Prompt') ? 'prompt' : 'model';
+            return `
+                <div class="issue-card ${issue.criticality.toLowerCase()}">
+                    <div class="issue-header">
+                        <span class="module-badge">${issue.module}</span>
+                        <span class="issue-type-badge ${issueTypeClass}">${issue.issueType}</span>
+                        <span class="analysis-summary">${issue.analysisSummary}</span>
+                    </div>
+                    <div class="issue-content">
+                        <div class="issue-field specific-issue">
+                            <div class="issue-field-label">Specific Issue</div>
+                            <div class="issue-field-value">${issue.specificIssue}</div>
+                        </div>
+                        <div class="issue-field">
+                            <div class="issue-field-label">Expected Output</div>
+                            <div class="issue-field-value">${issue.expectedOutput}</div>
+                        </div>
+                        <div class="issue-field">
+                            <div class="issue-field-label">Actual Output</div>
+                            <div class="issue-field-value">${issue.actualOutput}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        renderSummary();
+        renderRecommendations();
+        renderFilterTabs();
+        renderIssues();
+    </script>
+</body>
+</html>

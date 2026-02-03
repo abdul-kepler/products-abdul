@@ -1,0 +1,514 @@
+{
+  "version": "V5.3",
+  "generated": "2026-01-20",
+  "experiment": "evaluation_experimentV5",
+  "validation_protocol": "15-sample evaluation with gpt-4o",
+  "rubrics_version": "v5",
+  "modules": {
+    "M01": {
+      "evaluation_date": "2026-01-19T17:36:56",
+      "data_source": "M01_V2_ExtractOwnBrandEntities_v3_190126_1.csv",
+      "prompt_version": "m01_v2_extract_own_brand_entities.md",
+      "model": "gpt-4o",
+      "pass_rate": 77.3,
+      "root_cause_analysis": {
+        "summary": "77.3% pass rate achieved with gpt-4o. Main issues are: (1) Sub-brand extraction like 'Vibe' from 'JBL Vibe Beam', (2) Duplicate entities, (3) AirPods treated as brand",
+        "common_pattern": "Model struggles with sub-brands that contain generic product words as last word",
+        "recommended_action": "Clarify sub-brand rules in prompt - if last word of sub-brand is generic, skip entire sub-brand"
+      },
+      "suggestions": [
+        {
+          "rubric": "No Hallucinated Brand",
+          "criticality": "High",
+          "passRate": 60.0,
+          "issueType": "Model Issue + Prompt Clarity",
+          "analysisSummary": "Model extracts 'Vibe' as standalone sub-brand from 'Vibe Beam' when prompt says to skip entire sub-brand if last word is generic",
+          "detailedSuggestion": "PROMPT FIX: Add explicit rule for sub-brand handling",
+          "promptChange": "Add: 'If sub-brand fails Amazon Test, skip ENTIRE sub-brand'",
+          "impact": "Expected to improve from 60% to 90%+ for this rubric",
+          "validated": false
+        },
+        {
+          "rubric": "No Product Words in Brand",
+          "criticality": "Medium",
+          "passRate": 86.7,
+          "issueType": "Model Issue",
+          "analysisSummary": "AirPods being extracted as brand entity when it's a product word",
+          "detailedSuggestion": "Add AirPods, iPhone, iPad to product words exclusion list",
+          "validated": false
+        },
+        {
+          "rubric": "No Duplicate Entities",
+          "criticality": "Medium",
+          "passRate": 86.7,
+          "issueType": "Model Issue",
+          "analysisSummary": "Some outputs contain exact duplicate strings",
+          "detailedSuggestion": "Strengthen final duplicate validation step",
+          "validated": false
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 75,
+        "total_pass": 58,
+        "total_fail": 17,
+        "pass_rate": 77.3
+      }
+    },
+    "M01A": {
+      "evaluation_date": "2026-01-19T20:27:35",
+      "data_source": "M01A_ExtractOwnBrandVariations_v1_150126_1.csv",
+      "prompt_version": "m01a_extract_own_brand_variations.md",
+      "model": "gpt-4o",
+      "pass_rate": 87.5,
+      "root_cause_analysis": {
+        "summary": "87.5% pass rate. Main issue: Model generates variations but includes DUPLICATES",
+        "common_pattern": "Model produces 12 variations but includes exact duplicates",
+        "recommended_action": "Strengthen duplicate check instruction in prompt"
+      },
+      "suggestions": [
+        {
+          "rubric": "8-12 Variations Generated",
+          "criticality": "High",
+          "passRate": 60.0,
+          "issueType": "Model Issue",
+          "analysisSummary": "4 of 10 samples fail due to DUPLICATE variations",
+          "detailedSuggestion": "Add explicit duplicate validation step",
+          "validated": true
+        },
+        {
+          "rubric": "No Unrelated Terms",
+          "criticality": "Low",
+          "passRate": 90.0,
+          "issueType": "Judge Issue",
+          "analysisSummary": "1 false positive - judge incorrectly flagged 'KichenAid' typo as unrelated",
+          "detailedSuggestion": "Update rubric to clarify typos are valid variations",
+          "validated": true
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 40,
+        "total_pass": 35,
+        "total_fail": 5,
+        "pass_rate": 87.5
+      }
+    },
+    "M01B": {
+      "evaluation_date": "2026-01-19T15:19:15",
+      "data_source": "M01B_ExtractBrandRelatedTerms_v1_150126_1.csv",
+      "prompt_version": "m01b_extract_brand_related_terms.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 73.3,
+      "root_cause_analysis": {
+        "summary": "73.3% pass rate - good but can improve",
+        "recommended_action": "Minor improvements to edge case handling"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 60,
+        "total_pass": 44,
+        "total_fail": 16,
+        "pass_rate": 73.3
+      }
+    },
+    "M02": {
+      "evaluation_date": "2026-01-19T15:22:17",
+      "data_source": "M02_ClassifyOwnBrandKeywords_v1_150126_1.csv",
+      "prompt_version": "m02_classify_own_brand_keywords.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 100.0,
+      "root_cause_analysis": {
+        "summary": "100% pass rate - excellent performance",
+        "recommended_action": "None - maintain current approach"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 105,
+        "total_pass": 105,
+        "total_fail": 0,
+        "pass_rate": 100.0
+      }
+    },
+    "M04": {
+      "evaluation_date": "2026-01-19T20:47:21",
+      "data_source": "M04_ClassifyCompetitorBrandKeywords_v1_150126_1.csv",
+      "prompt_version": "m04_classify_competitor_brand_keywords.md",
+      "model": "gpt-4o",
+      "pass_rate": 60.0,
+      "root_cause_analysis": {
+        "summary": "60.0% pass rate. CRITICAL FINDING: Most failures (9 out of 10) are DATA ISSUES - expected values say 'CB' but brands are NOT in competitor_entities list",
+        "common_pattern": "Expected values incorrectly marked as 'CB' when brand is NOT in competitor list",
+        "recommended_action": "Fix dataset labels for keywords with brands not in competitor list"
+      },
+      "suggestions": [
+        {
+          "rubric": "Correct CB/null Classification",
+          "criticality": "Critical",
+          "passRate": 33.3,
+          "issueType": "Judge Issue (Data Quality)",
+          "analysisSummary": "9 of 10 failures are DATA ISSUES - model correctly returned null, dataset is wrong",
+          "detailedSuggestion": "DATA FIX: Update dataset expected values. Change from 'CB' to null for brands not in list",
+          "validated": true
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 60,
+        "total_pass": 36,
+        "total_fail": 24,
+        "pass_rate": 60.0,
+        "expected_pass_rate_after_fix": 93.0
+      }
+    },
+    "M06": {
+      "evaluation_date": "2026-01-20T00:54:45",
+      "data_source": "M06_GenerateProductTypeTaxonomy_gd1_v1_150126_1.csv",
+      "prompt_version": "m06_generate_product_type_taxonomy.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 65.0,
+      "root_cause_analysis": {
+        "summary": "65% pass rate for both GD and SD variants",
+        "recommended_action": "Review taxonomy depth and specificity rules"
+      },
+      "suggestions": [
+        {
+          "rubric": "Taxonomy Generated",
+          "criticality": "Medium",
+          "passRate": 65.0,
+          "issueType": "Model Issue",
+          "analysisSummary": "Taxonomy sometimes too generic or misses key product types",
+          "validated": false
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 60,
+        "total_pass": 39,
+        "total_fail": 21,
+        "pass_rate": 65.0
+      }
+    },
+    "M07": {
+      "evaluation_date": "2026-01-20T00:57:34",
+      "data_source": "M07_ExtractProductAttributes_gd1_v1_150126_1.csv",
+      "prompt_version": "m07_extract_product_attributes.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 75.0,
+      "root_cause_analysis": {
+        "summary": "75-77.5% pass rate across GD/SD variants",
+        "recommended_action": "Minor refinements to attribute categorization"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 40,
+        "total_pass": 30,
+        "total_fail": 10,
+        "pass_rate": 75.0
+      }
+    },
+    "M08": {
+      "evaluation_date": "2026-01-20T01:00:35",
+      "data_source": "M08_AssignAttributeRanks_v1_150126_1.csv",
+      "prompt_version": "m08_assign_attribute_ranks.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 5.0,
+      "root_cause_analysis": {
+        "summary": "5% pass rate - CRITICAL. Two major issues: (1) JUDGE ISSUE: Prompt shows 'UseCase' but judge expects 'Use Case', (2) MODEL ISSUE: Model doesn't rank ALL attributes",
+        "common_pattern": "Attribute type spelling mismatch and incomplete ranking",
+        "recommended_action": "Fix rubric to match prompt's 'UseCase' spelling, strengthen prompt to rank ALL attributes"
+      },
+      "suggestions": [
+        {
+          "rubric": "Ranks Assigned",
+          "criticality": "Critical",
+          "passRate": 5.0,
+          "issueType": "Judge Issue + Model Issue",
+          "analysisSummary": "Judge expects 'Use Case' but prompt shows 'UseCase'. Model also skips ranking some attributes.",
+          "specificIssue": "Prompt CLEARLY shows 'UseCase' (no space) in all examples, but judge fails because expected values have 'Use Case' (with space)",
+          "detailedSuggestion": "FIX 1 (JUDGE): Update expected values to 'UseCase'. FIX 2 (MODEL): Add 'rank EVERY attribute' instruction",
+          "impact": "Expected to improve from 5% to 70%+ after fixing both issues",
+          "validated": true
+        },
+        {
+          "rubric": "Title Attributes Ranked 1-2",
+          "criticality": "High",
+          "passRate": 10.0,
+          "issueType": "Model Issue",
+          "analysisSummary": "Title attributes sometimes ranked 3+ instead of required 1-2",
+          "detailedSuggestion": "Emphasize title attribute priority in prompt",
+          "validated": false
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 40,
+        "total_pass": 2,
+        "total_fail": 38,
+        "pass_rate": 5.0,
+        "issue_breakdown": {
+          "judge_issues_percent": 50,
+          "model_issues_percent": 50
+        },
+        "expected_pass_rate_after_fix": 70.0
+      }
+    },
+    "M09": {
+      "evaluation_date": "2026-01-20T01:06:58",
+      "data_source": "M09_IdentifyPrimaryIntendedUse_v1_150126_1.csv",
+      "prompt_version": "m09_identify_primary_intended_use.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 62.5,
+      "root_cause_analysis": {
+        "summary": "62.5% pass rate. Primary use identification has some challenges with phrasing",
+        "recommended_action": "Clarify expected output format"
+      },
+      "suggestions": [
+        {
+          "rubric": "Primary Use Identified",
+          "criticality": "Medium",
+          "passRate": 62.5,
+          "issueType": "Model Issue + Data Issue",
+          "analysisSummary": "Model identifies correct use but phrasing doesn't match expected exactly",
+          "validated": false
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 40,
+        "total_pass": 25,
+        "total_fail": 15,
+        "pass_rate": 62.5
+      }
+    },
+    "M10": {
+      "evaluation_date": "2026-01-20T01:07:48",
+      "data_source": "M10_ValidatePrimaryIntendedUse_v1_150126_1.csv",
+      "prompt_version": "m10_validate_primary_intended_use.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 20.0,
+      "root_cause_analysis": {
+        "summary": "20% pass rate - CRITICAL. Main issue: Judge expects EXACT match but model outputs are semantically equivalent",
+        "common_pattern": "Semantic equivalence not recognized by judge",
+        "recommended_action": "Update rubric to allow semantic equivalence OR update expected values"
+      },
+      "suggestions": [
+        {
+          "rubric": "Invalid M09 Output Flagged",
+          "criticality": "Critical",
+          "passRate": 20.0,
+          "issueType": "Judge Issue (Strict Matching)",
+          "analysisSummary": "Judge fails because model output is semantically equivalent but not exact string match",
+          "specificIssue": "Expected: 'Listening to audio'. Model: 'Wireless music and audio listening'. Both describe same use case!",
+          "detailedSuggestion": "Allow semantic equivalence in primary use comparison",
+          "rubricChange": "Add: 'Semantically equivalent uses are acceptable: Listening to audio = Wireless music listening'",
+          "impact": "Expected to improve from 20% to 80%+ if semantic matching allowed",
+          "validated": true
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 20,
+        "total_pass": 4,
+        "total_fail": 16,
+        "pass_rate": 20.0,
+        "issue_breakdown": {
+          "judge_issues_percent": 90,
+          "model_issues_percent": 10
+        },
+        "expected_pass_rate_after_fix": 85.0
+      }
+    },
+    "M11": {
+      "evaluation_date": "2026-01-20T01:10:20",
+      "data_source": "M11_IdentifyHardConstraints_v1_150126_1.csv",
+      "prompt_version": "m11_identify_hard_constraints.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 52.9,
+      "root_cause_analysis": {
+        "summary": "52.9% pass rate. Some rubrics pass well, others fail",
+        "recommended_action": "Strengthen justification requirements in prompt"
+      },
+      "suggestions": [
+        {
+          "rubric": "Constraints Are Product-Specific",
+          "criticality": "Medium",
+          "passRate": 40.0,
+          "issueType": "Model Issue",
+          "analysisSummary": "Model sometimes includes generic constraints instead of product-specific ones",
+          "detailedSuggestion": "Add explicit examples of what is NOT a hard constraint",
+          "validated": false
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 70,
+        "total_pass": 37,
+        "total_fail": 33,
+        "pass_rate": 52.9
+      }
+    },
+    "M12": {
+      "evaluation_date": "2026-01-20T01:10:56",
+      "data_source": "M12_HardConstraintViolationCheck_v1_150126_1.csv",
+      "prompt_version": "m12_hard_constraint_violation_check.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 60.0,
+      "root_cause_analysis": {
+        "summary": "60% pass rate. Classification of R/S/C/N needs improvement",
+        "recommended_action": "Clarify classification criteria"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 20,
+        "total_pass": 12,
+        "total_fail": 8,
+        "pass_rate": 60.0
+      }
+    },
+    "M13": {
+      "evaluation_date": "2026-01-20T01:11:58",
+      "data_source": "M13_ProductTypeCheck_v1_150126_1.csv",
+      "prompt_version": "m13_product_type_check.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 90.0,
+      "root_cause_analysis": {
+        "summary": "90% pass rate - good performance",
+        "recommended_action": "Monitor edge cases"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 30,
+        "total_pass": 27,
+        "total_fail": 3,
+        "pass_rate": 90.0
+      }
+    },
+    "M14": {
+      "evaluation_date": "2026-01-20T01:13:14",
+      "data_source": "M14_PrimaryUseCheckSameType_v1_150126_1.csv",
+      "prompt_version": "m14_primary_use_check_same_type.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 100.0,
+      "root_cause_analysis": {
+        "summary": "100% pass rate - excellent",
+        "recommended_action": "None"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 30,
+        "total_pass": 30,
+        "total_fail": 0,
+        "pass_rate": 100.0
+      }
+    },
+    "M15": {
+      "evaluation_date": "2026-01-20T01:14:05",
+      "data_source": "M15_SubstituteCheck_v1_150126_1.csv",
+      "prompt_version": "m15_substitute_check.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 95.0,
+      "root_cause_analysis": {
+        "summary": "95% pass rate - excellent",
+        "recommended_action": "Monitor"
+      },
+      "suggestions": [],
+      "summary_statistics": {
+        "total_evaluations": 20,
+        "total_pass": 19,
+        "total_fail": 1,
+        "pass_rate": 95.0
+      }
+    },
+    "M16": {
+      "evaluation_date": "2026-01-20T01:15:38",
+      "data_source": "M16_ComplementaryCheck_v1_150126_1.csv",
+      "prompt_version": "m16_complementary_check.md",
+      "model": "gpt-4o-mini",
+      "pass_rate": 75.0,
+      "root_cause_analysis": {
+        "summary": "75% pass rate. Complementary check logic needs refinement",
+        "recommended_action": "Clarify complementary relationship definition"
+      },
+      "suggestions": [
+        {
+          "rubric": "Complementary Correctly Identified",
+          "criticality": "Medium",
+          "passRate": 75.0,
+          "issueType": "Model Issue",
+          "analysisSummary": "Some complementary relationships not identified correctly",
+          "validated": false
+        }
+      ],
+      "summary_statistics": {
+        "total_evaluations": 40,
+        "total_pass": 30,
+        "total_fail": 10,
+        "pass_rate": 75.0
+      }
+    }
+  },
+  "recommended_actions": [
+    {
+      "priority": 1,
+      "module": "M08",
+      "action": "Fix UseCase spelling mismatch",
+      "description": "Update expected values and rubric to accept 'UseCase' (no space) as shown in prompt. JUDGE ISSUE causing ~50% of failures.",
+      "effort": "Low",
+      "expected_impact": "Critical - would fix ~50% of failures immediately"
+    },
+    {
+      "priority": 2,
+      "module": "M08",
+      "action": "Add 'rank ALL attributes' instruction",
+      "description": "Strengthen prompt: 'You MUST rank EVERY attribute. If 11 variants exist, output ranks 1-11.'",
+      "effort": "Low",
+      "expected_impact": "Critical - fixes remaining ~50% of failures"
+    },
+    {
+      "priority": 3,
+      "module": "M10",
+      "action": "Allow semantic equivalence",
+      "description": "Update rubric: 'Listening to audio' = 'Wireless music listening' = 'Audio playback' are all valid",
+      "effort": "Medium",
+      "expected_impact": "Critical - would fix ~90% of M10 failures"
+    },
+    {
+      "priority": 4,
+      "module": "M04",
+      "action": "Fix dataset expected values",
+      "description": "Change 'CB' to null for brands NOT in competitor_entities list (OXO, Blue Q, etc.)",
+      "effort": "Medium",
+      "expected_impact": "Critical - fixes 87% of M04 issues"
+    },
+    {
+      "priority": 5,
+      "module": "M01",
+      "action": "Add sub-brand skip rule",
+      "description": "If sub-brand fails Amazon Test, skip ENTIRE sub-brand (not just last word)",
+      "effort": "Low",
+      "expected_impact": "High"
+    },
+    {
+      "priority": 6,
+      "module": "M11",
+      "action": "Add non-constraint examples",
+      "description": "Add examples: 'Battery life, color, brand are NOT hard constraints'",
+      "effort": "Low",
+      "expected_impact": "Medium - improve from 52.9% to 70%+"
+    },
+    {
+      "priority": 7,
+      "module": "M01A",
+      "action": "Strengthen duplicate check",
+      "description": "Add explicit duplicate validation step before output",
+      "effort": "Low",
+      "expected_impact": "High - fixes 80% of M01A issues"
+    }
+  ],
+  "overall_summary": {
+    "modules_evaluated": ["M01", "M01A", "M01B", "M02", "M04", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M13", "M14", "M15", "M16"],
+    "total_modules": 16,
+    "critical_modules": ["M08 (5%)", "M10 (20%)"],
+    "excellent_modules": ["M02 (100%)", "M14 (100%)", "M15 (95%)", "M13 (90%)", "M01A (87.5%)"],
+    "key_findings": [
+      "M08 (5%): JUDGE ISSUE - 'UseCase' vs 'Use Case' spelling mismatch causes ~50% failures",
+      "M10 (20%): JUDGE ISSUE - strict string matching instead of semantic equivalence",
+      "M04 (60%): DATA ISSUE - expected values incorrect for 87% of failures",
+      "M11 (52.9%): MODEL ISSUE - needs clearer constraint examples"
+    ],
+    "action_required": "Fix M08 UseCase spelling, M10 semantic matching, M04 dataset labels"
+  }
+}

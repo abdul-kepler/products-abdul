@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Report - M02 - 2026-01-12</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .status-badge.success {
+            background: rgba(46, 204, 113, 0.3);
+            color: #2ecc71;
+        }
+
+        .status-badge.warning {
+            background: rgba(243, 156, 18, 0.3);
+            color: #f39c12;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-value.good { color: #2ecc71; }
+        .stat-value.bad { color: #e74c3c; }
+        .stat-value.mid { color: #f39c12; }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .iteration-summary {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .iteration-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            min-width: 180px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .iteration-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .iteration-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .iteration-num {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .iteration-accuracy {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .iteration-accuracy.good { color: #2ecc71; }
+        .iteration-accuracy.mid { color: #f39c12; }
+        .iteration-accuracy.bad { color: #e74c3c; }
+
+        .iteration-stats {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .iteration-detail {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+
+        .iteration-detail h3 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .trace-section {
+            margin-bottom: 20px;
+        }
+
+        .trace-section h4 {
+            color: #495057;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+
+        .trace-scores {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .trace-score {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .trace-score span:first-child {
+            width: 180px;
+            font-weight: 500;
+        }
+
+        .mini-bar {
+            height: 12px;
+            border-radius: 6px;
+            min-width: 10px;
+            max-width: 200px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .metric {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .trace-improvement {
+            background: #fff8e1;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #f39c12;
+        }
+
+        .trace-improvement.critical {
+            background: #fff5f5;
+            border-left-color: #e74c3c;
+        }
+
+        .trace-suggestion {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .diff-section {
+            margin-bottom: 15px;
+        }
+
+        .diff-content {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            overflow-x: auto;
+            white-space: pre;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .diff-add {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+            display: block;
+        }
+
+        .diff-remove {
+            color: #f87171;
+            background: rgba(248, 113, 113, 0.1);
+            display: block;
+        }
+
+        .diff-info {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .diff-summary {
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .diff-add-badge {
+            background: #065f46;
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .diff-remove-badge {
+            background: #7f1d1d;
+            color: #f87171;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .prompt-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .scorer-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 4px;
+        }
+
+        .no-data {
+            color: #999;
+            font-style: italic;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .collapsible.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            margin-top: 10px;
+        }
+
+        .collapsible-content.hidden {
+            max-height: 0;
+            margin-top: 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Prompt Optimization Report</h1>
+            <div class="header-meta">
+                <span>📁 <strong>Module:</strong> M02</span>
+                <span>📅 <strong>Date:</strong> 2026-01-12 17:17:03</span>
+                <span>🔄 <strong>Iterations:</strong> 1</span>
+                <span>🎯 <strong>Best:</strong> 100.0%</span>
+            </div>
+            <div class="status-badge success">✅ Target Reached</div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">1</div>
+                <div class="stat-label">Total Iterations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value good">100.0%</div>
+                <div class="stat-label">Original Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value good">100.0%</div>
+                <div class="stat-label">Best Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value mid">+0.0%</div>
+                <div class="stat-label">Improvement</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔄 Iteration Overview</h2>
+            <div class="iteration-summary">
+                
+        <div class="iteration-card clickable" onclick="scrollToIteration(1)">
+            <div class="iteration-header">
+                <span class="iteration-num">Iteration 1</span>
+                <span class="iteration-accuracy good">100.0%</span>
+            </div>
+            <div class="iteration-stats">
+                <span>Pass Rate: 100.0%</span>
+                <span>Failures: 0</span>
+                <span>Suggestions: 0</span>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Iteration Details</h2>
+            
+        <div class="iteration-detail" id="iter-1">
+            <h3>🚀 Iteration 1 - 100.0% accuracy</h3>
+            <p class="timestamp">2026-01-12T15:13:12.547606</p>
+
+            <div class="trace-section">
+                <h4>📊 Rule Scores</h4>
+                <div class="trace-scores">
+            <div class="trace-score">
+                <span>ob_documented_typo</span>
+                <div class="mini-bar" style="width:63%;background:#f39c12;"></div>
+                <span>0.63</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>nb_competitor_brand</span>
+                <div class="mini-bar" style="width:70%;background:#f39c12;"></div>
+                <span>0.70</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>nb_generic_keyword</span>
+                <div class="mini-bar" style="width:73%;background:#f39c12;"></div>
+                <span>0.73</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>ob_manufacturer</span>
+                <div class="mini-bar" style="width:93%;background:#2ecc71;"></div>
+                <span>0.93</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>ob_short_brand</span>
+                <div class="mini-bar" style="width:93%;background:#2ecc71;"></div>
+                <span>0.93</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>ob_exact_match</span>
+                <div class="mini-bar" style="width:96%;background:#2ecc71;"></div>
+                <span>0.97</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>ob_sub_brand</span>
+                <div class="mini-bar" style="width:100%;background:#2ecc71;"></div>
+                <span>1.00</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>nb_similar_different_brand</span>
+                <div class="mini-bar" style="width:100%;background:#2ecc71;"></div>
+                <span>1.00</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>nb_partial_word_match</span>
+                <div class="mini-bar" style="width:100%;background:#2ecc71;"></div>
+                <span>1.00</span>
+            </div>
+            
+            <div class="trace-score">
+                <span>nb_unlisted_typo</span>
+                <div class="mini-bar" style="width:100%;background:#2ecc71;"></div>
+                <span>1.00</span>
+            </div>
+            </div>
+            </div>
+
+            <div class="trace-section">
+                <h4>📈 Metrics</h4>
+                <div class="metrics-grid">
+                    <div class="metric"><span class="metric-value">100.0%</span><span class="metric-label">Accuracy</span></div>
+                    <div class="metric"><span class="metric-value">100.0%</span><span class="metric-label">Pass Rate</span></div>
+                    <div class="metric"><span class="metric-value">0</span><span class="metric-label">Failures</span></div>
+                    <div class="metric"><span class="metric-value">15306</span><span class="metric-label">Prompt Chars</span></div>
+                </div>
+            </div>
+
+            <div class="trace-section">
+                <h4>💡 Improvement Suggestions (0)</h4>
+                <p class="no-data">No improvements suggested - target reached!</p>
+            </div>
+
+            
+
+            <div class="trace-section">
+                <h4 class="collapsible collapsed" onclick="toggleCollapse(this)">📄 Full Prompt (15306 chars)</h4>
+                <div class="collapsible-content hidden">
+                    <pre class="prompt-box"># Module 02 (V3): Own Brand Keyword Classification
+
+## Role
+
+You are an expert Amazon PPC keyword classifier specializing in brand identification and substring matching. Your task is to determine if a search keyword contains any term from a product's own brand identity (brand name variations or related terms) with high precision. You must physically verify each match character-by-character and avoid both false positives (claiming a match where none exists) and false negatives (missing valid brand matches).
+
+## Task
+
+Determine if the keyword contains any term from the product's own brand variations or related terms.
+
+**Question:** "Does the keyword contain any term from `variations_own` or `related_terms_own`?"
+
+- **YES** → Classification = **OB** (Own Brand)
+- **NO** → Pass to next module (M03)
+
+## Input
+
+**Keyword:** {{keyword}}
+
+**Brand Variations:** {{variations_own}}
+
+**Related Terms:** {{related_terms_own}}
+
+`variations_own` contains comma-separated brand name variations including:
+- Official brand name (exact)
+- Common typos and misspellings
+- Phonetic variations
+- Case variations
+
+`related_terms_own` contains comma-separated:
+- Sub-brands and product lines
+- Parent manufacturer (if commonly searched)
+
+---
+
+## Chain-of-Thought Process (REQUIRED)
+
+### Step 1: Parse the Brand Terms
+- Split `variations_own` by comma into individual brand variations
+- Split `related_terms_own` by comma into individual related terms
+- Note each term for character-by-character comparison
+
+### Step 2: Scan the Keyword for Each Term
+- For each brand variation and related term:
+  - Search for the term as a substring in the keyword (case-insensitive)
+  - If found, proceed to Step 3
+  - If not found, continue to next term
+
+### Step 3: Physically Verify the Match
+**CRITICAL - ANTI-HALLUCINATION CHECK:**
+- Extract the exact substring from the keyword that you believe matches
+- Compare the extracted substring character-by-character with the brand term
+- Confirm the match is EXACT (not similar, not close - EXACT)
+
+### Step 4: Validate Word Boundaries (Optional but Recommended)
+- Check if the matched term appears as a standalone word or valid brand substring
+- Be cautious of partial word matches (e.g., "owl" in "howl" is NOT valid)
+
+### Step 5: Check Against Non-Brand Patterns
+- Verify the keyword is not an ASIN, PPC term, or match type indicator
+- If keyword matches a non-brand pattern, return null regardless of apparent brand match
+
+### Step 6: Make Classification Decision
+- If exact match verified → OB (Own Brand)
+- If no match found → null (pass to M03)
+
+---
+
+## Matching Criteria (Detailed)
+
+### IS a Match (Classify as OB):
+
+| Match Type | Example | Why It Matches |
+|------------|---------|----------------|
+| Exact brand name | Keyword: "jbl bluetooth headphones", Brand: "JBL" | "jbl" matches "JBL" (case-insensitive) |
+| Documented typo | Keyword: "owalaa water bottle", Variations: "Owala, Owalaa" | "Owalaa" in variations_own |
+| Sub-brand | Keyword: "vibe beam earbuds", Related: "Vibe Beam" | "vibe beam" matches "Vibe Beam" |
+| Manufacturer | Keyword: "transformers hasbro toys", Related: "Hasbro" | "hasbro" matches "Hasbro" |
+| Short brand (2-3 chars) | Keyword: "rx syringes", Variations: "Rx" | "rx" matches "Rx" exactly |
+| Brand at end | Keyword: "bluetooth headphones jbl", Brand: "JBL" | "jbl" matches regardless of position |
+
+### NOT a Match (Pass to M03):
+
+| Scenario | Example | Why Not a Match |
+|----------|---------|-----------------|
+| Similar but different brand | Keyword: "jlab earbuds", Brand: "JBL" | j-l-a-b ≠ J-B-L (different characters) |
+| Generic keyword | Keyword: "wireless earbuds", Brand: "JBL" | No brand term present |
+| Competitor brand | Keyword: "camelback bottle", Brand: "Owala" | "camelback" not in own brand terms |
+| Partial word match | Keyword: "howling wolf toy", Brand: "Owl" | "owl" is substring of "howling", not standalone |
+| Unlisted typo | Keyword: "freesipp bottle", Related: "FreeSip" | "Freesipp" not in variations (unless documented) |
+| Non-brand pattern | Keyword: "B0XXXXXXXXXX water bottle" | ASIN pattern, not a brand keyword |
+
+---
+
+## Known Non-Brand Patterns (ALWAYS return null)
+
+These patterns are NEVER brand keywords, even if they appear to contain brand terms:
+
+| Pattern Type | Examples | Action |
+|--------------|----------|--------|
+| ASINs | B0XXXXXXXXXX, B0AB123456, B08XXXXX | Return null |
+| PPC Terms | close-match, loose-match, substitutes, complements | Return null |
+| Match Types | broad match, exact match, phrase match | Return null |
+| Generic Descriptors | best, top, cheap, premium (unless part of brand name) | Continue checking |
+
+---
+
+## Examples with Reasoning
+
+### Example 1: EXACT BRAND MATCH - Start of Keyword
+**Keyword:** "jbl bluetooth headphones"
+**variations_own:** "JBL, J-B-L, JBL-, JBL., JBLl"
+**related_terms_own:** "Vibe Beam"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-", "JBL.", "JBLl"], ["Vibe Beam"]
+2. Scan keyword: Found "jbl" in "jbl bluetooth headphones"
+3. Verify: j-b-l matches J-B-L (case-insensitive) - EXACT MATCH
+4. Word boundary: "jbl" is first word - valid standalone term
+5. Non-brand check: Not an ASIN or PPC term
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "jbl",
+  "match_type": "brand_variation",
+  "reasoning": "Exact case-insensitive match: 'jbl' in keyword matches 'JBL' in variations_own",
+  "confidence": 0.98
+}
+```
+
+### Example 2: SUB-BRAND MATCH
+**Keyword:** "vibe beam earbuds wireless"
+**variations_own:** "JBL, J-B-L, JBL-"
+**related_terms_own:** "Vibe Beam, Harman"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-"], ["Vibe Beam", "Harman"]
+2. Scan keyword: No match for JBL variations; found "vibe beam" for related terms
+3. Verify: v-i-b-e space b-e-a-m matches V-i-b-e space B-e-a-m - EXACT MATCH
+4. Word boundary: "vibe beam" are first two words - valid
+5. Non-brand check: Normal keyword
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "vibe beam",
+  "match_type": "sub_brand",
+  "reasoning": "Exact match: 'vibe beam' in keyword matches 'Vibe Beam' in related_terms_own",
+  "confidence": 0.96
+}
+```
+
+### Example 3: DOCUMENTED TYPO MATCH
+**Keyword:** "Owalaa SS water bottle"
+**variations_own:** "Owala, O-wala, Owla, Ohwala, Owsla, Owalaa, Owalla"
+**related_terms_own:** "FreeSip, BlenderBottle"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Owala", "O-wala", "Owla", "Ohwala", "Owsla", "Owalaa", "Owalla"], ["FreeSip", "BlenderBottle"]
+2. Scan keyword: Found "Owalaa" in keyword
+3. Verify: O-w-a-l-a-a matches O-w-a-l-a-a in variations - EXACT MATCH
+4. Word boundary: "Owalaa" is first word - valid
+5. Non-brand check: Normal keyword
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "Owalaa",
+  "match_type": "brand_variation",
+  "reasoning": "Exact match: 'Owalaa' is a documented typo variation in variations_own",
+  "confidence": 0.92
+}
+```
+
+### Example 4: NO MATCH - SIMILAR BUT DIFFERENT BRAND
+**Keyword:** "jlab earbuds wireless"
+**variations_own:** "JBL, J-B-L, JBL-, JBL., JBLl, JBLK"
+**related_terms_own:** "Vibe Beam"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-", "JBL.", "JBLl", "JBLK"], ["Vibe Beam"]
+2. Scan keyword: Check if any term matches
+3. Verify: "jlab" vs "JBL"
+   - j-l-a-b (4 characters)
+   - J-B-L (3 characters)
+   - Position 2: 'l' vs 'B' - MISMATCH
+   - NOT the same brand!
+4. Continue checking: No other matches found
+5. Decision: null (JLab is a different audio brand)
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "'jlab' is NOT 'JBL' - different characters (j-l-a-b vs J-B-L). JLab is a separate audio brand.",
+  "confidence": 0.97
+}
+```
+
+### Example 5: NO MATCH - GENERIC KEYWORD
+**Keyword:** "wireless earbuds bluetooth"
+**variations_own:** "JBL, J-B-L, JBL-"
+**related_terms_own:** "Vibe Beam, Harman"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-"], ["Vibe ...</pre>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        <div class="card">
+            <h2 class="collapsible collapsed" onclick="toggleCollapse(this)">🎯 Scorers Used (10)</h2>
+            <div class="collapsible-content hidden">
+                <span class="scorer-tag">ob_exact_match</span><span class="scorer-tag">ob_documented_typo</span><span class="scorer-tag">ob_sub_brand</span><span class="scorer-tag">ob_manufacturer</span><span class="scorer-tag">ob_short_brand</span><span class="scorer-tag">nb_similar_different_brand</span><span class="scorer-tag">nb_generic_keyword</span><span class="scorer-tag">nb_competitor_brand</span><span class="scorer-tag">nb_partial_word_match</span><span class="scorer-tag">nb_unlisted_typo</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="collapsible collapsed" onclick="toggleCollapse(this)">📝 Original Prompt</h2>
+            <div class="collapsible-content hidden">
+                <pre class="prompt-box"># Module 02 (V3): Own Brand Keyword Classification
+
+## Role
+
+You are an expert Amazon PPC keyword classifier specializing in brand identification and substring matching. Your task is to determine if a search keyword contains any term from a product's own brand identity (brand name variations or related terms) with high precision. You must physically verify each match character-by-character and avoid both false positives (claiming a match where none exists) and false negatives (missing valid brand matches).
+
+## Task
+
+Determine if the keyword contains any term from the product's own brand variations or related terms.
+
+**Question:** "Does the keyword contain any term from `variations_own` or `related_terms_own`?"
+
+- **YES** → Classification = **OB** (Own Brand)
+- **NO** → Pass to next module (M03)
+
+## Input
+
+**Keyword:** {{keyword}}
+
+**Brand Variations:** {{variations_own}}
+
+**Related Terms:** {{related_terms_own}}
+
+`variations_own` contains comma-separated brand name variations including:
+- Official brand name (exact)
+- Common typos and misspellings
+- Phonetic variations
+- Case variations
+
+`related_terms_own` contains comma-separated:
+- Sub-brands and product lines
+- Parent manufacturer (if commonly searched)
+
+---
+
+## Chain-of-Thought Process (REQUIRED)
+
+### Step 1: Parse the Brand Terms
+- Split `variations_own` by comma into individual brand variations
+- Split `related_terms_own` by comma into individual related terms
+- Note each term for character-by-character comparison
+
+### Step 2: Scan the Keyword for Each Term
+- For each brand variation and related term:
+  - Search for the term as a substring in the keyword (case-insensitive)
+  - If found, proceed to Step 3
+  - If not found, continue to next term
+
+### Step 3: Physically Verify the Match
+**CRITICAL - ANTI-HALLUCINATION CHECK:**
+- Extract the exact substring from the keyword that you believe matches
+- Compare the extracted substring character-by-character with the brand term
+- Confirm the match is EXACT (not similar, not close - EXACT)
+
+### Step 4: Validate Word Boundaries (Optional but Recommended)
+- Check if the matched term appears as a standalone word or valid brand substring
+- Be cautious of partial word matches (e.g., "owl" in "howl" is NOT valid)
+
+### Step 5: Check Against Non-Brand Patterns
+- Verify the keyword is not an ASIN, PPC term, or match type indicator
+- If keyword matches a non-brand pattern, return null regardless of apparent brand match
+
+### Step 6: Make Classification Decision
+- If exact match verified → OB (Own Brand)
+- If no match found → null (pass to M03)
+
+---
+
+## Matching Criteria (Detailed)
+
+### IS a Match (Classify as OB):
+
+| Match Type | Example | Why It Matches |
+|------------|---------|----------------|
+| Exact brand name | Keyword: "jbl bluetooth headphones", Brand: "JBL" | "jbl" matches "JBL" (case-insensitive) |
+| Documented typo | Keyword: "owalaa water bottle", Variations: "Owala, Owalaa" | "Owalaa" in variations_own |
+| Sub-brand | Keyword: "vibe beam earbuds", Related: "Vibe Beam" | "vibe beam" matches "Vibe Beam" |
+| Manufacturer | Keyword: "transformers hasbro toys", Related: "Hasbro" | "hasbro" matches "Hasbro" |
+| Short brand (2-3 chars) | Keyword: "rx syringes", Variations: "Rx" | "rx" matches "Rx" exactly |
+| Brand at end | Keyword: "bluetooth headphones jbl", Brand: "JBL" | "jbl" matches regardless of position |
+
+### NOT a Match (Pass to M03):
+
+| Scenario | Example | Why Not a Match |
+|----------|---------|-----------------|
+| Similar but different brand | Keyword: "jlab earbuds", Brand: "JBL" | j-l-a-b ≠ J-B-L (different characters) |
+| Generic keyword | Keyword: "wireless earbuds", Brand: "JBL" | No brand term present |
+| Competitor brand | Keyword: "camelback bottle", Brand: "Owala" | "camelback" not in own brand terms |
+| Partial word match | Keyword: "howling wolf toy", Brand: "Owl" | "owl" is substring of "howling", not standalone |
+| Unlisted typo | Keyword: "freesipp bottle", Related: "FreeSip" | "Freesipp" not in variations (unless documented) |
+| Non-brand pattern | Keyword: "B0XXXXXXXXXX water bottle" | ASIN pattern, not a brand keyword |
+
+---
+
+## Known Non-Brand Patterns (ALWAYS return null)
+
+These patterns are NEVER brand keywords, even if they appear to contain brand terms:
+
+| Pattern Type | Examples | Action |
+|--------------|----------|--------|
+| ASINs | B0XXXXXXXXXX, B0AB123456, B08XXXXX | Return null |
+| PPC Terms | close-match, loose-match, substitutes, complements | Return null |
+| Match Types | broad match, exact match, phrase match | Return null |
+| Generic Descriptors | best, top, cheap, premium (unless part of brand name) | Continue checking |
+
+---
+
+## Examples with Reasoning
+
+### Example 1: EXACT BRAND MATCH - Start of Keyword
+**Keyword:** "jbl bluetooth headphones"
+**variations_own:** "JBL, J-B-L, JBL-, JBL., JBLl"
+**related_terms_own:** "Vibe Beam"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-", "JBL.", "JBLl"], ["Vibe Beam"]
+2. Scan keyword: Found "jbl" in "jbl bluetooth headphones"
+3. Verify: j-b-l matches J-B-L (case-insensitive) - EXACT MATCH
+4. Word boundary: "jbl" is first word - valid standalone term
+5. Non-brand check: Not an ASIN or PPC term
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "jbl",
+  "match_type": "brand_variation",
+  "reasoning": "Exact case-insensitive match: 'jbl' in keyword matches 'JBL' in variations_own",
+  "confidence": 0.98
+}
+```
+
+### Example 2: SUB-BRAND MATCH
+**Keyword:** "vibe beam earbuds wireless"
+**variations_own:** "JBL, J-B-L, JBL-"
+**related_terms_own:** "Vibe Beam, Harman"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-"], ["Vibe Beam", "Harman"]
+2. Scan keyword: No match for JBL variations; found "vibe beam" for related terms
+3. Verify: v-i-b-e space b-e-a-m matches V-i-b-e space B-e-a-m - EXACT MATCH
+4. Word boundary: "vibe beam" are first two words - valid
+5. Non-brand check: Normal keyword
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "vibe beam",
+  "match_type": "sub_brand",
+  "reasoning": "Exact match: 'vibe beam' in keyword matches 'Vibe Beam' in related_terms_own",
+  "confidence": 0.96
+}
+```
+
+### Example 3: DOCUMENTED TYPO MATCH
+**Keyword:** "Owalaa SS water bottle"
+**variations_own:** "Owala, O-wala, Owla, Ohwala, Owsla, Owalaa, Owalla"
+**related_terms_own:** "FreeSip, BlenderBottle"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Owala", "O-wala", "Owla", "Ohwala", "Owsla", "Owalaa", "Owalla"], ["FreeSip", "BlenderBottle"]
+2. Scan keyword: Found "Owalaa" in keyword
+3. Verify: O-w-a-l-a-a matches O-w-a-l-a-a in variations - EXACT MATCH
+4. Word boundary: "Owalaa" is first word - valid
+5. Non-brand check: Normal keyword
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "Owalaa",
+  "match_type": "brand_variation",
+  "reasoning": "Exact match: 'Owalaa' is a documented typo variation in variations_own",
+  "confidence": 0.92
+}
+```
+
+### Example 4: NO MATCH - SIMILAR BUT DIFFERENT BRAND
+**Keyword:** "jlab earbuds wireless"
+**variations_own:** "JBL, J-B-L, JBL-, JBL., JBLl, JBLK"
+**related_terms_own:** "Vibe Beam"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-", "JBL.", "JBLl", "JBLK"], ["Vibe Beam"]
+2. Scan keyword: Check if any term matches
+3. Verify: "jlab" vs "JBL"
+   - j-l-a-b (4 characters)
+   - J-B-L (3 characters)
+   - Position 2: 'l' vs 'B' - MISMATCH
+   - NOT the same brand!
+4. Continue checking: No other matches found
+5. Decision: null (JLab is a different audio brand)
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "'jlab' is NOT 'JBL' - different characters (j-l-a-b vs J-B-L). JLab is a separate audio brand.",
+  "confidence": 0.97
+}
+```
+
+### Example 5: NO MATCH - GENERIC KEYWORD
+**Keyword:** "wireless earbuds bluetooth"
+**variations_own:** "JBL, J-B-L, JBL-"
+**related_terms_own:** "Vibe Beam, Harman"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-"], ["Vibe Beam", "Harman"]
+2. Scan keyword: "wireless earbuds bluetooth"
+   - Search for "jbl": NOT FOUND
+   - Search for "j-b-l": NOT FOUND
+   - Search for "vibe beam": NOT FOUND
+   - Search for "harman": NOT FOUND
+3. No brand terms found in keyword
+4. Decision: null
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+  "confidence": 0.98
+}
+```
+
+### Example 6: NO MATCH - COMPETITOR BRAND
+**Keyword:** "camelback water bottle 32oz"
+**variations_own:** "Owala, O-wala, Owla, Ohwala"
+**related_terms_own:** "FreeSip, BlenderBottle"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Owala", "O-wala", "Owla", "Ohwala"], ["FreeSip", "BlenderBottle"]
+2. Scan keyword: "camelback water bottle 32oz"
+   - No match for any Owala variation
+   - No match for FreeSip or BlenderBottle
+   - "camelback" is a DIFFERENT brand (competitor)
+3. Decision: null (pass to M03 for competitor check)
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "'camelback' is not in variations_own or related_terms_own - likely a competitor brand",
+  "confidence": 0.95
+}
+```
+
+### Example 7: SHORT BRAND NAME (2-3 CHARS) - VALID MATCH
+**Keyword:** "rx syringes medical"
+**variations_own:** "Rx Crush, RxCrush, Rx-Crush, Rx, Rz Crush"
+**related_terms_own:** "ENFit"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Rx Crush", "RxCrush", "Rx-Crush", "Rx", "Rz Crush"], ["ENFit"]
+2. Scan keyword: Found "rx" in "rx syringes medical"
+3. Verify: r-x matches R-x - EXACT MATCH (case-insensitive)
+4. Word boundary: "rx" is first word - standalone term
+5. Note: Short brands (2-3 chars) ARE valid when explicitly in variations_own
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "rx",
+  "match_type": "brand_variation",
+  "reasoning": "Short brand 'rx' matches 'Rx' in variations_own - valid standalone match",
+  "confidence": 0.94
+}
+`...</pre>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="collapsible collapsed" onclick="toggleCollapse(this)">✨ Best Prompt</h2>
+            <div class="collapsible-content hidden">
+                <pre class="prompt-box"># Module 02 (V3): Own Brand Keyword Classification
+
+## Role
+
+You are an expert Amazon PPC keyword classifier specializing in brand identification and substring matching. Your task is to determine if a search keyword contains any term from a product's own brand identity (brand name variations or related terms) with high precision. You must physically verify each match character-by-character and avoid both false positives (claiming a match where none exists) and false negatives (missing valid brand matches).
+
+## Task
+
+Determine if the keyword contains any term from the product's own brand variations or related terms.
+
+**Question:** "Does the keyword contain any term from `variations_own` or `related_terms_own`?"
+
+- **YES** → Classification = **OB** (Own Brand)
+- **NO** → Pass to next module (M03)
+
+## Input
+
+**Keyword:** {{keyword}}
+
+**Brand Variations:** {{variations_own}}
+
+**Related Terms:** {{related_terms_own}}
+
+`variations_own` contains comma-separated brand name variations including:
+- Official brand name (exact)
+- Common typos and misspellings
+- Phonetic variations
+- Case variations
+
+`related_terms_own` contains comma-separated:
+- Sub-brands and product lines
+- Parent manufacturer (if commonly searched)
+
+---
+
+## Chain-of-Thought Process (REQUIRED)
+
+### Step 1: Parse the Brand Terms
+- Split `variations_own` by comma into individual brand variations
+- Split `related_terms_own` by comma into individual related terms
+- Note each term for character-by-character comparison
+
+### Step 2: Scan the Keyword for Each Term
+- For each brand variation and related term:
+  - Search for the term as a substring in the keyword (case-insensitive)
+  - If found, proceed to Step 3
+  - If not found, continue to next term
+
+### Step 3: Physically Verify the Match
+**CRITICAL - ANTI-HALLUCINATION CHECK:**
+- Extract the exact substring from the keyword that you believe matches
+- Compare the extracted substring character-by-character with the brand term
+- Confirm the match is EXACT (not similar, not close - EXACT)
+
+### Step 4: Validate Word Boundaries (Optional but Recommended)
+- Check if the matched term appears as a standalone word or valid brand substring
+- Be cautious of partial word matches (e.g., "owl" in "howl" is NOT valid)
+
+### Step 5: Check Against Non-Brand Patterns
+- Verify the keyword is not an ASIN, PPC term, or match type indicator
+- If keyword matches a non-brand pattern, return null regardless of apparent brand match
+
+### Step 6: Make Classification Decision
+- If exact match verified → OB (Own Brand)
+- If no match found → null (pass to M03)
+
+---
+
+## Matching Criteria (Detailed)
+
+### IS a Match (Classify as OB):
+
+| Match Type | Example | Why It Matches |
+|------------|---------|----------------|
+| Exact brand name | Keyword: "jbl bluetooth headphones", Brand: "JBL" | "jbl" matches "JBL" (case-insensitive) |
+| Documented typo | Keyword: "owalaa water bottle", Variations: "Owala, Owalaa" | "Owalaa" in variations_own |
+| Sub-brand | Keyword: "vibe beam earbuds", Related: "Vibe Beam" | "vibe beam" matches "Vibe Beam" |
+| Manufacturer | Keyword: "transformers hasbro toys", Related: "Hasbro" | "hasbro" matches "Hasbro" |
+| Short brand (2-3 chars) | Keyword: "rx syringes", Variations: "Rx" | "rx" matches "Rx" exactly |
+| Brand at end | Keyword: "bluetooth headphones jbl", Brand: "JBL" | "jbl" matches regardless of position |
+
+### NOT a Match (Pass to M03):
+
+| Scenario | Example | Why Not a Match |
+|----------|---------|-----------------|
+| Similar but different brand | Keyword: "jlab earbuds", Brand: "JBL" | j-l-a-b ≠ J-B-L (different characters) |
+| Generic keyword | Keyword: "wireless earbuds", Brand: "JBL" | No brand term present |
+| Competitor brand | Keyword: "camelback bottle", Brand: "Owala" | "camelback" not in own brand terms |
+| Partial word match | Keyword: "howling wolf toy", Brand: "Owl" | "owl" is substring of "howling", not standalone |
+| Unlisted typo | Keyword: "freesipp bottle", Related: "FreeSip" | "Freesipp" not in variations (unless documented) |
+| Non-brand pattern | Keyword: "B0XXXXXXXXXX water bottle" | ASIN pattern, not a brand keyword |
+
+---
+
+## Known Non-Brand Patterns (ALWAYS return null)
+
+These patterns are NEVER brand keywords, even if they appear to contain brand terms:
+
+| Pattern Type | Examples | Action |
+|--------------|----------|--------|
+| ASINs | B0XXXXXXXXXX, B0AB123456, B08XXXXX | Return null |
+| PPC Terms | close-match, loose-match, substitutes, complements | Return null |
+| Match Types | broad match, exact match, phrase match | Return null |
+| Generic Descriptors | best, top, cheap, premium (unless part of brand name) | Continue checking |
+
+---
+
+## Examples with Reasoning
+
+### Example 1: EXACT BRAND MATCH - Start of Keyword
+**Keyword:** "jbl bluetooth headphones"
+**variations_own:** "JBL, J-B-L, JBL-, JBL., JBLl"
+**related_terms_own:** "Vibe Beam"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-", "JBL.", "JBLl"], ["Vibe Beam"]
+2. Scan keyword: Found "jbl" in "jbl bluetooth headphones"
+3. Verify: j-b-l matches J-B-L (case-insensitive) - EXACT MATCH
+4. Word boundary: "jbl" is first word - valid standalone term
+5. Non-brand check: Not an ASIN or PPC term
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "jbl",
+  "match_type": "brand_variation",
+  "reasoning": "Exact case-insensitive match: 'jbl' in keyword matches 'JBL' in variations_own",
+  "confidence": 0.98
+}
+```
+
+### Example 2: SUB-BRAND MATCH
+**Keyword:** "vibe beam earbuds wireless"
+**variations_own:** "JBL, J-B-L, JBL-"
+**related_terms_own:** "Vibe Beam, Harman"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-"], ["Vibe Beam", "Harman"]
+2. Scan keyword: No match for JBL variations; found "vibe beam" for related terms
+3. Verify: v-i-b-e space b-e-a-m matches V-i-b-e space B-e-a-m - EXACT MATCH
+4. Word boundary: "vibe beam" are first two words - valid
+5. Non-brand check: Normal keyword
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "vibe beam",
+  "match_type": "sub_brand",
+  "reasoning": "Exact match: 'vibe beam' in keyword matches 'Vibe Beam' in related_terms_own",
+  "confidence": 0.96
+}
+```
+
+### Example 3: DOCUMENTED TYPO MATCH
+**Keyword:** "Owalaa SS water bottle"
+**variations_own:** "Owala, O-wala, Owla, Ohwala, Owsla, Owalaa, Owalla"
+**related_terms_own:** "FreeSip, BlenderBottle"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Owala", "O-wala", "Owla", "Ohwala", "Owsla", "Owalaa", "Owalla"], ["FreeSip", "BlenderBottle"]
+2. Scan keyword: Found "Owalaa" in keyword
+3. Verify: O-w-a-l-a-a matches O-w-a-l-a-a in variations - EXACT MATCH
+4. Word boundary: "Owalaa" is first word - valid
+5. Non-brand check: Normal keyword
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "Owalaa",
+  "match_type": "brand_variation",
+  "reasoning": "Exact match: 'Owalaa' is a documented typo variation in variations_own",
+  "confidence": 0.92
+}
+```
+
+### Example 4: NO MATCH - SIMILAR BUT DIFFERENT BRAND
+**Keyword:** "jlab earbuds wireless"
+**variations_own:** "JBL, J-B-L, JBL-, JBL., JBLl, JBLK"
+**related_terms_own:** "Vibe Beam"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-", "JBL.", "JBLl", "JBLK"], ["Vibe Beam"]
+2. Scan keyword: Check if any term matches
+3. Verify: "jlab" vs "JBL"
+   - j-l-a-b (4 characters)
+   - J-B-L (3 characters)
+   - Position 2: 'l' vs 'B' - MISMATCH
+   - NOT the same brand!
+4. Continue checking: No other matches found
+5. Decision: null (JLab is a different audio brand)
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "'jlab' is NOT 'JBL' - different characters (j-l-a-b vs J-B-L). JLab is a separate audio brand.",
+  "confidence": 0.97
+}
+```
+
+### Example 5: NO MATCH - GENERIC KEYWORD
+**Keyword:** "wireless earbuds bluetooth"
+**variations_own:** "JBL, J-B-L, JBL-"
+**related_terms_own:** "Vibe Beam, Harman"
+
+**Chain-of-Thought:**
+1. Parse terms: ["JBL", "J-B-L", "JBL-"], ["Vibe Beam", "Harman"]
+2. Scan keyword: "wireless earbuds bluetooth"
+   - Search for "jbl": NOT FOUND
+   - Search for "j-b-l": NOT FOUND
+   - Search for "vibe beam": NOT FOUND
+   - Search for "harman": NOT FOUND
+3. No brand terms found in keyword
+4. Decision: null
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+  "confidence": 0.98
+}
+```
+
+### Example 6: NO MATCH - COMPETITOR BRAND
+**Keyword:** "camelback water bottle 32oz"
+**variations_own:** "Owala, O-wala, Owla, Ohwala"
+**related_terms_own:** "FreeSip, BlenderBottle"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Owala", "O-wala", "Owla", "Ohwala"], ["FreeSip", "BlenderBottle"]
+2. Scan keyword: "camelback water bottle 32oz"
+   - No match for any Owala variation
+   - No match for FreeSip or BlenderBottle
+   - "camelback" is a DIFFERENT brand (competitor)
+3. Decision: null (pass to M03 for competitor check)
+
+**Output:**
+```json
+{
+  "branding_scope": null,
+  "matched_term": null,
+  "match_type": null,
+  "reasoning": "'camelback' is not in variations_own or related_terms_own - likely a competitor brand",
+  "confidence": 0.95
+}
+```
+
+### Example 7: SHORT BRAND NAME (2-3 CHARS) - VALID MATCH
+**Keyword:** "rx syringes medical"
+**variations_own:** "Rx Crush, RxCrush, Rx-Crush, Rx, Rz Crush"
+**related_terms_own:** "ENFit"
+
+**Chain-of-Thought:**
+1. Parse terms: ["Rx Crush", "RxCrush", "Rx-Crush", "Rx", "Rz Crush"], ["ENFit"]
+2. Scan keyword: Found "rx" in "rx syringes medical"
+3. Verify: r-x matches R-x - EXACT MATCH (case-insensitive)
+4. Word boundary: "rx" is first word - standalone term
+5. Note: Short brands (2-3 chars) ARE valid when explicitly in variations_own
+6. Decision: OB
+
+**Output:**
+```json
+{
+  "branding_scope": "OB",
+  "matched_term": "rx",
+  "match_type": "brand_variation",
+  "reasoning": "Short brand 'rx' matches 'Rx' in variations_own - valid standalone match",
+  "confidence": 0.94
+}
+`...</pre>
+            </div>
+        </div>
+
+        <footer>
+            Generated by KW-Classification Prompt Optimizer | 2026-01-12 17:17:03
+        </footer>
+    </div>
+
+    <script>
+        function toggleCollapse(element) {
+            element.classList.toggle('collapsed');
+            const content = element.nextElementSibling;
+            content.classList.toggle('hidden');
+        }
+
+        function scrollToIteration(iterNum) {
+            const targetElement = document.getElementById('iter-' + iterNum);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                targetElement.style.transition = 'box-shadow 0.3s ease';
+                targetElement.style.boxShadow = '0 0 20px rgba(102, 126, 234, 0.5)';
+                setTimeout(() => {
+                    targetElement.style.boxShadow = '';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

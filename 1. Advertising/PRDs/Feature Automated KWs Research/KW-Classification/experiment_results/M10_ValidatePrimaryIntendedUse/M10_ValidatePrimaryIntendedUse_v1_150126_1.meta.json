@@ -1,0 +1,50 @@
+{
+  "braintrust_experiment_id": "1f3b3531-a143-4195-88c5-a91458cf9d03",
+  "braintrust_experiment_name": "M10_ValidatePrimaryIntendedUse_V1.1_v1",
+  "created": "2026-01-15T21:46:50.968Z",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "329287b2-4ebd-472c-8db3-f7e731cc56e7",
+  "dataset_name": "M10_ValidatePrimaryIntendedUse_V1.1",
+  "dataset_version": "1000196473826547156",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_10_ValidatePrimaryIntendedUse_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "validated_use",
+          "was_corrected",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of validation result"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "validated_use": {
+            "type": "string",
+            "description": "The validated primary use phrase - either the original from M9 if it passed validation, or a corrected version if it needed fixing"
+          },
+          "was_corrected": {
+            "type": "boolean",
+            "description": "Whether the original primary use was corrected"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

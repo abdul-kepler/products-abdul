@@ -1,0 +1,51 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_2_ClassifyOwnBrandKeywords_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Classification results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being classified"
+              },
+              "branding_scope_1": {
+                "type": ["string", "null"],
+                "enum": ["OB", null],
+                "description": "OB if keyword matches brand entity, null otherwise"
+              },
+              "matched_term": {
+                "type": ["string", "null"],
+                "description": "The exact brand term found in keyword, or null if no match"
+              },
+              "match_type": {
+                "type": ["string", "null"],
+                "enum": ["brand_variation", "sub_brand", "manufacturer", null],
+                "description": "Category of match"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why this classification was chosen"
+              }
+            },
+            "required": ["keyword", "branding_scope_1", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

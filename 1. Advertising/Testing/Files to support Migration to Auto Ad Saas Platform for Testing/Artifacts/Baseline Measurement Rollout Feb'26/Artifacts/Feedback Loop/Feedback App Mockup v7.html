@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseline Measurement - Feedback Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 0 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo span {
+            color: #4ade80;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border-left: 3px solid #4ade80;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #4ade80;
+            color: #1a1a2e;
+        }
+
+        .btn-primary:hover {
+            background: #22c55e;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .btn-export {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .btn-export:hover {
+            background: #2563eb;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .stat-card.green .stat-value { color: #22c55e; }
+        .stat-card.blue .stat-value { color: #3b82f6; }
+        .stat-card.orange .stat-value { color: #f59e0b; }
+
+        /* Quick Log */
+        .quick-log {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .quick-log-title {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .quick-log-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .quick-log-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .quick-log-input .btn {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+            color: #1a1a2e;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        tr.clickable {
+            cursor: pointer;
+        }
+
+        /* Status Badges */
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status.open { background: #fef3c7; color: #92400e; }
+        .status.resolved { background: #d1fae5; color: #065f46; }
+        .status.in-progress { background: #dbeafe; color: #1e40af; }
+        .status.deferred { background: #e5e7eb; color: #374151; }
+
+        /* Source Badge */
+        .source-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .source-badge.uat { background: #fae8ff; color: #86198f; }
+        .source-badge.feedback { background: #e0f2fe; color: #0369a1; }
+
+        /* Chart Grid - v4 style */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .chart-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .chart-card .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card .card-title .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-card .card-title .icon.purple { background: #f3e8ff; color: #9333ea; }
+        .chart-card .card-title .icon.blue { background: #dbeafe; color: #2563eb; }
+        .chart-card .card-title .icon.orange { background: #ffedd5; color: #ea580c; }
+
+        .chart-container {
+            height: 200px;
+            position: relative;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .checkbox-item:hover {
+            background: #f3f4f6;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Comments */
+        .comment-chain {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .comment {
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .comment-date {
+            color: #6b7280;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        /* ASIN Card */
+        .asin-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .asin-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .asin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .asin-id {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .asin-date {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .asin-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .asin-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 4px;
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        /* Password Section */
+        .password-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .password-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .password-input-group input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Performance Dashboard Embed */
+        .dashboard-embed {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+
+        .embed-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #6b7280;
+        }
+
+        .embed-placeholder svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Recent Issues */
+        .recent-issue {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .recent-issue:last-child {
+            border-bottom: none;
+        }
+
+        .recent-issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .recent-issue-id {
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        .recent-issue-text {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .recent-issue-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .recent-issue-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Root Cause Section */
+        .root-cause-section {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .root-cause-section .label {
+            font-size: 12px;
+            color: #92400e;
+            margin-bottom: 5px;
+        }
+
+        .root-cause-section .value {
+            font-weight: 600;
+            color: #78350f;
+        }
+
+        .root-cause-section.confirmed {
+            background: #d1fae5;
+        }
+
+        .root-cause-section.confirmed .label {
+            color: #065f46;
+        }
+
+        .root-cause-section.confirmed .value {
+            color: #064e3b;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .info-item .label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .info-item .value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a2e;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">Baseline<span>Portal</span></div>
+        <div class="nav-item active" onclick="showPage('dashboard')">
+            <span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="showPage('onboarding')">
+            <span>Onboarding</span>
+        </div>
+        <div class="nav-item" onclick="showPage('enrolled')">
+            <span>Enrolled ASINs</span>
+        </div>
+        <div class="nav-item" onclick="showPage('performance')">
+            <span>Performance</span>
+        </div>
+        <div class="nav-item" onclick="showPage('submit')">
+            <span>Submit Feedback</span>
+        </div>
+        <div class="nav-item" onclick="showPage('issues')">
+            <span>All Issues</span>
+        </div>
+        <div class="nav-item" onclick="showPage('uat')">
+            <span>UAT</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+            <h1 class="page-title">Feedback Dashboard</h1>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Total Issues</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Resolved</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-value">75%</div>
+                    <div class="stat-label">UAT Progress</div>
+                </div>
+            </div>
+
+            <!-- Quick Log -->
+            <div class="quick-log">
+                <div class="quick-log-title">Lightning Quick Log</div>
+                <div class="quick-log-input">
+                    <input type="text" id="quickLogInput" placeholder="Quickly log an issue...">
+                    <button class="btn" onclick="quickLog()">Submit</button>
+                </div>
+            </div>
+
+            <!-- Recent Issues -->
+            <div class="card">
+                <div class="card-title">Recent Issues</div>
+                <div class="recent-issue">
+                    <div class="recent-issue-header">
+                        <span class="recent-issue-id">#024</span>
+                        <div>
+                            <span class="source-badge feedback">Feedback</span>
+                            <span class="status open">Open</span>
+                        </div>
+                    </div>
+                    <div class="recent-issue-text">Bid not updating after ACOS target change</div>
+                    <div class="recent-issue-meta">
+                        <span>Abdul</span>
+                        <span>Jan 25, 2026</span>
+                    </div>
+                </div>
+                <div class="recent-issue">
+                    <div class="recent-issue-header">
+                        <span class="recent-issue-id">#023</span>
+                        <div>
+                            <span class="source-badge uat">UAT</span>
+                            <span class="status resolved">Resolved</span>
+                        </div>
+                    </div>
+                    <div class="recent-issue-text">Pacing paused campaign but didn't resume</div>
+                    <div class="recent-issue-meta">
+                        <span>Sarah</span>
+                        <span>Jan 24, 2026</span>
+                    </div>
+                </div>
+                <div class="recent-issue">
+                    <div class="recent-issue-header">
+                        <span class="recent-issue-id">#022</span>
+                        <div>
+                            <span class="source-badge feedback">Feedback</span>
+                            <span class="status in-progress">In Progress</span>
+                        </div>
+                    </div>
+                    <div class="recent-issue-text">Negation running on wrong search terms</div>
+                    <div class="recent-issue-meta">
+                        <span>Mike</span>
+                        <span>Jan 23, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts - v4 style -->
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="card-title">
+                        <div class="icon purple">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                        </div>
+                        <span>Issues by Type</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="card-title">
+                        <div class="icon blue">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <span>Issues by Root Cause</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="rootcauseChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="card-title">
+                        <div class="icon orange">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                            </svg>
+                        </div>
+                        <span>Issues by Feature</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="featureChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onboarding Page -->
+        <div id="onboarding" class="page">
+            <h1 class="page-title">ASIN Onboarding</h1>
+
+            <div class="success-message" id="onboardingSuccess">
+                ASIN successfully registered!
+            </div>
+
+            <div class="card">
+                <div class="card-title">Register New ASIN</div>
+
+                <div class="form-group">
+                    <label>ASIN</label>
+                    <input type="text" id="asinInput" placeholder="e.g., B08N5WRWNW">
+                </div>
+
+                <div class="form-group">
+                    <label>Migration Type</label>
+                    <select id="migrationType">
+                        <option value="">Select migration type...</option>
+                        <option value="new">New Account</option>
+                        <option value="full">Full Migration</option>
+                        <option value="parallel">Parallel Operation</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Features to Test</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="competitor_research">
+                            Automated Competitor Research
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="product_config">
+                            Product Level Configuration
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="keyword_research">
+                            Automated Keyword Research
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="campaign_generation">
+                            Automated Campaign Generation
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="campaign_config">
+                            Campaign Level Configuration
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="pacing">
+                            Intelligent Pacing
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="bid_optimization">
+                            Automated Bid Optimization
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="budget_optimization">
+                            Automated Budget Optimization
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="negation">
+                            Automated Negation
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="harvesting">
+                            Automated Harvesting
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="high_performers">
+                            Automated High Performers Isolation
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="target_research">
+                            Automated Target Product Research
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="apdc">
+                            APDC
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="logging">
+                            Centralized Logging System
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="features" value="reporting">
+                            Reporting
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Enrollment Notes</label>
+                    <textarea id="enrollmentNotes" placeholder="Add any details about this ASIN enrollment..."></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="registerASIN()">Register ASIN</button>
+            </div>
+        </div>
+
+        <!-- Enrolled ASINs Page -->
+        <div id="enrolled" class="page">
+            <h1 class="page-title">Enrolled ASINs</h1>
+
+            <div id="enrolledList">
+                <!-- Sample ASIN cards -->
+                <div class="asin-card" onclick="openASINModal('B08N5WRWNW')">
+                    <div class="asin-header">
+                        <div>
+                            <div class="asin-id">B08N5WRWNW</div>
+                            <div class="asin-meta">
+                                <span>Full Migration</span>
+                                <span>3 comments</span>
+                            </div>
+                        </div>
+                        <div class="asin-date">Enrolled: Jan 20, 2026</div>
+                    </div>
+                    <div>
+                        <span class="feature-tag">Bid Optimization</span>
+                        <span class="feature-tag">Pacing</span>
+                        <span class="feature-tag">Negation</span>
+                    </div>
+                </div>
+
+                <div class="asin-card" onclick="openASINModal('B07XYZ1234')">
+                    <div class="asin-header">
+                        <div>
+                            <div class="asin-id">B07XYZ1234</div>
+                            <div class="asin-meta">
+                                <span>Parallel Operation</span>
+                                <span>2 comments</span>
+                            </div>
+                        </div>
+                        <div class="asin-date">Enrolled: Jan 18, 2026</div>
+                    </div>
+                    <div>
+                        <span class="feature-tag">Bid Optimization</span>
+                        <span class="feature-tag">Harvesting</span>
+                    </div>
+                </div>
+
+                <div class="asin-card" onclick="openASINModal('B09ABC5678')">
+                    <div class="asin-header">
+                        <div>
+                            <div class="asin-id">B09ABC5678</div>
+                            <div class="asin-meta">
+                                <span>New Account</span>
+                                <span>1 comment</span>
+                            </div>
+                        </div>
+                        <div class="asin-date">Enrolled: Jan 15, 2026</div>
+                    </div>
+                    <div>
+                        <span class="feature-tag">Bid Optimization</span>
+                        <span class="feature-tag">Pacing</span>
+                        <span class="feature-tag">Budget Optimization</span>
+                        <span class="feature-tag">Negation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Dashboard Page -->
+        <div id="performance" class="page">
+            <h1 class="page-title">Performance Dashboard</h1>
+
+            <div class="card">
+                <div class="dashboard-embed">
+                    <div class="embed-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <div style="font-size: 16px; margin-bottom: 8px;">Performance Dashboard</div>
+                        <div style="font-size: 14px;">Embed your performance dashboard link here</div>
+                        <div style="margin-top: 20px;">
+                            <input type="text" id="dashboardUrl" placeholder="Paste dashboard URL..." style="padding: 10px; width: 300px; border: 1px solid #e5e7eb; border-radius: 8px;">
+                            <button class="btn btn-primary" style="margin-left: 10px;" onclick="loadDashboard()">Load</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Feedback Page -->
+        <div id="submit" class="page">
+            <h1 class="page-title">Submit Feedback</h1>
+
+            <div class="success-message" id="feedbackSuccess">
+                Feedback submitted successfully!
+            </div>
+
+            <div class="card">
+                <div class="form-group">
+                    <label>ASIN</label>
+                    <select id="feedbackASIN">
+                        <option value="">Select ASIN...</option>
+                        <option value="B08N5WRWNW">B08N5WRWNW</option>
+                        <option value="B07XYZ1234">B07XYZ1234</option>
+                        <option value="B09ABC5678">B09ABC5678</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="issueType">
+                        <option value="">Select type...</option>
+                        <option value="feature_misbehavior">Feature Misbehavior</option>
+                        <option value="system_error">System Error</option>
+                        <option value="data_gap">Data Gap</option>
+                        <option value="ui_ux">UI/UX Problem</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Root Cause (Best Guess)</label>
+                    <select id="rootcauseGuess">
+                        <option value="">Select root cause...</option>
+                        <option value="logic_issue">Logic Issue</option>
+                        <option value="known_limitation">Known Limitation</option>
+                        <option value="manual_input_error">Manual Input Error</option>
+                        <option value="system_bug">System Bug</option>
+                        <option value="external_factor">External Factor</option>
+                        <option value="unknown">Unknown</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="issueDescription" placeholder="Describe the issue in detail..."></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- All Issues Page -->
+        <div id="issues" class="page">
+            <div class="page-header">
+                <h1 class="page-title">All Issues</h1>
+                <button class="btn btn-export" onclick="exportToExcel()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Export to Excel
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Issue</th>
+                                <th>Type</th>
+                                <th>Root Cause Guess</th>
+                                <th>Root Cause</th>
+                                <th>Tester</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="issuesTable">
+                            <tr class="clickable" onclick="openIssueModal('024')">
+                                <td>#024</td>
+                                <td>Bid not updating after ACOS target change</td>
+                                <td>Feature Misbehavior</td>
+                                <td>Logic Issue</td>
+                                <td>-</td>
+                                <td>Abdul</td>
+                                <td><span class="status open">Open</span></td>
+                            </tr>
+                            <tr class="clickable" onclick="openIssueModal('023')">
+                                <td>#023</td>
+                                <td>Pacing paused campaign but didn't resume</td>
+                                <td>Feature Misbehavior</td>
+                                <td>System Bug</td>
+                                <td>Logic Issue</td>
+                                <td>Sarah</td>
+                                <td><span class="status resolved">Resolved</span></td>
+                            </tr>
+                            <tr class="clickable" onclick="openIssueModal('022')">
+                                <td>#022</td>
+                                <td>Negation running on wrong search terms</td>
+                                <td>Feature Misbehavior</td>
+                                <td>Logic Issue</td>
+                                <td>Known Limitation</td>
+                                <td>Mike</td>
+                                <td><span class="status in-progress">In Progress</span></td>
+                            </tr>
+                            <tr class="clickable" onclick="openIssueModal('021')">
+                                <td>#021</td>
+                                <td>CVR data missing for new keywords</td>
+                                <td>Data Gap</td>
+                                <td>Known Limitation</td>
+                                <td>Known Limitation</td>
+                                <td>Abdul</td>
+                                <td><span class="status deferred">Deferred</span></td>
+                            </tr>
+                            <tr class="clickable" onclick="openIssueModal('020')">
+                                <td>#020</td>
+                                <td>Harvesting added duplicate keyword</td>
+                                <td>Feature Misbehavior</td>
+                                <td>Logic Issue</td>
+                                <td>System Bug</td>
+                                <td>Sarah</td>
+                                <td><span class="status resolved">Resolved</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- UAT Page -->
+        <div id="uat" class="page">
+            <h1 class="page-title">UAT</h1>
+
+            <div class="card">
+                <div style="text-align: center; padding: 60px 20px; color: #6b7280;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 64px; height: 64px; margin: 0 auto 16px; opacity: 0.5;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                    <div style="font-size: 18px; margin-bottom: 8px;">UAT Section</div>
+                    <div>Comprehensive UAT will be added here</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASIN Detail Modal -->
+    <div class="modal-overlay" id="asinModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="asinModalTitle">ASIN Details</div>
+                <button class="modal-close" onclick="closeModal('asinModal')">&times;</button>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="color: #6b7280;">Migration Type:</span>
+                    <span id="asinMigrationType">Full Migration</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="color: #6b7280;">Enrolled:</span>
+                    <span id="asinEnrollDate">Jan 20, 2026</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <span style="color: #6b7280;">Features:</span>
+                    <div id="asinFeatures" style="margin-top: 8px;">
+                        <span class="feature-tag">Bid Optimization</span>
+                        <span class="feature-tag">Pacing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-title">Comments</div>
+            <div class="comment-chain" id="asinComments">
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">Abdul</span>
+                        <span class="comment-date">Jan 22, 2026 - 3:45 PM</span>
+                    </div>
+                    <div class="comment-text">Noticed bid optimization is performing well. Moving to test pacing next.</div>
+                </div>
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">Sarah</span>
+                        <span class="comment-date">Jan 21, 2026 - 10:30 AM</span>
+                    </div>
+                    <div class="comment-text">Initial testing complete. All campaigns synced correctly.</div>
+                </div>
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">Abdul</span>
+                        <span class="comment-date">Jan 20, 2026 - 9:00 AM</span>
+                    </div>
+                    <div class="comment-text">[Enrollment] High-value ASIN. Testing all major features. Client expects results within 2 weeks.</div>
+                </div>
+            </div>
+
+            <div class="comment-input">
+                <input type="text" id="asinCommentInput" placeholder="Add a comment...">
+                <button class="btn btn-primary" onclick="addASINComment()">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Issue Detail Modal -->
+    <div class="modal-overlay" id="issueModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="issueModalTitle">Issue #024</div>
+                <button class="modal-close" onclick="closeModal('issueModal')">&times;</button>
+            </div>
+
+            <div style="font-size: 16px; font-weight: 500; margin-bottom: 15px;" id="issueText">Bid not updating after ACOS target change</div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">Type</div>
+                    <div class="value" id="issueType">Feature Misbehavior</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Tester</div>
+                    <div class="value" id="issueTester">Abdul</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Source</div>
+                    <div class="value" id="issueSource"><span class="source-badge feedback">Feedback</span></div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Status</div>
+                    <div class="value" id="issueStatus"><span class="status open">Open</span></div>
+                </div>
+            </div>
+
+            <!-- Root Cause Guess (from tester) -->
+            <div class="root-cause-section">
+                <div class="label">Root Cause Best Guess (Tester)</div>
+                <div class="value" id="issueRootCauseGuess">Logic Issue</div>
+            </div>
+
+            <!-- Confirmed Root Cause (from Foina/Abdul) -->
+            <div class="root-cause-section confirmed" id="confirmedRootCauseSection" style="margin-top: 10px; display: none;">
+                <div class="label">Confirmed Root Cause (Foina Team)</div>
+                <div class="value" id="issueRootCauseConfirmed">-</div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <div class="card-title">Comments</div>
+                <div class="comment-chain" id="issueComments">
+                    <div class="comment">
+                        <div class="comment-header">
+                            <span class="comment-author">Abdul</span>
+                            <span class="comment-date">Jan 25, 2026 - 2:30 PM</span>
+                        </div>
+                        <div class="comment-text">Confirmed issue. When ACOS target is changed from 25% to 30%, the bid calculation still uses the old 25% value.</div>
+                    </div>
+                </div>
+
+                <div class="comment-input">
+                    <input type="text" id="issueCommentInput" placeholder="Add a comment...">
+                    <button class="btn btn-primary" onclick="addIssueComment()">Post</button>
+                </div>
+            </div>
+
+            <!-- Password Protected Actions -->
+            <div class="password-section">
+                <div class="card-title">Admin Actions (Password Protected)</div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Update Status</label>
+                        <select id="newStatus">
+                            <option value="open">Open</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="deferred">Deferred</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Set Root Cause</label>
+                        <select id="confirmedRootCause">
+                            <option value="">Select root cause...</option>
+                            <option value="logic_issue">Logic Issue</option>
+                            <option value="known_limitation">Known Limitation</option>
+                            <option value="manual_input_error">Manual Input Error</option>
+                            <option value="system_bug">System Bug</option>
+                            <option value="external_factor">External Factor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="password-input-group">
+                    <input type="password" id="statusPassword" placeholder="Enter password to update">
+                    <button class="btn btn-primary" onclick="updateIssue()">Update</button>
+                </div>
+                <div id="passwordError" style="color: #dc2626; font-size: 13px; margin-top: 8px; display: none;">Incorrect password</div>
+                <div id="updateSuccess" style="color: #065f46; font-size: 13px; margin-top: 8px; display: none;">Updated successfully!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for issues
+        const issuesData = [
+            {
+                id: '024',
+                issue: 'Bid not updating after ACOS target change',
+                type: 'Feature Misbehavior',
+                rootCauseGuess: 'Logic Issue',
+                rootCause: null,
+                tester: 'Abdul',
+                status: 'open',
+                source: 'feedback',
+                date: 'Jan 25, 2026',
+                feature: 'Bid Optimization',
+                comments: [
+                    { author: 'Abdul', date: 'Jan 25, 2026 - 2:30 PM', text: 'Confirmed issue. When ACOS target is changed from 25% to 30%, the bid calculation still uses the old 25% value.' }
+                ]
+            },
+            {
+                id: '023',
+                issue: 'Pacing paused campaign but didn\'t resume',
+                type: 'Feature Misbehavior',
+                rootCauseGuess: 'System Bug',
+                rootCause: 'Logic Issue',
+                tester: 'Sarah',
+                status: 'resolved',
+                source: 'uat',
+                date: 'Jan 24, 2026',
+                feature: 'Intelligent Pacing',
+                comments: [
+                    { author: 'Sarah', date: 'Jan 24, 2026 - 11:00 AM', text: 'Campaign was paused at 80% budget but never resumed the next day.' },
+                    { author: 'Foina Team', date: 'Jan 24, 2026 - 4:00 PM', text: 'Fixed. The resume logic was checking wrong date.' }
+                ]
+            },
+            {
+                id: '022',
+                issue: 'Negation running on wrong search terms',
+                type: 'Feature Misbehavior',
+                rootCauseGuess: 'Logic Issue',
+                rootCause: 'Known Limitation',
+                tester: 'Mike',
+                status: 'in-progress',
+                source: 'feedback',
+                date: 'Jan 23, 2026',
+                feature: 'Automated Negation',
+                comments: [
+                    { author: 'Mike', date: 'Jan 23, 2026 - 9:15 AM', text: 'Negation is adding terms that have good conversion rate.' }
+                ]
+            },
+            {
+                id: '021',
+                issue: 'CVR data missing for new keywords',
+                type: 'Data Gap',
+                rootCauseGuess: 'Known Limitation',
+                rootCause: 'Known Limitation',
+                tester: 'Abdul',
+                status: 'deferred',
+                source: 'uat',
+                date: 'Jan 22, 2026',
+                feature: 'Automated Keyword Research',
+                comments: [
+                    { author: 'Abdul', date: 'Jan 22, 2026 - 2:00 PM', text: 'New keywords have no historical CVR data.' }
+                ]
+            },
+            {
+                id: '020',
+                issue: 'Harvesting added duplicate keyword',
+                type: 'Feature Misbehavior',
+                rootCauseGuess: 'Logic Issue',
+                rootCause: 'System Bug',
+                tester: 'Sarah',
+                status: 'resolved',
+                source: 'feedback',
+                date: 'Jan 21, 2026',
+                feature: 'Automated Harvesting',
+                comments: [
+                    { author: 'Sarah', date: 'Jan 21, 2026 - 10:30 AM', text: 'Same keyword was added twice to the campaign.' },
+                    { author: 'Foina Team', date: 'Jan 22, 2026 - 9:00 AM', text: 'Fixed duplicate check logic.' }
+                ]
+            }
+        ];
+
+        // Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        // Quick Log
+        function quickLog() {
+            const input = document.getElementById('quickLogInput');
+            if (input.value.trim()) {
+                alert('Issue logged: ' + input.value);
+                input.value = '';
+            }
+        }
+
+        // Register ASIN
+        function registerASIN() {
+            const asin = document.getElementById('asinInput').value;
+            const migration = document.getElementById('migrationType').value;
+            const notes = document.getElementById('enrollmentNotes').value;
+            const features = Array.from(document.querySelectorAll('input[name="features"]:checked')).map(c => c.value);
+
+            if (!asin || !migration || features.length === 0) {
+                alert('Please fill in ASIN, migration type, and select at least one feature.');
+                return;
+            }
+
+            document.getElementById('onboardingSuccess').classList.add('show');
+
+            document.getElementById('asinInput').value = '';
+            document.getElementById('migrationType').value = '';
+            document.getElementById('enrollmentNotes').value = '';
+            document.querySelectorAll('input[name="features"]').forEach(c => c.checked = false);
+
+            setTimeout(() => {
+                document.getElementById('onboardingSuccess').classList.remove('show');
+            }, 3000);
+        }
+
+        // Submit Feedback
+        function submitFeedback() {
+            const asin = document.getElementById('feedbackASIN').value;
+            const type = document.getElementById('issueType').value;
+            const rootcause = document.getElementById('rootcauseGuess').value;
+            const description = document.getElementById('issueDescription').value;
+
+            if (!asin || !type || !description) {
+                alert('Please fill in ASIN, type, and description.');
+                return;
+            }
+
+            document.getElementById('feedbackSuccess').classList.add('show');
+
+            document.getElementById('feedbackASIN').value = '';
+            document.getElementById('issueType').value = '';
+            document.getElementById('rootcauseGuess').value = '';
+            document.getElementById('issueDescription').value = '';
+
+            setTimeout(() => {
+                document.getElementById('feedbackSuccess').classList.remove('show');
+            }, 3000);
+        }
+
+        // Modal functions
+        function openASINModal(asin) {
+            document.getElementById('asinModalTitle').textContent = 'ASIN: ' + asin;
+            document.getElementById('asinModal').classList.add('active');
+        }
+
+        let currentIssue = null;
+        function openIssueModal(issueId) {
+            currentIssue = issuesData.find(i => i.id === issueId);
+            if (!currentIssue) return;
+
+            document.getElementById('issueModalTitle').textContent = 'Issue #' + currentIssue.id;
+            document.getElementById('issueText').textContent = currentIssue.issue;
+            document.getElementById('issueType').textContent = currentIssue.type;
+            document.getElementById('issueTester').textContent = currentIssue.tester;
+            document.getElementById('issueSource').innerHTML = `<span class="source-badge ${currentIssue.source}">${currentIssue.source === 'uat' ? 'UAT' : 'Feedback'}</span>`;
+            document.getElementById('issueRootCauseGuess').textContent = currentIssue.rootCauseGuess;
+
+            const statusClasses = { 'open': 'open', 'in-progress': 'in-progress', 'resolved': 'resolved', 'deferred': 'deferred' };
+            const statusLabels = { 'open': 'Open', 'in-progress': 'In Progress', 'resolved': 'Resolved', 'deferred': 'Deferred' };
+            document.getElementById('issueStatus').innerHTML = `<span class="status ${statusClasses[currentIssue.status]}">${statusLabels[currentIssue.status]}</span>`;
+
+            if (currentIssue.rootCause) {
+                document.getElementById('confirmedRootCauseSection').style.display = 'block';
+                document.getElementById('issueRootCauseConfirmed').textContent = currentIssue.rootCause;
+            } else {
+                document.getElementById('confirmedRootCauseSection').style.display = 'none';
+            }
+
+            // Load comments
+            const commentsHtml = currentIssue.comments.map(c => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${c.author}</span>
+                        <span class="comment-date">${c.date}</span>
+                    </div>
+                    <div class="comment-text">${c.text}</div>
+                </div>
+            `).join('');
+            document.getElementById('issueComments').innerHTML = commentsHtml;
+
+            document.getElementById('newStatus').value = currentIssue.status;
+            document.getElementById('statusPassword').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+            document.getElementById('updateSuccess').style.display = 'none';
+
+            document.getElementById('issueModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Add comments
+        function addASINComment() {
+            const input = document.getElementById('asinCommentInput');
+            if (input.value.trim()) {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+                               ' - ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+                const comment = document.createElement('div');
+                comment.className = 'comment';
+                comment.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">You</span>
+                        <span class="comment-date">${dateStr}</span>
+                    </div>
+                    <div class="comment-text">${input.value}</div>
+                `;
+
+                const chain = document.getElementById('asinComments');
+                chain.insertBefore(comment, chain.firstChild);
+                input.value = '';
+            }
+        }
+
+        function addIssueComment() {
+            const input = document.getElementById('issueCommentInput');
+            if (input.value.trim()) {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+                               ' - ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+                const comment = document.createElement('div');
+                comment.className = 'comment';
+                comment.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">You</span>
+                        <span class="comment-date">${dateStr}</span>
+                    </div>
+                    <div class="comment-text">${input.value}</div>
+                `;
+
+                const chain = document.getElementById('issueComments');
+                chain.insertBefore(comment, chain.firstChild);
+
+                // Add to data
+                if (currentIssue) {
+                    currentIssue.comments.unshift({ author: 'You', date: dateStr, text: input.value });
+                }
+
+                input.value = '';
+            }
+        }
+
+        // Update issue with password
+        function updateIssue() {
+            const password = document.getElementById('statusPassword').value;
+            const newStatus = document.getElementById('newStatus').value;
+            const confirmedRootCause = document.getElementById('confirmedRootCause').value;
+
+            if (password === 'abdul850') {
+                const statusClasses = { 'open': 'open', 'in-progress': 'in-progress', 'resolved': 'resolved', 'deferred': 'deferred' };
+                const statusLabels = { 'open': 'Open', 'in-progress': 'In Progress', 'resolved': 'Resolved', 'deferred': 'Deferred' };
+                const rootCauseLabels = {
+                    'logic_issue': 'Logic Issue',
+                    'known_limitation': 'Known Limitation',
+                    'manual_input_error': 'Manual Input Error',
+                    'system_bug': 'System Bug',
+                    'external_factor': 'External Factor'
+                };
+
+                document.getElementById('issueStatus').innerHTML = `<span class="status ${statusClasses[newStatus]}">${statusLabels[newStatus]}</span>`;
+
+                if (confirmedRootCause) {
+                    document.getElementById('confirmedRootCauseSection').style.display = 'block';
+                    document.getElementById('issueRootCauseConfirmed').textContent = rootCauseLabels[confirmedRootCause];
+                    if (currentIssue) {
+                        currentIssue.rootCause = rootCauseLabels[confirmedRootCause];
+                    }
+                }
+
+                if (currentIssue) {
+                    currentIssue.status = newStatus;
+                }
+
+                document.getElementById('statusPassword').value = '';
+                document.getElementById('passwordError').style.display = 'none';
+                document.getElementById('updateSuccess').style.display = 'block';
+
+                setTimeout(() => {
+                    document.getElementById('updateSuccess').style.display = 'none';
+                }, 3000);
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('updateSuccess').style.display = 'none';
+            }
+        }
+
+        // Export to Excel
+        function exportToExcel() {
+            const exportData = issuesData.map(issue => ({
+                'ID': '#' + issue.id,
+                'Issue': issue.issue,
+                'Type': issue.type,
+                'Root Cause Guess': issue.rootCauseGuess,
+                'Root Cause (Confirmed)': issue.rootCause || '-',
+                'Tester': issue.tester,
+                'Status': issue.status.charAt(0).toUpperCase() + issue.status.slice(1).replace('-', ' '),
+                'Source': issue.source === 'uat' ? 'UAT' : 'Feedback',
+                'Date': issue.date,
+                'Feature': issue.feature,
+                'Comment History': issue.comments.map(c => `[${c.date}] ${c.author}: ${c.text}`).join(' | ')
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Issues');
+
+            // Set column widths
+            ws['!cols'] = [
+                { wch: 6 },   // ID
+                { wch: 40 },  // Issue
+                { wch: 18 },  // Type
+                { wch: 18 },  // Root Cause Guess
+                { wch: 18 },  // Root Cause
+                { wch: 10 },  // Tester
+                { wch: 12 },  // Status
+                { wch: 10 },  // Source
+                { wch: 14 },  // Date
+                { wch: 20 },  // Feature
+                { wch: 80 }   // Comments
+            ];
+
+            XLSX.writeFile(wb, 'Issues_Export_' + new Date().toISOString().split('T')[0] + '.xlsx');
+        }
+
+        // Load dashboard
+        function loadDashboard() {
+            const url = document.getElementById('dashboardUrl').value;
+            if (url) {
+                alert('Dashboard URL saved: ' + url + '\n\nIn production, this would embed the dashboard.');
+            }
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Type Chart
+            new Chart(document.getElementById('typeChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Feature Misbehavior', 'System Error', 'Data Gap', 'UI/UX Problem'],
+                    datasets: [{
+                        data: [12, 5, 4, 3],
+                        backgroundColor: ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Root Cause Chart
+            new Chart(document.getElementById('rootcauseChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Logic Issue', 'Known Limitation', 'System Bug', 'External Factor', 'Unknown'],
+                    datasets: [{
+                        data: [10, 6, 4, 3, 1],
+                        backgroundColor: ['#3b82f6', '#6366f1', '#14b8a6', '#f97316', '#94a3b8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Feature Chart
+            new Chart(document.getElementById('featureChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bid Optimization', 'Pacing', 'Negation', 'Harvesting', 'Budget', 'Other'],
+                    datasets: [{
+                        data: [8, 5, 4, 3, 2, 2],
+                        backgroundColor: ['#f97316', '#eab308', '#22c55e', '#06b6d4', '#8b5cf6', '#94a3b8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, padding: 10, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

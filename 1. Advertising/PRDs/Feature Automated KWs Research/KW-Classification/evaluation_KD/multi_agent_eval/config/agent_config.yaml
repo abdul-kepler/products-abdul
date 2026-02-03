@@ -1,0 +1,138 @@
+# Multi-Agent Evaluation Configuration
+# =====================================
+# Adversarial debate + Likert scoring (0-5) framework
+# Target: ~85% human agreement
+
+version: "1.0"
+created: "2026-01-26"
+
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+models:
+  default: "gpt-4o-mini"
+
+  # Agent-specific model overrides (optional)
+  overrides:
+    critic: "gpt-4o-mini"
+    defender: "gpt-4o-mini"
+    judge: "gpt-4o-mini"
+    meta_judge: "gpt-4o-mini"
+
+# =============================================================================
+# TEMPERATURE SETTINGS
+# =============================================================================
+# Lower = more deterministic, Higher = more creative/diverse
+temperatures:
+  input_filter: 0.0    # Deterministic for security checks
+  critic: 0.7          # Higher for diverse weakness finding
+  defender: 0.5        # Moderate for balanced rebuttals
+  judge: 0.3           # Lower for consistent scoring
+  meta_judge: 0.2      # Low for reliable sycophancy detection
+
+# =============================================================================
+# RETRY CONFIGURATION
+# =============================================================================
+retry:
+  max_retries: 2                 # Maximum retry attempts if sycophantic
+  backoff_factor: 1.5            # Exponential backoff multiplier
+  initial_delay_ms: 500          # Initial delay before retry
+
+# =============================================================================
+# AGGREGATION SETTINGS
+# =============================================================================
+aggregation:
+  num_runs: 3                    # Number of evaluation runs to aggregate
+  method: "median"               # Use median for robustness
+
+  # Confidence thresholds based on score variance
+  confidence_thresholds:
+    high: 0.5      # Variance <= 0.5 -> HIGH confidence
+    medium: 1.0    # Variance <= 1.0 -> MEDIUM confidence
+    # Above medium -> LOW confidence
+
+# =============================================================================
+# DEBATE SETTINGS
+# =============================================================================
+debate:
+  min_weaknesses: 3              # Critic must find at least 3 weaknesses
+  weakness_categories:
+    - "accuracy"                 # Factual errors
+    - "completeness"             # Missing information
+    - "relevance"                # Off-topic content
+    - "clarity"                  # Unclear or confusing
+    - "reasoning"                # Logical flaws
+    - "format"                   # Schema/structure issues
+    - "hallucination"            # Made-up information
+
+# =============================================================================
+# SCORING CRITERIA
+# =============================================================================
+scoring:
+  criteria:
+    - name: "accuracy"
+      weight: 1.0
+      description: "Factual correctness of the response"
+    - name: "relevance"
+      weight: 1.0
+      description: "Response addresses the input appropriately"
+    - name: "completeness"
+      weight: 1.0
+      description: "All required information is present"
+    - name: "clarity"
+      weight: 1.0
+      description: "Response is clear and well-structured"
+    - name: "reasoning"
+      weight: 1.0
+      description: "Logical reasoning and justification quality"
+
+  # Scale: 0-5 (Likert)
+  scale:
+    min: 0
+    max: 5
+
+# =============================================================================
+# INPUT FILTER PATTERNS
+# =============================================================================
+input_filter:
+  # Injection detection patterns (case-insensitive)
+  # NOTE: These patterns must be specific to avoid false positives on product data
+  injection_patterns:
+    - "ignore.*previous.*instructions"
+    - "ignore.*all.*instructions"
+    - "forget.*everything.*above"
+    - "disregard.*above.*instructions"
+    - "new.*system.*instructions"
+    - "override.*system.*prompt"
+    - "pretend.*you.*are.*a"
+    - "act.*as.*if.*you.*are.*a"
+    - "you.*are.*now.*a"
+    - "from.*now.*on.*you.*are"
+    - "system.*prompt.*override"
+    - "\\[system\\]"
+    - "\\[INST\\]"
+    - "<\\|im_start\\|>"
+    - "<\\|im_end\\|>"
+
+  # Required JSON fields for validation
+  required_fields:
+    - "input"
+    - "output"
+
+# =============================================================================
+# SYCOPHANCY DETECTION
+# =============================================================================
+sycophancy:
+  # Trigger conditions (any match = sycophantic)
+  triggers:
+    all_scores_above: 4          # All scores >= 4
+    min_justification_length: 50 # Vague if < 50 chars per criterion
+    ignored_weaknesses_ratio: 0.5  # >50% weaknesses not addressed
+
+# =============================================================================
+# OUTPUT SETTINGS
+# =============================================================================
+output:
+  include_debate_transcript: true
+  include_all_runs: false        # Only include aggregated results by default
+  timestamp_format: "%Y-%m-%d %H:%M:%S"

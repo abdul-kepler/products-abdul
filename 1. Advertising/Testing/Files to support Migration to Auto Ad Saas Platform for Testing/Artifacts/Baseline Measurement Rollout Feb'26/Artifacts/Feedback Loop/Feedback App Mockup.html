@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohort 1 Feedback Hub - Mockup</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #ca8a04;
+            --warning-light: #fef9c3;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--gray-900);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--gray-700);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: var(--gray-300);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-800);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 24px;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .page-subtitle {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-value.success { color: var(--success); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-value.danger { color: var(--danger); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success { background: var(--success-light); color: var(--success); }
+        .badge-warning { background: var(--warning-light); color: var(--warning); }
+        .badge-danger { background: var(--danger-light); color: var(--danger); }
+        .badge-info { background: var(--primary-light); color: var(--primary); }
+        .badge-gray { background: var(--gray-200); color: var(--gray-600); }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--gray-700);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Checklists */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover {
+            border-color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        .checklist-item.checked {
+            background: var(--success-light);
+            border-color: var(--success);
+        }
+
+        .checklist-item.checked .check-title {
+            text-decoration: line-through;
+            color: var(--gray-500);
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .check-content {
+            flex: 1;
+        }
+
+        .check-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .check-description {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .check-steps {
+            font-size: 13px;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* AI Input */
+        .ai-input-container {
+            background: linear-gradient(135deg, #f5f3ff, #eef2ff);
+            border: 2px solid #c4b5fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .ai-input-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .ai-input-title {
+            font-weight: 600;
+            color: #5b21b6;
+        }
+
+        .ai-input-subtitle {
+            font-size: 13px;
+            color: #7c3aed;
+        }
+
+        .ai-textarea {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+            background: white;
+        }
+
+        .ai-textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .ai-suggestion {
+            background: white;
+            border: 1px solid #c4b5fd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #6d28d9;
+            cursor: pointer;
+        }
+
+        .ai-suggestion:hover {
+            background: #6d28d9;
+            color: white;
+        }
+
+        /* Progress */
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* Mockup Banner */
+        .mockup-banner {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: var(--gray-900);
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* View Selector */
+        .view-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Guidelines */
+        .guideline-box {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 16px;
+        }
+
+        .guideline-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .feature-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .feature-card-title {
+            font-weight: 600;
+        }
+
+        .feature-card-progress {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        /* Operations Guide */
+        .ops-step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .ops-step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .ops-step-content {
+            flex: 1;
+        }
+
+        .ops-step-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .ops-step-desc {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gray-200);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid white;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-weight: 500;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+
+<div class="mockup-banner">
+    ⚠️ MOCKUP - This is a design preview of the Feedback Hub app. Click different views to explore.
+</div>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>🎯 Cohort 1 Hub</h1>
+            <p>Baseline Measurement Rollout</p>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    📊 Dashboard
+                </div>
+                <div class="nav-item" onclick="showSection('checklists')">
+                    ✅ UAT Checklists
+                    <span class="badge">3</span>
+                </div>
+                <div class="nav-item" onclick="showSection('feedback')">
+                    💬 Submit Feedback
+                </div>
+                <div class="nav-item" onclick="showSection('all-feedback')">
+                    📋 All Feedback
+                    <span class="badge">12</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Reference</div>
+                <div class="nav-item" onclick="showSection('guidelines')">
+                    📖 Guidelines
+                </div>
+                <div class="nav-item" onclick="showSection('operations')">
+                    🔧 How to Operate
+                </div>
+                <div class="nav-item" onclick="showSection('limitations')">
+                    ⚠️ Known Limitations
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Accounts</div>
+                <div class="nav-item">
+                    🏪 PetCaskets
+                    <span class="badge" style="background: var(--success)">On Track</span>
+                </div>
+                <div class="nav-item">
+                    🏪 GardenTools
+                    <span class="badge" style="background: var(--warning)">At Risk</span>
+                </div>
+                <div class="nav-item">
+                    🏪 HomeDecor
+                    <span class="badge" style="background: var(--success)">On Track</span>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Week 1 of 2 • 5 days remaining</p>
+                </div>
+                <button class="btn btn-primary">📤 Export Weekly Report</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Accounts Active</div>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">UAT Completion</div>
+                    <div class="stat-value success">67%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Open Issues</div>
+                    <div class="stat-value warning">5</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Critical Issues</div>
+                    <div class="stat-value danger">1</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Feedback</h3>
+                    <button class="btn btn-secondary" onclick="showSection('all-feedback')">View All →</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                            <th>Reported</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bids not decreasing for high-ACOS keywords</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-info">Feature</span></td>
+                            <td><span class="badge badge-danger">Critical</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                            <td>2 hours ago</td>
+                        </tr>
+                        <tr>
+                            <td>Missing keyword "pet memorial"</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-gray">Data Gap</span></td>
+                            <td><span class="badge badge-warning">Medium</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                            <td>5 hours ago</td>
+                        </tr>
+                        <tr>
+                            <td>Pagination stuck at 20 rows</td>
+                            <td>All</td>
+                            <td><span class="badge badge-danger">Bug</span></td>
+                            <td><span class="badge badge-info">Low</span></td>
+                            <td><span class="badge badge-success">Known</span></td>
+                            <td>1 day ago</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">UAT Progress by Feature</h3>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="showSection('checklists')">
+                        <div class="feature-card-header">
+                            <span class="feature-card-title">Bid Optimization</span>
+                            <span class="feature-card-progress">4/6 checks</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 67%"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card" onclick="showSection('checklists')">
+                        <div class="feature-card-header">
+                            <span class="feature-card-title">Budget Optimization</span>
+                            <span class="feature-card-progress">3/5 checks</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card" onclick="showSection('checklists')">
+                        <div class="feature-card-header">
+                            <span class="feature-card-title">Intelligent Pacing</span>
+                            <span class="feature-card-progress">2/4 checks</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50%"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card" onclick="showSection('checklists')">
+                        <div class="feature-card-header">
+                            <span class="feature-card-title">Negation</span>
+                            <span class="feature-card-progress">5/5 checks</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%; background: var(--success)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UAT Checklists Section -->
+        <div id="checklists" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">UAT Checklists</h1>
+                    <p class="page-subtitle">Test each feature systematically</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showChecklist('bid')">Bid Optimization</div>
+                <div class="tab" onclick="showChecklist('budget')">Budget Optimization</div>
+                <div class="tab" onclick="showChecklist('pacing')">Pacing</div>
+                <div class="tab" onclick="showChecklist('negation')">Negation</div>
+                <div class="tab" onclick="showChecklist('harvesting')">Harvesting</div>
+                <div class="tab" onclick="showChecklist('kw')">KW Research</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Automated Bid Optimization</h3>
+                    <span class="badge badge-info">Check Weekly</span>
+                </div>
+
+                <div class="guideline-box">
+                    <h4>What This Feature Does</h4>
+                    <p>Calculates optimal bids based on target ACOS/ROAS and keyword performance, then pushes to Amazon.</p>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox">✓</div>
+                    <div class="check-content">
+                        <div class="check-title">Non-performing keywords get bid decreases</div>
+                        <div class="check-description">Keywords with high ACOS (>target) should have lower bids than before</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Bid Strategy Logs<br>
+                            2. Filter by account, last 7 days<br>
+                            3. Sort by ACOS (highest first)<br>
+                            4. Check: Did high-ACOS keywords get bid decreases?<br>
+                            <strong>Pass if:</strong> Majority of high-ACOS KWs show decreased bids<br>
+                            <strong>Fail if:</strong> High-ACOS KWs kept same or higher bids
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox">✓</div>
+                    <div class="check-content">
+                        <div class="check-title">Performing keywords get bid increases</div>
+                        <div class="check-description">Keywords with conversions and good ACOS should have higher bids</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Bid Strategy Logs<br>
+                            2. Filter by account, last 7 days<br>
+                            3. Sort by conversions (highest first)<br>
+                            4. Check: Did converting keywords get bid increases?<br>
+                            <strong>Pass if:</strong> Converting KWs with below-target ACOS show increased bids<br>
+                            <strong>Fail if:</strong> Converting KWs stayed flat despite room to grow
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="check-content">
+                        <div class="check-title">Bid values are within reasonable range</div>
+                        <div class="check-description">No extreme bids ($0.01 or $50+) unless justified</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Keyword Config<br>
+                            2. Sort by bid (lowest first, then highest)<br>
+                            3. Check: Any bids below $0.10 or above $20?<br>
+                            <strong>Pass if:</strong> All bids in reasonable CPC range for category<br>
+                            <strong>Fail if:</strong> Extreme values without justification
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="check-content">
+                        <div class="check-title">Bids are syncing to Amazon</div>
+                        <div class="check-description">Calculated bids should actually reach Amazon</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Bid Strategy Logs<br>
+                            2. Check "Sync Status" column<br>
+                            3. Spot-check 3 keywords in Amazon Seller Central<br>
+                            <strong>Pass if:</strong> Sync status = Success, Amazon bids match Portal<br>
+                            <strong>Fail if:</strong> Sync failures or mismatched bids
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="check-content">
+                        <div class="check-title">New keywords get appropriate starting bids</div>
+                        <div class="check-description">Newly added keywords should not start at extreme values</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Keyword Config<br>
+                            2. Filter by "Added date" = last 7 days<br>
+                            3. Check starting bid values<br>
+                            <strong>Pass if:</strong> Starting bids are reasonable (not min/max)<br>
+                            <strong>Fail if:</strong> All new KWs at floor or ceiling
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <div class="check-content">
+                        <div class="check-title">Bid changes respect daily limits</div>
+                        <div class="check-description">Bids shouldn't jump dramatically in one day</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Bid Strategy Logs<br>
+                            2. Look at bid change history for any keyword<br>
+                            3. Check if any single-day change >50%<br>
+                            <strong>Pass if:</strong> Changes are gradual (≤30% per day typically)<br>
+                            <strong>Fail if:</strong> Wild swings without justification
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 12px;">
+                    <button class="btn btn-success">✓ Mark Feature Complete</button>
+                    <button class="btn btn-secondary" onclick="showSection('feedback')">Report Issue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Feedback Section -->
+        <div id="feedback" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Submit Feedback</h1>
+                    <p class="page-subtitle">Report issues, bugs, or observations</p>
+                </div>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="ai-input-container">
+                <div class="ai-input-header">
+                    <div class="ai-icon">🤖</div>
+                    <div>
+                        <div class="ai-input-title">AI-Assisted Entry</div>
+                        <div class="ai-input-subtitle">Describe the issue in plain English. I'll format it for you.</div>
+                    </div>
+                </div>
+                <textarea class="ai-textarea" placeholder="Example: 'The bid for keyword dog casket went from $1.50 to $0.15 even though it converted 3 times last week. Account is PetCaskets. This seems like it should have stayed high or gone up, not dropped.'"></textarea>
+                <div class="ai-suggestions">
+                    <span class="ai-suggestion">🎯 Bid didn't change correctly</span>
+                    <span class="ai-suggestion">💰 Budget not spending</span>
+                    <span class="ai-suggestion">🔍 Missing keyword</span>
+                    <span class="ai-suggestion">🐛 Portal bug</span>
+                    <span class="ai-suggestion">📞 Client complained</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-ai">✨ Generate Feedback Form</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 20px;">Or Fill Manually</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Account</label>
+                        <select class="form-select">
+                            <option>Select account...</option>
+                            <option>PetCaskets</option>
+                            <option>GardenTools</option>
+                            <option>HomeDecor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-select">
+                            <option>Select category...</option>
+                            <option>🎯 Feature Behavior - system made wrong decision</option>
+                            <option>🐛 Bug - something broken</option>
+                            <option>🖥️ UI/UX Issue - portal blocks work</option>
+                            <option>📞 Client Escalation</option>
+                            <option>📊 Data Gap - missing/wrong data</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Feature (if applicable)</label>
+                        <select class="form-select">
+                            <option>Select feature...</option>
+                            <option>Bid Optimization</option>
+                            <option>Budget Optimization</option>
+                            <option>Intelligent Pacing</option>
+                            <option>Negation</option>
+                            <option>Harvesting</option>
+                            <option>KW Research</option>
+                            <option>Campaign Generation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Severity</label>
+                        <select class="form-select">
+                            <option>Select severity...</option>
+                            <option>🔴 Critical - client at risk</option>
+                            <option>🟠 High - significant impact</option>
+                            <option>🟡 Medium - notable, can wait</option>
+                            <option>🟢 Low - minor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">What happened?</label>
+                    <textarea class="form-textarea" placeholder="Describe the issue..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">What should have happened?</label>
+                    <textarea class="form-textarea" placeholder="Expected behavior..." style="min-height: 80px;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Evidence (Screenshots, Links)</label>
+                    <div style="border: 2px dashed var(--gray-300); border-radius: 8px; padding: 40px; text-align: center; color: var(--gray-500);">
+                        <p>Drop files here or click to upload</p>
+                        <p style="font-size: 12px;">Supports images, PDFs</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary">Submit Feedback</button>
+                    <button class="btn btn-secondary">Save Draft</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Feedback Section -->
+        <div id="all-feedback" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">All Feedback</h1>
+                    <p class="page-subtitle">12 total items • 5 open</p>
+                </div>
+                <button class="btn btn-primary" onclick="showSection('feedback')">+ New Feedback</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; gap: 12px;">
+                        <select class="form-select" style="width: auto;">
+                            <option>All Categories</option>
+                            <option>Feature Behavior</option>
+                            <option>Bug</option>
+                            <option>UI/UX</option>
+                            <option>Client Escalation</option>
+                            <option>Data Gap</option>
+                        </select>
+                        <select class="form-select" style="width: auto;">
+                            <option>All Statuses</option>
+                            <option>Open</option>
+                            <option>In Progress</option>
+                            <option>Resolved</option>
+                            <option>Known Limitation</option>
+                        </select>
+                        <select class="form-select" style="width: auto;">
+                            <option>All Accounts</option>
+                            <option>PetCaskets</option>
+                            <option>GardenTools</option>
+                            <option>HomeDecor</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary">📤 Export</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Issue</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                            <th>Reporter</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#12</td>
+                            <td>Bids not decreasing for high-ACOS keywords despite poor performance</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-info">Feature</span></td>
+                            <td><span class="badge badge-danger">Critical</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                            <td>Li Wei</td>
+                            <td>Jan 23</td>
+                        </tr>
+                        <tr>
+                            <td>#11</td>
+                            <td>Missing keyword "pet memorial" from research output</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-gray">Data Gap</span></td>
+                            <td><span class="badge badge-warning">Medium</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                            <td>Zhang Min</td>
+                            <td>Jan 23</td>
+                        </tr>
+                        <tr>
+                            <td>#10</td>
+                            <td>Campaign "GLSP-Auto" not activating despite budget available</td>
+                            <td>GardenTools</td>
+                            <td><span class="badge badge-info">Feature</span></td>
+                            <td><span class="badge badge-warning">High</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                            <td>Li Wei</td>
+                            <td>Jan 22</td>
+                        </tr>
+                        <tr>
+                            <td>#9</td>
+                            <td>Budget showing $0 for Exact campaign but should have allocation</td>
+                            <td>HomeDecor</td>
+                            <td><span class="badge badge-info">Feature</span></td>
+                            <td><span class="badge badge-warning">Medium</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                            <td>Wang Jun</td>
+                            <td>Jan 22</td>
+                        </tr>
+                        <tr>
+                            <td>#8</td>
+                            <td>Pagination stuck at 20 rows in Bid Strategy Logs</td>
+                            <td>All</td>
+                            <td><span class="badge badge-danger">Bug</span></td>
+                            <td><span class="badge badge-info">Low</span></td>
+                            <td><span class="badge badge-success">Known</span></td>
+                            <td>Zhang Min</td>
+                            <td>Jan 21</td>
+                        </tr>
+                        <tr>
+                            <td>#7</td>
+                            <td>Client asked why CPC went up - need explanation</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-danger">Escalation</span></td>
+                            <td><span class="badge badge-warning">High</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                            <td>Li Wei</td>
+                            <td>Jan 20</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Guidelines Section -->
+        <div id="guidelines" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Guidelines</h1>
+                    <p class="page-subtitle">Reference documentation for the rollout</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 20px;">What Gets Tracked How</h3>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Method</th>
+                    </tr>
+                    <tr>
+                        <td>Performance metrics (ACOS, spend, etc.)</td>
+                        <td><span class="badge badge-success">Automated Dashboard</span> - no manual logging</td>
+                    </tr>
+                    <tr>
+                        <td>Feature behavior feedback</td>
+                        <td>Manual - use this app</td>
+                    </tr>
+                    <tr>
+                        <td>UI/UX issues</td>
+                        <td>Manual - use this app</td>
+                    </tr>
+                    <tr>
+                        <td>Bugs</td>
+                        <td>Manual - use this app</td>
+                    </tr>
+                    <tr>
+                        <td>Client escalations</td>
+                        <td>Manual - use this app</td>
+                    </tr>
+                    <tr>
+                        <td>Data gaps</td>
+                        <td>Manual - use this app</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 20px;">Escalation Matrix</h3>
+                <table>
+                    <tr>
+                        <th>Severity</th>
+                        <th>Action</th>
+                        <th>Response Time</th>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-info">Low</span></td>
+                        <td>Log in app → Weekly review</td>
+                        <td>1 week</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-warning">Medium</span></td>
+                        <td>Log + Slack notification</td>
+                        <td>24 hours</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-danger">High</span></td>
+                        <td>Log + Slack @Abdul</td>
+                        <td>4 hours</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-danger">Critical</span></td>
+                        <td>Slack @channel + Call Abdul</td>
+                        <td>1 hour</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 20px;">Decision Framework</h3>
+                <table>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Indicators</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Success</strong></td>
+                        <td>Metrics on target, no critical issues</td>
+                        <td><span class="badge badge-success">Proceed to Cohort 2</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Minor gaps</strong></td>
+                        <td>ACOS 5-15% off, features working</td>
+                        <td><span class="badge badge-warning">Proceed with caution</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Known limitation</strong></td>
+                        <td>Under-spending (CVR), missing KWs</td>
+                        <td><span class="badge badge-info">Proceed, flag for future</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>System bugs</strong></td>
+                        <td>Features not working</td>
+                        <td><span class="badge badge-danger">Pause until fixed</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multiple critical</strong></td>
+                        <td>3+ accounts critical in 48h</td>
+                        <td><span class="badge badge-danger">Stop rollout</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Operations Guide Section -->
+        <div id="operations" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">How to Operate</h1>
+                    <p class="page-subtitle">Daily and weekly routines</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 24px;">Daily Routine (15-20 min)</h3>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">1</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Check Dashboard (2 min)</div>
+                        <div class="ops-step-desc">Open this app → Dashboard. Check for any new critical issues overnight.</div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">2</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Run Daily Checks (10 min)</div>
+                        <div class="ops-step-desc">Go to UAT Checklists. Run the "Daily" checks for Budget Optimization and Pacing. Check the boxes as you go.</div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">3</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Log Any Issues (5 min)</div>
+                        <div class="ops-step-desc">Found something wrong? Use "Submit Feedback" - either AI-assisted or manual form. Be specific about what happened vs what should have happened.</div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">4</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Slack Update (2 min)</div>
+                        <div class="ops-step-desc">Post in #cohort1-feedback: "Day X complete. [X] issues found." or "All clear."</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 24px;">Weekly Routine (Friday, 30 min)</h3>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">1</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Complete Weekly Checks (15 min)</div>
+                        <div class="ops-step-desc">Run all "Weekly" UAT checks: Bid Optimization, Negation, Harvesting, KW Research.</div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">2</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Review All Feedback (10 min)</div>
+                        <div class="ops-step-desc">Go to "All Feedback". Review open items. Add any comments or updates.</div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">3</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Export Weekly Report (5 min)</div>
+                        <div class="ops-step-desc">Click "Export Weekly Report" on Dashboard. Send to Abdul in Slack.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 24px;">Using AI-Assisted Feedback</h3>
+
+                <div class="guideline-box">
+                    <h4>Why Use AI Entry?</h4>
+                    <p>Faster than filling forms. Just describe what you saw in plain language - the AI will structure it properly.</p>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">1</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Describe the Issue Naturally</div>
+                        <div class="ops-step-desc">
+                            <strong>Good:</strong> "Bid for 'dog casket' dropped from $1.50 to $0.15 but it had 3 conversions last week with 12% CVR. Account: PetCaskets."<br>
+                            <strong>Bad:</strong> "bid issue" or "something wrong with bids"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">2</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Include Key Details</div>
+                        <div class="ops-step-desc">Account name, specific keyword/campaign, numbers (before/after), what you expected.</div>
+                    </div>
+                </div>
+
+                <div class="ops-step">
+                    <div class="ops-step-number">3</div>
+                    <div class="ops-step-content">
+                        <div class="ops-step-title">Review AI Output</div>
+                        <div class="ops-step-desc">AI will fill the form. Review and adjust if needed, then submit.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Known Limitations Section -->
+        <div id="limitations" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Known Limitations</h1>
+                    <p class="page-subtitle">Issues we're aware of - don't report these as new bugs</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h3 class="card-title">CVR Estimation Model</h3>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    <strong>Current approach:</strong> Basic waterfall (Keyword CVR → Campaign CVR → Account CVR → Default 5%)
+                </p>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    <strong>Problem:</strong> Not ML-based. Doesn't account for seasonality, competition, listing changes.
+                </p>
+                <p style="margin: 12px 0;">
+                    <strong>Result:</strong>
+                    <span class="badge badge-danger">Under-bidding</span> (CVR underestimated) or
+                    <span class="badge badge-danger">Over-bidding</span> (CVR overestimated)
+                </p>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    <strong>If you see this:</strong> Log it as "Known Limitation - CVR" so we track frequency. Not a bug to fix now.
+                </p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h3 class="card-title">Missing Keywords</h3>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    <strong>Reasons:</strong>
+                </p>
+                <ul style="margin: 12px 0; color: var(--gray-600);">
+                    <li>3rd party data source is weak (no immediate fix)</li>
+                    <li>Logic issue for performing KWs (fix pending)</li>
+                </ul>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    <strong>If you see this:</strong> Log as "Data Gap" with the specific keyword. Helps us track what's missing.
+                </p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--gray-400);">
+                <h3 class="card-title">Portal Bugs (Known)</h3>
+                <table>
+                    <tr>
+                        <th>Bug</th>
+                        <th>Workaround</th>
+                    </tr>
+                    <tr>
+                        <td>PROD-2666: Some targets missing in Bid Strategy Logs</td>
+                        <td>Use Keyword Config instead</td>
+                    </tr>
+                    <tr>
+                        <td>PROD-2665: Export incomplete</td>
+                        <td>Use smaller date ranges</td>
+                    </tr>
+                    <tr>
+                        <td>PROD-2573: Pagination stuck at 20</td>
+                        <td>Use filters to narrow results</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 12px; color: var(--gray-600);">
+                    <strong>If you hit these:</strong> Don't report as new. Mark as "Known" if it blocks you significantly.
+                </p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--primary);">
+                <h3 class="card-title">APDC Not Available</h3>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    Automated Performance Diagnostics won't be ready for ~1 month. Manual diagnosis required.
+                </p>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    <strong>What this means:</strong> When performance drops, you need to investigate manually using the diagnosis flow in Guidelines.
+                </p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        // Show selected section
+        document.getElementById(sectionId).classList.add('active');
+
+        // Update nav
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event.target.closest('.nav-item')?.classList.add('active');
+    }
+
+    function toggleCheck(item) {
+        item.classList.toggle('checked');
+    }
+
+    function showChecklist(feature) {
+        // Update tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        // In real app, would load different checklist content
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive UAT Checklist v2 - Baseline Measurement</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #1a1a2e;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px; }
+
+        h1 { font-size: 28px; margin-bottom: 10px; color: #1a1a2e; }
+        .subtitle { color: #6b7280; margin-bottom: 10px; }
+        .version-info { background: #dbeafe; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; }
+        .version-info strong { color: #1e40af; }
+
+        /* Navigation */
+        .feature-nav {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-bottom: 30px; padding: 15px;
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .feature-nav a {
+            padding: 6px 12px; background: #f3f4f6;
+            border-radius: 6px; text-decoration: none;
+            color: #374151; font-size: 12px; font-weight: 500;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .feature-nav a:hover { background: #4ade80; color: #1a1a2e; }
+        .feature-nav a.active { background: #1a1a2e; color: #fff; }
+
+        /* Feature Section */
+        .feature-section {
+            background: #fff; border-radius: 12px;
+            margin-bottom: 30px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .feature-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff; padding: 20px 25px;
+        }
+        .feature-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+        .feature-desc { font-size: 14px; opacity: 0.8; }
+        .feature-body { padding: 25px; }
+
+        /* Logic Box */
+        .logic-box {
+            background: #fef3c7; border-left: 4px solid #f59e0b;
+            padding: 15px 20px; margin-bottom: 20px; border-radius: 0 8px 8px 0;
+        }
+        .logic-box.formula {
+            background: #dbeafe; border-left-color: #3b82f6;
+            font-family: 'Courier New', monospace;
+        }
+        .logic-box.criteria {
+            background: #fce7f3; border-left-color: #db2777;
+        }
+        .logic-box.warning {
+            background: #fee2e2; border-left-color: #dc2626;
+        }
+        .logic-box h4 { font-size: 13px; color: #92400e; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .logic-box.formula h4 { color: #1e40af; }
+        .logic-box.criteria h4 { color: #be185d; }
+        .logic-box.warning h4 { color: #dc2626; }
+        .logic-box code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+        .logic-box pre { white-space: pre-wrap; font-size: 12px; line-height: 1.5; }
+        .logic-box table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        .logic-box th, .logic-box td { padding: 6px 10px; border: 1px solid rgba(0,0,0,0.15); text-align: left; }
+        .logic-box th { background: rgba(0,0,0,0.05); font-weight: 600; }
+
+        /* Test Category */
+        .test-category { margin-bottom: 25px; }
+        .category-title {
+            font-size: 16px; font-weight: 600; color: #1a1a2e;
+            padding: 12px 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .category-title .icon {
+            width: 28px; height: 28px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+        .category-title .icon.perf { background: #d1fae5; color: #065f46; }
+        .category-title .icon.func { background: #dbeafe; color: #1e40af; }
+        .category-title .icon.edge { background: #fae8ff; color: #86198f; }
+        .category-title .icon.neg { background: #fee2e2; color: #991b1b; }
+        .category-title .icon.ui { background: #e0f2fe; color: #0369a1; }
+
+        /* Test Case */
+        .test-case {
+            background: #f9fafb; border-radius: 8px;
+            padding: 15px; margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
+        }
+        .test-case:hover { border-color: #4ade80; }
+        .test-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .test-id { font-weight: 600; color: #3b82f6; font-size: 13px; }
+        .test-title { font-weight: 500; color: #1a1a2e; margin-bottom: 8px; }
+        .test-objective { font-size: 13px; color: #6b7280; margin-bottom: 10px; }
+
+        .test-steps { margin-bottom: 10px; }
+        .test-steps h5 { font-size: 12px; color: #374151; margin-bottom: 6px; text-transform: uppercase; }
+        .test-steps ol { margin-left: 20px; font-size: 13px; }
+        .test-steps li { margin-bottom: 4px; }
+
+        .expected-result {
+            background: #d1fae5; padding: 10px 12px;
+            border-radius: 6px; font-size: 13px; color: #065f46;
+        }
+        .expected-result.fail {
+            background: #fee2e2; color: #991b1b;
+        }
+        .expected-result strong { display: block; margin-bottom: 4px; }
+
+        /* Tags */
+        .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag {
+            padding: 3px 8px; border-radius: 4px;
+            font-size: 11px; font-weight: 500;
+        }
+        .tag.acos { background: #fef3c7; color: #92400e; }
+        .tag.sales { background: #dbeafe; color: #1e40af; }
+        .tag.critical { background: #fee2e2; color: #991b1b; }
+        .tag.ui { background: #e0f2fe; color: #0369a1; }
+        .tag.logic { background: #f3e8ff; color: #7c3aed; }
+
+        /* Metrics Impact */
+        .metrics-impact {
+            display: flex; gap: 15px; margin-top: 10px;
+            padding-top: 10px; border-top: 1px dashed #e5e7eb;
+        }
+        .metric { font-size: 12px; }
+        .metric span { font-weight: 600; }
+        .metric.positive span { color: #059669; }
+        .metric.negative span { color: #dc2626; }
+
+        /* Progress tracker */
+        .progress-bar {
+            background: #e5e7eb; height: 8px; border-radius: 4px;
+            margin: 15px 0; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #4ade80, #22c55e);
+            width: 0%; transition: width 0.3s;
+        }
+        .progress-text { font-size: 12px; color: #6b7280; margin-bottom: 5px; }
+
+        /* Checkbox styling */
+        .test-case input[type="checkbox"] {
+            width: 18px; height: 18px; cursor: pointer;
+            accent-color: #22c55e;
+        }
+
+        /* Print styles */
+        @media print {
+            .feature-nav { display: none; }
+            .feature-section { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comprehensive UAT Checklist v2</h1>
+        <p class="subtitle">Baseline Measurement Rollout - Testing for ACOS Optimization & Sales Maximization</p>
+        <div class="version-info">
+            <strong>Version 2.0</strong> | Source: Jira PROD Tickets (15 Jan'26 Export) |
+            <strong>Focus:</strong> Logic verification from PRD specifications and Jira descriptions
+        </div>
+
+        <div class="progress-text">Overall Progress: <span id="progressCount">0</span> / <span id="totalCount">0</span> tests completed</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <nav class="feature-nav">
+            <a href="#bid-optimization">1. Bid Optimization</a>
+            <a href="#budget-optimization">2. Budget Optimization</a>
+            <a href="#pacing">3. Intelligent Pacing</a>
+            <a href="#negation">4. Automated Negation</a>
+            <a href="#harvesting">5. Automated Harvesting</a>
+            <a href="#isolation">6. High Performers Isolation</a>
+            <a href="#target-research">7. Target Product Research</a>
+            <a href="#keyword-research">8. Keyword Research</a>
+            <a href="#campaign-generation">9. Campaign Generation</a>
+            <a href="#product-config">10. Product Level Config</a>
+            <a href="#campaign-config">11. Campaign Level Config</a>
+            <a href="#competitor-research">12. Competitor Research</a>
+            <a href="#logging">13. Centralized Logging</a>
+            <a href="#reporting">14. Reporting</a>
+            <a href="#apdc">15. APDC</a>
+        </nav>
+
+        <!-- ==================== 1. BID OPTIMIZATION ==================== -->
+        <section id="bid-optimization" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">1. Automated Bid Optimization</div>
+                <div class="feature-desc">Core bid calculation, CVR/CTR waterfall models, and targeting-specific logic</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box formula">
+                    <h4>Core Bid Formula</h4>
+                    <code>Bid = Target_ACOS x CVR x Price (AOV)</code>
+                </div>
+
+                <div class="logic-box">
+                    <h4>CVR Waterfall - By Targeting Type</h4>
+                    <table>
+                        <tr><th>Targeting Type</th><th>CVR Source</th></tr>
+                        <tr><td>Keyword - Exact</td><td>Bid optimization CVR for Exact match</td></tr>
+                        <tr><td>Keyword - Phrase</td><td>Bid optimization CVR for Phrase match</td></tr>
+                        <tr><td>Keyword - Broad</td><td>Bid optimization CVR for Broad match</td></tr>
+                        <tr><td>Auto</td><td>Bid optimization CVR for Auto campaigns</td></tr>
+                        <tr><td>Product Targeting</td><td>Bid optimization CVR for Product targeting</td></tr>
+                    </table>
+                    <br>
+                    <strong>Fallback Hierarchy:</strong><br>
+                    1. Targeting-type-level CVR from bid optimization<br>
+                    2. Account-level average CVR (if targeting type has no data)<br>
+                    3. System default CVR (5%) as last resort
+                </div>
+
+                <div class="logic-box">
+                    <h4>CTR Waterfall - Manual Exact Match (Path 1A)</h4>
+                    <table>
+                        <tr><th>Level</th><th>Aggregation</th><th>Confidence</th></tr>
+                        <tr><td>1</td><td>ASIN + Search Term</td><td>1.0</td></tr>
+                        <tr><td>2</td><td>ASIN + Tag (impression-weighted avg)</td><td>0.8</td></tr>
+                        <tr><td>3</td><td>ASIN</td><td>0.6</td></tr>
+                        <tr><td>4</td><td>Default (Exact)</td><td>0.2</td></tr>
+                    </table>
+                </div>
+
+                <div class="logic-box">
+                    <h4>CTR Waterfall - Manual Broad/Phrase (Path 1B)</h4>
+                    <table>
+                        <tr><th>Level</th><th>Aggregation</th><th>Confidence</th></tr>
+                        <tr><td>1</td><td>ASIN + Keyword + Match Type</td><td>1.0</td></tr>
+                        <tr><td>2</td><td>ASIN + Tag + Match Type</td><td>0.8</td></tr>
+                        <tr><td>3</td><td>ASIN + Match Type</td><td>0.6</td></tr>
+                        <tr><td>4</td><td>ASIN</td><td>0.5</td></tr>
+                        <tr><td>5</td><td>Default (Broad/Phrase)</td><td>0.2</td></tr>
+                    </table>
+                </div>
+
+                <div class="logic-box">
+                    <h4>CTR Waterfall - Auto Targeting (Path 2)</h4>
+                    <table>
+                        <tr><th>Level</th><th>Aggregation</th><th>Confidence</th></tr>
+                        <tr><td>1</td><td>ASIN + Auto Match Type</td><td>1.0</td></tr>
+                        <tr><td>2</td><td>ASIN</td><td>0.6</td></tr>
+                        <tr><td>3</td><td>Default (Auto)</td><td>0.2</td></tr>
+                    </table>
+                    <em>Auto Match Types: Close Match, Loose Match, Substitute, Complement</em>
+                </div>
+
+                <div class="logic-box">
+                    <h4>CTR Waterfall - ASIN Targeting (Path 3)</h4>
+                    <table>
+                        <tr><th>Level</th><th>Aggregation</th><th>Confidence</th></tr>
+                        <tr><td>1</td><td>ASIN + Target ASIN</td><td>1.0</td></tr>
+                        <tr><td>2</td><td>ASIN + Campaign ASINs (impression-weighted)</td><td>0.7</td></tr>
+                        <tr><td>3</td><td>ASIN</td><td>0.5</td></tr>
+                        <tr><td>4</td><td>Default (ASIN Targeting)</td><td>0.2</td></tr>
+                    </table>
+                </div>
+
+                <div class="logic-box criteria">
+                    <h4>Data Threshold for CTR/CVR</h4>
+                    <code>(Impressions >= 50 AND Clicks >= 1) OR (Impressions > 100)</code><br><br>
+                    <strong>Time Window Cascade:</strong> 3d -> 7d -> 15d -> 30d -> 60d -> 90d -> 180d<br>
+                    <strong>Strong Threshold:</strong> >= 5 clicks for 3-180 days<br>
+                    <strong>Weak Fallback:</strong> >= 1 click (180 days only)<br>
+                    <strong>CTR Ceiling:</strong> 10% (0.10) cap
+                </div>
+
+                <div class="logic-box">
+                    <h4>Default CTR Values</h4>
+                    <table>
+                        <tr><th>Targeting Type</th><th>Match Type</th><th>Default CTR</th></tr>
+                        <tr><td>Manual</td><td>Exact</td><td>0.4%</td></tr>
+                        <tr><td>Manual</td><td>Phrase</td><td>0.3%</td></tr>
+                        <tr><td>Manual</td><td>Broad</td><td>0.2%</td></tr>
+                        <tr><td>Auto</td><td>Close Match</td><td>0.3%</td></tr>
+                        <tr><td>Auto</td><td>Loose Match</td><td>0.2%</td></tr>
+                        <tr><td>Auto</td><td>Substitute</td><td>0.2%</td></tr>
+                        <tr><td>Auto</td><td>Complement</td><td>0.15%</td></tr>
+                        <tr><td>ASIN Targeting</td><td>-</td><td>0.2%</td></tr>
+                    </table>
+                </div>
+
+                <!-- Performance Tests -->
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon perf">P</span>
+                        Performance Tests (ACOS & Sales Impact)
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-P01</span></div>
+                            <div class="tags">
+                                <span class="tag acos">ACOS</span>
+                                <span class="tag critical">Critical</span>
+                            </div>
+                        </div>
+                        <div class="test-title">High ACOS Detection - Bid Reduction</div>
+                        <div class="test-objective">Verify system reduces bid when ACOS exceeds target by >10%</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find keyword with ACOS > Target_ACOS + 10%</li>
+                                <li>Calculate expected bid: Target_ACOS x CVR x Price</li>
+                                <li>Check Bid Strategy Logs for current bid vs calculated</li>
+                                <li>Wait for bid optimization cycle</li>
+                                <li>Verify bid decreased by 10-20%</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Bid reduced by 10-20%. New ACOS trending toward target. Bid Strategy Logs show reduction reason.
+                        </div>
+                        <div class="metrics-impact">
+                            <div class="metric positive">ACOS Impact: <span>Decrease</span></div>
+                            <div class="metric">Sales Impact: <span>May decrease short-term</span></div>
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-P02</span></div>
+                            <div class="tags">
+                                <span class="tag sales">Sales</span>
+                                <span class="tag critical">Critical</span>
+                            </div>
+                        </div>
+                        <div class="test-title">Low ACOS Opportunity - Bid Increase</div>
+                        <div class="test-objective">Verify system increases bid when ACOS is significantly below target (missed sales opportunity)</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find keyword with ACOS < Target_ACOS - 15%</li>
+                                <li>Calculate optimal bid: Target_ACOS x CVR x Price</li>
+                                <li>Verify current bid is below optimal</li>
+                                <li>Wait for optimization cycle</li>
+                                <li>Verify bid increased toward optimal</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Bid increased. Impression share should improve. Sales increase while ACOS stays within target range.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-P03</span></div>
+                            <div class="tags">
+                                <span class="tag acos">ACOS</span>
+                                <span class="tag sales">Sales</span>
+                            </div>
+                        </div>
+                        <div class="test-title">Zero Sales Handling - ACOS = 9999</div>
+                        <div class="test-objective">Verify system sets ACOS = 9999 when Ad_Sales = 0 AND Ad_Spend > 0</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find keyword with Ad_Sales = 0 and Ad_Spend > 0</li>
+                                <li>Verify system calculates ACOS = 9999 (not infinity/error)</li>
+                                <li>Verify keyword fails ACOS qualification automatically</li>
+                                <li>Verify bid is decreased or keyword is flagged</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ACOS displayed as 9999 or flagged. Keyword fails any Target_ACOS comparison. Bid adjusted downward.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Functional Tests -->
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests (Logic Verification)
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">CVR Waterfall Level Selection - Manual Exact</div>
+                        <div class="test-objective">Verify CVR waterfall selects correct level based on data availability</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Test Level 1: Find keyword with sufficient ASIN+ST data -> Verify L1 used</li>
+                                <li>Test Level 2: Find keyword missing L1 data, has Tag data -> Verify L2 used</li>
+                                <li>Test Level 3: Find keyword with only ASIN-level data -> Verify L3 used</li>
+                                <li>Test Level 4: New keyword with no history -> Verify default used</li>
+                                <li>Verify confidence scores match each level</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Bid Strategy Logs show correct waterfall level. Confidence scores: L1=1.0, L2=0.8, L3=0.6, L4=0.2
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">CTR Time Window Cascade</div>
+                        <div class="test-objective">Verify CTR uses cascading time windows with correct thresholds</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find keyword with 3-day data meeting threshold (>=50 imp AND >=5 clicks OR >100 imp)</li>
+                                <li>Verify system uses 3-day CTR</li>
+                                <li>Find keyword where 3d fails but 7d meets threshold -> Verify 7d used</li>
+                                <li>Test 180-day weak fallback (>=1 click) scenario</li>
+                                <li>Test fallback to next waterfall level when no window meets threshold</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            System correctly cascades: 3d->7d->15d->30d->60d->90d->180d. Weak fallback only at 180d.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-F03</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">CTR Ceiling Cap - 10%</div>
+                        <div class="test-objective">Verify CTR estimates are capped at 10% to prevent outlier distortion</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find or create scenario with raw CTR > 10%</li>
+                                <li>Verify system caps CTR_estimate at 0.10</li>
+                                <li>Verify bid calculation uses capped value</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            CTR_estimate never exceeds 0.10. Bid calculations use capped value.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-F04</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Impression-Weighted Average CTR</div>
+                        <div class="test-objective">Verify CTR aggregation uses impression-weighted average, not simple average</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find tag with multiple keywords having different impressions</li>
+                                <li>Calculate expected: Sum(Clicks) / Sum(Impressions)</li>
+                                <li>Compare vs simple average: Avg(individual CTRs)</li>
+                                <li>Verify system uses impression-weighted formula</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Aggregated_CTR = Sum(Clicks_i) / Sum(Impressions_i). NOT simple average.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-F05</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">ASIN Targeting Bid Logic</div>
+                        <div class="test-objective">Verify ASIN Targeting uses dedicated bid logic (B12 in PRD)</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Create/find ASIN Targeting campaign</li>
+                                <li>Verify bid calculation uses ASIN Targeting specific CVR waterfall</li>
+                                <li>Verify CTR Path 3 is used (ASIN + Target ASIN)</li>
+                                <li>Check Bid Strategy Logs show ASIN Targeting path</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ASIN Targeting campaigns use dedicated bid logic, not Manual KW logic.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-F06</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Target ACOS Hierarchy</div>
+                        <div class="test-objective">Verify Target ACOS falls back correctly: ASIN-level -> Account-level -> System default (30%)</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Set ASIN-level Target ACOS -> Verify it's used</li>
+                                <li>Remove ASIN-level, set Account-level -> Verify fallback</li>
+                                <li>Remove both -> Verify system default (30%) is used</li>
+                                <li>Check bid calculations use correct Target ACOS</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Target ACOS source logged correctly. Fallback hierarchy: ASIN > Account > System Default (30%)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UI Tests -->
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Bid Strategy Logs - Search & Filter</div>
+                        <div class="test-objective">Verify all active, synced targets appear in Bid Strategy Logs</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to Bid Strategy Logs page</li>
+                                <li>Search by keyword/campaign name</li>
+                                <li>Cross-check with Keyword Config - verify target exists with bid value</li>
+                                <li>Verify all synced targets are queryable</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            All targets in KW Config appear in Bid Strategy Logs. No missing records.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BID-U02</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Bid Strategy Logs - Export Completeness</div>
+                        <div class="test-objective">Verify export contains complete result set matching UI display</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Apply filter showing 100+ records</li>
+                                <li>Export data</li>
+                                <li>Compare export row count with UI row count</li>
+                                <li>Verify all columns populated</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Export row count = UI display count. All data complete.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 2. BUDGET OPTIMIZATION ==================== -->
+        <section id="budget-optimization" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">2. Automated Budget Optimization</div>
+                <div class="feature-desc">Knapsack optimization, ACOS threshold filtering, budget allocation</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box formula">
+                    <h4>Budget Allocation Algorithm</h4>
+                    <pre>Available_Budget = Total_Budget - Reserved_Budget
+Reserved_Budget = Sum(daily_budget) for all LOCKED_ACTIVE campaigns
+
+Knapsack Optimization:
+- Input: Campaigns filtered by ACOS threshold
+- Objective: Maximize total projected sales within budget
+- Constraint: Total spend <= Available_Budget</pre>
+                </div>
+
+                <div class="logic-box criteria">
+                    <h4>ACOS Threshold Filter</h4>
+                    <pre>If ACOS_proj <= Target_ACOS:
+    Priority_Tier = "Favorable"
+Else:
+    Priority_Tier = "Unfavorable"
+    Sort by ACOS ascending (least-bad first)</pre>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Projection Formulas</h4>
+                    <pre>Impressions_proj = available_daily_impressions x IS_estimate
+Clicks_proj = Impressions_proj x CTR_estimate
+Spend_proj = Clicks_proj x Bid
+Sales_proj = Clicks_proj x CVR_estimate x ASIN_Price
+ACOS_proj = Spend_proj / Sales_proj (if Sales_proj > 0)</pre>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Risk-Adjusted Sales Calculation</h4>
+                    <pre>Keyword_Confidence = 0.5 x CVR_Confidence + 0.5 x CTR_Confidence
+Campaign_Confidence = Sales-weighted avg of keyword confidences
+Risk_Adjusted_Sales = Sales_proj x Campaign_Confidence</pre>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon perf">P</span>
+                        Performance Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BUD-P01</span></div>
+                            <div class="tags"><span class="tag sales">Sales</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">Knapsack Optimization - Sales Maximization</div>
+                        <div class="test-objective">Verify knapsack algorithm selects optimal campaign mix for maximum sales</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Set up ASIN with multiple campaigns, varying projected sales</li>
+                                <li>Set daily budget constraint</li>
+                                <li>Run budget optimization</li>
+                                <li>Verify selected campaigns maximize projected sales within budget</li>
+                                <li>Verify favorable campaigns prioritized over unfavorable</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Selected campaign mix maximizes projected sales. Favorable tier campaigns selected first.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BUD-P02</span></div>
+                            <div class="tags"><span class="tag acos">ACOS</span></div>
+                        </div>
+                        <div class="test-title">ACOS Threshold Filter - Tier Assignment</div>
+                        <div class="test-objective">Verify campaigns are correctly assigned to Favorable/Unfavorable tiers</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Create campaigns with ACOS_proj < Target_ACOS</li>
+                                <li>Create campaigns with ACOS_proj > Target_ACOS</li>
+                                <li>Run ACOS threshold filter</li>
+                                <li>Verify tier assignment is correct</li>
+                                <li>Verify unfavorable campaigns sorted by ACOS ascending</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ACOS_proj <= Target: Favorable. ACOS_proj > Target: Unfavorable, sorted by ACOS.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BUD-P03</span></div>
+                            <div class="tags"><span class="tag sales">Sales</span></div>
+                        </div>
+                        <div class="test-title">Risk-Adjusted Sales - Confidence Weighting</div>
+                        <div class="test-objective">Verify risk-adjusted sales calculation uses confidence scores correctly</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find campaign A: $1000 sales, 0.5 confidence</li>
+                                <li>Find campaign B: $800 sales, 0.7 confidence</li>
+                                <li>Calculate: A = $500, B = $560 risk-adjusted</li>
+                                <li>Verify optimizer prioritizes B over A (higher risk-adjusted)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Campaign B (higher confidence) prioritized despite lower raw sales projection.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BUD-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Budget Reservation - LOCKED_ACTIVE</div>
+                        <div class="test-objective">Verify LOCKED_ACTIVE campaigns reserve their daily_budget</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Lock a campaign as ACTIVE with $100 daily budget</li>
+                                <li>Set total budget = $500</li>
+                                <li>Verify Available_Budget = $400</li>
+                                <li>Verify optimizer only allocates $400</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Reserved_Budget = $100. Available_Budget = $400. Optimizer respects constraint.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BUD-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Projection Pipeline Chain</div>
+                        <div class="test-objective">Verify projection chain: IS -> Impressions -> CTR -> Clicks -> Spend -> CVR -> Sales</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Get IS_estimate for keyword</li>
+                                <li>Calculate Impressions_proj = available_daily_impressions x IS_estimate</li>
+                                <li>Get CTR_estimate, calculate Clicks_proj</li>
+                                <li>Calculate Spend_proj = Clicks x Bid</li>
+                                <li>Get CVR_estimate, calculate Sales_proj = Clicks x CVR x Price</li>
+                                <li>Verify ACOS_proj = Spend / Sales</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            All formulas calculate correctly. Chain of estimates produces valid projections.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">BUD-F03</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Edge Case - CVR = 0</div>
+                        <div class="test-objective">Verify handling when CVR_estimate = 0</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Create scenario with CVR_estimate = 0</li>
+                                <li>Verify Sales_proj = 0</li>
+                                <li>Verify ACOS_proj = null (not error/infinity)</li>
+                                <li>Verify campaign is excluded from optimization or handled gracefully</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            CVR=0 -> Sales=0, ACOS=null. No division by zero errors.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 3. INTELLIGENT PACING ==================== -->
+        <section id="pacing" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">3. Intelligent Pacing Automation</div>
+                <div class="feature-desc">Campaign activation/deactivation, pacing states, manual overrides</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box">
+                    <h4>Pacing States</h4>
+                    <table>
+                        <tr><th>State</th><th>How Set</th><th>Budget Impact</th><th>Optimization</th></tr>
+                        <tr><td>AUTO_ACTIVE</td><td>System activated</td><td>Consumes from Available</td><td>Included</td></tr>
+                        <tr><td>AUTO_PAUSED</td><td>System paused</td><td>No budget impact</td><td>Excluded (re-evaluates)</td></tr>
+                        <tr><td>LOCKED_ACTIVE</td><td>User enabled manually</td><td>Reserves daily_budget</td><td>Excluded</td></tr>
+                        <tr><td>LOCKED_PAUSED</td><td>User disabled manually</td><td>No budget impact</td><td>Excluded</td></tr>
+                    </table>
+                </div>
+
+                <div class="logic-box criteria">
+                    <h4>Manual Override Logic</h4>
+                    <pre>If user manually enables campaign:
+    campaign.pacing_state = LOCKED_ACTIVE
+
+If user manually disables campaign:
+    campaign.pacing_state = LOCKED_PAUSED
+
+If user clicks "Return to Auto-Pacing":
+    campaign.pacing_state = AUTO_MANAGED
+    campaign.last_override_at = now</pre>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PAC-F01</span></div>
+                            <div class="tags"><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">Pacing State Transitions</div>
+                        <div class="test-objective">Verify all pacing state transitions work correctly</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Enable auto-pacing -> Verify campaigns get AUTO_ACTIVE/AUTO_PAUSED</li>
+                                <li>Manually enable paused campaign -> Verify LOCKED_ACTIVE</li>
+                                <li>Manually disable active campaign -> Verify LOCKED_PAUSED</li>
+                                <li>Click "Return to Auto-Pacing" -> Verify returns to AUTO_MANAGED</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            All state transitions work. States persist across optimization runs.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PAC-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Budget Reservation - Locked Campaigns</div>
+                        <div class="test-objective">Verify LOCKED_ACTIVE reserves budget, LOCKED_PAUSED doesn't</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Set total budget = $1000</li>
+                                <li>Lock campaign A ACTIVE with $200 budget</li>
+                                <li>Lock campaign B PAUSED with $300 budget</li>
+                                <li>Verify Reserved = $200 (only A)</li>
+                                <li>Verify Available = $800</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            LOCKED_ACTIVE reserves. LOCKED_PAUSED doesn't. Available correctly calculated.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PAC-F03</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Over-Allocation Warning</div>
+                        <div class="test-objective">Verify system warns when Reserved > Total budget</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Set total budget = $500</li>
+                                <li>Lock campaigns with combined $600 budget</li>
+                                <li>Verify warning shown to user</li>
+                                <li>Verify system proceeds with negative available (or blocks)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Warning displayed. System handles over-allocation gracefully.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PAC-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Auto-Pacing Toggle on ASIN Config</div>
+                        <div class="test-objective">Verify auto-pacing toggle and "Manage Pacing" link work</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to ASIN config page</li>
+                                <li>Verify auto-pacing toggle is visible</li>
+                                <li>Toggle OFF -> ON: Verify confirmation dialog, triggers pacing run</li>
+                                <li>Click "Manage Pacing" -> Verify navigates to /asin/{id}/pacing</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Toggle works. Confirmation shown. Pacing page accessible.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PAC-U02</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Pacing Management Page</div>
+                        <div class="test-objective">Verify detailed pacing page shows all elements</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to /asin/{id}/pacing</li>
+                                <li>Verify budget summary (Total, Reserved, Available, Allocated)</li>
+                                <li>Verify campaign list with status colors</li>
+                                <li>Verify "Run Now" button triggers immediate pacing</li>
+                                <li>Verify lock/unlock actions work</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            All UI elements present. Actions work correctly. Status updates in real-time.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 4. AUTOMATED NEGATION ==================== -->
+        <section id="negation" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">4. Automated Negation</div>
+                <div class="feature-desc">Automatic negative keyword/ASIN addition based on performance criteria</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box warning">
+                    <h4>Negation Criteria (from Google Sheet B4)</h4>
+                    <p>System continuously monitors target ASIN performance. If any Target ASIN meets the specified criteria, automatically add it as a negative in:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Auto Campaign >> Substitute match type</li>
+                        <li>Auto Campaign >> Complement match type</li>
+                    </ul>
+                    <br>
+                    <strong>Trigger Frequency:</strong> Every 3 hours (ongoing)
+                </div>
+
+                <div class="logic-box criteria">
+                    <h4>Zero-Conversion Negation</h4>
+                    <pre>If Ad_Sales = 0 AND Ad_Spend > 0:
+    ACOS = 9999 (fails all ACOS checks)
+    -> Candidate for negation</pre>
+                </div>
+
+                <div class="logic-box criteria">
+                    <h4>High-ACOS Negation</h4>
+                    <pre>If ACOS significantly > Target_ACOS (based on spend threshold):
+    -> Candidate for negation</pre>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon perf">P</span>
+                        Performance Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">NEG-P01</span></div>
+                            <div class="tags"><span class="tag acos">ACOS</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">Zero-Conversion Search Term Negation</div>
+                        <div class="test-objective">Verify search terms with zero conversions are negated to stop wasted spend</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find search term with Ad_Spend > 0 AND Ad_Sales = 0</li>
+                                <li>Verify ACOS calculated as 9999</li>
+                                <li>Wait for negation cycle (3 hours or trigger manually)</li>
+                                <li>Verify search term added as negative</li>
+                                <li>Verify added to correct match types (Substitute/Complement)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Zero-conversion search term negated. Wasted spend stops. System Remarks updated.
+                        </div>
+                        <div class="metrics-impact">
+                            <div class="metric positive">ACOS Impact: <span>Decrease (removes waste)</span></div>
+                            <div class="metric positive">Spend Efficiency: <span>Improve</span></div>
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">NEG-P02</span></div>
+                            <div class="tags"><span class="tag acos">ACOS</span></div>
+                        </div>
+                        <div class="test-title">High-ACOS Search Term Negation</div>
+                        <div class="test-objective">Verify search terms with ACOS significantly above target are negated</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find search term with ACOS >> Target_ACOS</li>
+                                <li>Verify it meets negation criteria threshold</li>
+                                <li>Wait for negation cycle</li>
+                                <li>Verify search term negated</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            High-ACOS search terms negated. Overall campaign ACOS improves.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">NEG-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Negation Trigger Frequency</div>
+                        <div class="test-objective">Verify negation runs every 3 hours</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Note last negation run time</li>
+                                <li>Wait 3 hours</li>
+                                <li>Verify new negation run occurred</li>
+                                <li>Check logs for negation activity</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Negation runs every 3 hours. Logs show activity.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">NEG-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">ASIN Targeting Negation to Auto Campaign</div>
+                        <div class="test-objective">Verify negated ASINs added to correct Auto Campaign match types</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find ASIN target meeting negation criteria</li>
+                                <li>Verify negation adds to Auto Campaign >> Substitute</li>
+                                <li>Verify negation adds to Auto Campaign >> Complement</li>
+                                <li>Verify NOT added to other match types</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Negatives added to Substitute AND Complement only.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">NEG-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">System Remarks Update on Negation</div>
+                        <div class="test-objective">Verify Search Term Config UI shows negation status</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to Search Term Config UI</li>
+                                <li>Find negated search term</li>
+                                <li>Verify "System Remarks" column shows negation status</li>
+                                <li>Verify negation reason/date displayed</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Negated terms clearly marked. Reason visible.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 5. AUTOMATED HARVESTING ==================== -->
+        <section id="harvesting" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">5. Automated Harvesting</div>
+                <div class="feature-desc">Identifying high-performing search terms for promotion</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box formula">
+                    <h4>Harvesting Qualification Formula</h4>
+                    <code>MAX(ACoS_7d, ACoS_15d, ACoS_30d, ACoS_90d) <= Target_ACoS</code><br>
+                    <code>AND</code><br>
+                    <code>Lifetime_Ad_Spend(ASIN + Search_Term) >= ASIN's Price</code>
+                </div>
+
+                <div class="logic-box criteria">
+                    <h4>Zero-Sales Handling</h4>
+                    <pre>If Ad_Sales = 0 AND Ad_Spend > 0:
+    Set ACoS = 9999 BEFORE applying qualification rule
+    -> Search term automatically fails ACoS check</pre>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Target ACoS Determination</h4>
+                    1. Use ASIN-level Target ACoS if available<br>
+                    2. If not available, use global Target ACoS
+                </div>
+
+                <div class="logic-box">
+                    <h4>Trigger Frequency</h4>
+                    Run this evaluation every 24 hours
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon perf">P</span>
+                        Performance Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-P01</span></div>
+                            <div class="tags"><span class="tag sales">Sales</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">High-Performer Identification</div>
+                        <div class="test-objective">Verify search terms meeting criteria are marked for harvesting</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find search term where MAX(ACoS_7d, ACoS_15d, ACoS_30d, ACoS_90d) <= Target_ACoS</li>
+                                <li>Verify Lifetime_Ad_Spend >= ASIN's Price</li>
+                                <li>Wait for harvesting cycle (24 hours or trigger)</li>
+                                <li>Verify search term marked "Qualified for Harvesting"</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Qualifying search terms harvested. Leads to campaign creation/expansion.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-P02</span></div>
+                            <div class="tags"><span class="tag acos">ACOS</span></div>
+                        </div>
+                        <div class="test-title">Multi-Window ACOS Check</div>
+                        <div class="test-objective">Verify system uses MAX across all time windows</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Create search term with: ACoS_7d=20%, ACoS_15d=35%, ACoS_30d=25%, ACoS_90d=22%</li>
+                                <li>Set Target_ACoS = 30%</li>
+                                <li>Verify MAX = 35% (from 15d)</li>
+                                <li>Verify search term FAILS (35% > 30%)</li>
+                                <li>Repeat with all values < Target -> Verify PASSES</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            System uses MAX of all windows. Single high window causes failure.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Spend Threshold Check</div>
+                        <div class="test-objective">Verify Lifetime_Ad_Spend >= ASIN's Price requirement</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>ASIN Price = $50, Lifetime_Spend = $40 -> Verify FAILS</li>
+                                <li>ASIN Price = $50, Lifetime_Spend = $50 -> Verify PASSES</li>
+                                <li>ASIN Price = $50, Lifetime_Spend = $100 -> Verify PASSES</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Spend threshold correctly enforced. Insufficient spend = not harvested.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">ASIN-Based Search Term Harvesting</div>
+                        <div class="test-objective">Verify search terms that are ASINs are handled correctly</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find search term that is a 10-digit ASIN (e.g., B00145JHXY)</li>
+                                <li>Verify harvesting logic treats it as ASIN-based search term</li>
+                                <li>Verify it can trigger ASIN Targeting campaign creation</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ASIN-based search terms harvested. Triggers appropriate campaign type.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-F03</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Zero-Sales Pre-Filter</div>
+                        <div class="test-objective">Verify zero-sales terms are excluded via ACOS=9999</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Create search term with Ad_Sales=0, Ad_Spend > ASIN Price</li>
+                                <li>Verify system sets ACOS = 9999</li>
+                                <li>Verify 9999 > Target_ACoS (always true)</li>
+                                <li>Verify search term NOT harvested</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Zero-sales terms never harvested despite meeting spend threshold.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Search Term Config - Harvested Status</div>
+                        <div class="test-objective">Verify harvested search terms are marked in UI</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to Search Term Config UI</li>
+                                <li>Find harvested search term</li>
+                                <li>Verify "System Remarks" shows "Harvested" status</li>
+                                <li>Verify destination campaign/action shown</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Harvested terms clearly marked. Action taken is visible.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">HAR-U02</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Keyword Config - Harvested Source</div>
+                        <div class="test-objective">Verify KW Config shows harvested keyword origin</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to KW Config UI</li>
+                                <li>Find keyword created from harvested search term</li>
+                                <li>Verify "System Remarks" shows "Harvested from: [source]"</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Harvested keywords show source campaign/search term.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 6. HIGH PERFORMERS ISOLATION ==================== -->
+        <section id="isolation" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">6. High Performers Isolation</div>
+                <div class="feature-desc">Isolating top-performing search terms into dedicated campaigns</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box formula">
+                    <h4>Isolation Qualification Formula</h4>
+                    <code>Same as Harvesting:</code><br>
+                    <code>MAX(ACoS_7d, ACoS_15d, ACoS_30d, ACoS_90d) <= Target_ACoS</code><br>
+                    <code>AND</code><br>
+                    <code>Lifetime_Ad_Spend(ASIN + Search_Term) >= ASIN's Price</code>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Isolation Types</h4>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Manual Keyword Targeting:</strong> For search terms that are keywords/phrases</li>
+                        <li><strong>ASIN Targeting:</strong> For search terms that are 10-digit ASINs</li>
+                    </ul>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon perf">P</span>
+                        Performance Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">ISO-P01</span></div>
+                            <div class="tags"><span class="tag sales">Sales</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">Keyword Isolation Campaign Creation</div>
+                        <div class="test-objective">Verify high-performing keywords get isolated into dedicated campaigns</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find keyword search term meeting isolation criteria</li>
+                                <li>Wait for isolation process</li>
+                                <li>Verify new solo campaign created for keyword</li>
+                                <li>Verify campaign follows naming convention</li>
+                                <li>Verify keyword is now in isolated campaign</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Keyword isolated into dedicated campaign. Original campaign updated.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">ISO-P02</span></div>
+                            <div class="tags"><span class="tag sales">Sales</span></div>
+                        </div>
+                        <div class="test-title">ASIN-Based Isolation</div>
+                        <div class="test-objective">Verify ASIN search terms get isolated into ASIN Targeting campaigns</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Find search term that is a 10-digit ASIN meeting criteria</li>
+                                <li>Wait for isolation process</li>
+                                <li>Verify ASIN Targeting campaign created/updated</li>
+                                <li>Verify Target ASIN added correctly</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ASIN search terms isolated into ASIN Targeting campaigns.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">ISO-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Isolation vs Harvesting Distinction</div>
+                        <div class="test-objective">Verify system correctly distinguishes isolation from harvesting</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Harvesting: Search term from Auto -> Manual campaign</li>
+                                <li>Isolation: High-performer from any campaign -> Solo campaign</li>
+                                <li>Verify correct action taken based on source/criteria</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Harvesting and Isolation actions are distinct. Both work correctly.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 7. TARGET PRODUCT RESEARCH ==================== -->
+        <section id="target-research" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">7. Automated Target Product Research</div>
+                <div class="feature-desc">ASIN discovery, qualification, and brand grouping for ASIN Targeting</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box formula">
+                    <h4>ASIN Qualification Logic - Level 1 (Qualified)</h4>
+                    <pre>IF (Our.PricePerUOM <= Competitor.PricePerUOM)
+AND (Our.Rating > 4
+     OR (Our.Rating > Competitor.Rating - 0.5
+         AND FirstDigit(Our.Rating) == FirstDigit(Competitor.Rating)))
+AND ((Our.Reviews < 1000 AND Competitor.Reviews > 1000 AND Our.Reviews >= 0.1 * Competitor.Reviews)
+     OR (Our.Reviews < 1000 AND Competitor.Reviews < 1000)
+     OR (Our.Reviews > 1000))
+THEN Qualification_Level = "Qualified_Level1"</pre>
+                </div>
+
+                <div class="logic-box formula">
+                    <h4>ASIN Qualification Logic - Level 2 (Near-Qualified)</h4>
+                    <pre>ELSE IF (Our.PricePerUOM <= 1.1 * Competitor.PricePerUOM)
+AND (Our.Rating >= 4 OR Our.Rating >= Competitor.Rating - 0.3)
+AND ((Our.Reviews > 100 AND Our.Reviews >= 0.1 * Competitor.Reviews)
+     OR Our.Reviews < 100)
+THEN Qualification_Level = "Qualified_Level2"</pre>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Data Points Collected</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Price: Buy Box Price -> FBA Price -> FBM Price</li>
+                        <li>Rating: Average customer rating</li>
+                        <li>Review Count: Total reviews</li>
+                        <li>Fulfillment Type: FBA or FBM</li>
+                        <li>Brand Name</li>
+                    </ul>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Brand Grouping</h4>
+                    <pre>Group qualified ASINs by brand_name
+Each brand group = one ASIN Targeting campaign
+Store: brand_name, asin_list, asin_count, group_creation_date</pre>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">TPR-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span><span class="tag critical">Critical</span></div>
+                        </div>
+                        <div class="test-title">ASIN Qualification - Price Check</div>
+                        <div class="test-objective">Verify price comparison logic works correctly</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Our Price = $10, Competitor = $12 -> Should qualify (cheaper)</li>
+                                <li>Our Price = $10, Competitor = $10 -> Should qualify (equal)</li>
+                                <li>Our Price = $10, Competitor = $9 -> Should NOT qualify L1</li>
+                                <li>Our Price = $10, Competitor = $9.50 -> Check L2 (within 10%)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            L1: Our <= Competitor. L2: Our <= 1.1 * Competitor. Logic correctly applied.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">TPR-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">ASIN Qualification - Rating Check</div>
+                        <div class="test-objective">Verify rating comparison logic</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Our Rating = 4.2 -> Qualifies (>4)</li>
+                                <li>Our Rating = 3.8, Competitor = 4.0 -> Check 3.8 > 4.0-0.5=3.5 AND FirstDigit match</li>
+                                <li>Our Rating = 3.5, Competitor = 4.2 -> Fails (different first digit)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Rating logic handles >4 auto-pass. FirstDigit comparison works for edge cases.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">TPR-F03</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Brand Grouping</div>
+                        <div class="test-objective">Verify ASINs are correctly grouped by brand</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Qualify 50 ASINs spanning 10 brands</li>
+                                <li>Verify 10 brand groups created</li>
+                                <li>Verify each group contains correct ASINs</li>
+                                <li>Qualify new ASIN for existing brand -> Verify appended</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ASINs grouped by brand. New ASINs appended to existing groups.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">TPR-F04</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">SERP Extraction - First Page</div>
+                        <div class="test-objective">Verify system extracts ASINs from first SERP page (~45-50 ASINs)</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Trigger ASIN research for search term</li>
+                                <li>Verify scraper extracts first page ASINs</li>
+                                <li>Verify deduplication across search terms</li>
+                                <li>Verify all data points collected (price, rating, reviews, brand)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ~45-50 ASINs extracted per search term. Data complete. Duplicates removed.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 8. KEYWORD RESEARCH ==================== -->
+        <section id="keyword-research" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">8. Automated Keyword Research</div>
+                <div class="feature-desc">Keyword discovery, relevancy scoring, and filtering</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box formula">
+                    <h4>Relevancy Score Formula</h4>
+                    <pre>Combined_Score = [(0.40 x Semantic) + (0.35 x Tag) + (0.25 x JS)] x Match_Type_Modifier
+
+Match Type Modifiers:
+- Exact: 1.00
+- Phrase: 0.85
+- Broad: 0.70
+
+Tag-Based Decay: Base - (Tier - 1) x 0.02, floor 0.10
+JS Relevancy: Normalized to 0-1 scale (divide by 100)</pre>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Data Quality Threshold</h4>
+                    Keywords with 3+ null fields out of 13 -> Flag for review
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">KWR-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Relevancy Score Calculation</div>
+                        <div class="test-objective">Verify combined relevancy score calculation</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Get Semantic score (0-1)</li>
+                                <li>Get Tag-Based score with tier decay</li>
+                                <li>Get JS score (normalize /100)</li>
+                                <li>Calculate: (0.40*Semantic + 0.35*Tag + 0.25*JS) * Match_Modifier</li>
+                                <li>Verify final score matches expected</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Score calculated correctly. Weights applied. Match type modifier applied.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">KWR-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Relevancy Tag Validation</div>
+                        <div class="test-objective">Verify all relevancy tags are recognized</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Test existing tags work</li>
+                                <li>Test new tags: NBR1 to NBR30</li>
+                                <li>Test new tags: OBR1 to OBR20</li>
+                                <li>Test new tags: CBR1 to CBR20</li>
+                                <li>Verify bulk import accepts new tags</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            All 70 new tags recognized. Campaign creation triggers correctly.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 9. CAMPAIGN GENERATION ==================== -->
+        <section id="campaign-generation" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">9. Automated Campaign Generation</div>
+                <div class="feature-desc">Campaign creation, naming conventions, structure</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box">
+                    <h4>Campaign Naming Convention</h4>
+                    Tag is used as unique identifier. Campaign name derived from tag.<br>
+                    Example: Tag "NBR1" -> Campaign named "NBR1"<br>
+                    <em>If full name exceeds Amazon's character limit, truncate KW portion and append underscore</em>
+                </div>
+
+                <div class="logic-box">
+                    <h4>ASIN Targeting Campaign Config</h4>
+                    <table>
+                        <tr><th>Element</th><th>Value</th></tr>
+                        <tr><td>Targeting Type</td><td>Manual ASIN Targeting</td></tr>
+                        <tr><td>Placement Modifier</td><td>Skip (no modifiers)</td></tr>
+                        <tr><td>Bidding Strategy</td><td>Down Only</td></tr>
+                        <tr><td>Relevancy Tag</td><td>XXXXXX (hardcoded)</td></tr>
+                        <tr><td>Match Type</td><td>"-" (not applicable)</td></tr>
+                    </table>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">CAM-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Campaign Creation Trigger</div>
+                        <div class="test-objective">Verify campaign created when keyword submitted with tag</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Submit keyword via bulk import with tag NBR1</li>
+                                <li>Verify campaign "NBR1" created on Amazon</li>
+                                <li>Verify keyword placed in correct campaign</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Campaign created. Keyword placed correctly. Synced to Amazon.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">CAM-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">ASIN Targeting Campaign Creation</div>
+                        <div class="test-objective">Verify ASIN Targeting campaign created from brand group</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Create new brand group with qualified ASINs</li>
+                                <li>Verify ASIN Targeting campaign created</li>
+                                <li>Verify Target ASINs added</li>
+                                <li>Verify Bidding Strategy = Down Only</li>
+                                <li>Verify Relevancy Tag = XXXXXX</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Campaign created per brand group. Config matches specification.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 10. PRODUCT LEVEL CONFIG ==================== -->
+        <section id="product-config" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">10. Product Level Configuration</div>
+                <div class="feature-desc">ASIN-level settings and validations</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box criteria">
+                    <h4>Validation Rules</h4>
+                    <pre>Target ACOS Range:
+- Must be between 1% and 100%
+- Exception: Can be blank
+- Error: "Target ACOS must be between 1% and 100% unless left blank."
+
+Daily Budget Minimum:
+- Must be >= $5
+- Exception: Can be blank (Auto Budget applies)
+- Error: "Daily Budget must be at least $5 unless left blank for Auto Budget."</pre>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PCF-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Target ACOS Validation - UI</div>
+                        <div class="test-objective">Verify Target ACOS validation in UI</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Enter 0% -> Verify error</li>
+                                <li>Enter 101% -> Verify error</li>
+                                <li>Enter 50% -> Verify accepted</li>
+                                <li>Leave blank -> Verify accepted</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Invalid values blocked. Valid values and blank accepted.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">PCF-F02</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">Daily Budget Validation - Bulk Import</div>
+                        <div class="test-objective">Verify Daily Budget validation in bulk import</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Import with $3 budget -> Verify error</li>
+                                <li>Import with $5 budget -> Verify accepted</li>
+                                <li>Import with blank budget -> Verify accepted (Auto Budget)</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            <$5 blocked. >=$5 accepted. Blank = Auto Budget applies.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 11. CAMPAIGN LEVEL CONFIG ==================== -->
+        <section id="campaign-config" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">11. Campaign Level Configuration</div>
+                <div class="feature-desc">Campaign settings, bulk import/export</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box">
+                    <h4>Editable Fields</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Target ACOS</li>
+                        <li>Status</li>
+                        <li>Daily Budget</li>
+                    </ul>
+                </div>
+
+                <div class="logic-box">
+                    <h4>Non-Editable Fields (ASIN Targeting)</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Custom Negative Keywords - N/A</li>
+                        <li>Match Type - Always "-"</li>
+                        <li>Relevancy Tag - Always "XXXXXX"</li>
+                    </ul>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">CCF-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Campaign Config UI - ASIN Targeting Display</div>
+                        <div class="test-objective">Verify ASIN Targeting campaigns display correctly</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to Campaign Config UI</li>
+                                <li>Find ASIN Targeting campaign</li>
+                                <li>Verify Relevancy Tag = "XXXXXX"</li>
+                                <li>Verify Match Type = "-"</li>
+                                <li>Verify Custom Negative KW is disabled/greyed</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            ASIN Targeting campaigns display with correct field values/states.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">CCF-U02</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Cross-Navigation Links</div>
+                        <div class="test-objective">Verify clickable links auto-apply filters</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>In Campaign Config, click Campaign Name link</li>
+                                <li>Verify redirect to KW Config with filter applied</li>
+                                <li>Verify only keywords for that campaign shown</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Click navigates to related UI. Filters auto-applied.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 12. COMPETITOR RESEARCH ==================== -->
+        <section id="competitor-research" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">12. Automated Competitor Research</div>
+                <div class="feature-desc">SERP scraping, competitor data collection</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box">
+                    <h4>SERP Scraping Output</h4>
+                    <table>
+                        <tr><th>Field</th><th>Description</th></tr>
+                        <tr><td>Search_Term</td><td>The term used for scraping</td></tr>
+                        <tr><td>ASIN</td><td>Competitor ASIN</td></tr>
+                        <tr><td>Title</td><td>Product title</td></tr>
+                        <tr><td>URL</td><td>Product page URL</td></tr>
+                        <tr><td>Sponsored</td><td>Is it a sponsored listing?</td></tr>
+                        <tr><td>Position</td><td>Position on SERP (1-50)</td></tr>
+                        <tr><td>Timestamp</td><td>When scraped</td></tr>
+                    </table>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Functional Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">CPR-F01</span></div>
+                            <div class="tags"><span class="tag logic">Logic</span></div>
+                        </div>
+                        <div class="test-title">SERP Scraping - First Page</div>
+                        <div class="test-objective">Verify first page SERP extraction</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Trigger scrape for search term</li>
+                                <li>Verify 45-50 ASINs extracted</li>
+                                <li>Verify all data points populated</li>
+                                <li>Verify Position indexes are 1-50</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            First page ASINs extracted. Data complete.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 13. CENTRALIZED LOGGING ==================== -->
+        <section id="logging" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">13. Centralized Logging System</div>
+                <div class="feature-desc">Bid Strategy Logs, audit trails</div>
+            </div>
+            <div class="feature-body">
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">LOG-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Bid Strategy Logs - Pagination</div>
+                        <div class="test-objective">Verify items per page selector works</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to Bid Strategy Logs</li>
+                                <li>Change items per page: 10, 20, 50, 100, 200</li>
+                                <li>Verify table displays correct number of rows</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Pagination works. Row count matches selection.
+                        </div>
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">LOG-U02</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Complete Data Visibility</div>
+                        <div class="test-objective">Verify all synced targets appear in logs</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Get list of all active targets from KW Config</li>
+                                <li>Search each in Bid Strategy Logs</li>
+                                <li>Verify no missing targets</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            All active, synced targets queryable in logs.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 14. REPORTING ==================== -->
+        <section id="reporting" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">14. Reporting</div>
+                <div class="feature-desc">Dashboards, metrics, exports</div>
+            </div>
+            <div class="feature-body">
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon ui">U</span>
+                        UI/UX Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">RPT-U01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">Dashboard Metrics Accuracy</div>
+                        <div class="test-objective">Verify dashboard shows correct metrics</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Compare dashboard ACOS with calculated ACOS</li>
+                                <li>Compare dashboard Ad Sales with Amazon reports</li>
+                                <li>Compare dashboard Ad Spend with Amazon reports</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            Metrics match source data. No discrepancies.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 15. APDC ==================== -->
+        <section id="apdc" class="feature-section">
+            <div class="feature-header">
+                <div class="feature-title">15. APDC (Advertising Performance Diagnostic Center)</div>
+                <div class="feature-desc">Performance diagnostics, issue tracking, RCA</div>
+            </div>
+            <div class="feature-body">
+                <div class="logic-box">
+                    <h4>Placeholder - Phase 2+</h4>
+                    <p>APDC features are planned for future phases including:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Historical Baseline & Issue Tracking</li>
+                        <li>Data Ingestion Pipeline</li>
+                        <li>Issue Attribution Engine</li>
+                        <li>Fishbone Diagram & RCA Workflow</li>
+                        <li>Immediate Fix Controls</li>
+                        <li>Executive Summary Dashboard</li>
+                    </ul>
+                </div>
+
+                <div class="test-category">
+                    <div class="category-title">
+                        <span class="icon func">F</span>
+                        Placeholder Tests
+                    </div>
+
+                    <div class="test-case">
+                        <div class="test-header">
+                            <div><input type="checkbox" class="test-checkbox"> <span class="test-id">APD-F01</span></div>
+                            <div class="tags"><span class="tag ui">UI</span></div>
+                        </div>
+                        <div class="test-title">APDC Placeholder Page</div>
+                        <div class="test-objective">Verify APDC section exists (placeholder)</div>
+                        <div class="test-steps">
+                            <h5>Steps</h5>
+                            <ol>
+                                <li>Navigate to APDC section if available</li>
+                                <li>Verify placeholder or "Coming Soon" message</li>
+                            </ol>
+                        </div>
+                        <div class="expected-result">
+                            <strong>Pass Criteria:</strong>
+                            APDC section accessible or placeholder shown.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Progress tracking
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.test-checkbox');
+            const checked = document.querySelectorAll('.test-checkbox:checked').length;
+            const total = checkboxes.length;
+
+            document.getElementById('progressCount').textContent = checked;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('progressFill').style.width = (checked / total * 100) + '%';
+
+            // Save to localStorage
+            const state = {};
+            checkboxes.forEach((cb, i) => state[i] = cb.checked);
+            localStorage.setItem('uatProgress', JSON.stringify(state));
+        }
+
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('uatProgress');
+            if (saved) {
+                const state = JSON.parse(saved);
+                const checkboxes = document.querySelectorAll('.test-checkbox');
+                checkboxes.forEach((cb, i) => {
+                    if (state[i]) cb.checked = true;
+                });
+            }
+            updateProgress();
+        }
+
+        // Add event listeners
+        document.querySelectorAll('.test-checkbox').forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+
+        // Navigation highlighting
+        document.querySelectorAll('.feature-nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.feature-nav a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize
+        loadProgress();
+    </script>
+</body>
+</html>

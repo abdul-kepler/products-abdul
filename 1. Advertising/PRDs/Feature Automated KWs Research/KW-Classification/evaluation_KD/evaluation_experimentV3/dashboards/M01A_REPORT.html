@@ -1,0 +1,4050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M01A - Extract Brand Variations - Evaluation Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta { color: #888; font-size: 0.9rem; }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .card .value { font-size: 1.8rem; font-weight: bold; }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover { background: rgba(255,255,255,0.08); }
+        .rubric-title { font-weight: 600; }
+        .rubric-stats { display: flex; gap: 15px; align-items: center; }
+        .stat { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+        .stat.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .stat.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .rate { color: #00d9ff; }
+        .rubric-content { display: none; padding: 20px; }
+        .rubric-content.open { display: block; }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass { border-left-color: #00ff88; }
+        .eval-item.fail { border-left-color: #ff4757; }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id { font-family: monospace; color: #00d9ff; }
+        .verdict { font-weight: bold; padding: 2px 10px; border-radius: 4px; }
+        .verdict.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .verdict.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .output-box.expected h4 { color: #00ff88; }
+        .output-box.actual h4 { color: #00d9ff; }
+        .output-box pre {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .reasoning {
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+        }
+        a { color: #00d9ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>M01A - Extract Brand Variations</h1>
+            <p class="meta">
+                Source: m01a_judge_20260115_231458.json | Generated: 2026-01-15 23:14:58<br>
+                <a href="SUMMARY_DASHBOARD.html">&larr; Back to Summary</a>
+            </p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">80</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">48</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">32</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">60.0%</div>
+            </div>
+        </div>
+
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Variations Generated</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">18 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <span class="rate">90%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owalla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;OWALA&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owalla&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations of the brand name &#x27;Owala&#x27;, including different cases, spacing, and common forms, which meets the requirement of at least 3 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;JBL&#x27;, including different cases and formats, meeting the requirement of at least 3 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisily-&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisilyg&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;Cisily&#x27;, including case variations and common forms, totaling more than 3 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cemp&quot;,
+    &quot;Pioner Cmap&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneir Camp&quot;,
+    &quot;Pioneor Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pioner Cmp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 11 variations of the brand name &#x27;Pioneer Camp&#x27;, which exceeds the required minimum of 3 variations, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashos&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;Jikasho&#x27;, including case variations and common forms, with a total of 10 unique entries.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antrctic Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctc Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;Antarctic Star&#x27;, including case changes, spacing variations, and common misspellings, exceeding the requirement of at least 3 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains multiple variations of the brand name &#x27;REVLON&#x27;, including different cases and forms, meeting the requirement of at least 3 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;KitchenAid-&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;KitchenAid&#x27;, including different cases and forms, meeting the requirement of at least 3 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;WEBACOO&#x27;, including different cases and forms, with a total of 10 variations, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Trensformers&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transfomrs&quot;,
+    &quot;Tranzformers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Tranzformers&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;Transformers&#x27;, including different cases and common misspellings, totaling more than 3 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple brand variations, including at least 3 different forms, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple brand variations, including case changes, spacing variations, and common forms, with a total of 12 variations, which exceeds the required minimum of 3.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rx Crshh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;Rx Crush&#x27;, including different cases, spacing, and common forms, with a total of 12 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple brand variations, including case changes, spacing variations, and common forms, with a total of 12 variations, which exceeds the required minimum of 3.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Applle&quot;,
+    &quot;Aple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applw&quot;,
+    &quot;Applr&quot;,
+    &quot;Aplp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Aple&quot;,
+    &quot;Appl&quot;,
+    &quot;Aplee&quot;,
+    &quot;Applw&quot;,
+    &quot;Applle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations of the brand name &#x27;Apple&#x27;, which exceeds the required minimum of 3 variations, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttee&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttie&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtti&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates and does not provide at least 3 unique variations, as required by the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name &#x27;THERMOS&#x27;, including different cases and forms, meeting the requirement of at least 3 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;OksO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;Oxo4&quot;,
+    &quot;Oxo5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 11 variations of the brand name &#x27;OXO&#x27;, meeting the requirement of at least 3 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The Nort Face&quot;,
+    &quot;The North Faec&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The North Faec&quot;,
+    &quot;Th North Fase&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated multiple variations of the brand name, including case changes, spacing variations, and common misspellings, exceeding the required three variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigedaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaire &quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidaire&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates and only 3 unique variations, failing to meet the requirement of at least 3 distinct variations.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">No Unrelated Terms</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">7 Pass</span>
+                        <span class="stat fail">13 Fail</span>
+                        <span class="rate">35%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owalla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;OWALA&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owalla&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations in the module output are plausible references to the brand &#x27;Owala&#x27; and do not include any unrelated terms, competitor brands, or product category terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations are plausible references to the brand &#x27;JBL&#x27; and do not include any unrelated terms, competitor brands, or product category terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisily-&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisilyg&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Cisly&#x27; and &#x27;Cisilyg&#x27;, which are not plausible variations of the brand &#x27;Cisily&#x27; and could be considered unrelated terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cemp&quot;,
+    &quot;Pioner Cmap&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneir Camp&quot;,
+    &quot;Pioneor Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pioner Cmp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations like &#x27;Pioneer&#x27; and misspellings that do not clearly reference the brand &#x27;Pioneer Camp&#x27;, which could be considered generic or unrelated terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashos&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations are plausible references to the brand &#x27;Jikasho&#x27; and do not include unrelated terms, competitor brands, or product category terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antrctic Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctc Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations like &#x27;Antarctic&#x27; and &#x27;Antarctc Star&#x27; which are either too generic or contain misspellings that do not accurately reference the brand &#x27;Antarctic Star&#x27;. This violates the criterion of including only plausible brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations are plausible references to the brand REVLON, and there are no unrelated terms, competitor brands, or product category terms present.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;KitchenAid-&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations that are not plausible references to the brand, such as &#x27;KichenAid&#x27;, which is a misspelling and does not represent the brand accurately.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations that are not plausible references to the same brand, such as &#x27;WBAKOO&#x27; and &#x27;WBAKCOO&#x27;, which could be interpreted as unrelated or competitor brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Trensformers&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transfomrs&quot;,
+    &quot;Tranzformers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Tranzformers&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations that are not plausible references to the brand &#x27;Transformers&#x27;, such as &#x27;Tranzformers&#x27;, which introduces unrelated terms and potential misspellings that do not align with the brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations like &#x27;Rz Crush&#x27; and &#x27;Rz Crusch&#x27;, which are not plausible references to the brand &#x27;Rx Crush&#x27; and introduce unrelated terms. Additionally, &#x27;Rx&#x27; is too generic and does not specifically reference the brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations like &#x27;Rz Crush&#x27; and &#x27;Rx Crsh&#x27; which are not plausible references to the brand &#x27;Rx Crush&#x27;, as they introduce unrelated terms and variations that deviate from the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rx Crshh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations like &#x27;Rz Crush&#x27; and &#x27;Rz Crusch&#x27;, which introduce unrelated terms and potential competitor references, violating the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations like &#x27;Rz Crush&#x27; and &#x27;Rx Crsh&#x27; which are not plausible references to the brand &#x27;Rx Crush&#x27;, as they introduce unrelated terms and variations that deviate from the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Applle&quot;,
+    &quot;Aple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applw&quot;,
+    &quot;Applr&quot;,
+    &quot;Aplp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Aple&quot;,
+    &quot;Appl&quot;,
+    &quot;Aplee&quot;,
+    &quot;Applw&quot;,
+    &quot;Applle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations in the module output are plausible references to the brand &#x27;Apple&#x27; and do not include unrelated terms, competitor brands, or product category terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttee&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttie&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtti&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations are plausible references to the brand &#x27;iOttie&#x27; and do not include unrelated terms, competitor brands, or product category terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes the term &#x27;Thermo&#x27;, which is a generic word unrelated to the brand THERMOS, and &#x27;Thermoss&#x27; is repeated multiple times, indicating a lack of unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;OksO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;Oxo4&quot;,
+    &quot;Oxo5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Oxo4&#x27; and &#x27;Oxo5&#x27;, which are not plausible references to the brand OXO as they do not correspond to known variations of the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The Nort Face&quot;,
+    &quot;The North Faec&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The North Faec&quot;,
+    &quot;Th North Fase&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes the term &#x27;The&#x27;, which is a generic word unrelated to the brand, violating the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigedaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaire &quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidaire&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All variations are plausible references to the brand &#x27;Frigidaire&#x27;, with no unrelated terms, competitor brands, or product category terms included.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">8-12 Variations Generated</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">17 Fail</span>
+                        <span class="rate">15%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owalla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;OWALA&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owalla&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains exactly 12 variations, which meets the requirement of the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated exactly 12 variations, which meets the requirement of the rubric for the criterion of 8-12 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisily-&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisilyg&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but &#x27;Cisily&#x27; and &#x27;Cisly&#x27; are repeated, resulting in only 10 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cemp&quot;,
+    &quot;Pioner Cmap&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneir Camp&quot;,
+    &quot;Pioneor Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pioner Cmp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations, which is acceptable, but it also includes variations that are not distinct enough from each other, leading to a lack of unique variations. However, since the count is within the acceptable range, it technically passes the count check but fails to provide sufficient unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashos&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but there are duplicates in the list, resulting in only 8 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antrctic Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctc Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but it includes duplicates (&#x27;Antarctic Staar&#x27; appears twice), resulting in fewer than 12 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 11 variations, which is within the range of 8-12, but it includes excessive repetitions of the same variations, which does not meet the requirement for unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;KitchenAid-&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations, which is within the acceptable range, but it includes duplicates and does not provide unique variations. However, since the count is exactly 12, it technically meets the count requirement but fails to provide the expected diversity.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 11 variations, but it includes duplicates (WEBACOOO appears three times), which means the unique variations are fewer than 8-12.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Trensformers&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transfomrs&quot;,
+    &quot;Tranzformers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Tranzformers&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but there are duplicates, resulting in only 8 unique variations. The output does not meet the requirement of having exactly 8-12 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated exactly 12 variations, which meets the requirement of the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations, which is within the acceptable range, but it includes duplicates (&#x27;Rx Crusch&#x27; appears twice), resulting in fewer unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rx Crshh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations, which is within the acceptable range, but it includes duplicates and variations that are too similar, which may not meet the intent of generating distinct variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output generated 12 variations, which is within the acceptable range, but it includes duplicates (&#x27;Rx Crusch&#x27; appears twice), resulting in only 10 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Applle&quot;,
+    &quot;Aple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applw&quot;,
+    &quot;Applr&quot;,
+    &quot;Aplp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Aple&quot;,
+    &quot;Appl&quot;,
+    &quot;Aplee&quot;,
+    &quot;Applw&quot;,
+    &quot;Applle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but &#x27;Appl&#x27; and &#x27;Aple&#x27; are repeated, resulting in only 10 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttee&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttie&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtti&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but there are duplicates (&#x27;iOttie&#x27;, &#x27;iOtty&#x27;, and &#x27;iOtti&#x27; appear more than once), which means the unique variations are fewer than 12.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 11 variations, but &#x27;Thermoss&#x27; is repeated three times, resulting in only 9 unique variations. Therefore, it does not meet the requirement of having exactly 8-12 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;OksO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;Oxo4&quot;,
+    &quot;Oxo5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, which is acceptable, but it exceeds the expected variations of 11, as the expected output had only 11 variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The Nort Face&quot;,
+    &quot;The North Faec&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The North Faec&quot;,
+    &quot;Th North Fase&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 11 variations, which is within the range, but it includes a duplicate variation &#x27;Th North Fase&#x27;, resulting in a total of 10 unique variations. Therefore, it does not meet the requirement of having exactly 8-12 unique variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigedaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaire &quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidaire&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains 12 variations, but there are duplicates, which means the unique variations are fewer than 8. Therefore, it does not meet the requirement of having exactly 8-12 unique variations.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">First Item is Correct Spelling</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">20 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <span class="rate">100%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owalla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;OWALA&quot;,
+    &quot;Owla&quot;,
+    &quot;Ohwala&quot;,
+    &quot;Owsla&quot;,
+    &quot;Owalq&quot;,
+    &quot;Owalla&quot;,
+    &quot;O-wala&quot;,
+    &quot;Owal&quot;,
+    &quot;Owaala&quot;,
+    &quot;Owalas&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Owala&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;Jbl&quot;,
+    &quot;J-B-L&quot;,
+    &quot;JBL-&quot;,
+    &quot;JBL.&quot;,
+    &quot;JBLl&quot;,
+    &quot;JBLK&quot;,
+    &quot;JBLQ&quot;,
+    &quot;JBLT&quot;,
+    &quot;JBLX&quot;,
+    &quot;JBLZ&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;JBL&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisily-&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cicily&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;,
+    &quot;Cisilyi&quot;,
+    &quot;Cisilyo&quot;,
+    &quot;Cisilyu&quot;,
+    &quot;Cisilyt&quot;,
+    &quot;Cisilyg&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Cisily&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cemp&quot;,
+    &quot;Pioner Cmap&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pioneer-Camp&quot;,
+    &quot;Pioneer&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneir Camp&quot;,
+    &quot;Pioneor Camp&quot;,
+    &quot;Pioneere Camp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Cmap&quot;,
+    &quot;Pioner Cmp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the module output is &#x27;Pioneer Camp&#x27;, which matches the correct brand spelling as required by the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashos&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikash0&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashp&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashow&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashu&quot;,
+    &quot;Jikashp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Jikasho&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antrctic Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antarctic-Star&quot;,
+    &quot;Antarctic&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctik Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Stsr&quot;,
+    &quot;Antarctc Star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Str&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Antarctic Star&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Rev-lon&quot;,
+    &quot;RevLon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;,
+    &quot;Revlon&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;REVLON&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchen-Aid&quot;,
+    &quot;KitchenAid-&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;KitchenAid&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Web-Acoo&quot;,
+    &quot;WBAOO&quot;,
+    &quot;WABACOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKOO&quot;,
+    &quot;WEBACOOO&quot;,
+    &quot;WBAKCOO&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;WEBACOO&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Trensformers&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Tranfomers&quot;,
+    &quot;Tramsformers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transfomrs&quot;,
+    &quot;Tranzformers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Tranzformers&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Transformers&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Rx Crush&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Rx Crush&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rx Crshh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the module output is &#x27;Rx Crush&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crsh&quot;,
+    &quot;Rz Crsh&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rxcush&quot;,
+    &quot;Rxcroshe&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;Rx&quot;,
+    &quot;Rz Crush&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;,
+    &quot;Rz Crusch&quot;,
+    &quot;Rx Crushs&quot;,
+    &quot;Rxc Rush&quot;,
+    &quot;Rx Crsh&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Rx Crush&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Applle&quot;,
+    &quot;Aple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applw&quot;,
+    &quot;Applr&quot;,
+    &quot;Aplp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Appl&quot;,
+    &quot;Ap-ple&quot;,
+    &quot;Aplle&quot;,
+    &quot;Aple&quot;,
+    &quot;Appl&quot;,
+    &quot;Aplee&quot;,
+    &quot;Applw&quot;,
+    &quot;Applle&quot;,
+    &quot;Apl&quot;,
+    &quot;Applr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Apple&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttee&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;IottIe&quot;,
+    &quot;i-Ottie&quot;,
+    &quot;iOttie&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtte&quot;,
+    &quot;iOty&quot;,
+    &quot;iOtite&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOtty&quot;,
+    &quot;iOtti&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;iOttie&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;Thrmoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Therm0s&quot;,
+    &quot;Therm0&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermosy&quot;,
+    &quot;Thermose&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;THERMOS&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;OksO&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;Oxo&quot;,
+    &quot;O-X-O&quot;,
+    &quot;Oxo-&quot;,
+    &quot;Oxo &quot;,
+    &quot;Oxo0&quot;,
+    &quot;Oxo1&quot;,
+    &quot;Oxo2&quot;,
+    &quot;Oxo3&quot;,
+    &quot;Oxo4&quot;,
+    &quot;Oxo5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;OXO&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The Nort Face&quot;,
+    &quot;The North Faec&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;TheNorthFace&quot;,
+    &quot;The-North-Face&quot;,
+    &quot;The&quot;,
+    &quot;Teh North Face&quot;,
+    &quot;The Noth Face&quot;,
+    &quot;The North Fase&quot;,
+    &quot;Th North Face&quot;,
+    &quot;The North Faec&quot;,
+    &quot;Th North Fase&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;The North Face&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigedaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaire &quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;variations&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaire&quot;,
+    &quot;Frigidaire-&quot;,
+    &quot;Frigidaie&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidaire&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The first item in the variations is &#x27;Frigidaire&#x27;, which matches the correct brand spelling.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>

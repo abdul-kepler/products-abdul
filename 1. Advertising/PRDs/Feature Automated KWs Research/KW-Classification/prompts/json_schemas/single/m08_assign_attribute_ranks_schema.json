@@ -1,0 +1,38 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_8_AssignAttributeRanks_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "attribute_table": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attribute_type": {
+                "type": "string",
+                "enum": ["Variant", "Use Case", "Audience"],
+                "description": "Type of attribute"
+              },
+              "attribute_value": {
+                "type": "string",
+                "description": "The attribute value"
+              },
+              "rank": {
+                "type": "integer",
+                "description": "Rank from 1 (most important) to N"
+              }
+            },
+            "required": ["attribute_type", "attribute_value", "rank"],
+            "additionalProperties": false
+          },
+          "description": "Ranked list of attributes"
+        }
+      },
+      "required": ["attribute_table"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "braintrust_experiment_id": "2d0d0957-93d9-4f0b-adbe-99ec2412ddca",
+  "braintrust_experiment_name": "M11_V2_IdentifyHardConstraints_sonnet",
+  "created": "2026-01-25 23:12:05.739000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "7f15bfc1-4541-4652-a667-bb1842b43e46",
+  "dataset_name": "M11_IdentifyHardConstraints_V1.1",
+  "dataset_version": "1000196473826613079",
+  "prompt_id": "afb017cd-8e79-4849-93cb-0cc1048a556b",
+  "prompt_version": "1000196550510247660",
+  "prompt_session_id": "49c609de-1052-46c2-b01a-16afeb889a0d",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_11_IdentifyHardConstraints_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "hard_constraints",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Step-by-step Chain of Thought analysis"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "hard_constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of attribute names that are non-negotiable for the product to function. Most products have 0-1 hard constraints."
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 10,
+  "downloaded_at": "2026-01-26T02:15:32.725361"
+}

@@ -1,0 +1,202 @@
+{
+  "module": "m13",
+  "provider": "gpt-4o-mini",
+  "score": 60.0,
+  "guidelines": "# Module 13 (V1.1): Product Type Check\n\n## Role\n\nYou are an expert product categorization specialist with deep knowledge of e-commerce taxonomies, product hierarchies, and consumer shopping behavior. Your expertise includes understanding how customers search for products using various terms, synonyms, and category descriptors. You excel at distinguishing between products of the same type (even with different attributes) versus entirely different product categories.\n\n## Task\n\nDetermine if the keyword is asking for the same product type as the ASIN.\n\n## Instructions\n\nCompare the product type implied by the keyword against the product's taxonomy to determine if they match.\n\n**Question:** \"Is the keyword asking for the same product type as the ASIN?\"\n\n- **YES** → Pass to M14 (Primary Use Check - Same Type)\n- **NO** → Pass to M15 (Substitute Check)\n\n## Input\n\n**Keyword:** {{keyword}}\n\n**Product Title:** {{title}}\n\n**Bullet Points:**\n{{bullet_points}}\n\n**Description:**\n{{description}}\n\n**Validated Intended Use:** {{validated_use}}\n\n**Product Type Taxonomy:**\n{{taxonomy}}\n\n**Attributes:**\n{{attribute_table}}\n\n**Product Attributes:**\n{{product_attributes}}\n\n**Hard Constraints:**\n{{hard_constraints}}\n\n## Chain-of-Thought Process\n\nFollow these steps explicitly before making your determination:\n\n### Step 1: Extract the Core Product Type from Keyword\n- Identify the base product noun/phrase in the keyword\n- Strip away modifiers (size, color, material, brand)\n- Ask: \"What product category is the customer fundamentally searching for?\"\n\n### Step 2: Identify the ASIN's Product Type from Taxonomy\n- Look at the taxonomy hierarchy, particularly Level 1\n- Identify the canonical product type classification\n- Note any relevant sub-categories\n\n### Step 3: Apply the Matching Test\n- Direct match: Does the keyword noun exactly match the taxonomy type?\n- Synonym match: Is the keyword noun a recognized synonym?\n- Hierarchical match: Is one a subset/superset of the other?\n- Different category: Are these fundamentally different product types?\n\n### Step 4: Consider Edge Cases\n- Compound products (e.g., \"bottle cap\" vs \"water bottle\")\n- Regional terminology variations\n- Colloquial vs formal product names\n- Products with overlapping uses but different form factors\n\n### Step 5: Assign Confidence and Finalize\n- Evaluate certainty based on clarity of match/mismatch\n- Document reasoning clearly\n\n## Product Type Matching Criteria\n\nThe keyword matches the product type when:\n- It explicitly names the same product type (e.g., \"water bottle\" for a Water Bottle)\n- It uses a synonym or common variation of the product type\n- It uses a broader category that includes the product type\n- It refers to the same product with different attributes (material, size, color)\n\nThe keyword does NOT match the product type when:\n- It names a different product category entirely\n- It names a substitute product that serves a similar purpose but is different\n- It names a complementary/accessory product\n- It refers to a component/part of the product rather than the whole\n\n## Examples with Detailed Reasoning\n\n### Example 1: Direct Match\n**Product:** Stainless Steel Water Bottle\n**Taxonomy:** Water Bottle\n**Keyword:** \"insulated water bottle\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"water bottle\" (insulated is a modifier)\n2. ASIN taxonomy: Water Bottle\n3. Matching test: Direct match - both are water bottles\n4. Edge cases: None - clear match despite material difference\n5. Confidence: 0.98\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"water bottle\",\n  \"reasoning\": \"Keyword explicitly asks for 'water bottle' with 'insulated' as a modifier. This directly matches the taxonomy classification.\",\n  \"confidence\": 0.98\n}\n```\n\n### Example 2: Synonym Match\n**Product:** Wireless Earbuds\n**Taxonomy:** Earbuds\n**Keyword:** \"wireless earphones\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"earphones\"\n2. ASIN taxonomy: Earbuds\n3. Matching test: Synonym match - earphones and earbuds are interchangeable terms for in-ear audio devices\n4. Edge cases: In some contexts, earphones can refer to any portable headphones, but wireless + earphones strongly implies in-ear\n5. Confidence: 0.92\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"earphones\",\n  \"reasoning\": \"Earphones and earbuds are widely accepted synonyms for in-ear wireless audio devices. The 'wireless' modifier further confirms matching intent.\",\n  \"confidence\": 0.92\n}\n```\n\n### Example 3: Different Product Type\n**Product:** Wireless Earbuds\n**Taxonomy:** Earbuds\n**Keyword:** \"over-ear headphones\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"headphones\" with \"over-ear\" specifier\n2. ASIN taxonomy: Earbuds\n3. Matching test: Different category - over-ear headphones have a fundamentally different form factor than earbuds\n4. Edge cases: Both are audio devices, but the form factor difference is significant\n5. Confidence: 0.95\n\n```json\n{\n  \"same_type\": false,\n  \"keyword_product_type\": \"over-ear headphones\",\n  \"reasoning\": \"Over-ear headphones and earbuds are distinct product categories with different form factors, despite both being audio devices.\",\n  \"confidence\": 0.95\n}\n```\n\n### Example 4: Accessory vs Product\n**Product:** Memory Foam Pillow\n**Taxonomy:** Pillow\n**Keyword:** \"pillowcase\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"pillowcase\"\n2. ASIN taxonomy: Pillow\n3. Matching test: Different category - a pillowcase is a covering/accessory for a pillow, not a pillow itself\n4. Edge cases: The word contains \"pillow\" but refers to a different product category (bedding accessories vs sleep support)\n5. Confidence: 0.97\n\n```json\n{\n  \"same_type\": false,\n  \"keyword_product_type\": \"pillowcase\",\n  \"reasoning\": \"Pillowcase is an accessory product designed to cover pillows. It is a different product category from the pillow itself.\",\n  \"confidence\": 0.97\n}\n```\n\n### Example 5: Same Type with Different Fill Material\n**Product:** Memory Foam Pillow\n**Taxonomy:** Pillow\n**Keyword:** \"buckwheat pillow\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"pillow\" (buckwheat describes the fill material)\n2. ASIN taxonomy: Pillow\n3. Matching test: Direct match - both are pillows, just with different fill materials\n4. Edge cases: The fill material is different, but the product category is identical\n5. Confidence: 0.96\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"pillow\",\n  \"reasoning\": \"Buckwheat pillow is the same product type (pillow) with a different attribute (fill material). The taxonomy match is clear.\",\n  \"confidence\": 0.96\n}\n```\n\n### Example 6: Ambiguous Term Resolution\n**Product:** Yoga Mat\n**Taxonomy:** Exercise Mat > Yoga Mat\n**Keyword:** \"fitness mat\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"fitness mat\"\n2. ASIN taxonomy: Yoga Mat (under Exercise Mat)\n3. Matching test: Hierarchical match - yoga mat is a type of fitness/exercise mat\n4. Edge cases: \"Fitness mat\" is a broader term that encompasses yoga mats\n5. Confidence: 0.85\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"fitness mat\",\n  \"reasoning\": \"Yoga mat is a subcategory of fitness/exercise mats. The keyword uses a broader term that includes the ASIN's product type.\",\n  \"confidence\": 0.85\n}\n```\n\n### Example 7: Use-Case Modifier Does NOT Change Product Type\n**Product:** Countertop Ice Maker\n**Taxonomy:** Ice Maker\n**Keyword:** \"ice machine for injuries\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"ice machine\" (the phrase \"for injuries\" describes intended use, not product type)\n2. ASIN taxonomy: Ice Maker\n3. Matching test: Synonym match - \"ice machine\" and \"ice maker\" are synonyms for the same product type\n4. Edge cases: The use-case \"for injuries\" is just describing WHY the customer wants ice, not WHAT product they want. They still want an ice-making device.\n5. Confidence: 0.92\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"ice machine\",\n  \"reasoning\": \"The keyword asks for an 'ice machine' which is synonymous with 'ice maker'. The phrase 'for injuries' is a use-case modifier describing intended purpose, NOT a different product type. Customers searching this want an ice-making appliance.\",\n  \"confidence\": 0.92\n}\n```\n\n### Example 8: Material/Style Modifier Does NOT Change Product Type\n**Product:** Bamboo Serving Tray\n**Taxonomy:** Serving Tray\n**Keyword:** \"round wood tray\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"tray\" (round = shape modifier, wood = material modifier)\n2. ASIN taxonomy: Serving Tray\n3. Matching test: Direct match - \"tray\" in kitchen/serving context matches \"serving tray\"\n4. Edge cases: Shape (round) and material (wood) are attributes, not product type differentiators. A round wood tray is still a serving tray.\n5. Confidence: 0.90\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"tray\",\n  \"reasoning\": \"The keyword asks for a 'tray' with shape modifier 'round' and material modifier 'wood'. These are attributes, not different product categories. A round wood tray is still the same product type as a serving tray.\",\n  \"confidence\": 0.90\n}\n```\n\n### Example 9: Brand/Franchise Modifier Does NOT Change Product Type\n**Product:** Dinosaur Action Figures Set\n**Taxonomy:** Action Figure\n**Keyword:** \"jurassic park toys\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"toys\" (Jurassic Park = brand/franchise modifier)\n2. ASIN taxonomy: Action Figure (which is a type of toy)\n3. Matching test: Hierarchical match - action figures are a subset of toys\n4. Edge cases: \"Jurassic Park\" is an IP/franchise that primarily produces action figures and dinosaur toys. The keyword uses \"toys\" as a broader category.\n5. Confidence: 0.88\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"toys\",\n  \"reasoning\": \"The keyword 'jurassic park toys' uses a franchise name as a modifier. Action figures are a type of toy, and Jurassic Park merchandise is primarily action figures/dinosaur toys. The product type matches within the toys hierarchy.\",\n  \"confidence\": 0.88\n}\n```\n\n### Example 10: Brand Modifier with Direct Product Match\n**Product:** Disney Princess Dolls Collection\n**Taxonomy:** Doll\n**Keyword:** \"frozen elsa doll\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"doll\" (Frozen Elsa = brand/character modifier)\n2. ASIN taxonomy: Doll\n3. Matching test: Direct match - keyword explicitly asks for \"doll\"\n4. Edge cases: Brand/character names don't change the product type. A Disney doll is still a doll.\n5. Confidence: 0.96\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"doll\",\n  \"reasoning\": \"The keyword explicitly includes 'doll' as the product type. 'Frozen Elsa' is a character/brand modifier that doesn't change the fundamental product category.\",\n  \"confidence\": 0.96\n}\n```\n\n### Example 11: Brand-Only Keyword (Brand Implies Product Type)\n**Product:** Stainless Steel Water Bottle 32oz\n**Taxonomy:** Water Bottle\n**Keyword:** \"ironflask 40 oz\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: Need to identify what \"IronFlask\" is - it's a brand that makes water bottles\n2. ASIN taxonomy: Water Bottle\n3. Matching test: IronFlask is a well-known water bottle brand. \"40 oz\" is a size. The keyword is asking for a water bottle.\n4. Edge cases: Brand-only keywords imply the product type the brand is known for. IronFlask = water bottle brand.\n5. Confidence: 0.90\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"water bottle\",\n  \"reasoning\": \"IronFlask is a brand that specializes in water bottles. When customers search for 'ironflask 40 oz', they're looking for a water bottle of that brand and size. The implicit product type matches the ASIN's taxonomy.\",\n  \"confidence\": 0.90\n}\n```\n\n### Example 12: Function/Use Modifier on Trays (CRITICAL)\n**Product:** Bamboo Serving Tray\n**Taxonomy:** Serving Tray\n**Keyword:** \"fruit tray\"\n\n**Chain-of-Thought:**\n1. Core product type in keyword: \"tray\" (fruit = what you serve on it, a use-case modifier)\n2. ASIN taxonomy: Serving Tray\n3. Matching test: Direct match - \"fruit tray\" is a serving tray used to serve fruit\n4. Edge cases: \"Fruit tray\", \"cheese tray\", \"breakfast tray\", \"bed tray\" are all SERVING TRAYS with different intended uses. The use doesn't change the product type.\n5. Confidence: 0.92\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"tray\",\n  \"reasoning\": \"A 'fruit tray' is a serving tray used to serve fruit. 'Fruit' describes WHAT you serve on the tray, not a different product type. It's the same product category as 'serving tray' - both are trays used to present/serve items.\",\n  \"confidence\": 0.92\n}\n```\n\n### Example 13: More Tray Variants (All Same Type)\n**Product:** Bamboo Serving Tray\n**Taxonomy:** Serving Tray\n\n| Keyword | Same Type? | Reasoning |\n|---------|------------|-----------|\n| \"cheese board tray\" | YES | Tray for serving cheese |\n| \"appetizer tray\" | YES | Tray for serving appetizers |\n| \"breakfast tray\" | YES | Tray for serving breakfast |\n| \"bed tray\" | YES | Tray used in bed (same product, different location) |\n| \"ottoman tray\" | YES | Tray placed on ottoman (same product, different surface) |\n| \"vanity tray\" | YES | Tray for vanity items |\n| \"paint tray\" | NO | Different product - for holding paint during painting |\n| \"cat litter tray\" | NO | Different product - container for cat litter |\n\n## Common Mistakes to Avoid\n\n**CRITICAL: Do NOT be too strict about product type matching. Modifiers describe attributes, not different products.**\n\n1. **Being too strict with use-case modifiers**: \"Ice machine for injuries\" is still asking for an ice machine/ice maker. The use case (\"for injuries\") describes WHY the customer wants the product, not a different product type. Same applies to \"laptop for gaming\", \"shoes for running\", \"chair for office\" - these are the same product types with intended use specified.\n\n2. **Being too strict with material/style modifiers**: \"Round wood tray\" is still a tray. \"Leather wallet\" is still a wallet. Shape, material, color, and style words modify the product - they don't create a new product category.\n\n3. **Being too strict with brand/franchise modifiers**: \"Jurassic Park toys\" is still asking for toys. \"Disney princess dolls\" is still asking for dolls. Brand names, movie franchises, and character names are modifiers, not product type differentiators.\n\n4. **Confusing attributes with product types**: \"Stainless steel water bottle\" vs \"plastic water bottle\" are the SAME product type with different materials.\n\n5. **Missing synonym relationships**: \"Couch\" and \"sofa\" are synonyms; \"sneakers\" and \"running shoes\" overlap significantly. \"Ice machine\" and \"ice maker\" are synonyms.\n\n6. **Over-generalizing categories**: Not all \"containers\" are the same type. A \"storage bin\" and \"water bottle\" are both containers but different product types.\n\n7. **Ignoring form factor**: \"Earbuds\" vs \"headphones\" - both play audio but are different product categories due to form factor.\n\n8. **Treating accessories as the main product**: \"Phone case\" is not the same product type as \"phone\".\n\n9. **Compound product confusion**: \"Coffee maker\" is different from \"coffee grinder\" even though both relate to coffee.\n\n## Gray Area Decision Framework\n\nFor ambiguous product type comparisons, use this structured tie-breaker:\n\n### When to Apply Gray Area Framework\n- Confidence would be in 0.50-0.69 range\n- Product type boundaries are unclear\n- Emerging or hybrid product categories\n\n### Gray Area Decision Questions (Answer in Order)\n\n**Q1: Substitution Test**\n\"Would a customer searching for [keyword product] reasonably expect to find [ASIN product type] in their search results?\"\n- If YES → lean toward `same_type: true`\n- If NO → lean toward `same_type: false`\n\n**Q2: Amazon Category Test**\n\"Would Amazon likely place both products in the same product category node?\"\n- If YES → lean toward `same_type: true`\n- If NO → lean toward `same_type: false`\n\n**Q3: Feature vs Type Test**\n\"Is the difference between keyword and ASIN primarily about FEATURES/ATTRIBUTES, or about fundamental PRODUCT TYPE?\"\n- If FEATURES → `same_type: true`\n- If PRODUCT TYPE → `same_type: false`\n\n**Q4: Customer Intent Test**\n\"If a customer bought the ASIN after searching for the keyword, would they feel misled about what product they received?\"\n- If NO → `same_type: true`\n- If YES → `same_type: false`\n\n### Tie-Breaker Rule\nIf answers are split 2-2, **default to `same_type: true`** and lower confidence to 0.55-0.65 range.\n\n---\n\n## Emerging and Hybrid Products\n\nSome product categories are evolving or represent hybrid forms. Handle with care:\n\n| Emerging Category | Traditional Split | Recommendation |\n|-------------------|-------------------|----------------|\n| \"Smart water bottle\" | Tech device vs Drinkware | same_type: true (primary function is hydration) |\n| \"Gaming earbuds\" | Gaming peripheral vs Audio | same_type: true if base type is earbuds |\n| \"Electric standing desk\" | Furniture vs Electronics | same_type: true (furniture type) |\n| \"Smart notebook\" | Stationery vs Tech | Depends on primary function |\n| \"Fitness watch\" | Watch vs Fitness tracker | same_type: true (wearable) |\n\n**Rule for Hybrids:** Focus on the PRIMARY FORM FACTOR and base product type, not the smart/tech features.\n\n---\n\n## Confidence Calibration\n\nRate your confidence based on these guidelines:\n\n| Confidence | When to Use |\n|------------|-------------|\n| 0.95-1.0 | Clear direct match or obvious mismatch with no ambiguity |\n| 0.85-0.94 | Strong match/mismatch with minor synonym or hierarchy considerations |\n| 0.70-0.84 | Reasonable match/mismatch but some edge case uncertainty |\n| 0.50-0.69 | Ambiguous - could be interpreted either way (use Gray Area Framework) |\n| Below 0.50 | Highly uncertain - additional context needed |\n\n## Pre-Output Checklist\n\nBefore generating your final output, verify:\n\n- [ ] Did I identify the core product type in the keyword (not modifiers)?\n- [ ] Did I check the taxonomy Level 1 category?\n- [ ] Did I consider common synonyms and regional variations?\n- [ ] Did I distinguish between \"different attributes\" vs \"different product type\"?\n- [ ] Did I avoid confusing accessories/components with the main product?\n- [ ] Is my confidence score aligned with the calibration guidelines?\n- [ ] Does my reasoning clearly explain the match/mismatch decision?\n\n## Output Format\n\n**IMPORTANT: Keep reasoning concise - 1-2 sentences maximum. Do NOT repeat or elaborate beyond what's necessary.**\n\n```json\n{\n  \"same_type\": true,\n  \"keyword_product_type\": \"extracted product type from keyword\",\n  \"confidence\": 0.0-1.0,\n  \"reasoning\": \"Brief 1-2 sentence explanation\"\n}\n```\n\nOR\n\n```json\n{\n  \"same_type\": false,\n  \"keyword_product_type\": \"extracted product type from keyword\",\n  \"confidence\": 0.0-1.0,\n  \"reasoning\": \"Brief 1-2 sentence explanation\"\n}\n```\n",
+  "instruction": "Analyze the provided keyword to extract the core product type, then compare it to the ASIN's product type based on the provided guidelines. Determine if they signify the same product type and output a JSON object indicating whether they match ('same_type' as true or false).",
+  "demos": [
+    {
+      "augmented": true,
+      "keyword": "black lightweight jacket",
+      "same_type": "True"
+    },
+    {
+      "augmented": true,
+      "keyword": "owala water bottle lid parts",
+      "same_type": "False"
+    },
+    {
+      "keyword": "dry ice machine",
+      "title": "Countertop Ice Maker, Portable Ice Machine Makes 8 Ice Cubes in 6 Mins, 26Lbs/24Hrs, Self-Cleaning Function, Ice Maker with Ice Scoop & Basket for Home/Kitchen/Office/Bar/Party, Black",
+      "bullet_points": "Fast Ice Making: This ice maker produces 8 pieces of bullet-shaped ice in just 6 minutes. With a daily output of up to 26lbs (12kg), it ensures you always have enough ice for your needs\nTwo Ice Sizes: Choose between small or large ice sizes to suit your preferences. Larger ice is ideal for cooling drinks quickly, while smaller ice works perfectly for blended beverages or therapeutic uses\nSelf-Cleaning Function: One-click self-cleaning makes it easy to wash, keeping your ice maker hygienic and your ice fresh. Plus, the transparent window lets you monitor ice production without lifting the lid\nSmart & Quiet: The smart system alerts you with indicator lights when the ice bin is full or water needs to be added. It operates quietly (noise ≤ 40dB), so it won't disturb your conversations\nEnergy-Saving & Compact: Featuring R600a eco-friendly refrigerant and an energy-efficient compressor, this ice maker is environmentally conscious. Its compact design fits seamlessly on any countertop\nPerfect for Multiple Scenarios: Whether it's a family gathering, a trip with friends, or a relaxing afternoon at home, this ice maker is your reliable companion. It's also an ideal gift for loved ones, combining functionality with style.",
+      "description": "",
+      "validated_use": "Making ice cubes",
+      "taxonomy": [
+        {
+          "level": 1,
+          "product_type": "Ice Maker",
+          "rank": 1
+        }
+      ],
+      "attribute_table": [
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Home/Kitchen",
+          "rank": 1
+        },
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Office",
+          "rank": 2
+        },
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Bar/Party",
+          "rank": 3
+        },
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Travel/Outdoor",
+          "rank": 4
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "26Lbs/24Hrs Capacity",
+          "rank": 1
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "8 Cubes in 6 Minutes",
+          "rank": 2
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Two Ice Sizes",
+          "rank": 3
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Self-Cleaning Function",
+          "rank": 4
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Quiet Operation (≤40dB)",
+          "rank": 5
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Black",
+          "rank": 6
+        }
+      ],
+      "product_attributes": {
+        "color": "Dark Black",
+        "size": "26Lbs/24H",
+        "material": "Plastic",
+        "style": "",
+        "target_audience": "",
+        "specific_uses": "",
+        "model": "58012RIMO-NJ3-BLACK",
+        "item_form": "",
+        "number_of_items": "1",
+        "included_components": "ice maker, basket, scoop, handle",
+        "product_type": "ICE_MAKER",
+        "category_root": "Appliances",
+        "category_sub": "Ice Makers"
+      },
+      "hard_constraints": [],
+      "same_type": false
+    },
+    {
+      "keyword": "kitchen sink accessories",
+      "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories",
+      "bullet_points": "304 Stainless Steel\nQuality Control 100%\n【AUTOMATIC DRAINAGE SYSTEM】Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n【PREMIUM STURDY MATERIAL】 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n【REASONABLE DIVIDER DESIGN】 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n【SATISFACTION GUARANTEED】The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift.",
+      "description": "",
+      "validated_use": "Kitchen sink item organization",
+      "taxonomy": [
+        {
+          "level": 1,
+          "product_type": "Sink Caddy Organizer",
+          "rank": 1
+        },
+        {
+          "level": 2,
+          "product_type": "Kitchen Caddy Organizer",
+          "rank": 2
+        },
+        {
+          "level": 3,
+          "product_type": "Kitchen Storage and Organization",
+          "rank": 3
+        }
+      ],
+      "attribute_table": [
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Kitchen Countertop",
+          "rank": 1
+        },
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Kitchen",
+          "rank": 2
+        },
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Bathrooms",
+          "rank": 3
+        },
+        {
+          "attribute_type": "Use Case",
+          "attribute_value": "Gifts",
+          "rank": 4
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "High Brush Holder",
+          "rank": 1
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Sponge Holder",
+          "rank": 2
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Soap Dispenser Organizer",
+          "rank": 3
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Stainless Steel",
+          "rank": 4
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "304 Stainless Steel",
+          "rank": 5
+        },
+        {
+          "attribute_type": "Variant",
+          "attribute_value": "Rustproof",
+          "rank": 6
+        }
+      ],
+      "product_attributes": {
+        "color": "Black",
+        "size": "9.25″",
+        "material": "Stainless Steel",
+        "style": "English",
+        "target_audience": "",
+        "specific_uses": "Save space,Kitchen storage and organizer",
+        "model": "XM-CA-BLACK",
+        "item_form": "",
+        "number_of_items": "1",
+        "included_components": "32 DE",
+        "product_type": "CADDY",
+        "category_root": "Home & Kitchen",
+        "category_sub": "Kitchen Storage & Organization Accessories"
+      },
+      "hard_constraints": [],
+      "same_type": false
+    }
+  ],
+  "input_keys": [
+    "keyword",
+    "asin_product_type"
+  ],
+  "output_keys": [
+    "same_type"
+  ]
+}

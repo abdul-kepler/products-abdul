@@ -1,0 +1,45 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_13_ProductTypeCheck_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Product type check results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being checked"
+              },
+              "same_type": {
+                "type": "boolean",
+                "description": "Whether the keyword asks for the same product type as the ASIN"
+              },
+              "keyword_product_type": {
+                "type": "string",
+                "description": "The product type detected from the keyword"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Explanation of why product types match or don't match"
+              }
+            },
+            "required": ["keyword", "same_type", "keyword_product_type", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

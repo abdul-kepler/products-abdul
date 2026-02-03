@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Implementation Challenges - Board Update (Concise)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #1a365d; font-size: 1.6em; border-bottom: 3px solid #3182ce; padding-bottom: 12px; margin-bottom: 8px; }
+        h2 { color: #2c5282; font-size: 1.15em; margin-top: 25px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+        h3 { color: #4a5568; font-size: 1em; margin-top: 12px; margin-bottom: 6px; }
+        .meta { background: #edf2f7; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9em; }
+        .meta p { margin: 3px 0; color: #4a5568; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        th, td { padding: 8px 10px; text-align: left; border: 1px solid #e2e8f0; }
+        th { background: #2c5282; color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f7fafc; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: 600; }
+        .badge-done { background: #c6f6d5; color: #276749; }
+        .badge-pending { background: #feebc8; color: #c05621; }
+        .badge-issue { background: #fed7d7; color: #c53030; }
+        .badge-new { background: #bee3f8; color: #2b6cb0; }
+        ul { margin: 6px 0 6px 20px; font-size: 0.95em; }
+        li { margin: 4px 0; }
+        .section { margin-bottom: 20px; padding: 15px; background: #f7fafc; border-radius: 6px; }
+        .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .section-title h2 { margin: 0; border: none; padding: 0; }
+        .highlight { background: #fefcbf; padding: 1px 4px; border-radius: 2px; }
+        .impact { background: #fff5f5; border-left: 3px solid #fc8181; padding: 8px 12px; margin: 10px 0; font-size: 0.9em; }
+        .next-step { background: #f0fff4; border-left: 3px solid #68d391; padding: 8px 12px; margin: 10px 0; font-size: 0.9em; }
+        .summary-box { background: #ebf8ff; border: 2px solid #3182ce; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .discussion { background: #faf5ff; border: 2px solid #9f7aea; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .discussion h2 { color: #6b46c1; border: none; margin-top: 0; }
+        .discussion ol { margin-left: 18px; }
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 20px 0; }
+        .footer { text-align: center; color: #718096; font-size: 0.85em; margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Roadmap Implementation Challenges</h1>
+        <p style="color: #4a5568; margin-bottom: 15px;">Board Update &mdash; February 2, 2026</p>
+
+        <div class="meta">
+            <p><strong>Context:</strong> Originally prepared 2 weeks ago. Updated to reflect current status.</p>
+        </div>
+
+        <!-- Status Summary -->
+        <table>
+            <thead>
+                <tr><th>Feature</th><th>Dev</th><th>Deployed</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Intelligent Pacing</td><td>Done</td><td>~2 weeks ago</td><td><span class="badge badge-pending">UAT Pending</span></td></tr>
+                <tr><td>Automated KW Research</td><td>Done</td><td>Done</td><td><span class="badge badge-pending">Quality improvement</span></td></tr>
+                <tr><td>CVR Estimation</td><td>Done</td><td>Done</td><td><span class="badge badge-issue">Accuracy issues</span></td></tr>
+                <tr><td>All Other Features (8)</td><td>Done</td><td>Done</td><td>Testing with accounts</td></tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- 1. Pacing -->
+        <div class="section">
+            <div class="section-title">
+                <h2>1. Intelligent Pacing</h2>
+                <span class="badge badge-done">Deployed</span>
+            </div>
+            <p>Deployed ~2 weeks ago. UAT pending alongside test account runs.</p>
+
+            <h3>Current Release: Rule-Based Model</h3>
+            <ul>
+                <li>Establishes core workflow and validates directional correctness (Base Model)</li>
+            </ul>
+
+            <h3>Future: ML Enhancement</h3>
+            <ul>
+                <li>Post-validation, will enhance with machine learning capabilities</li>
+                <li>Initial ML enhancements already scoped and identified</li>
+                <li>Pacing involves multiple interconnected input/output chains</li>
+                <li>Feedback from base model will guide which chain to enhance first &mdash; prioritizing based on data rather than assumptions</li>
+            </ul>
+        </div>
+
+        <!-- 2. KW Research -->
+        <div class="section">
+            <div class="section-title">
+                <h2>2. Automated Keyword Research</h2>
+                <span class="badge badge-pending">Quality Improvement</span>
+            </div>
+            <p>Fully developed and deployed. Issue: <span class="highlight">output accuracy requires manual review</span> &mdash; bottleneck for scale.</p>
+
+            <h3>Improvement Project</h3>
+            <ul>
+                <li><strong>2/3 complete</strong> &mdash; ready to deploy this week</li>
+                <li><strong>1/3 in progress</strong> &mdash; still in design phase</li>
+            </ul>
+
+            <div class="next-step">
+                <strong>Path:</strong> Deploy improvements → Test quality → If satisfactory, reduce/eliminate manual review → Faster rollout. If improvement not satisfactory, will need to wait for the remaining 1/3rd to get built and deployed.
+            </div>
+        </div>
+
+        <!-- 3. CVR -->
+        <div class="section">
+            <div class="section-title">
+                <h2>3. CVR Estimation Accuracy</h2>
+                <span class="badge badge-issue">Problem Remains</span>
+            </div>
+            <p>Core enhancement affecting <strong>bid optimization, budget allocation, and pacing</strong>. CVR inaccuracy is a primary root cause of performance gaps.</p>
+
+            <div class="two-col">
+                <div>
+                    <h3>Current Limitation</h3>
+                    <ul>
+                        <li>Uses historical moving averages</li>
+                        <li>Can't account for: seasonality, price changes, competition, sparse data</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Proposed: ML Model</h3>
+                    <ul>
+                        <li>Train on: seasonality, pricing, category benchmarks, semantic groupings, tens of other factors/ML features &mdash; a great chunk of which have been identified already</li>
+                        <li>3,000 accounts of training data available</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="impact">
+                <strong>Challenges:</strong> Requires ML expertise, R&D intensive (iterative), uncertain magnitude, data quality needs validation
+            </div>
+        </div>
+
+        <!-- 4. Test Accounts -->
+        <div class="section" style="border: 2px solid #3182ce;">
+            <div class="section-title">
+                <h2 style="color: #2b6cb0;">4. Test Account Budget</h2>
+                <span class="badge badge-new">New Challenge</span>
+            </div>
+
+            <table>
+                <tr><th>Metric</th><th>Current</th><th>Needed</th></tr>
+                <tr><td>ASINs</td><td>7 total across 3-4 accounts</td><td>10-15</td></tr>
+                <tr><td>Active Testing</td><td>1 ASIN rolled out, 2 planned this week. Rest are subject to good performance on these (same accounts &mdash; need proof first, so conditional)</td><td>10+</td></tr>
+                <tr><td>Budget/ASIN</td><td>$300-500/month</td><td>$1,500-$3,000 for effective testing</td></tr>
+            </table>
+
+            <h3>Why Budget Matters</h3>
+            <ul>
+                <li>Needs wiggle room for campaign allocation and efficacy testing</li>
+                <li>Pacing needs spend to make meaningful decisions</li>
+                <li>KW Research (core USP) can't be utilized without budget</li>
+                <li>Small budgets = features won't activate or show true potential</li>
+            </ul>
+
+            <h3>Client Reality (per Bob)</h3>
+            <ul>
+                <li>New clients take months (BD process + filtering)</li>
+                <li>Better UX and budget subsidization can accelerate</li>
+                <li>Start with clients we have good relationships with</li>
+            </ul>
+
+            <div class="next-step">
+                <strong>Next Step:</strong> Will prepare proposal on subsidizing advertising budget to accelerate testing.
+            </div>
+        </div>
+
+        <!-- 5. Reporting -->
+        <div class="section">
+            <div class="section-title">
+                <h2>5. Reporting</h2>
+                <span class="badge badge-pending">~2 weeks</span>
+            </div>
+            <p>Requirements submitted to Engineering.</p>
+            <ul>
+                <li>Without reporting: can't measure baseline or get signals if working</li>
+                <li>Includes: ACOS trends, spend vs budget, feature status, alerts</li>
+            </ul>
+        </div>
+
+        <!-- 6. APDC -->
+        <div class="section">
+            <div class="section-title">
+                <h2>6. APDC (Performance Diagnostics)</h2>
+                <span class="badge badge-pending">Deferred</span>
+            </div>
+            <p>Layer beneath Reporting for deep diagnostics. Deprioritized until rollout stabilizes.</p>
+            <ul>
+                <li>Diagnoses underperformance and identifies root causes</li>
+                <li>Quantifies impact (% contribution per cause)</li>
+                <li>Guides: easy vs long fix, resource needs, prioritization</li>
+            </ul>
+        </div>
+
+        <!-- 7. UI/UX -->
+        <div class="section">
+            <div class="section-title">
+                <h2>7. UI/UX Improvements</h2>
+                <span class="badge badge-pending">2-3 weeks to start</span>
+            </div>
+            <p>Current state: bare minimum, frustrating for AMs, high learning curve, bugs.</p>
+            <ul>
+                <li>Have mockups from Krell and Engineering (prepared by referencing competitor platforms)</li>
+                <li>Will learn more about UI/UX and then conclude the final design</li>
+                <li>Goal: competitive parity, better workflows (onboarding, launching, management)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <!-- Summary -->
+        <div class="summary-box">
+            <h3 style="margin-top:0; color:#2c5282;">Summary</h3>
+            <div class="two-col">
+                <div>
+                    <h4 style="color:#276749; margin-top:8px;">Ready</h4>
+                    <ul>
+                        <li>All 11 features developed & deployed</li>
+                        <li>Platform functional end-to-end</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:#c53030; margin-top:8px;">Blocking/Constraining</h4>
+                    <ul>
+                        <li>KW Research quality → scale bottleneck</li>
+                        <li>Test budget → can't validate features</li>
+                        <li>CVR accuracy → affects bid optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discussion -->
+        <div class="discussion">
+            <h2>Discussion Points</h2>
+            <ol>
+                <li><strong>Test Budget:</strong> Proceed with subsidy program?</li>
+                <li><strong>Rollout Pace:</strong> Accept KW bottleneck or wait?</li>
+                <li><strong>Resources:</strong> Additional support needed?</li>
+            </ol>
+        </div>
+
+        <div class="footer">
+            Document Version: 2.0 Concise (Feb 2, 2026)
+        </div>
+    </div>
+</body>
+</html>

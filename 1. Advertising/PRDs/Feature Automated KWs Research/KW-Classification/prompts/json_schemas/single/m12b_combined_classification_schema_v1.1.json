@@ -1,0 +1,98 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_12b_CombinedClassification_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "step1_hard_constraint": {
+          "type": "object",
+          "properties": {
+            "violated": {
+              "type": "boolean",
+              "description": "Whether the keyword violates any hard constraint"
+            },
+            "violated_constraint": {
+              "type": ["string", "null"],
+              "description": "The hard constraint that was violated, or null if none"
+            },
+            "reasoning": {
+              "type": "string",
+              "description": "Explanation of the hard constraint check"
+            }
+          },
+          "required": ["violated", "violated_constraint", "reasoning"],
+          "additionalProperties": false
+        },
+        "step2_product_type": {
+          "type": ["object", "null"],
+          "properties": {
+            "same_type": {
+              "type": "boolean",
+              "description": "Whether keyword asks for the same product type"
+            },
+            "keyword_product_type": {
+              "type": "string",
+              "description": "The product type detected from the keyword"
+            },
+            "reasoning": {
+              "type": "string",
+              "description": "Explanation of the product type comparison"
+            }
+          },
+          "required": ["same_type", "keyword_product_type", "reasoning"],
+          "additionalProperties": false,
+          "description": "Product type analysis, or null if stopped at Step 1"
+        },
+        "step3_primary_use": {
+          "type": ["object", "null"],
+          "properties": {
+            "same_use": {
+              "type": "boolean",
+              "description": "Whether the keyword's product serves the same primary use"
+            },
+            "reasoning": {
+              "type": "string",
+              "description": "Explanation of the primary use comparison"
+            }
+          },
+          "required": ["same_use", "reasoning"],
+          "additionalProperties": false,
+          "description": "Primary use analysis, or null if stopped earlier"
+        },
+        "step4_complementary": {
+          "type": ["object", "null"],
+          "properties": {
+            "used_together": {
+              "type": "boolean",
+              "description": "Whether the products are commonly used together"
+            },
+            "relationship": {
+              "type": ["string", "null"],
+              "description": "Description of how products are used together"
+            },
+            "reasoning": {
+              "type": "string",
+              "description": "Explanation of the complementary check"
+            }
+          },
+          "required": ["used_together", "relationship", "reasoning"],
+          "additionalProperties": false,
+          "description": "Complementary check, or null if classification was determined earlier"
+        },
+        "relevancy": {
+          "type": "string",
+          "enum": ["R", "S", "C", "N"],
+          "description": "Final relevancy: R (Relevant), S (Substitute), C (Complementary), N (Negative)"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        }
+      },
+      "required": ["step1_hard_constraint", "step2_product_type", "step3_primary_use", "step4_complementary", "relevancy", "confidence"],
+      "additionalProperties": false
+    }
+  }
+}

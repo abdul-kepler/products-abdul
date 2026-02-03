@@ -1,0 +1,145 @@
+# Improvement History - Tracks suggestions per version
+# Updated automatically after each evaluation run
+
+version: "1.0"
+last_updated: "2026-01-20"
+
+modules:
+  M01:
+    versions:
+      v1:
+        evaluation:
+          date: "2026-01-19"
+          pass_rate: 30.0
+          model: gpt-4o-mini
+          data_source: "M01_ExtractOwnBrandEntities_v1_150126_1.csv"
+          rubric_breakdown:
+            Brand Extracted: 40%
+            No Hallucinated Brand: 20%
+            No Product Words in Brand: 30%
+            Amazon Test Applied: 20%
+            No Duplicate Entities: 40%
+        suggestions:
+          - rubric: "Brand Extracted"
+            issue: "Model misses brand variations and sub-brands"
+            suggestion: "Add explicit examples of brand extraction patterns"
+            priority: high
+            status: applied
+            applied_in: v2
+          - rubric: "Amazon Test Applied"
+            issue: "Model doesn't consistently apply Amazon search test"
+            suggestion: "Add step-by-step Amazon Test instructions"
+            priority: high
+            status: applied
+            applied_in: v2
+
+      v2:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 45.0
+          model: gpt-4o
+          data_source: "M01_ExtractOwnBrandEntities_v2_190126_1.csv"
+          rubric_breakdown:
+            Brand Extracted: 60%
+            No Hallucinated Brand: 50%
+            No Product Words in Brand: 40%
+            Amazon Test Applied: 30%
+            No Duplicate Entities: 45%
+        applied_from_v1:
+          - "Added explicit examples of brand extraction patterns"
+          - "Added step-by-step Amazon Test instructions"
+        improvement_vs_previous: "+15%"
+        suggestions:
+          - rubric: "No Hallucinated Brand"
+            issue: "Model extracts sub-brand parts separately (Vibe from Vibe Beam)"
+            suggestion: "Add rule: if sub-brand fails Amazon Test, skip ENTIRE sub-brand"
+            priority: high
+            status: applied
+            applied_in: v3
+          - rubric: "No Product Words in Brand"
+            issue: "AirPods extracted as brand instead of product word"
+            suggestion: "Add AirPods, iPhone, iPad to product words exclusion list"
+            priority: medium
+            status: applied
+            applied_in: v3
+
+      v3:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 70.0
+          model: gpt-4o-mini
+          data_source: "M01_V2_ExtractOwnBrandEntities_v3_190126_1.csv"
+          rubric_breakdown:
+            Brand Extracted: 70%
+            No Hallucinated Brand: 40%
+            No Product Words in Brand: 90%
+            Amazon Test Applied: 70%
+            No Duplicate Entities: 80%
+        applied_from_v2:
+          - "Added rule: skip entire sub-brand if fails Amazon Test"
+          - "Added Apple products to exclusion list"
+        improvement_vs_previous: "+25%"
+        suggestions:
+          - rubric: "No Hallucinated Brand"
+            issue: "Still extracting partial sub-brands in some cases"
+            suggestion: "Add more examples of sub-brand handling in prompt"
+            priority: high
+            status: pending
+          - rubric: "No Duplicate Entities"
+            issue: "Some duplicate variations appearing"
+            suggestion: "Add deduplication step before output"
+            priority: medium
+            status: pending
+
+      v3_gpt5:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 60.0
+          model: gpt-5
+          data_source: "M01_V3_ExtractOwnBrandEntities_v3_190126_gpt5.csv"
+          rubric_breakdown:
+            Brand Extracted: 40%
+            No Hallucinated Brand: 40%
+            No Product Words in Brand: 70%
+            Amazon Test Applied: 50%
+            No Duplicate Entities: 100%
+        note: "Same v3 prompt tested with gpt-5. Lower performance except No Duplicate Entities."
+        suggestions:
+          - rubric: "Brand Extracted"
+            issue: "GPT-5 more conservative, misses valid brands"
+            suggestion: "Prompt may need adjustment for gpt-5 behavior"
+            priority: medium
+            status: pending
+
+  M01A:
+    versions:
+      v1:
+        evaluation:
+          date: "2026-01-19"
+          pass_rate: 90.0
+          model: gpt-4o-mini
+          data_source: "M01A_ExtractOwnBrandVariations_v1_150126_1.csv"
+        suggestions:
+          - rubric: "Variations Generated"
+            issue: "Some edge cases missed"
+            suggestion: "Add more typo patterns"
+            priority: low
+            status: applied
+            applied_in: v2
+
+      v2:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 85.0
+          model: gpt-5
+          data_source: "M01A_V2_ExtractOwnBrandVariations_v2_190126_gpt5.csv"
+        applied_from_v1:
+          - "Added more typo patterns"
+        improvement_vs_previous: "-5%"
+        note: "Regression with gpt-5, may need prompt adjustment"
+        suggestions:
+          - rubric: "No Duplicates"
+            issue: "GPT-5 generates some duplicates"
+            suggestion: "Add explicit deduplication instruction"
+            priority: medium
+            status: pending

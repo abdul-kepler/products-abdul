@@ -1,0 +1,3586 @@
+{
+  "experiment": "V2",
+  "module": "m02",
+  "model": "gpt-4o",
+  "rubrics_version": "v3",
+  "timestamp": "2026-01-16T14:08:32.036498",
+  "data_source": "/Users/katerynadavidenko/AI-Projects/KW-Classification/experiment_results/20260115_v1_01/M02_ClassifyOwnBrandKeywords/M02_ClassifyOwnBrandKeywords.csv",
+  "summary": {
+    "pass": 104,
+    "fail": 1,
+    "error": 0
+  },
+  "pass_rate": 99.04761904761905,
+  "evaluations": [
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'ipod headphones' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which matches the expected output. Therefore, it meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities found within the input 'ipod headphones', thus avoiding any partial matches within words. This aligns with the rubric's requirement to reject partial string matches within words and only match on whole words or clear brand references.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion in the input data. It did not match any similar-sounding brands to 'ipod headphones', and the output reasoning confirms that no brand entity was found, indicating a character-by-character verification was performed.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the ASIN patterns and PPC terms return null, and there is no indication of a brand match within the ASIN string. The output correctly identifies that no brand entity is found in the keyword 'ipod headphones', which aligns with the rubric's requirements.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that there is no exact match for any brand entity in the keyword 'ipod headphones'. The output meets the PASS conditions as it did not assume any close spelling or plural/singular variations as a match.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity found in 'ipod headphones', which aligns with the expected output of 'branding_scope_1': null. Therefore, the output meets the PASS conditions as there is no incorrect labeling of match_type.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "ipod headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'ipod headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'samsung headphones' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities found within the input 'samsung headphones', thus avoiding any partial matches within words. This aligns with the rubric's requirement to reject partial string matches within words.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion in the input data related to 'samsung headphones'. It did not confuse any similar-sounding brands, and the output reasoning supports this by stating that no brand entity was found in the keyword. The module output aligns with the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the 'branding_scope_1' is null, indicating no ASIN patterns or PPC terms were detected. The reasoning provided confirms that no brand entity was found in the keyword 'samsung headphones', aligning with the rubric's requirement for non-brand patterns to return null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that there is no exact match for any of the brand entities in the keyword 'samsung headphones'. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identified that there is no brand entity from the provided list in the keyword 'samsung headphones', resulting in a null branding_scope_1. This matches the expected output and does not violate any PASS or FAIL conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "samsung headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'samsung headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'beats over ear headphones' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list found in the keyword 'beats over ear headphones'. It did not match any partial strings within words, thus meeting the rubric's requirement for word boundary handling.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion in the input data. It did not match any similar-sounding brands to 'beats over ear headphones', and the output reasoning confirms a character-by-character verification was performed, as it states no brand entity was found in the generic product search.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN or PPC terms were detected. The reasoning confirms no brand entity was found in the keyword, aligning with the rubric's requirement for non-brand patterns to be rejected.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities within the keyword. The module output correctly identified that none of the brand entities exactly match the keyword 'beats over ear headphones', thus meeting the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity from the provided list in the keyword 'beats over ear headphones', thus correctly leaving 'branding_scope_1' as null. This meets the PASS conditions as there is no incorrect labeling of match_type.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "beats over ear headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'beats over ear headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variation. The module correctly classified 'skull candy' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there is no brand entity found in 'skull candy', which means it did not match any partial string within words or without checking word boundaries. This aligns with the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no confusion between 'skull candy' and any of the similar-sounding brands listed. It did not match 'skull candy' to any of the brand entities, and the reasoning provided indicates a character-by-character verification was performed, as it stated no brand entity was found in 'skull candy'. This meets the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the 'branding_scope_1' is null, indicating that ASIN patterns and PPC terms returned null. There is no indication of a returned OB for ASIN patterns or PPC terms, and no brand was matched inside the ASIN string.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there is no exact character match between the brand entities and the keyword 'skull candy'. The rubric requires exact substring matches, and since 'skull candy' does not match any of the provided brand entities, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity from the 'brand_entities' list found in the keyword 'skull candy', and thus does not assign an incorrect match_type. This meets the PASS conditions as there is no mismatch between the match_type and the list from which the term came.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skull candy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skull candy'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'skullcandy headphones' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which aligns with the expected output and the rubric's PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that partial string matches within words are rejected and only whole word or clear brand references are matched. The module output correctly identified that there is no brand entity found in 'skullcandy headphones', which does not contain any of the brand entities listed. Therefore, it meets the PASS conditions by not matching any partial strings or incorrect brand references.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion with 'skullcandy headphones', as none of the brand entities listed were similar to 'skullcandy'. The module did not confuse any similar-sounding brands and performed a character-by-character verification, as evidenced by the confidence and reasoning provided.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the ASIN patterns and PPC terms return null, and there is no indication of a brand match inside the ASIN string. The output correctly identifies that no brand entity is found in the keyword 'skullcandy headphones', which aligns with the rubric's requirements.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that there is no match between the brand entities and the keyword 'skullcandy headphones'. The output meets the PASS conditions as it did not assume any close spelling or singular/plural matches.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no brand entity from the input data is incorrectly labeled. The module output correctly identifies that there is no brand entity from the input data present in the keyword 'skullcandy headphones', thus meeting the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy headphones"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'skullcandy headphones'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'heart earbuds' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities found in 'heart earbuds', which means it did not match any partial strings within words. This aligns with the rubric's requirement to reject partial matches and only match on whole words or clear brand references.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion in the input data related to 'heart earbuds'. It did not match any similar-sounding brands or assume phonetic similarity as a match, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it correctly returns null for the branding_scope_1, indicating no ASIN patterns or PPC terms were found. The reasoning provided confirms that no brand entity was found in the keyword 'heart earbuds', aligning with the rubric's requirement for non-brand patterns to be rejected.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities within the keyword. The module output correctly identified that no brand entity from the list is present in the keyword 'heart earbuds', which meets the PASS conditions as there is no substring match. The module's reasoning aligns with the rubric's requirements.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity found in 'heart earbuds', which aligns with the expected output of null for branding_scope_1. Therefore, the output meets the PASS conditions as there is no incorrect labeling of match_type.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "heart earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'heart earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variation. The keyword 'skullcandy' does not contain any of the brand entities listed, so the module correctly classified it as null. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which aligns with the expected output and the rubric's PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that 'skullcandy' does not match any of the brand entities provided, as it is not a partial match within any word or brand entity. The output correctly rejected any partial matches and adhered to word boundary handling, meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "FAIL",
+      "reasoning": "The module output incorrectly states that 'skullcandy' was verified against itself, which is nonsensical. The task was to verify against the provided brand entities, not the keyword itself. The reasoning does not demonstrate character-by-character verification against the brand entities, nor does it address potential similar-sounding brand confusion. Therefore, it does not meet the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that ASIN patterns and PPC terms return null. The module output 'branding_scope_1' as null, which meets the PASS condition. There is no indication of ASIN patterns or PPC terms returning OB, and no brand was matched inside an ASIN string. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for the keyword 'skullcandy' within the provided brand entities. The module correctly identified that 'skullcandy' is not present in any of the brand entities, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that the term is correctly identified as brand_variation, sub_brand, or manufacturer. The module output correctly identifies that 'skullcandy' is not found in the brand_entities list, and thus no match_type is assigned, which aligns with the expected output. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "skullcandy"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.99,
+        "reasoning": "Verified: 'skullcandy' (s-k-u-l-l-c-a-n-d-y) not found in 'skullcandy'. No brand entity found.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'raycon bluetooth earbuds' as null, as it does not contain any of the specified brand entities. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list found in the input keyword 'raycon bluetooth earbuds'. It did not match any partial strings within words, adhering to the word boundary handling requirement.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion with 'raycon bluetooth earbuds' as none of the brand entities listed match 'raycon'. The module did not confuse any similar-sounding brands and performed a character-by-character verification, as evidenced by the confidence and reasoning provided.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN or PPC terms were detected. The reasoning confirms no brand entity was found in the keyword, aligning with the rubric's requirement to reject non-brand patterns.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that none of the brand entities in the input data match the keyword 'raycon bluetooth earbuds'. The output meets the PASS conditions as it did not assume any close spelling matches or incorrect singular/plural matches.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity from the provided list in the keyword 'raycon bluetooth earbuds', thus correctly leaving 'branding_scope_1' as null. This meets the PASS conditions as there is no incorrect labeling of match_type.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon bluetooth earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon bluetooth earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly identified that 'earbuds wireless bluetooth raycon' does not contain any of the specified brand entities and classified it as null, meeting the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which aligns with the expected output and the rubric's PASS condition. Additionally, the reasoning provided by the module supports this by stating that no brand entity from the list was found in the keyword, and 'raycon' is a different brand not in the list.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that partial string matches within words are rejected and only whole word or clear brand references are matched. The module output correctly identified that 'raycon' is not a brand entity from the provided list and did not match any partial strings within words. Therefore, it meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that 'raycon' is a different brand not present in the provided list of brand entities, thus avoiding any confusion with similar-sounding brands. The output did not assume phonetic similarity as a match and performed character-by-character verification, meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN or PPC terms were incorrectly identified. The reasoning confirms that no brand entity from the list was found in the keyword, and 'raycon' is acknowledged as a different brand, which aligns with the rubric's requirements.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that none of the brand entities in the list match the keyword 'earbuds wireless bluetooth raycon'. The module output meets the PASS conditions as it did not assume any close spelling matches or incorrect singular/plural matches.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there is no match between the brand entities provided and the keyword 'earbuds wireless bluetooth raycon'. The keyword 'raycon' is not part of the brand entities list, and the module output correctly reflects this by not assigning a match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth raycon"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth raycon'. 'raycon' is a different brand not in our list.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'alexa earbuds wireless 2024' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list present in the input keyword 'alexa earbuds wireless 2024'. It did not match any partial strings within words, thus adhering to the word boundary handling criterion.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion in the input data. It did not match any similar-sounding brands or assume phonetic similarity as a match. The output aligns with the rubric's PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the ASIN patterns and PPC terms return null, and there is no indication of a brand match within the ASIN string. The output correctly identifies that no brand entity is found in the keyword, aligning with the rubric requirements.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that none of the brand entities in the input data exactly match any part of the keyword 'alexa earbuds wireless 2024'. Therefore, the output meets the PASS conditions as no incorrect matches were made.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity in the keyword 'alexa earbuds wireless 2024', which aligns with the expected output of 'branding_scope_1': null. Therefore, the output meets the PASS conditions as there is no incorrect labeling of match_type.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "alexa earbuds wireless 2024"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'alexa earbuds wireless 2024'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'raycon earbuds wireless' as null, as it does not contain any of the specified brand entities. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which aligns with the expected output and the rubric's PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list found in the input keyword 'raycon earbuds wireless'. It did not match any partial strings within words, thus meeting the rubric's requirement for word boundary handling.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion with the input 'raycon earbuds wireless', as none of the brand entities listed match 'raycon'. The module did not confuse similar-sounding brands and performed character-by-character verification, as evidenced by the confidence and reasoning provided.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were detected. The reasoning confirms no brand entity was found in the keyword, aligning with the rubric's requirement for non-brand patterns to be rejected.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that none of the brand entities exactly match the keyword 'raycon earbuds wireless'. Therefore, the output meets the PASS conditions as no incorrect matches were made.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no brand entity is incorrectly labeled. The module output correctly identified that there is no brand entity from the provided list in the keyword 'raycon earbuds wireless', which aligns with the expected output. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "raycon earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'raycon earbuds wireless'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'bluetooth earbuds samsung' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list present in the keyword 'bluetooth earbuds samsung'. It did not match any partial strings within words, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion in the input data. It did not match any similar-sounding brands or assume phonetic similarity as a match. The output aligns with the rubric's PASS conditions as it correctly rejected similar but different brands and performed character-by-character verification.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the ASIN patterns and PPC terms return null, and there is no indication of a brand match within the ASIN string. The output correctly identifies the keyword as a generic product search without brand entities.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that none of the brand entities in the input data match the keyword 'bluetooth earbuds samsung'. The output meets the PASS conditions as it did not assume any close spelling or singular/plural variations as matches.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no brand entity is incorrectly labeled. The module output correctly identifies that there is no brand entity in the keyword 'bluetooth earbuds samsung', which aligns with the expected output of 'branding_scope_1': null. Therefore, the output meets the PASS conditions as there is no incorrect labeling of brand entities.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "bluetooth earbuds samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'bluetooth earbuds samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified the keyword 'earbuds wireless bluetooth samsung' as null, as it does not contain any of the specified brand entities. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list found within the input keyword 'earbuds wireless bluetooth samsung'. It did not match any partial strings within words, thus meeting the rubric's requirement to reject partial matches and only match on whole words or clear brand references.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities in the keyword 'earbuds wireless bluetooth samsung', which is a generic product search. It did not confuse any similar-sounding brands or assume phonetic similarity as a match, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that ASIN patterns and PPC terms return null, and the module output meets these conditions by returning null for 'branding_scope_1'. There is no indication of ASIN patterns or PPC terms returning OB, and the reasoning confirms no brand entity was found in the keyword, aligning with the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities within the keyword. The module output correctly identified that none of the brand entities ('JBL', 'JBL Vibe', etc.) are present in the keyword 'earbuds wireless bluetooth samsung'. Therefore, the output meets the PASS conditions as there are no incorrect matches or assumptions of close spelling as a match.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate based on the lists provided. The module output correctly identifies that there is no brand entity from the input data present in the keyword 'earbuds wireless bluetooth samsung', which is a generic product search. Therefore, the branding_scope_1 is correctly set to null, meeting the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "earbuds wireless bluetooth samsung"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'earbuds wireless bluetooth samsung'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variation. The module correctly classified 'tozo wireless earbuds' as null, as it does not contain any of the brand entities listed. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has 'branding_scope_1' as null, which aligns with the expected output and meets the PASS condition for when classification is null.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand entities from the list present in the keyword 'tozo wireless earbuds'. It did not match any partial strings within words, thus meeting the rubric's requirement for word boundary handling.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there was no brand confusion with 'tozo wireless earbuds' as it did not match any of the similar-sounding brands listed. The output did not assume phonetic similarity as a match and correctly rejected similar but different brands, meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN or PPC terms were detected. The reasoning confirms no brand entity was found in the keyword, aligning with the rubric's requirement to reject non-brand patterns.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for brand entities, and the module correctly identified that none of the brand entities in the input data match the keyword 'tozo wireless earbuds'. The output meets the PASS conditions as it did not assume any close spelling matches or incorrect singular/plural matches.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, specifically that no incorrect match_type is assigned. The module output correctly identifies that there is no brand entity from the provided list in the keyword 'tozo wireless earbuds', thus correctly leaving 'branding_scope_1' as null. This meets the PASS conditions as there is no incorrect labeling of match_type.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "tozo wireless earbuds"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.97,
+        "reasoning": "Verified: No brand entity found in 'tozo wireless earbuds'. Generic product search.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variation. The module correctly identified that 'jlab earbuds wireless' does not contain any of the specified brand entities and classified it as null, meeting the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output correctly has 'branding_scope_1' as null, which aligns with the expected output and the rubric's PASS conditions. There is no matched_term in the variations list, and the classification is null, so the output meets the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there is no exact match or partial match of the brand entities within the keyword 'jlab earbuds wireless'. It did not incorrectly match 'JBL' or any other brand entity within another word, thus adhering to the word boundary handling criterion.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that 'jlab earbuds wireless' does not match any of the provided brand entities, including similar-sounding ones like 'JBL'. It performed a character-by-character verification and did not assume phonetic similarity as a match, meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that ASIN patterns and PPC terms return null, and the module output meets this condition by returning 'branding_scope_1' as null. There is no indication of ASIN patterns or PPC terms returning OB, and the keyword does not match any brand entity, thus satisfying the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for the brand entities within the keyword. The module output correctly identifies that there is no exact substring match between the keyword 'jlab earbuds wireless' and any of the provided brand entities. Therefore, the output meets the PASS conditions as it adheres to the requirement of exact character matching.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the match_type field is accurate, and the module output correctly identifies that there is no match between the keyword 'jlab earbuds wireless' and the provided brand entities. Since no match was found, the branding_scope_1 is correctly set to null, which aligns with the PASS conditions.",
+      "input": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ],
+        "keyword": "jlab earbuds wireless"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.95,
+        "reasoning": "Verified: No brand entity found in 'jlab earbuds wireless'. The keyword does not contain any exact substring match to the provided brand entities.",
+        "output_ob": ""
+      }
+    }
+  ]
+}

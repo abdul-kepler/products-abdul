@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Judge Report - M10</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .tab.active {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: #00d9ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .rubric-title {
+            font-weight: 600;
+        }
+        .rubric-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .stat {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .stat.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .stat.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+            transition: width 0.3s;
+        }
+        .rubric-content {
+            display: none;
+            padding: 20px;
+        }
+        .rubric-content.open {
+            display: block;
+        }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass {
+            border-left-color: #00ff88;
+        }
+        .eval-item.fail {
+            border-left-color: #ff4757;
+        }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id {
+            font-family: monospace;
+            color: #00d9ff;
+        }
+        .verdict {
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+        .verdict.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .verdict.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .reasoning {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #aaa;
+            white-space: pre-wrap;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .output-box.expected h4 {
+            color: #00ff88;
+        }
+        .output-box.actual h4 {
+            color: #00d9ff;
+        }
+        .output-content {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .input-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .input-section h4 {
+            font-size: 0.8rem;
+            color: #ffa502;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .input-content {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .input-field {
+            margin-bottom: 8px;
+        }
+        .input-field strong {
+            color: #ccc;
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible-header:hover {
+            opacity: 0.8;
+        }
+        .collapsible-content {
+            display: none;
+        }
+        .collapsible-content.open {
+            display: block;
+        }
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+        .toggle-icon.open {
+            transform: rotate(90deg);
+        }
+        .match-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .match-indicator.exact {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .match-indicator.partial {
+            background: rgba(255, 165, 2, 0.2);
+            color: #ffa502;
+        }
+        .match-indicator.mismatch {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .match-details {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        .match-details .overlap {
+            color: #00ff88;
+        }
+        .match-details .missing {
+            color: #ff4757;
+        }
+        .match-details .extra {
+            color: #ffa502;
+        }
+        .sample-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .sample-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .sample-content {
+            display: none;
+            padding: 15px;
+        }
+        .sample-content.open {
+            display: block;
+        }
+        .mini-eval {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .mini-eval:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .detail-modal.open {
+            display: block;
+        }
+        .modal-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LLM Judge Report - M10</h1>
+            <p class="meta">Model: gpt-4o-mini | Generated: 2026-01-14 00:48:59</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">30</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">4</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">26</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">13.3%</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('by-rubric')">By Rubric</div>
+            <div class="tab" onclick="showTab('by-sample')">By Sample</div>
+        </div>
+
+        <div id="by-rubric" class="tab-content active">
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M10_output_clean')">
+                    <span class="rubric-title">Output Clean</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">10 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                        <span>0%</span>
+                    </div>
+                </div>
+                <div id="M10_output_clean" class="rubric-content">
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output for `validated_use` is &quot;audio listening for music and calls.&quot;
+2. According to the rubric, the output must be a clean 3-6 word phrase that describes the function without any adjectives, features, or marketing language.
+3. The phrase &quot;audio listening for music and calls&quot; contains the word &quot;audio,&quot; which can be considered a descriptor of the type of listening, and &quot;music and calls,&quot; which specifies the contexts in which the audio is used. This specificity introduces elements that could be seen as features or use cases rather than a simple function.
+4. The expected output, &quot;Listening to audio,&quot; is a more straightforward and clean description that adheres to the rubric&#x27;s requirements, lacking any adjectives or marketing language.
+5. Therefore, the module output does not meet the criteria for being clean and free of adjectives or features.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output for `validated_use` is &quot;portable drink hydration storage.&quot;
+2. According to the rubric, the output must be a clean 3-6 word phrase that describes the function without any adjectives, features, or marketing language.
+3. The phrase &quot;portable drink hydration storage&quot; contains the adjective &quot;portable,&quot; which violates the rubric&#x27;s condition of having no adjectives.
+4. Additionally, the term &quot;storage&quot; could imply a feature or function that is not purely descriptive of the use case, which further complicates its adherence to the rubric.
+5. The expected output, &quot;Carrying drinks for hydration,&quot; is a clean phrase that accurately describes the function without any adjectives or marketing language.
+
+Given these points, the module output does not meet the criteria for being clean and free of adjectives or features.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This suggests that the output did not successfully generate a valid response.
+2. The expected output specifies that the validated use should be &quot;Kitchen sink item organization,&quot; which is a clean 3-6 word phrase describing the function without any adjectives, features, or marketing language.
+3. Since the module output does not provide a valid `validated_use` and instead returns an error message, it fails to meet the rubric criterion of being clean and free from adjectives, features, or marketing terms.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This suggests that the output did not successfully generate a valid response.
+2. The expected output specifies that the validated use should be &quot;Cold weather body warmth,&quot; which is a clean 3-6 word phrase describing the function of the product without any adjectives, features, or marketing language.
+3. Since the module output did not provide a valid response and instead returned an error message, it cannot be assessed for compliance with the rubric criterion regarding the cleanliness of the validated use.
+4. The absence of a valid output means that we cannot confirm whether it meets the PASS conditions or if it contains any FAIL conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This suggests that the output did not successfully generate a valid response.
+2. The expected output, which is the ground truth reference, specifies that the validated use should be &quot;Holding phone in place.&quot; This is a clean, concise phrase that meets the rubric&#x27;s criteria.
+3. Since the module output does not provide any valid content for evaluation, it cannot be assessed against the rubric&#x27;s conditions for passing or failing.
+4. The absence of a valid output means that we cannot determine if it contains adjectives, features, or marketing language, as required by the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This means that the output does not provide a valid response for evaluation.
+2. The expected output specifies that the validated use should be a clean phrase describing the function, specifically &quot;Making ice cubes.&quot;
+3. Since the module output does not contain any valid information regarding the validated use, it cannot be assessed for compliance with the rubric criterion.
+4. The absence of a valid output means that we cannot determine if it contains adjectives, features, or marketing language, as there is no content to analyze.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This means that the output does not provide a valid response for evaluation.
+2. The expected output specifies a validated use of &quot;Drawing lines around eyes,&quot; which is a clean 5-word phrase that describes the function without any adjectives, features, or marketing language.
+3. Since the module output does not contain any usable information regarding the validated use, it cannot be assessed against the rubric criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This means that the output does not provide a valid response for evaluation.
+2. The expected output specifies that the validated use should be &quot;Heat protection when cooking,&quot; which is a clean 3-6 word phrase describing the function without any adjectives, features, or marketing language.
+3. Since the module output does not contain any usable information regarding the validated use, it cannot be assessed for compliance with the rubric criterion.
+4. The absence of a valid output means that we cannot determine if it passes or fails based on the provided conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output for `validated_use` is &quot;food serving tray use case&quot;.
+2. According to the rubric, a valid output must be a clean 3-6 word phrase that describes the function without any adjectives, features, or marketing language.
+3. The phrase &quot;food serving tray use case&quot; contains the term &quot;use case,&quot; which is not a simple description of the function but rather a term that implies a specific application or context, which can be considered as a feature or marketing language.
+4. The phrase does not meet the requirement of being a straightforward description of the function, as it is longer than necessary and includes terminology that could be seen as technical or promotional.
+5. The expected output, &quot;Food and drink serving,&quot; is a clear and concise description of the function without any additional qualifiers or marketing language.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_output_clean_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M10_output_clean_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_output_clean_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_output_clean_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_output_clean_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This means that the output does not provide a valid response for evaluation.
+2. The expected output specifies that the validated use should be &quot;Action figure play,&quot; which is a clean 3-6 word phrase describing the function without any adjectives, features, or marketing language.
+3. Since the module output does not contain any usable information regarding the validated use, it cannot be assessed for compliance with the rubric criterion.
+4. The absence of a valid output means that we cannot determine if it passes or fails based on the provided conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M10_word_count')">
+                    <span class="rubric-title">Word Count 3-6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">3 Pass</span>
+                        <span class="stat fail">7 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 30.0%"></div>
+                        </div>
+                        <span>30%</span>
+                    </div>
+                </div>
+                <div id="M10_word_count" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The criterion states that the phrase for &quot;validated_use&quot; must contain between 3 to 6 words.
+2. The module output provided is: &quot;audio listening for music and calls&quot;.
+3. To determine the word count, I will count the individual words in the phrase:
+   - &quot;audio&quot; (1)
+   - &quot;listening&quot; (2)
+   - &quot;for&quot; (3)
+   - &quot;music&quot; (4)
+   - &quot;and&quot; (5)
+   - &quot;calls&quot; (6)
+4. The total word count is 6, which is within the acceptable range of 3 to 6 words as specified in the PASS conditions of the rubric.
+5. Therefore, the module output meets the requirement of the rubric criterion.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The criterion states that the phrase in the &quot;validated_use&quot; field must contain between 3 to 6 words.
+2. The module output provided is &quot;portable drink hydration storage.&quot;
+3. I will count the number of words in this phrase:
+   - &quot;portable&quot; (1)
+   - &quot;drink&quot; (2)
+   - &quot;hydration&quot; (3)
+   - &quot;storage&quot; (4)
+4. The total word count is 4, which falls within the required range of 3 to 6 words.
+5. Since the output meets the condition of having a word count between 3 and 6, it satisfies the PASS condition.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the phrase &quot;validated_use&quot; to contain between 3 to 6 words.
+2. The expected output specifies that &quot;validated_use&quot; should be &quot;Kitchen sink item organization,&quot; which contains 5 words.
+3. However, the module output indicates an error: &quot;Failed to parse output,&quot; which means it did not successfully provide a valid &quot;validated_use&quot; phrase.
+4. Since the module output does not contain any valid phrase for &quot;validated_use,&quot; it cannot be evaluated for word count.
+5. Therefore, it fails to meet the requirement of providing a phrase that is 3-6 words long.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the phrase &quot;validated_use&quot; to contain between 3 to 6 words.
+2. The expected output specifies that &quot;validated_use&quot; is &quot;Cold weather body warmth,&quot; which consists of 5 words.
+3. However, the module output indicates an error: &quot;Failed to parse output,&quot; which means it did not successfully provide a valid &quot;validated_use&quot; phrase.
+4. Since the module output does not contain a valid phrase at all, it cannot be evaluated for word count.
+
+Given that the output fails to provide any usable phrase, it does not meet the conditions for passing the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion specifies that the phrase for &quot;validated_use&quot; must contain between 3 to 6 words.
+2. The module output provided is: `{&quot;error&quot;: &quot;Failed to parse output&quot;}`. This indicates that the output did not successfully generate a valid response.
+3. Since the output does not contain a valid &quot;validated_use&quot; phrase, we cannot assess the word count of the intended phrase.
+4. The expected output, which is `{&quot;validated_use&quot;: &quot;Holding phone in place&quot;}`, contains 5 words, which would pass the criterion if it were the output.
+5. However, since the actual output is an error message and does not provide a valid phrase, it fails to meet the requirement of having a phrase with 3-6 words.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the phrase &quot;validated_use&quot; to contain between 3 to 6 words.
+2. The module output provided is: `{&quot;error&quot;: &quot;Failed to parse output&quot;}`. This output does not contain a &quot;validated_use&quot; phrase at all.
+3. Since there is no valid phrase present, it cannot be evaluated for word count.
+4. The absence of a phrase means it does not meet the minimum requirement of 3 words.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the phrase &quot;validated_use&quot; to contain between 3 to 6 words.
+2. The module output provided is: `{&quot;error&quot;: &quot;Failed to parse output&quot;}`. This indicates that the output did not successfully generate a valid response.
+3. Since there is no valid &quot;validated_use&quot; phrase present in the output, we cannot assess its word count.
+4. The expected output, which is `{&quot;validated_use&quot;: &quot;Drawing lines around eyes&quot;}`, contains 5 words, which would pass the criterion if it were present.
+5. However, because the actual output does not contain a valid phrase, it fails to meet the requirement of having a &quot;validated_use&quot; phrase with the specified word count.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires the phrase &quot;validated_use&quot; to contain between 3 to 6 words.
+2. The expected output specifies that &quot;validated_use&quot; should be &quot;Heat protection when cooking,&quot; which contains 5 words.
+3. However, the module output states &quot;Failed to parse output,&quot; indicating that it did not successfully generate a valid &quot;validated_use&quot; phrase.
+4. Since the module output does not provide a valid phrase for &quot;validated_use,&quot; it cannot be assessed for word count.
+5. As a result, the output fails to meet the requirement of providing a phrase that contains 3-6 words.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion specifies that the phrase for &quot;validated_use&quot; must contain between 3 to 6 words.
+2. The module output provided is &quot;food serving tray use case.&quot;
+3. To determine the word count, I will count the number of words in the phrase:
+   - &quot;food&quot; (1 word)
+   - &quot;serving&quot; (2 words)
+   - &quot;tray&quot; (3 words)
+   - &quot;use&quot; (4 words)
+   - &quot;case&quot; (5 words)
+4. The total word count for the phrase &quot;food serving tray use case&quot; is 5 words.
+5. Since 5 words falls within the acceptable range of 3 to 6 words, the output meets the PASS condition.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_word_count_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M10_word_count_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_word_count_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_word_count_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_word_count_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion specifies that the phrase for &quot;validated_use&quot; must contain between 3 to 6 words.
+2. The module output provided is: `&quot;error&quot;: &quot;Failed to parse output&quot;`, which indicates that the output did not successfully generate a valid phrase for &quot;validated_use.&quot;
+3. Since the output does not contain any phrase at all, it cannot be evaluated for word count.
+4. The expected output, which is `&quot;validated_use&quot;: &quot;Action figure play&quot;`, contains 3 words, which would pass the criterion if it were present.
+5. However, because the module output failed to produce a valid phrase, it does not meet the conditions for passing.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M10_describes_function')">
+                    <span class="rubric-title">Describes Function</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">9 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 10.0%"></div>
+                        </div>
+                        <span>10%</span>
+                    </div>
+                </div>
+                <div id="M10_describes_function" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The criterion requires that the output describes what the product does, rather than what it is. The focus should be on the primary function or purpose of the product.
+2. The module output states &quot;audio listening for music and calls.&quot; This description indicates the primary function of the product, which is to allow users to listen to audio, specifically music and calls.
+3. The output answers the question &quot;what does this product do for the user?&quot; by clearly stating that it facilitates audio listening, which aligns with the PASS conditions of the rubric.
+4. The expected output, &quot;Listening to audio,&quot; is a more concise version of the same function described in the module output. However, the module output still effectively communicates the product&#x27;s purpose.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means the focus should be on the primary function or purpose of the product.
+2. The module output states &quot;portable drink hydration storage.&quot; This phrase suggests that the product is used for storing drinks that are intended for hydration, which aligns with the function of a water bottle.
+3. However, the term &quot;storage&quot; implies a passive role, focusing more on the containment aspect rather than the active use of the product for hydration. The expected output, &quot;Carrying drinks for hydration,&quot; emphasizes the action of carrying and the purpose of hydration, which is more aligned with the user&#x27;s interaction with the product.
+4. The module output does not clearly convey the active role of the product in facilitating hydration, which is a key aspect of its function. Instead, it leans towards describing the product&#x27;s capability to store drinks rather than its primary purpose of enabling hydration.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This means that the output does not provide any usable information regarding the product&#x27;s function.
+2. The expected output, which is &quot;Kitchen sink item organization,&quot; clearly describes what the product does for the user, aligning with the PASS conditions of the rubric.
+3. Since the module output fails to provide any description of the product&#x27;s function, it does not meet the criteria for passing.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means the output should focus on the primary function or purpose of the product.
+2. The expected output provides a clear description of the product&#x27;s function: &quot;Cold weather body warmth.&quot; This directly answers the question of what the product does for the user, which is to keep them warm in cold weather.
+3. The module output, however, states &quot;Failed to parse output,&quot; which indicates that it did not successfully provide any description of the product&#x27;s function. There is no information about what the product does, only an error message.
+4. Since the module output does not provide any valid description of the product&#x27;s function, it fails to meet the PASS conditions outlined in the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output indicates an error: &quot;Failed to parse output.&quot; This means that no valid output was generated for evaluation.
+2. The expected output, which is the ground truth reference, states that the validated use is &quot;Holding phone in place.&quot; This description clearly describes the function of the product, answering the question of what the product does for the user.
+3. Since the module output did not provide any usable information or description of the product&#x27;s function, it cannot be assessed against the rubric criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means the focus should be on the primary function or purpose of the product.
+2. The expected output states &quot;Making ice cubes,&quot; which clearly describes the function of the ice maker. It answers the question of what the product does for the user.
+3. The module output, however, states &quot;Failed to parse output,&quot; which indicates that it did not provide any valid description of the product&#x27;s function.
+4. Since the module output does not contain any information that describes the function of the product, it fails to meet the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means the focus should be on the primary function or purpose of the product.
+2. The expected output provided is &quot;Drawing lines around eyes,&quot; which clearly describes the function of the eyeliner pencil in a way that answers the question, &quot;What does this product do for the user?&quot;
+3. The module output, however, states &quot;Failed to parse output,&quot; which indicates that it did not provide any description of the product&#x27;s function at all.
+4. Since the module output does not contain any information that describes the function of the product, it fails to meet the PASS conditions outlined in the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means the focus should be on the primary function or purpose of the product.
+2. The expected output indicates that the validated use is &quot;Heat protection when cooking,&quot; which clearly describes the function of the oven mitts.
+3. However, the module output states &quot;Failed to parse output,&quot; which means it did not provide any usable information regarding the product&#x27;s function.
+4. Since the module output does not contain any description of what the product does for the user, it fails to meet the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means the focus should be on the primary function or purpose of the product.
+2. The module output states &quot;food serving tray use case.&quot; While it does mention &quot;food serving,&quot; it does not clearly articulate the primary purpose or function of the product in a user-centric manner.
+3. The expected output, &quot;Food and drink serving,&quot; directly answers the question of what the product does for the user, emphasizing its primary function.
+4. The module output is somewhat vague and does not fully capture the essence of the product&#x27;s use. It lacks clarity and specificity in describing how the product serves the user, which is essential for passing the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M10_describes_function_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M10_describes_function_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M10_describes_function_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M10_describes_function_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M10_describes_function_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that the output describes what the product does, rather than what it is. This means it should focus on the primary function or purpose of the product.
+2. The expected output states &quot;Action figure play,&quot; which clearly describes the function of the product as it relates to user engagement and interaction.
+3. The module output, however, states &quot;Failed to parse output,&quot; which indicates that it did not provide any usable information regarding the product&#x27;s function.
+4. Since the module output does not provide any description of what the product does for the user, it fails to meet the criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="by-sample" class="tab-content">
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0BQPGJ9LQ')">
+                    <span class="sample-id">B0BQPGJ9LQ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 66.66666666666666%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0BQPGJ9LQ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B0BQPGJ9LQ')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B0BQPGJ9LQ')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B0BQPGJ9LQ')">
+                        <span>Describes Function</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0BZYCJK89')">
+                    <span class="sample-id">B0BZYCJK89</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0BZYCJK89" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B0BZYCJK89')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B0BZYCJK89')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B0BZYCJK89')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0CJ4WZXQF')">
+                    <span class="sample-id">B0CJ4WZXQF</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0CJ4WZXQF" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B0CJ4WZXQF')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B0CJ4WZXQF')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B0CJ4WZXQF')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0D6YNWLTS')">
+                    <span class="sample-id">B0D6YNWLTS</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0D6YNWLTS" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B0D6YNWLTS')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B0D6YNWLTS')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B0D6YNWLTS')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0DSHWLXG6')">
+                    <span class="sample-id">B0DSHWLXG6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0DSHWLXG6" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B0DSHWLXG6')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B0DSHWLXG6')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B0DSHWLXG6')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B0F42MT8JX')">
+                    <span class="sample-id">B0F42MT8JX</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B0F42MT8JX" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B0F42MT8JX')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B0F42MT8JX')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B0F42MT8JX')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B000H3I2JG')">
+                    <span class="sample-id">B000H3I2JG</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B000H3I2JG" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B000H3I2JG')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B000H3I2JG')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B000H3I2JG')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B08J8GZXKZ')">
+                    <span class="sample-id">B08J8GZXKZ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B08J8GZXKZ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B08J8GZXKZ')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B08J8GZXKZ')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B08J8GZXKZ')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B09LCKZBTW')">
+                    <span class="sample-id">B09LCKZBTW</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B09LCKZBTW" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B09LCKZBTW')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B09LCKZBTW')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B09LCKZBTW')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('B077YYP739')">
+                    <span class="sample-id">B077YYP739</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-B077YYP739" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M10_output_clean', 'B077YYP739')">
+                        <span>Output Clean</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_word_count', 'B077YYP739')">
+                        <span>Word Count 3-6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M10_describes_function', 'B077YYP739')">
+                        <span>Describes Function</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleRubric(rubricId) {
+            document.getElementById(rubricId).classList.toggle('open');
+        }
+
+        function toggleSample(sampleId) {
+            document.getElementById('sample-' + sampleId).classList.toggle('open');
+        }
+
+        function toggleCollapsible(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + '_icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

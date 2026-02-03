@@ -1,0 +1,31 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_14_PrimaryUseCheckSameType_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "same_primary_use": {
+          "type": "boolean",
+          "description": "Whether the keyword's product supports the same primary use"
+        },
+        "relevancy": {
+          "type": "string",
+          "enum": ["R", "N"],
+          "description": "R for RELEVANT if same use, N for NEGATIVE if different use"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Explanation of why the primary uses match or differ"
+        }
+      },
+      "required": ["same_primary_use", "relevancy", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

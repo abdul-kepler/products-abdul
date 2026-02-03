@@ -1,0 +1,155 @@
+{
+  "braintrust_experiment_id": "0b8461dd-6c45-4233-b8ea-5d422488954c",
+  "braintrust_experiment_name": "M12B_CombinedClassification_sonnet",
+  "created": "2026-01-25 22:57:04.669000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "9a54b72d-890c-490b-bbc0-81c0d880b549",
+  "dataset_name": "M12B_CombinedClassification_V1.1",
+  "dataset_version": "1000196496767183590",
+  "prompt_id": "e6010cad-3061-4f98-b26c-94dd68b7036d",
+  "prompt_version": "1000196550406755285",
+  "prompt_session_id": "e11f4aaa-ed2e-4355-893b-d311204045aa",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_12b_CombinedClassification_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "step1_hard_constraint",
+          "step2_product_type",
+          "step3_primary_use",
+          "step4_complementary",
+          "relevancy",
+          "confidence"
+        ],
+        "properties": {
+          "relevancy": {
+            "enum": [
+              "R",
+              "S",
+              "C",
+              "N"
+            ],
+            "type": "string",
+            "description": "Final relevancy: R (Relevant), S (Substitute), C (Complementary), N (Negative)"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "step3_primary_use": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "same_use",
+              "reasoning"
+            ],
+            "properties": {
+              "same_use": {
+                "type": "boolean",
+                "description": "Whether the keyword's product serves the same primary use"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Explanation of the primary use comparison"
+              }
+            },
+            "description": "Primary use analysis, or null if stopped earlier",
+            "additionalProperties": false
+          },
+          "step2_product_type": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "same_type",
+              "keyword_product_type",
+              "reasoning"
+            ],
+            "properties": {
+              "reasoning": {
+                "type": "string",
+                "description": "Explanation of the product type comparison"
+              },
+              "same_type": {
+                "type": "boolean",
+                "description": "Whether keyword asks for the same product type"
+              },
+              "keyword_product_type": {
+                "type": "string",
+                "description": "The product type detected from the keyword"
+              }
+            },
+            "description": "Product type analysis, or null if stopped at Step 1",
+            "additionalProperties": false
+          },
+          "step4_complementary": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "used_together",
+              "relationship",
+              "reasoning"
+            ],
+            "properties": {
+              "reasoning": {
+                "type": "string",
+                "description": "Explanation of the complementary check"
+              },
+              "relationship": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Description of how products are used together"
+              },
+              "used_together": {
+                "type": "boolean",
+                "description": "Whether the products are commonly used together"
+              }
+            },
+            "description": "Complementary check, or null if classification was determined earlier",
+            "additionalProperties": false
+          },
+          "step1_hard_constraint": {
+            "type": "object",
+            "required": [
+              "violated",
+              "violated_constraint",
+              "reasoning"
+            ],
+            "properties": {
+              "violated": {
+                "type": "boolean",
+                "description": "Whether the keyword violates any hard constraint"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Explanation of the hard constraint check"
+              },
+              "violated_constraint": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The hard constraint that was violated, or null if none"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 632,
+  "downloaded_at": "2026-01-26T10:04:18.315854"
+}

@@ -1,0 +1,35 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_16_ComplementaryCheck_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "used_together": {
+          "type": "boolean",
+          "description": "Whether the keyword's product is commonly used together with the ASIN"
+        },
+        "relevancy": {
+          "type": "string",
+          "enum": ["C", "N"],
+          "description": "C for COMPLEMENTARY if used together, N for NEGATIVE if not"
+        },
+        "relationship": {
+          "type": ["string", "null"],
+          "description": "Description of how the products are used together, or null if not complementary"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Explanation of why products are or aren't used together"
+        }
+      },
+      "required": ["used_together", "relevancy", "relationship", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

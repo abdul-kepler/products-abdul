@@ -1,0 +1,78 @@
+{
+  "experiment_name": "M01B_V2_sd17_ExtractBrandRelatedTerms_v2_270126_gpt4omini_synthetic",
+  "created": "2026-01-27T21:46:14.061494",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "source": "openai_batch_api",
+  "batch_type": "synthetic",
+  "synthetic_dataset": "17",
+  "dataset_file": "m01b_sd17_extract_brand_related_terms.jsonl",
+  "prompt_version": "v2",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_1b_ExtractBrandRelatedTerms_output",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "sub_brands": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "description": "Named sub-brands, product families, or series (e.g., FreeSip, Vibe Beam, ColorStay, Cyber Commander Series)"
+          },
+          "searchable_standards": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "description": "Industry standards/certifications that consumers search for on Amazon (e.g., ENFit, MagSafe, Gore-Tex)"
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Full manufacturer name"
+                  },
+                  "short": {
+                    "type": "string",
+                    "description": "Short/common name for searching"
+                  },
+                  "searchable": {
+                    "type": "boolean",
+                    "description": "true if people might search by this manufacturer name"
+                  }
+                },
+                "required": [
+                  "name",
+                  "short",
+                  "searchable"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Manufacturer info if different from brand, null otherwise"
+          }
+        },
+        "required": [
+          "sub_brands",
+          "searchable_standards",
+          "manufacturer"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "records_count": 46,
+  "downloaded_at": "2026-01-27T21:46:14.061505"
+}

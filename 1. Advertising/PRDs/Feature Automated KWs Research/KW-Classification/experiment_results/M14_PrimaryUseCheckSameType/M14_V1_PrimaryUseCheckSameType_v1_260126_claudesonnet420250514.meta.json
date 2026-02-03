@@ -1,0 +1,54 @@
+{
+  "braintrust_experiment_id": "244bde94-f5d6-4d6d-95f3-87289f94f489",
+  "braintrust_experiment_name": "M14_PrimaryUseCheckSameType_sonnet",
+  "created": "2026-01-25 22:34:07.078000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "498ae6c2-1bfa-44a3-9948-889856d6d796",
+  "dataset_name": "M14_CheckPrimaryUseSameType_V1.1",
+  "dataset_version": "1000196496371967995",
+  "prompt_id": "83a7cabf-3165-458d-b1fb-ef0b1e25ac2a",
+  "prompt_version": "1000196550359533107",
+  "prompt_session_id": "3f95df1c-945f-4238-ba6c-2a62e818ed90",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_14_PrimaryUseCheckSameType_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "same_primary_use",
+          "relevancy",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Explanation of why the primary uses match or differ"
+          },
+          "relevancy": {
+            "enum": [
+              "R",
+              "N"
+            ],
+            "type": "string",
+            "description": "R for RELEVANT if same use, N for NEGATIVE if different use"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "same_primary_use": {
+            "type": "boolean",
+            "description": "Whether the keyword's product supports the same primary use"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 457,
+  "downloaded_at": "2026-01-26T02:18:19.789572"
+}

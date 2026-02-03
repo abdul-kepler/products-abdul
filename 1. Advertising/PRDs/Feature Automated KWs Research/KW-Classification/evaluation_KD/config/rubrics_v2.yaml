@@ -1,0 +1,1945 @@
+# KW Classification Judge Rubrics - Binary Pass/Fail
+# Based on LLM Evals course best practices:
+# - Binary labels only (Pass/Fail)
+# - Reasoning-first (CoT before label)
+# - Narrow failure modes (split instead of weight)
+# - Few-shot hard examples
+#
+# TERMINOLOGY:
+# - criterion: Name of the specific failure mode being checked
+# - check: What the evaluator should verify (renamed from 'task')
+# - fail_definition: When to mark as Fail
+# - pass_definition: When to mark as Pass
+# - examples: 2+ hard examples (edge cases) for Pass and Fail
+
+version: "2.4"
+created: "2026-01-13"
+updated: "2026-01-15"
+note: "Added diagnostic rubrics for root cause analysis of Semantic Mismatch and Mismatch failures"
+approach: "binary_pass_fail"
+
+# =============================================================================
+# MODULE COVERAGE - All M01-M16 rubrics included
+# =============================================================================
+# This file contains COMPLETE rubrics for all modules:
+#   M01  - Extract Own Brand Entities (5 rubrics)
+#   M01a - Generate Brand Variations (4 rubrics)
+#   M01b - Extract Brand Related Terms (4 rubrics)
+#   M02  - Classify Own Brand Keywords (7 rubrics)
+#   M03  - Generate Competitor Entities (2 rubrics)
+#   M04  - Classify Competitor Brand Keywords (4 rubrics)
+#   M05  - Classify Non-Branded Keywords (2 rubrics)
+#   M06  - Generate Product Type Taxonomy (6 rubrics)
+#   M07  - Extract Product Attributes (4 rubrics)
+#   M08  - Assign Attribute Ranks (4 rubrics)
+#   M09  - Identify Primary Intended Use (4 rubrics)
+#   M10  - Validate Primary Intended Use (2 rubrics)
+#   M11  - Identify Hard Constraints (7 rubrics)
+#   M12  - Combined R/S/C/N Classification (2 rubrics)
+#   M13  - Product Type Check (3 rubrics)
+#   M14  - Primary Use Check (3 rubrics)
+#   M15  - Substitute Check (2 rubrics)
+#   M16  - Complementary Check (4 rubrics)
+#
+# TOTAL: 19 modules, 69 rubrics
+# =============================================================================
+
+# =============================================================================
+# DASHBOARD DATA SOURCING RULES
+# =============================================================================
+# CRITICAL: All dashboards MUST pull data dynamically from experiment results.
+# NEVER hardcode static data in dashboards.
+#
+# VERSIONING RULE:
+#   - Each experiment version gets its OWN dashboards
+#   - Do NOT overwrite previous experiment dashboards
+#   - Store in version-specific folder: evaluation_experimentV2/dashboards/
+#   - OR use naming: MATCH_RATE_DASHBOARD_v2.html
+#
+# Data Source Priority:
+#   1. judge_results/*_judge_*.json (LLM-as-a-Judge results)
+#   2. experiment_results/*.json (Iterative experiment outputs)
+#   3. evaluation_reports/*.csv (Full evaluation CSVs)
+#   4. batch_requests/*/results/*.jsonl (Raw module outputs)
+#
+# Every dashboard MUST display:
+#   - Source file name & experiment version
+#   - Timestamp of data
+#   - Sample count
+#   - Rubrics version
+#
+# See: LLM_JUDGE_WORKFLOW.md > "Dashboard Data Sourcing Requirements"
+# =============================================================================
+
+# =============================================================================
+# JUDGE CONFIGURATION
+# =============================================================================
+judges:
+  poll_panel:
+    - model: "gpt-4o-mini"
+      provider: "openai"
+      temperature: 0.0
+    - model: "claude-3-haiku-20240307"
+      provider: "anthropic"
+      temperature: 0.0
+    - model: "command-r"
+      provider: "cohere"
+      temperature: 0.0
+
+  output_format:
+    reasoning: "string - explain your evaluation BEFORE giving label"
+    label: "Pass | Fail"
+
+# =============================================================================
+# STAGE 1: BRAND ENTITY EXTRACTION
+# =============================================================================
+rubrics:
+
+  # ---------------------------------------------------------------------------
+  # M01: Extract Own Brand Entities
+  # ---------------------------------------------------------------------------
+  M01_brand_extracted:
+    module: "M01"
+    criterion: "Brand Extracted"
+    check: "Check if the brand name was extracted from the listing"
+    fail_definition: |
+      - No brand extracted when listing clearly has one
+      - Extracted completely wrong brand name
+    pass_definition: |
+      - Extracted brand matches or closely matches listing brand
+      - Minor variations (casing, spacing) are acceptable
+    examples:
+      - input: {listing_brand: "ZKX", title: "ZKX Boom X7 Speaker"}
+        output: {brand: "ZKX"}
+        label: "Pass"
+        reasoning: "Correctly extracted 'ZKX' matching the listing brand"
+      - input: {listing_brand: "Sony", title: "Sony WH-1000XM5 Headphones"}
+        output: {brand: null}
+        label: "Fail"
+        reasoning: "Failed to extract brand when 'Sony' is clearly present"
+
+  M01_no_hallucination:
+    module: "M01"
+    criterion: "No Hallucinated Brand"
+    check: "Check if extracted brand actually exists in the input"
+    fail_definition: |
+      - Extracted a completely different brand not present anywhere in input
+      - Made up a brand that doesn't exist (e.g., "Town & Country Living" when input only has "KitchenAid")
+      - NOTE: This does NOT include typo variations of valid brands
+    pass_definition: |
+      - Extracted brand appears in title, bullet points, or listing brand field
+      - Product line names from the title are acceptable (e.g., "ZKX PowerSound" when title contains "ZKX PowerSound Sound Earbuds")
+      - Typo/spelling variations of valid brands are acceptable (e.g., "GlowBeautyn", "TrekGear Pro" derived from actual brand)
+      - Manufacturer variations are acceptable (e.g., "SachsenUsa" from manufacturer "Sachsen-Us")
+    examples:
+      - input: {listing_brand: "Generic", title: "Wireless Bluetooth Speaker"}
+        output: {brand: "Bose"}
+        label: "Fail"
+        reasoning: "Hallucinated 'Bose' - not present anywhere in input"
+      - input: {listing_brand: "KitchenAid", title: "KITCHENAID Oven Mitt"}
+        output: {brand_entities: ["KitchenAid", "Town & Country Living"]}
+        label: "Fail"
+        reasoning: "Hallucinated 'Town & Country Living' - completely different brand not in input"
+      - input: {listing_brand: "Anker", title: "Anker Soundcore Speaker"}
+        output: {brand: "Anker"}
+        label: "Pass"
+        reasoning: "Brand 'Anker' exists in both listing_brand and title"
+      - input: {listing_brand: "ZKX", title: "ZKX SonicPulse - True Wireless ZKX PowerSound Sound Earbuds"}
+        output: {brand_entities: ["ZKX", "zkx", "ZKX PowerSound", "SonicPulse"]}
+        label: "Pass"
+        reasoning: "All entities traceable to input - 'ZKX PowerSound' is product line name from title"
+      - input: {listing_brand: "GlowBeauty", title: "GlowBeauty LongLast Eyeliner"}
+        output: {brand_entities: ["GlowBeauty", "GlowBeautyn", "GlowBty", "LongLast"]}
+        label: "Pass"
+        reasoning: "Typo variations 'GlowBeautyn', 'GlowBty' are derived from valid brand 'GlowBeauty'"
+
+  M01_no_product_words:
+    module: "M01"
+    criterion: "No Product Words in Brand"
+    check: "Check that standalone generic product words weren't included as brand"
+    fail_definition: |
+      - Included standalone generic words like "Wireless", "Bluetooth", "Speaker" as separate entities
+      - Included product category by itself (e.g., "Earbuds" alone, "Wallet" alone)
+      - NOTE: Trademarked product lines are NOT product words (SonicPulse, LongLast, QuickPour are OK)
+    pass_definition: |
+      - Only actual brand entities extracted, no standalone generic terms
+      - Trademarked product lines are acceptable even if they contain product-sounding words
+      - Sub-brands like "SonicPulse", "LongLast", "QuickPour" are valid brand entities
+    examples:
+      - input: {title: "ZKX Boom X7 Portable Bluetooth Speaker"}
+        output: {brand_entities: ["ZKX", "Bluetooth"]}
+        label: "Fail"
+        reasoning: "'Bluetooth' is a standalone generic term, not a brand"
+      - input: {title: "ZKX SonicPulse True Wireless Earbuds"}
+        output: {brand_entities: ["ZKX", "SonicPulse"]}
+        label: "Pass"
+        reasoning: "'SonicPulse' is ZKX's trademarked product line, not a generic term"
+      - input: {title: "GlowBeauty LongLast Eyeliner"}
+        output: {brand_entities: ["GlowBeauty", "LongLast"]}
+        label: "Pass"
+        reasoning: "'LongLast' is GlowBeauty's trademarked product line"
+
+  M01_amazon_test_applied:
+    module: "M01"
+    criterion: "Amazon Test Applied"
+    check: "Verify each entity passed the 'Can I buy this on Amazon?' test"
+    fail_definition: |
+      - Standalone generic word that is purchasable (wallet, bottle, earbuds, toys)
+      - Generic phrase ending in purchasable product ("Portable Speaker", "Wireless Earbuds")
+      - NOTE: Trademarked product lines are EXEMPT (SonicPulse, LongLast, QuickPour are OK)
+    pass_definition: |
+      - All entities are brand/trademark names or trademarked product lines
+      - Trademarked product lines pass this test (you can't buy "SonicPulse" without "ZKX")
+      - Sub-brands like "SonicPulse", "LongLast", "QuickPour" are acceptable
+    examples:
+      - input: {title: "Luxora Wallet RFID Blocking"}
+        output: {brand_entities: ["Luxora", "Wallet"]}
+        label: "Fail"
+        reasoning: "'Wallet' alone is purchasable on Amazon - not a brand"
+      - input: {title: "ZKX SonicPulse True Wireless Earbuds"}
+        output: {brand_entities: ["ZKX", "SonicPulse"]}
+        label: "Pass"
+        reasoning: "'SonicPulse' is ZKX's trademarked product line - cannot buy generic 'SonicPulse' on Amazon"
+      - input: {title: "HydroFlux QuickPour Water Bottle"}
+        output: {brand_entities: ["HydroFlux", "QuickPour"]}
+        label: "Pass"
+        reasoning: "'QuickPour' is HydroFlux's trademarked product line, not a generic product"
+
+  M01_no_duplicates:
+    module: "M01"
+    criterion: "No Duplicate Entities"
+    check: "Verify the brand entities list has no EXACT string duplicates"
+    fail_definition: |
+      - EXACT same string appears more than once (e.g., "ZKX" listed twice)
+      - NOTE: Case variations are ALLOWED and NOT duplicates (ZKX and zkx are different entities)
+    pass_definition: |
+      - No exact string duplicates in the list
+      - Case variations count as different entities (ZKX, zkx, Zkx are all unique)
+    examples:
+      - input: {brand: "ZKX"}
+        output: {brand_entities: ["ZKX", "zkx", "ZKX", "Sonic"]}
+        label: "Fail"
+        reasoning: "'ZKX' appears twice (exact duplicate string)"
+      - input: {brand: "ZKX"}
+        output: {brand_entities: ["ZKX", "zkx", "ZXK", "SonicPulse"]}
+        label: "Pass"
+        reasoning: "All entities are unique strings - ZKX and zkx are case variants, not duplicates"
+
+  # ---------------------------------------------------------------------------
+  # M01a: Generate Brand Variations
+  # ---------------------------------------------------------------------------
+  M01a_has_variations:
+    module: "M01a"
+    criterion: "Variations Generated"
+    check: "Check if multiple brand variations were generated"
+    fail_definition: |
+      - Only exact match returned, no variations
+      - Empty or null variations list
+    pass_definition: |
+      - At least 3 variations generated (case, spacing, common forms)
+    examples:
+      - input: {brand: "ZKX"}
+        output: {variations: ["ZKX"]}
+        label: "Fail"
+        reasoning: "Only exact match, missing lowercase 'zkx', spaced 'Z K X', etc."
+      - input: {brand: "ZKX"}
+        output: {variations: ["ZKX", "zkx", "Zkx", "Z.K.X."]}
+        label: "Pass"
+        reasoning: "Multiple case variations and common forms included"
+
+  M01a_no_unrelated_terms:
+    module: "M01a"
+    criterion: "No Unrelated Terms"
+    check: "Check that variations are actual brand references"
+    fail_definition: |
+      - Includes generic words unrelated to brand
+      - Includes competitor brands
+      - Includes product category terms
+    pass_definition: |
+      - All variations are plausible references to the same brand
+    examples:
+      - input: {brand: "Sony"}
+        output: {variations: ["Sony", "sony", "speaker", "headphones"]}
+        label: "Fail"
+        reasoning: "Included 'speaker' and 'headphones' which are product types, not brand variations"
+      - input: {brand: "Sony"}
+        output: {variations: ["Sony", "sony", "SONY", "Sony Corporation"]}
+        label: "Pass"
+        reasoning: "All variations refer to the Sony brand"
+
+  M01a_count_in_range:
+    module: "M01a"
+    criterion: "8-12 Variations Generated"
+    check: "Verify exactly 8-12 variations were generated as specified in prompt"
+    fail_definition: |
+      - Fewer than 8 variations
+      - More than 12 variations
+    pass_definition: |
+      - Exactly 8-12 variations in the list
+    examples:
+      - input: {brand: "ZKX"}
+        output: {variations: ["ZKX", "zkx", "ZXK"]}
+        label: "Fail"
+        reasoning: "Only 3 variations - prompt requires 8-12"
+      - input: {brand: "ZKX"}
+        output: {variations: ["ZKX", "zkx", "Zkx", "ZXK", "ZKY", "ZKW", "Z.K.X.", "Z K X"]}
+        label: "Pass"
+        reasoning: "8 variations - within required 8-12 range"
+      - input: {brand: "HydroFlux"}
+        output: {variations: ["HydroFlux", "hydroflux", "HYDROFLUX", "HydroFlx", "HydraFlux", "HydroFlex", "HydroFluz", "HydroFluxx", "Hydro-Flux", "HydrFlux"]}
+        label: "Pass"
+        reasoning: "10 variations - within required 8-12 range"
+
+  M01a_first_is_canonical:
+    module: "M01a"
+    criterion: "First Item is Correct Spelling"
+    check: "Verify the first variation is the canonical (correct) spelling"
+    fail_definition: |
+      - First item is a typo or variation
+      - Canonical spelling not in first position
+    pass_definition: |
+      - First item matches the correct brand spelling
+    examples:
+      - input: {brand: "HydroFlux"}
+        output: {variations: ["hydroflux", "HydroFlux", "HydroFlx"]}
+        label: "Fail"
+        reasoning: "First item 'hydroflux' is lowercase - canonical 'HydroFlux' should be first"
+      - input: {brand: "HydroFlux"}
+        output: {variations: ["HydroFlux", "hydroflux", "HydroFlx", "HydroFluxx"]}
+        label: "Pass"
+        reasoning: "Canonical 'HydroFlux' is first"
+
+  # ---------------------------------------------------------------------------
+  # M01b: Extract Brand Related Terms
+  # ---------------------------------------------------------------------------
+  M01b_sub_brands_found:
+    module: "M01b"
+    criterion: "Sub-brands Identified"
+    check: "Check if sub-brands and product lines were extracted"
+    fail_definition: |
+      - Missed obvious sub-brands present in listing
+      - Example: Missing "Boom" for ZKX, "WH-1000X" for Sony
+    pass_definition: |
+      - Major sub-brands and product lines captured
+    examples:
+      - input: {brand: "ZKX", title: "ZKX Boom X7 Speaker"}
+        output: {sub_brands: []}
+        label: "Fail"
+        reasoning: "Missed 'Boom' which is ZKX's product line"
+      - input: {brand: "ZKX", title: "ZKX Boom X7 Speaker"}
+        output: {sub_brands: ["Boom"]}
+        label: "Pass"
+        reasoning: "Correctly identified 'Boom' as ZKX sub-brand/product line"
+
+  M01b_no_universal_standards:
+    module: "M01b"
+    criterion: "No Universal Standards as Brand-Specific"
+    check: "Check that universal standards weren't listed as brand-specific"
+    fail_definition: |
+      - Listed "Bluetooth", "USB-C", "WiFi" as brand-specific terms
+      - Listed industry certifications as brand-specific
+    pass_definition: |
+      - Only brand-owned terms included (proprietary tech, trademarked names)
+    examples:
+      - input: {brand: "Sony"}
+        output: {brand_terms: ["LDAC", "Bluetooth 5.0", "USB-C"]}
+        label: "Fail"
+        reasoning: "Bluetooth 5.0 and USB-C are universal standards, not Sony-specific"
+      - input: {brand: "Sony"}
+        output: {brand_terms: ["LDAC", "360 Reality Audio"]}
+        label: "Pass"
+        reasoning: "LDAC and 360 Reality Audio are Sony proprietary technologies"
+
+  M01b_manufacturer_null_when_same:
+    module: "M01b"
+    criterion: "Manufacturer Null When Same as Brand"
+    check: "Verify manufacturer returns null when it matches brand name"
+    fail_definition: |
+      - Returned manufacturer object when manufacturer = brand_name
+      - Failed to recognize case-insensitive match
+    pass_definition: |
+      - Returns null when manufacturer matches or contains brand name
+      - Returns manufacturer object only when genuinely different
+    examples:
+      - input: {brand_name: "ZKX", manufacturer: "ZKX"}
+        output: {manufacturer: {name: "ZKX"}}
+        label: "Fail"
+        reasoning: "Manufacturer = brand, should return null"
+      - input: {brand_name: "REVLON", manufacturer: "GlowBeauty"}
+        output: {manufacturer: null}
+        label: "Pass"
+        reasoning: "Case-insensitive match - correctly returned null"
+
+  M01b_searchable_standards_default_empty:
+    module: "M01b"
+    criterion: "Searchable Standards Defaults to Empty"
+    check: "Verify searchable_standards is empty unless truly universal and searched"
+    fail_definition: |
+      - Included ENFit, USB-C, Bluetooth as searchable standards
+      - Included brand-specific technologies
+      - Included eco-certifications (OEKO-TEX, GOTS)
+    pass_definition: |
+      - Empty array for most products
+      - Only includes truly searchable licensed tech (Gore-Tex, Dolby Atmos)
+    examples:
+      - input: {title: "ENFit Syringe with Bluetooth monitoring"}
+        output: {searchable_standards: ["ENFit", "Bluetooth"]}
+        label: "Fail"
+        reasoning: "ENFit is ISO standard (universal), Bluetooth is generic - both should be excluded"
+      - input: {title: "Gore-Tex Waterproof Jacket"}
+        output: {searchable_standards: ["Gore-Tex"]}
+        label: "Pass"
+        reasoning: "Gore-Tex is a licensed material people actually search for"
+
+  # ---------------------------------------------------------------------------
+  # M03: Generate Competitor Entities
+  # ---------------------------------------------------------------------------
+  M03_competitors_relevant:
+    module: "M03"
+    criterion: "Competitors Are Relevant"
+    check: "Check if listed competitors sell similar products"
+    fail_definition: |
+      - Listed brands from completely different categories
+      - Example: Listing "Nike" as competitor for "ZKX" speakers
+    pass_definition: |
+      - All competitors sell products in the same category
+    examples:
+      - input: {brand: "ZKX", category: "Bluetooth Speakers"}
+        output: {competitors: ["Bose", "Sony", "Nike"]}
+        label: "Fail"
+        reasoning: "Nike is apparel brand, not audio competitor"
+      - input: {brand: "ZKX", category: "Bluetooth Speakers"}
+        output: {competitors: ["Bose", "Sony", "Ultimate Ears"]}
+        label: "Pass"
+        reasoning: "All three are audio equipment competitors"
+
+  M03_no_hallucinated_brands:
+    module: "M03"
+    criterion: "No Hallucinated Competitors"
+    check: "Check that all listed competitors are real brands"
+    fail_definition: |
+      - Made up brand names that don't exist
+      - Misspelled brands to the point of being unrecognizable
+    pass_definition: |
+      - All competitors are real, recognizable brands
+    examples:
+      - input: {brand: "ZKX"}
+        output: {competitors: ["Bose", "Soundmax Pro", "AudioTech"]}
+        label: "Fail"
+        reasoning: "Soundmax Pro and AudioTech appear to be hallucinated brands"
+      - input: {brand: "ZKX"}
+        output: {competitors: ["Bose", "Sonos", "Bang & Olufsen"]}
+        label: "Pass"
+        reasoning: "All three are real audio brands"
+
+# =============================================================================
+# STAGE 2: BRAND SCOPE CLASSIFICATION (OB / CB / NB)
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # M02: Own Brand Classification
+  # ---------------------------------------------------------------------------
+  M02_correct_classification:
+    module: "M02"
+    criterion: "Correct OB/null Classification"
+    check: "Check if keyword was correctly classified as Own Brand or not"
+    fail_definition: |
+      - Marked OB when brand term is NOT in keyword
+      - Marked null when brand term IS clearly in keyword
+    pass_definition: |
+      - OB when keyword contains a term from brand variations
+      - null when keyword does not contain any brand variation
+    examples:
+      - input: {keyword: "zkx speaker", variations: ["ZKX", "zkx"]}
+        output: {branding_scope: null}
+        label: "Fail"
+        reasoning: "Keyword 'zkx speaker' contains 'zkx' from variations list, should be OB"
+      - input: {keyword: "bluetooth speaker", variations: ["ZKX", "zkx"]}
+        output: {branding_scope: null}
+        label: "Pass"
+        reasoning: "Keyword has no ZKX brand terms, correctly marked null"
+
+  M02_matched_term_valid:
+    module: "M02"
+    criterion: "Matched Term Exists in Variations"
+    check: "Check if the cited matched_term actually exists in variations"
+    fail_definition: |
+      - matched_term is not in the variations list
+      - matched_term is null when classification is OB
+    pass_definition: |
+      - matched_term appears in variations list when OB
+      - matched_term is null when classification is null
+    examples:
+      - input: {keyword: "zkx flip speaker", variations: ["ZKX", "zkx"]}
+        output: {branding_scope: "OB", matched_term: "flip"}
+        label: "Fail"
+        reasoning: "'flip' is not in variations list - 'zkx' should be the matched_term"
+      - input: {keyword: "zkx flip speaker", variations: ["ZKX", "zkx"]}
+        output: {branding_scope: "OB", matched_term: "zkx"}
+        label: "Pass"
+        reasoning: "'zkx' correctly identified as the matching variation"
+
+  M02_word_boundary_correct:
+    module: "M02"
+    criterion: "Word Boundary Handling"
+    check: "Check that partial string matches within words are rejected"
+    fail_definition: |
+      - Matched brand inside another word (e.g., "zkx" in "adjustable")
+      - Matched without checking word boundaries
+    pass_definition: |
+      - Only matched on whole word or clear brand reference
+      - Correctly rejected partial matches
+    examples:
+      - input: {keyword: "adjustable desk", variations: ["zkx"]}
+        output: {branding_scope: "OB", matched_term: "zkx"}
+        label: "Fail"
+        reasoning: "'zkx' appears inside 'adjustable' - not a brand match"
+      - input: {keyword: "adjustable desk", variations: ["zkx"]}
+        output: {branding_scope: null}
+        label: "Pass"
+        reasoning: "Correctly identified no whole-word brand match"
+
+  M02_no_similar_brand_confusion:
+    module: "M02"
+    criterion: "No Similar Brand Confusion"
+    check: "Verify agent didn't confuse similar-sounding brands"
+    fail_definition: |
+      - Matched "jlab" to "ZKX" (different characters)
+      - Matched similar-sounding but different brands
+      - Assumed phonetic similarity = match
+    pass_definition: |
+      - Correctly rejected similar but different brands
+      - Character-by-character verification performed
+    examples:
+      - input: {keyword: "jlab earbuds wireless", variations: ["ZKX", "J-B-L"]}
+        output: {branding_scope: "OB", matched_term: "jlab"}
+        label: "Fail"
+        reasoning: "jlab (j-l-a-b) ≠ ZKX (J-B-L) - different characters, different brand"
+      - input: {keyword: "jlab earbuds wireless", variations: ["ZKX", "J-B-L"]}
+        output: {branding_scope: null}
+        label: "Pass"
+        reasoning: "Correctly identified jlab as different brand from ZKX"
+
+  M02_no_non_brand_patterns:
+    module: "M02"
+    criterion: "Non-Brand Patterns Rejected"
+    check: "Verify ASINs and PPC terms return null"
+    fail_definition: |
+      - Returned OB for ASIN pattern (B0XXXXXXXXXX)
+      - Returned OB for PPC terms (close-match, broad match)
+      - Matched brand inside ASIN string
+    pass_definition: |
+      - ASIN patterns always return null
+      - PPC/match type terms return null
+    examples:
+      - input: {keyword: "B0123ZKX456", variations: ["ZKX"]}
+        output: {branding_scope: "OB", matched_term: "ZKX"}
+        label: "Fail"
+        reasoning: "ASIN pattern should return null regardless of brand substring"
+      - input: {keyword: "B0123ZKX456", variations: ["ZKX"]}
+        output: {branding_scope: null}
+        label: "Pass"
+        reasoning: "Correctly identified as ASIN pattern, not brand keyword"
+
+  M02_exact_character_match:
+    module: "M02"
+    criterion: "Exact Character Match Required"
+    check: "Verify singular/plural and exact spelling match"
+    fail_definition: |
+      - Matched "transformer" to "Transformers" (singular vs plural)
+      - Matched typo not in variations list
+      - Assumed close spelling = match
+    pass_definition: |
+      - Only exact substring matches accepted
+      - Typos only match if explicitly in variations list
+    examples:
+      - input: {keyword: "transformer toy truck", variations: ["Transformers", "Transfomers"]}
+        output: {branding_scope: "OB", matched_term: "transformer"}
+        label: "Fail"
+        reasoning: "'transformer' (11 chars) ≠ 'Transformers' (12 chars) - singular not in list"
+      - input: {keyword: "transformers toy truck", variations: ["Transformers", "Transfomers"]}
+        output: {branding_scope: "OB", matched_term: "transformers"}
+        label: "Pass"
+        reasoning: "Exact match - 'transformers' found in variations"
+
+  M02_match_type_correct:
+    module: "M02"
+    criterion: "Match Type Correctly Identified"
+    check: "Verify match_type field is accurate"
+    fail_definition: |
+      - Labeled sub_brand when it's a brand_variation
+      - Labeled manufacturer when it's a sub_brand
+      - match_type doesn't match which list term came from
+    pass_definition: |
+      - brand_variation: term from variations_own
+      - sub_brand: term from related_terms_own sub-brands
+      - manufacturer: term from related_terms_own manufacturer
+    examples:
+      - input: {keyword: "sonic pulse earbuds", variations: ["ZKX"], related_terms: ["SonicPulse"]}
+        output: {match_type: "brand_variation"}
+        label: "Fail"
+        reasoning: "'SonicPulse' comes from related_terms, should be sub_brand"
+      - input: {keyword: "sonic pulse earbuds", variations: ["ZKX"], related_terms: ["SonicPulse"]}
+        output: {match_type: "sub_brand"}
+        label: "Pass"
+        reasoning: "Correctly identified as sub_brand from related_terms"
+
+  # ---------------------------------------------------------------------------
+  # M04: Competitor Brand Classification
+  # ---------------------------------------------------------------------------
+  M04_correct_classification:
+    module: "M04"
+    criterion: "Correct CB/null Classification"
+    check: "CB when competitor brand in keyword (case-insensitive), null for generic keywords"
+    fail_definition: |
+      - CB returned but keyword contains NO brand from competitor list
+      - null returned but keyword clearly contains a competitor brand name
+    pass_definition: |
+      - CB when keyword contains brand from competitors list (case-insensitive: "le creuset" = "Le Creuset")
+      - null for generic keywords with no brand names (e.g., "silicone oven mitt", "bluetooth earbuds")
+    examples:
+      - input: {keyword: "le creuset oven mitt", own_brand: "KitchenAid", competitors: ["Le Creuset", "OXO", "HOMWE"]}
+        output: {branding_scope_2: "CB"}
+        label: "Pass"
+        reasoning: "Keyword contains 'le creuset' matching competitor 'Le Creuset' (case-insensitive)"
+      - input: {keyword: "silicone oven mitt", own_brand: "KitchenAid", competitors: ["Le Creuset", "OXO", "HOMWE"]}
+        output: {branding_scope_2: null}
+        label: "Pass"
+        reasoning: "No competitor brand in keyword - generic product term"
+      - input: {keyword: "wireless speaker", competitors: ["Bose", "Sony"]}
+        output: {branding_scope: null}
+        label: "Pass"
+        reasoning: "No competitor brand in keyword"
+
+  M04_own_brand_excluded:
+    module: "M04"
+    criterion: "Own Brand Excluded"
+    check: "The own_brand specified in INPUT is never classified as CB"
+    fail_definition: |
+      - ONLY FAIL if the exact own_brand from input appears in keyword AND output is CB
+      - e.g., if own_brand="KitchenAid" and keyword="kitchenaid oven mitt" returns CB → FAIL
+    pass_definition: |
+      - PASS if own_brand is NOT in the keyword
+      - PASS if own_brand is in keyword but output is null
+      - PASS if keyword contains OTHER brands (competitors) that return CB - that is CORRECT behavior
+      - IMPORTANT: Le Creuset, HOMWE, OXO are NOT own brand if own_brand="KitchenAid"
+    examples:
+      - input: {keyword: "le creuset oven mitt", own_brand: "KitchenAid", competitors: ["Le Creuset", "OXO", "HOMWE"]}
+        output: {branding_scope_2: "CB"}
+        label: "Pass"
+        reasoning: "Le Creuset is NOT own brand (KitchenAid is) - returning CB for competitor is CORRECT"
+      - input: {keyword: "kitchenaid mixer", own_brand: "KitchenAid", competitors: ["Le Creuset", "OXO"]}
+        output: {branding_scope_2: "CB"}
+        label: "Fail"
+        reasoning: "KitchenAid IS the own_brand - should NOT be classified as CB"
+      - input: {keyword: "kitchenaid mixer", own_brand: "KitchenAid", competitors: ["Le Creuset", "OXO"]}
+        output: {branding_scope_2: null}
+        label: "Pass"
+        reasoning: "Own brand correctly NOT classified as CB"
+
+  M04_case_insensitive_matching:
+    module: "M04"
+    criterion: "Case Insensitive Matching"
+    check: "Brand matching ignores case differences"
+    fail_definition: |
+      - Missed match due to case difference (e.g., "oxo" not matching "OXO")
+      - IMPORTANT: "homwe" = "HOMWE" = "Homwe" - these are the SAME brand, not substrings
+    pass_definition: |
+      - Case variations correctly matched: "le creuset" = "Le Creuset" = "LE CREUSET"
+      - "oxo" matches "OXO", "sony" matches "Sony"
+    examples:
+      - input: {keyword: "homwe silicone oven mitt", competitors: ["Le Creuset", "OXO", "HOMWE"]}
+        output: {branding_scope_2: "CB"}
+        label: "Pass"
+        reasoning: "'homwe' matches 'HOMWE' (case-insensitive) - same brand, not substring"
+      - input: {keyword: "oxo spatula", competitors: ["Le Creuset", "OXO", "HOMWE"]}
+        output: {branding_scope_2: null}
+        label: "Fail"
+        reasoning: "'oxo' should match 'OXO' (case-insensitive)"
+
+  M04_competitor_identified:
+    module: "M04"
+    criterion: "Competitor Correctly Identified"
+    check: "Check if the matched_competitor field is correct"
+    fail_definition: |
+      - Wrong competitor name cited
+      - Competitor not in the provided list
+    pass_definition: |
+      - matched_competitor is the actual competitor found in keyword
+    examples:
+      - input: {keyword: "bose soundlink", competitors: ["Bose", "Sony"]}
+        output: {branding_scope: "CB", matched_competitor: "Sony"}
+        label: "Fail"
+        reasoning: "Keyword has 'bose' not 'Sony'"
+      - input: {keyword: "bose soundlink", competitors: ["Bose", "Sony"]}
+        output: {branding_scope: "CB", matched_competitor: "Bose"}
+        label: "Pass"
+        reasoning: "Correctly identified Bose as the competitor"
+
+  # ---------------------------------------------------------------------------
+  # M05: Non-Branded Classification
+  # ---------------------------------------------------------------------------
+  M05_correct_classification:
+    module: "M05"
+    criterion: "Correct NB/null Classification"
+    check: "Check if keyword was correctly classified as Non-Branded or not"
+    fail_definition: |
+      - Marked NB when keyword actually contains a brand
+      - Marked null when keyword is clearly generic
+    pass_definition: |
+      - NB when keyword is generic with no brand terms
+      - null when keyword contains a brand (should go to OB or CB)
+    examples:
+      - input: {keyword: "zkx bluetooth speaker", has_brand: true}
+        output: {branding_scope: "NB"}
+        label: "Fail"
+        reasoning: "Keyword has 'zkx' brand, should not be NB"
+      - input: {keyword: "portable bluetooth speaker", has_brand: false}
+        output: {branding_scope: "NB"}
+        label: "Pass"
+        reasoning: "Generic product keyword, correctly marked NB"
+
+  M05_hidden_brand_check:
+    module: "M05"
+    criterion: "Hidden Brand Awareness"
+    check: "Check if evaluator flagged potential unlisted brands"
+    fail_definition: |
+      - Missed obvious brand that wasn't in provided lists
+      - Marked NB for keyword with recognizable brand
+    pass_definition: |
+      - Flagged or noted potential brands not in lists
+      - Or correctly identified as generic
+    examples:
+      - input: {keyword: "marshall speaker", known_brands: ["ZKX", "Bose"]}
+        output: {branding_scope: "NB", hidden_brand_flag: false}
+        label: "Fail"
+        reasoning: "Marshall is a known brand, should flag even if not in list"
+      - input: {keyword: "marshall speaker", known_brands: ["ZKX", "Bose"]}
+        output: {branding_scope: "NB", hidden_brand_flag: true, note: "Marshall may be a brand"}
+        label: "Pass"
+        reasoning: "Correctly flagged Marshall as potential brand"
+
+# =============================================================================
+# STAGE 3: PRODUCT FOUNDATION
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # M06: Product Type Taxonomy
+  # ---------------------------------------------------------------------------
+  M06_three_level_hierarchy:
+    module: "M06"
+    criterion: "Three-Level Hierarchy"
+    check: "Output has EXACTLY 3 levels: Product Type > Category > Department"
+    fail_definition: |
+      - Missing levels (only 1 or 2 levels returned)
+      - More than 3 levels returned
+      - Empty/blank levels
+    pass_definition: |
+      - EXACTLY 3 levels present
+      - Level 1: Specific product type (e.g., "True Wireless Earbuds")
+      - Level 2: Category (e.g., "Headphones")
+      - Level 3: Department (e.g., "Electronics")
+      - Order is specific-to-broad
+    examples:
+      - input: {title: "ZKX SonicPulse - True Wireless ZKX PowerSound Sound Earbuds"}
+        output: {product_type_taxonomy: [{level: 1, value: "True Wireless Earbuds"}, {level: 2, value: "Headphones"}, {level: 3, value: "Electronics"}]}
+        label: "Pass"
+        reasoning: "Exactly 3 levels, ordered from specific product type to broad department"
+      - input: {title: "HydroFlux QuickPour Insulated Stainless Steel Water Bottle"}
+        output: {product_type_taxonomy: [{level: 1, value: "Water Bottle"}]}
+        label: "Fail"
+        reasoning: "Only 1 level returned - needs exactly 3 levels"
+      - input: {product: "ZKX Boom X7"}
+        output: {taxonomy: ["Electronics", "Audio", "Bluetooth Speaker"]}
+        label: "Fail"
+        reasoning: "Order is general→specific (inverted), should be specific→general"
+
+  M06_product_type_focused:
+    module: "M06"
+    criterion: "Product Type Focused"
+    check: "Taxonomy describes WHAT the product IS, not features"
+    fail_definition: |
+      - Feature-based taxonomy (e.g., "Wireless Products" instead of product type)
+      - Marketing terms in taxonomy
+    pass_definition: |
+      - Taxonomy describes product category/type
+      - Features like "wireless", "insulated" in Level 1 are acceptable if they describe the product type
+    examples:
+      - input: {title: "ZKX SonicPulse True Wireless Earbuds"}
+        output: {taxonomy: ["True Wireless Earbuds", "Headphones", "Electronics"]}
+        label: "Pass"
+        reasoning: "Describes product type - 'True Wireless' is part of the product type name"
+      - input: {title: "ZKX SonicPulse True Wireless Earbuds"}
+        output: {taxonomy: ["Deep Bass Products", "Wireless Devices", "Electronics"]}
+        label: "Fail"
+        reasoning: "Feature-based (Deep Bass, Wireless) instead of product type focused"
+
+  M06_hierarchy_correct:
+    module: "M06"
+    criterion: "Hierarchy Order Correct"
+    check: "Check if taxonomy levels go from specific to general"
+    fail_definition: |
+      - Hierarchy is inverted (general to specific)
+      - Levels are in random order
+    pass_definition: |
+      - Level 1 is most specific, higher levels are broader
+      - Example: "Boom X7" → "Portable Speaker" → "Audio Equipment"
+    examples:
+      - input: {product: "ZKX Boom X7"}
+        output: {taxonomy: ["Electronics", "Audio", "Bluetooth Speaker"]}
+        label: "Fail"
+        reasoning: "Order is general→specific, should be specific→general"
+      - input: {product: "ZKX Boom X7"}
+        output: {taxonomy: ["Portable Bluetooth Speaker", "Bluetooth Speaker", "Audio Equipment"]}
+        label: "Pass"
+        reasoning: "Correctly ordered from specific to general"
+
+  M06_product_type_accurate:
+    module: "M06"
+    criterion: "Product Type Accurate"
+    check: "Check if the product types correctly describe the product"
+    fail_definition: |
+      - Wrong product category (e.g., "Headphones" for a speaker)
+      - Types don't match what the product actually is
+    pass_definition: |
+      - Types accurately describe the product
+    examples:
+      - input: {product: "ZKX Boom X7 Speaker"}
+        output: {taxonomy: ["Wireless Headphones", "Headphones", "Audio"]}
+        label: "Fail"
+        reasoning: "Product is a speaker, not headphones"
+      - input: {product: "ZKX Boom X7 Speaker"}
+        output: {taxonomy: ["Portable Bluetooth Speaker", "Wireless Speaker", "Audio"]}
+        label: "Pass"
+        reasoning: "Correctly identifies as speaker"
+
+  M06_max_three_levels:
+    module: "M06"
+    criterion: "Maximum Three Levels"
+    check: "Verify taxonomy has at most 3 levels"
+    fail_definition: |
+      - More than 3 levels in taxonomy
+      - Unnecessary categories added
+    pass_definition: |
+      - 1-3 levels only
+    examples:
+      - input: {product: "Water Bottle"}
+        output: {taxonomy: ["Insulated Water Bottle", "Water Bottle", "Bottle", "Drinkware"]}
+        label: "Fail"
+        reasoning: "4 levels - maximum is 3"
+      - input: {product: "Water Bottle"}
+        output: {taxonomy: ["Water Bottle"]}
+        label: "Pass"
+        reasoning: "Simple product needs only 1 level"
+
+  M06_no_material_feature_levels:
+    module: "M06"
+    criterion: "No Material/Feature as Separate Levels"
+    check: "Verify material/feature modifiers aren't separate taxonomy levels"
+    fail_definition: |
+      - "Insulated Water Bottle" → "Water Bottle" (material as level)
+      - "Silicone Oven Mitt" → "Oven Mitt" (material as level)
+      - "Bamboo Serving Tray" → "Serving Tray" (material as level)
+    pass_definition: |
+      - Material/feature modifiers combined into single product type
+      - Use 1 level for simple products
+    examples:
+      - input: {title: "Stainless Steel Water Bottle 24oz"}
+        output: {taxonomy: ["Insulated Water Bottle", "Water Bottle"]}
+        label: "Fail"
+        reasoning: "Insulated is a feature modifier - should be just 'Water Bottle' (1 level)"
+      - input: {title: "Stainless Steel Water Bottle 24oz"}
+        output: {taxonomy: ["Water Bottle"]}
+        label: "Pass"
+        reasoning: "Simple product type, material is an attribute not a level"
+
+  # ---------------------------------------------------------------------------
+  # M07: Extract Product Attributes
+  # ---------------------------------------------------------------------------
+  M07_attributes_from_listing:
+    module: "M07"
+    criterion: "Attributes From Listing"
+    check: "Check if extracted attributes come from the actual listing"
+    fail_definition: |
+      - Attributes not mentioned in listing
+      - Made up specs or features
+    pass_definition: |
+      - All attributes can be traced to listing content
+    examples:
+      - input: {listing: "ZKX Boom X7 - 12hr battery, IP67 waterproof"}
+        output: {attributes: ["30hr battery", "noise canceling"]}
+        label: "Fail"
+        reasoning: "Listing says 12hr not 30hr, no mention of noise canceling"
+      - input: {listing: "ZKX Boom X7 - 12hr battery, IP67 waterproof"}
+        output: {attributes: ["12hr battery", "IP67 waterproof"]}
+        label: "Pass"
+        reasoning: "Attributes match listing exactly"
+
+  M07_no_fabricated_use_cases:
+    module: "M07"
+    criterion: "No Fabricated Use Cases"
+    check: "Check if use cases are realistic and grounded in listing"
+    fail_definition: |
+      - Use cases not supported by product type
+      - Fabricated scenarios not in listing
+    pass_definition: |
+      - Use cases are reasonable for this product type
+      - Mentioned in listing or clearly implied
+    examples:
+      - input: {product: "Bluetooth Speaker", listing: "Great for outdoor parties"}
+        output: {use_cases: ["underwater diving", "professional recording"]}
+        label: "Fail"
+        reasoning: "Fabricated use cases not supported by listing"
+      - input: {product: "Bluetooth Speaker", listing: "Great for outdoor parties"}
+        output: {use_cases: ["outdoor parties", "beach trips", "backyard BBQ"]}
+        label: "Pass"
+        reasoning: "Use cases aligned with listing content"
+
+  M07_audiences_explicit_or_dash:
+    module: "M07"
+    criterion: "Audiences Explicit Only or Dash"
+    check: "Verify audiences only include explicit mentions, or '-' for general products"
+    fail_definition: |
+      - Generic invented audiences (Adults, Music Lovers, Fitness Enthusiasts)
+      - Made up audiences not in listing
+      - Empty array when should be ["-"]
+    pass_definition: |
+      - ["-"] for general consumer products with no specific target
+      - Only explicitly mentioned demographics (Men, Kids, Caregivers)
+    examples:
+      - input: {title: "ZKX Wireless Earbuds", target_audience: ""}
+        output: {audiences: ["Adults", "Music Lovers", "Commuters"]}
+        label: "Fail"
+        reasoning: "No specific audience in listing - should return ['-'] not invented audiences"
+      - input: {title: "ZKX Wireless Earbuds", target_audience: ""}
+        output: {audiences: ["-"]}
+        label: "Pass"
+        reasoning: "General consumer product with no specific target - correctly uses dash"
+
+  M07_specs_preserve_units:
+    module: "M07"
+    criterion: "Specifications Preserve Full Details"
+    check: "Verify technical specs include all units, numbers, and context"
+    fail_definition: |
+      - Truncated specs ("Energy Saving" instead of "Energy-saving motor (30% reduced)")
+      - Missing units ("32 Hours" instead of "Up to 32 Hours Battery Life")
+      - Abbreviated specs ("8 Ice Cubes in 6 mins" instead of "8 ice cubes in 6 minutes")
+    pass_definition: |
+      - Full specifications with all numbers, units, and parenthetical details
+    examples:
+      - input: {bullet: "Energy consumption cut by 30%"}
+        output: {variants: ["Energy Saving"]}
+        label: "Fail"
+        reasoning: "Lost the 30% detail - should be 'Energy-saving motor (30% reduced consumption)'"
+      - input: {bullet: "8 ice cubes in 6 minutes, 26lbs/day capacity"}
+        output: {variants: ["8 ice cubes in 6 minutes", "26 lb daily ice production"]}
+        label: "Pass"
+        reasoning: "Full specifications with all numbers and units"
+
+  # ---------------------------------------------------------------------------
+  # M08: Assign Attribute Ranks
+  # ---------------------------------------------------------------------------
+  M08_ranks_assigned:
+    module: "M08"
+    criterion: "Ranks Assigned"
+    check: "All attributes have unique sequential rank values within their type"
+    fail_definition: |
+      - Some attributes are missing rank values
+      - Ranks are not sequential (gaps like 1, 2, 4)
+      - Non-numeric rank values
+    pass_definition: |
+      - Every attribute has a rank starting from 1
+      - Ranks are unique and sequential within each type (Variant, UseCase, Audience)
+      - If 6 Variants exist, ranks 1-6 are valid
+      - If 10 attributes exist, ranks 1-10 are valid
+      - NO maximum rank limit - ranks should match number of items
+    examples:
+      - input: {variants: ["Black", "Wireless", "Bluetooth 5.2", "Deep Bass", "Water Resistant", "32hr Battery"]}
+        output: {attribute_table: [{type: "Variant", value: "Wireless", rank: 1}, {type: "Variant", value: "Deep Bass", rank: 2}, {type: "Variant", value: "Bluetooth 5.2", rank: 3}, {type: "Variant", value: "Water Resistant", rank: 4}, {type: "Variant", value: "32hr Battery", rank: 5}, {type: "Variant", value: "Black", rank: 6}]}
+        label: "Pass"
+        reasoning: "6 Variants have unique sequential ranks 1-6 - ranks beyond 5 are valid"
+      - input: {variants: ["A", "B", "C", "D", "E", "F"]}
+        output: {attribute_table: [{type: "Variant", value: "A", rank: 1}, {type: "Variant", value: "B", rank: 1}]}
+        label: "Fail"
+        reasoning: "Duplicate rank 1 - ranks must be unique"
+
+  M08_important_ranked_high:
+    module: "M08"
+    criterion: "Important Attributes Ranked High"
+    check: "Check if most important attributes have highest ranks"
+    fail_definition: |
+      - Trivial attributes ranked above critical ones
+      - Ranking doesn't reflect purchase decision importance
+    pass_definition: |
+      - Function-critical attributes ranked highest
+      - Nice-to-haves ranked lower
+    examples:
+      - input: {attributes: ["battery life", "color", "waterproof", "weight"]}
+        output: {ranked: ["color", "weight", "battery life", "waterproof"]}
+        label: "Fail"
+        reasoning: "Color/weight ranked above functional attributes"
+      - input: {attributes: ["battery life", "color", "waterproof", "weight"]}
+        output: {ranked: ["battery life", "waterproof", "weight", "color"]}
+        label: "Pass"
+        reasoning: "Functional attributes correctly prioritized"
+
+  M08_unique_ranks_per_type:
+    module: "M08"
+    criterion: "Unique Ranks Per Type"
+    check: "Verify each attribute_type has unique sequential ranks (no duplicates)"
+    fail_definition: |
+      - Two Variants with same rank
+      - Two UseCases with same rank
+      - Non-sequential ranks (1, 2, 4 - skipped 3)
+    pass_definition: |
+      - Each Variant has unique rank: 1, 2, 3...
+      - Each UseCase has unique rank: 1, 2, 3...
+      - Each Audience has unique rank: 1, 2, 3...
+    examples:
+      - input: {variants: ["Black", "Wireless", "Bluetooth 5.2"]}
+        output: {attribute_table: [{type: "Variant", value: "Black", rank: 1}, {type: "Variant", value: "Wireless", rank: 1}]}
+        label: "Fail"
+        reasoning: "Two Variants both ranked 1 - ranks must be unique"
+      - input: {variants: ["Black", "Wireless", "Bluetooth 5.2"]}
+        output: {attribute_table: [{type: "Variant", value: "Wireless", rank: 1}, {type: "Variant", value: "Bluetooth 5.2", rank: 2}, {type: "Variant", value: "Black", rank: 3}]}
+        label: "Pass"
+        reasoning: "Each Variant has unique sequential rank"
+
+  M08_title_attributes_ranked_high:
+    module: "M08"
+    criterion: "Title Attributes Ranked 1-2"
+    check: "Verify attributes appearing in title are ranked 1 or 2 within their type"
+    fail_definition: |
+      - Title attribute ranked 3 or lower
+      - Non-title attribute ranked above title attribute
+    pass_definition: |
+      - Attributes from title get rank 1-2 within their type
+    examples:
+      - input: {title: "ZKX SonicPulse True Wireless Deep Bass Earbuds", variants: ["True Wireless", "Deep Bass", "Black", "IP54"]}
+        output: {attribute_table: [{type: "Variant", value: "Black", rank: 1}, {type: "Variant", value: "True Wireless", rank: 3}]}
+        label: "Fail"
+        reasoning: "True Wireless is in title but ranked 3, while Black is ranked 1"
+      - input: {title: "ZKX SonicPulse True Wireless Deep Bass Earbuds", variants: ["True Wireless", "Deep Bass", "Black", "IP54"]}
+        output: {attribute_table: [{type: "Variant", value: "True Wireless", rank: 1}, {type: "Variant", value: "Deep Bass", rank: 2}]}
+        label: "Pass"
+        reasoning: "Title attributes True Wireless and Deep Bass correctly ranked 1-2"
+
+  # ---------------------------------------------------------------------------
+  # M09: Identify Primary Intended Use
+  # ---------------------------------------------------------------------------
+  M09_captures_core_purpose:
+    module: "M09"
+    criterion: "Captures Core Purpose"
+    check: "Check if primary use captures THE one main purpose"
+    fail_definition: |
+      - Wrong purpose identified
+      - Too broad (e.g., "electronics use")
+      - Too narrow (e.g., specific feature instead of use)
+    pass_definition: |
+      - Captures the main reason someone buys this product
+      - 3-6 words, verb+noun structure
+    examples:
+      - input: {product: "Portable Bluetooth Speaker"}
+        output: {primary_use: "electronics"}
+        label: "Fail"
+        reasoning: "Too broad - doesn't describe what user does with it"
+      - input: {product: "Portable Bluetooth Speaker"}
+        output: {primary_use: "portable audio playback"}
+        label: "Pass"
+        reasoning: "Captures core purpose concisely"
+
+  M09_no_marketing_language:
+    module: "M09"
+    criterion: "No Marketing Language"
+    check: "Check that primary use has no specs, adjectives, or marketing"
+    fail_definition: |
+      - Includes specs (e.g., "12-hour battery listening")
+      - Includes adjectives (e.g., "amazing", "premium")
+      - Includes marketing terms (e.g., "industry-leading")
+    pass_definition: |
+      - Simple verb+noun structure
+      - No adjectives or marketing language
+    examples:
+      - input: {product: "ZKX Boom X7"}
+        output: {primary_use: "premium portable audio with amazing bass"}
+        label: "Fail"
+        reasoning: "Contains marketing language 'premium', 'amazing'"
+      - input: {product: "ZKX Boom X7"}
+        output: {primary_use: "portable music playback"}
+        label: "Pass"
+        reasoning: "Clean verb+noun, no marketing"
+
+  M09_word_count_3_to_6:
+    module: "M09"
+    criterion: "Word Count 3-6"
+    check: "Verify primary use phrase is 3-6 words"
+    fail_definition: |
+      - Fewer than 3 words (too vague)
+      - More than 6 words (too detailed)
+    pass_definition: |
+      - Exactly 3-6 words
+    examples:
+      - input: {product: "Water Bottle"}
+        output: {primary_use: "hydration"}
+        label: "Fail"
+        reasoning: "Only 1 word - needs 3-6 words for specificity"
+      - input: {product: "Water Bottle"}
+        output: {primary_use: "portable beverage storage for daily hydration on the go"}
+        label: "Fail"
+        reasoning: "9 words - maximum is 6"
+      - input: {product: "Water Bottle"}
+        output: {primary_use: "portable beverage storage"}
+        label: "Pass"
+        reasoning: "3 words - within range"
+
+  M09_no_brand_tech_names:
+    module: "M09"
+    criterion: "No Brand or Technology Names"
+    check: "Verify primary use has no brand names or specific technologies"
+    fail_definition: |
+      - Contains brand names (ZKX, Sony, Nike)
+      - Contains technology names (Bluetooth, USB-C, WiFi)
+      - Contains trademarked features (VoiceAware, ANC)
+    pass_definition: |
+      - Generic functional description only
+      - No proprietary terms
+    examples:
+      - input: {product: "ZKX Earbuds"}
+        output: {primary_use: "ZKX audio listening"}
+        label: "Fail"
+        reasoning: "Contains brand name 'ZKX'"
+      - input: {product: "Bluetooth Earbuds"}
+        output: {primary_use: "Bluetooth audio streaming"}
+        label: "Fail"
+        reasoning: "Contains technology name 'Bluetooth'"
+      - input: {product: "ZKX Earbuds"}
+        output: {primary_use: "personal audio listening"}
+        label: "Pass"
+        reasoning: "Generic functional description, no brands/tech"
+
+  # ---------------------------------------------------------------------------
+  # M10: Validate Primary Intended Use
+  # ---------------------------------------------------------------------------
+  M10_invalid_correctly_flagged:
+    module: "M10"
+    criterion: "Invalid M09 Output Flagged"
+    check: "Check if validator correctly identifies M09 issues"
+    fail_definition: |
+      - Accepted clearly invalid M09 output
+      - Didn't flag marketing language or wrong purpose
+    pass_definition: |
+      - Correctly flagged invalid M09 outputs
+      - Or correctly passed valid M09 outputs
+    examples:
+      - input: {m09_output: "premium amazing sound experience"}
+        output: {valid: true}
+        label: "Fail"
+        reasoning: "Should have flagged marketing language"
+      - input: {m09_output: "premium amazing sound experience"}
+        output: {valid: false, reason: "contains marketing adjectives"}
+        label: "Pass"
+        reasoning: "Correctly flagged the issue"
+
+  M10_fix_improves_output:
+    module: "M10"
+    criterion: "Fix Improves Output"
+    check: "If M09 was invalid, check if the fix is better"
+    fail_definition: |
+      - Fix is worse than original
+      - Fix still has same problems
+    pass_definition: |
+      - Fix addresses the identified issue
+      - Fix follows M09 rules
+    examples:
+      - input: {m09_output: "premium audio", issue: "marketing language"}
+        output: {fixed: "super premium audio"}
+        label: "Fail"
+        reasoning: "Fix still has marketing language"
+      - input: {m09_output: "premium audio", issue: "marketing language"}
+        output: {fixed: "portable audio playback"}
+        label: "Pass"
+        reasoning: "Fix removes marketing, adds proper structure"
+
+  # ---------------------------------------------------------------------------
+  # M11: Identify Hard Constraints
+  # ---------------------------------------------------------------------------
+  M11_constraint_count:
+    module: "M11"
+    criterion: "Constraint Count Reasonable"
+    check: "Most consumer products should have 0 hard constraints"
+    fail_definition: |
+      - 2+ hard constraints for typical consumer product
+      - IMPORTANT: These are NEVER hard constraints: quality features, durability, performance specs, materials, convenience features
+    pass_definition: |
+      - 0 hard constraints for: earbuds, water bottles, jackets, organizers, phone holders, most kitchen items
+      - 1 hard constraint ONLY for: device-specific cases (must fit specific phone), safety items (oven mitt needs heat resistance)
+      - Empty array [] is CORRECT for most products
+    examples:
+      - input: {title: "ZKX SonicPulse - True Wireless Earbuds, Bluetooth 5.2", attributes: ["Bluetooth 5.2", "Deep Bass Sound", "Water Resistant", "32 Hours Battery"]}
+        output: {hard_constraints: []}
+        label: "Pass"
+        reasoning: "Consumer electronics - 0 hard constraints is correct"
+      - input: {title: "Jikasho Vacuum Magnetic Suction Phone Holder", attributes: ["Vacuum-lock suction", "Magnetic mount", "Foldable"]}
+        output: {hard_constraints: ["Vacuum-lock suction", "Magnetic mount"]}
+        label: "Fail"
+        reasoning: "2 hard constraints for phone holder is too many - these are product-defining features, not constraints"
+      - input: {title: "HydroFlux QuickPour Water Bottle", attributes: ["Stainless Steel", "24 Ounce", "Insulated", "BPA-Free"]}
+        output: {hard_constraints: []}
+        label: "Pass"
+        reasoning: "Water bottle - 0 hard constraints is correct"
+
+  M11_constraints_non_negotiable:
+    module: "M11"
+    criterion: "Constraints Non-Negotiable"
+    check: "Check the OUTPUT hard_constraints array - only device compatibility or safety items are valid"
+    fail_definition: |
+      - OUTPUT hard_constraints array contains quality features (Deep Bass, Battery, Waterproof)
+      - OUTPUT hard_constraints array contains durability features (Rustproof)
+      - OUTPUT hard_constraints array contains materials (Stainless Steel)
+      - OUTPUT hard_constraints array contains product mechanisms (Vacuum suction, Magnetic)
+      - IMPORTANT: Only check what is IN the OUTPUT hard_constraints array, not the input attributes
+    pass_definition: |
+      - OUTPUT hard_constraints is empty [] → PASS (correct for most products)
+      - OUTPUT hard_constraints contains only device compatibility or safety items → PASS
+      - IMPORTANT: If hard_constraints=[] in output, this criterion PASSES
+    examples:
+      - input: {title: "Earbuds", attributes: ["Deep Bass", "Bluetooth", "Water Resistant"]}
+        output: {hard_constraints: []}
+        label: "Pass"
+        reasoning: "Empty hard_constraints array is CORRECT for consumer electronics"
+      - input: {title: "Earbuds", attributes: ["Deep Bass", "Bluetooth", "Water Resistant"]}
+        output: {hard_constraints: ["Deep Bass", "Bluetooth"]}
+        label: "Fail"
+        reasoning: "Deep Bass is quality feature, Bluetooth is technology - neither are hard constraints"
+
+  M11_only_true_constraints:
+    module: "M11"
+    criterion: "Only True Hard Constraints"
+    check: "Check that only non-negotiable attributes are marked as hard"
+    fail_definition: |
+      - Preferences marked as hard constraints (color, brand)
+      - Nice-to-haves marked as must-haves
+    pass_definition: |
+      - Only function-critical attributes marked as hard
+      - Would product fail its purpose without this?
+    examples:
+      - input: {attributes: ["waterproof", "blue color", "12hr battery"]}
+        output: {hard_constraints: ["waterproof", "blue color", "12hr battery"]}
+        label: "Fail"
+        reasoning: "Color is a preference, not a hard constraint"
+      - input: {attributes: ["waterproof", "blue color", "12hr battery"]}
+        output: {hard_constraints: ["waterproof"]}
+        label: "Pass"
+        reasoning: "Only waterproof is truly non-negotiable for outdoor use"
+
+  M11_critical_not_missed:
+    module: "M11"
+    criterion: "Critical Constraints Not Missed"
+    check: "Check that essential constraints aren't missing"
+    fail_definition: |
+      - Missed obvious hard constraint
+      - Example: Missing "voltage compatibility" for electronics
+    pass_definition: |
+      - All function-critical constraints identified
+    examples:
+      - input: {product: "110V only appliance", market: "UK (220V)"}
+        output: {hard_constraints: ["color", "size"]}
+        label: "Fail"
+        reasoning: "Missed voltage - critical for function"
+      - input: {product: "110V only appliance", market: "UK (220V)"}
+        output: {hard_constraints: ["110V power requirement"]}
+        label: "Pass"
+        reasoning: "Correctly identified voltage as critical"
+
+  M11_never_categories_excluded:
+    module: "M11"
+    criterion: "NEVER Categories Excluded"
+    check: "Verify attributes from NEVER categories are not marked as hard constraints"
+    fail_definition: |
+      - Technology versions marked hard (Bluetooth 5.2, WiFi 6, USB 3.0)
+      - Durability features marked hard (Waterproof, Rustproof, Long-lasting)
+      - Performance specs marked hard (32hr battery, 26lbs/day)
+      - Marketing differentiators marked hard (Deep Bass, Self-Cleaning)
+      - Material choices marked hard (Stainless Steel, Silicone, Bamboo)
+      - Convenience features marked hard (360 swivel, Built-in sharpener)
+    pass_definition: |
+      - Only true physical requirements marked as hard constraints
+      - Most products have 0-1 hard constraints
+    examples:
+      - input: {product: "True Wireless Earbuds", validated_use: "audio listening"}
+        output: {hard_constraints: ["Bluetooth 5.2", "Deep Bass", "Water Resistant"]}
+        label: "Fail"
+        reasoning: "All three are from NEVER categories - BT version, marketing, durability"
+      - input: {product: "True Wireless Earbuds", validated_use: "audio listening"}
+        output: {hard_constraints: []}
+        label: "Pass"
+        reasoning: "Earbuds have 0 hard constraints - all features are quality not mechanism"
+
+  M11_expected_distribution:
+    module: "M11"
+    criterion: "Expected 0-1 Hard Constraints"
+    check: "Verify output follows expected distribution (most products have 0-1)"
+    fail_definition: |
+      - 2+ hard constraints for typical consumer products
+      - Did not apply 3-step test to eliminate false positives
+    pass_definition: |
+      - 0 hard constraints for most products (bottles, earbuds, trays, toys)
+      - 1 hard constraint for device cases (fit), oven mitts (heat resistance)
+      - 2+ only for multi-compatibility products (extremely rare)
+    examples:
+      - input: {product: "Countertop Ice Maker", validated_use: "making ice"}
+        output: {hard_constraints: ["Ice making mechanism", "26lbs/day capacity", "Portable size"]}
+        label: "Fail"
+        reasoning: "3 constraints for ice maker - 'ice making' is tautology, others are specs. Should be 0."
+      - input: {product: "iPhone 15 Case", validated_use: "protecting phone"}
+        output: {hard_constraints: ["iPhone 15 fit"]}
+        label: "Pass"
+        reasoning: "Phone case has 1 hard constraint - must fit specific device"
+
+  M11_three_step_test_applied:
+    module: "M11"
+    criterion: "3-Step Test Applied"
+    check: "Verify each attribute was tested with Complete Removal, Mechanism vs Quality, and Validated Use alignment"
+    fail_definition: |
+      - Marked constraint without asking "would product be PHYSICALLY UNABLE?"
+      - Confused QUALITY (how much) with MECHANISM (enables function)
+      - Ignored validated use alignment check
+    pass_definition: |
+      - Each attribute tested against all 3 steps
+      - Clear reasoning for why attribute passed/failed test
+    examples:
+      - input: {product: "Oven Mitt", validated_use: "heat protection when cooking", attributes: ["Heat Resistant", "500F rating", "Silicone"]}
+        output: {hard_constraints: ["Heat Resistant", "500F rating"]}
+        label: "Fail"
+        reasoning: "500F is QUALITY (how much protection) not MECHANISM - only Heat Resistant passes"
+      - input: {product: "Oven Mitt", validated_use: "heat protection when cooking", attributes: ["Heat Resistant", "500F rating", "Silicone"]}
+        output: {hard_constraints: ["Heat Resistant"]}
+        label: "Pass"
+        reasoning: "Only Heat Resistant is MECHANISM. 500F and Silicone are quality/material."
+
+# =============================================================================
+# STAGE 4: RELEVANCE CLASSIFICATION (R / S / C / N)
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # M12: Combined R/S/C/N Classification
+  # ---------------------------------------------------------------------------
+  M12_correct_classification:
+    module: "M12"
+    criterion: "Correct R/S/C/N Label"
+    check: "Check if the final classification is correct"
+    fail_definition: |
+      - Wrong classification (R when should be N, etc.)
+      - Doesn't match ground truth
+    pass_definition: |
+      - Classification matches expected label
+    examples:
+      - input: {product: "speaker", keyword: "speaker stand", expected: "C"}
+        output: {classification: "R"}
+        label: "Fail"
+        reasoning: "Stand is complementary to speaker, not same product"
+      - input: {product: "speaker", keyword: "speaker stand", expected: "C"}
+        output: {classification: "C"}
+        label: "Pass"
+        reasoning: "Correctly identified as complementary"
+
+  M12_decision_path_followed:
+    module: "M12"
+    criterion: "Decision Path Followed"
+    check: "Check if classification follows the decision tree"
+    fail_definition: |
+      - Skipped constraint check when constraint violated
+      - Wrong reasoning path even if answer correct
+    pass_definition: |
+      - Followed: constraints → type → use → classification
+    examples:
+      - input: {constraint_violated: true}
+        output: {classification: "R", reasoning: "same product type"}
+        label: "Fail"
+        reasoning: "Should be N due to constraint violation, path not followed"
+      - input: {constraint_violated: true}
+        output: {classification: "N", reasoning: "hard constraint violated"}
+        label: "Pass"
+        reasoning: "Correctly followed decision tree"
+
+  # ---------------------------------------------------------------------------
+  # M13: Product Type Check
+  # ---------------------------------------------------------------------------
+  M13_same_type_correct:
+    module: "M13"
+    criterion: "Same Type Answer Correct"
+    check: "Check if YES/NO for same product type is correct"
+    fail_definition: |
+      - Said YES when clearly different types
+      - Said NO when clearly same type
+    pass_definition: |
+      - Correct YES/NO based on M06 taxonomy comparison
+    examples:
+      - input: {listing_type: "Bluetooth Speaker", keyword_type: "Headphones"}
+        output: {is_same_type: "YES"}
+        label: "Fail"
+        reasoning: "Speakers and headphones are different product types"
+      - input: {listing_type: "Bluetooth Speaker", keyword_type: "Wireless Speaker"}
+        output: {is_same_type: "YES"}
+        label: "Pass"
+        reasoning: "Both are speakers, same type"
+
+  M13_modifiers_stripped:
+    module: "M13"
+    criterion: "Modifiers Properly Stripped"
+    check: "Verify use-case, material, brand modifiers were removed to identify core product type"
+    fail_definition: |
+      - Treated "ice machine for injuries" as different from "ice maker" (use-case modifier)
+      - Treated "round wood tray" as different from "serving tray" (material/shape modifier)
+      - Treated "jurassic park toys" as different from "toys" (brand modifier)
+    pass_definition: |
+      - Core product noun extracted from keyword
+      - Modifiers (use-case, material, brand, shape) properly ignored
+    examples:
+      - input: {taxonomy: "Ice Maker", keyword: "ice machine for injuries"}
+        output: {same_type: false, reasoning: "different use case"}
+        label: "Fail"
+        reasoning: "'for injuries' is USE-CASE modifier not product type - ice machine = ice maker"
+      - input: {taxonomy: "Ice Maker", keyword: "ice machine for injuries"}
+        output: {same_type: true, reasoning: "ice machine is synonym for ice maker, 'for injuries' is use-case modifier"}
+        label: "Pass"
+        reasoning: "Correctly identified core product type and stripped use-case modifier"
+
+  M13_synonyms_recognized:
+    module: "M13"
+    criterion: "Synonyms Recognized"
+    check: "Verify common synonyms and regional variations are treated as same type"
+    fail_definition: |
+      - Marked "earphones" as different from "earbuds"
+      - Marked "couch" as different from "sofa"
+      - Marked "ice machine" as different from "ice maker"
+    pass_definition: |
+      - Common synonyms recognized as same product type
+    examples:
+      - input: {taxonomy: "Earbuds", keyword: "wireless earphones"}
+        output: {same_type: false}
+        label: "Fail"
+        reasoning: "Earphones and earbuds are synonyms for in-ear audio devices"
+      - input: {taxonomy: "Earbuds", keyword: "wireless earphones"}
+        output: {same_type: true, reasoning: "earphones = earbuds, both in-ear audio"}
+        label: "Pass"
+        reasoning: "Correctly recognized synonym relationship"
+
+  # ---------------------------------------------------------------------------
+  # M14: Primary Use Check (Same Type)
+  # ---------------------------------------------------------------------------
+  M14_same_use_correct:
+    module: "M14"
+    criterion: "Same Use Answer Correct"
+    check: "Check if YES/NO for same primary use is correct"
+    fail_definition: |
+      - Said YES when uses are different
+      - Said NO when uses are the same
+    pass_definition: |
+      - Correct YES/NO based on M09/M10 primary use comparison
+    examples:
+      - input: {listing_use: "portable audio", keyword_use: "home theater"}
+        output: {is_same_use: "YES"}
+        label: "Fail"
+        reasoning: "Portable audio vs home theater are different uses"
+      - input: {listing_use: "portable audio", keyword_use: "outdoor music"}
+        output: {is_same_use: "YES"}
+        label: "Pass"
+        reasoning: "Both are portable/outdoor audio use cases"
+
+  M14_superficial_differences_ignored:
+    module: "M14"
+    criterion: "Superficial Differences Ignored"
+    check: "Verify material, form, character, brand differences don't affect primary use match"
+    fail_definition: |
+      - Marked different use for "paper food tray" vs "bamboo serving tray" (material)
+      - Marked different use for "liquid eyeliner" vs "pencil eyeliner" (form)
+      - Marked different use for "bumblebee transformer" vs "optimus prime transformer" (character)
+      - Marked different use for "nike shoes" vs "adidas shoes" (brand)
+    pass_definition: |
+      - Material, form, character, brand variants classified as SAME primary use (R)
+      - Only TRUE use case differences (decorative vs functional) classified as N
+    examples:
+      - input: {product: "Bamboo Serving Tray", validated_use: "serving food", keyword: "paper food tray"}
+        output: {same_primary_use: false, classification: "N"}
+        label: "Fail"
+        reasoning: "Paper vs bamboo is MATERIAL difference, not use case. Both serve food → R"
+      - input: {product: "Bamboo Serving Tray", validated_use: "serving food", keyword: "paper food tray"}
+        output: {same_primary_use: true, classification: "R"}
+        label: "Pass"
+        reasoning: "Material difference, same primary use (serving food)"
+
+  M14_not_overly_cautious:
+    module: "M14"
+    criterion: "Not Overly Cautious"
+    check: "Verify agent isn't classifying as N based on superficial differences when use is same"
+    fail_definition: |
+      - Classified N when PRIMARY USE is identical but attributes differ
+      - Applied overly strict interpretation of "same use"
+    pass_definition: |
+      - R classification when fundamental purpose is same
+      - N only for TRUE use case differences (decorative vs functional, gaming vs music)
+    examples:
+      - input: {product: "Optimus Prime Transformer", validated_use: "imaginative play with robot toys", keyword: "bumblebee transformers toy"}
+        output: {classification: "N", reasoning: "different character"}
+        label: "Fail"
+        reasoning: "Character is VARIANT, not use case. Both are Transformers toys for play → R"
+      - input: {product: "Optimus Prime Transformer", validated_use: "imaginative play with robot toys", keyword: "bumblebee transformers toy"}
+        output: {classification: "R"}
+        label: "Pass"
+        reasoning: "Same primary use - imaginative play with transforming robot toys"
+
+  # ---------------------------------------------------------------------------
+  # M15: Substitute Check
+  # ---------------------------------------------------------------------------
+  M15_substitute_correct:
+    module: "M15"
+    criterion: "Substitute Answer Correct"
+    check: "Check if YES/NO for substitute is correct"
+    fail_definition: |
+      - Said YES when products can't substitute each other
+      - Said NO when they clearly can (same use, different type)
+    pass_definition: |
+      - YES when: different type BUT same use
+      - NO when: different type AND different use
+    examples:
+      - input: {same_use: true, same_type: false, listing: "speaker", keyword: "headphones for music"}
+        output: {is_substitute: "NO"}
+        label: "Fail"
+        reasoning: "Both for music listening, headphones can substitute speaker"
+      - input: {same_use: true, same_type: false, listing: "speaker", keyword: "headphones for music"}
+        output: {is_substitute: "YES"}
+        label: "Pass"
+        reasoning: "Correctly identified as substitute"
+
+  M15_sixty_percent_overlap:
+    module: "M15"
+    criterion: "60% Overlap Rule Applied"
+    check: "Verify near-substitutes with 60%+ primary use overlap are classified as S"
+    fail_definition: |
+      - Rejected substitute when overlap ≥60%
+      - Too strict interpretation for near-substitutes (travel mug vs water bottle)
+    pass_definition: |
+      - Products with 60%+ primary use overlap classified as S
+    examples:
+      - input: {product: "Water Bottle", validated_use: "portable hydration", keyword: "travel mug"}
+        output: {classification: null, reasoning: "different product type, moving to M16"}
+        label: "Fail"
+        reasoning: "Travel mug overlaps ~80% with portable hydration - should be S"
+      - input: {product: "Water Bottle", validated_use: "portable hydration", keyword: "travel mug"}
+        output: {classification: "S", reasoning: "Both serve portable hydration despite different form"}
+        label: "Pass"
+        reasoning: "Correctly identified as substitute"
+
+  # ---------------------------------------------------------------------------
+  # M16: Complementary Check
+  # ---------------------------------------------------------------------------
+  M16_complementary_correct:
+    module: "M16"
+    criterion: "Complementary Answer Correct"
+    check: "Check if YES/NO for complementary is correct"
+    fail_definition: |
+      - Said YES when products aren't used together
+      - Said NO when they clearly are (e.g., speaker + stand)
+    pass_definition: |
+      - YES when products are commonly used together
+      - NO when products are unrelated
+    examples:
+      - input: {listing: "speaker", keyword: "refrigerator"}
+        output: {is_complementary: "YES"}
+        label: "Fail"
+        reasoning: "Speaker and refrigerator aren't used together"
+      - input: {listing: "speaker", keyword: "speaker stand"}
+        output: {is_complementary: "YES"}
+        label: "Pass"
+        reasoning: "Stands are commonly used with speakers"
+
+  M16_amazon_bundle_test:
+    module: "M16"
+    criterion: "Amazon Bundle Test Applied"
+    check: "Verify agent applied 'Would Amazon show as Frequently Bought Together?' test"
+    fail_definition: |
+      - Classified C for products Amazon wouldn't bundle
+      - Same category ≠ complementary (ice maker + sorbet maker both frozen but NOT bundled)
+    pass_definition: |
+      - Only classified C if products would realistically be bundled/bought together
+    examples:
+      - input: {product: "Countertop Ice Maker", keyword: "sorbet maker"}
+        output: {classification: "C", reasoning: "both make frozen items"}
+        label: "Fail"
+        reasoning: "Same category (frozen appliances) but NOT complementary - different appliances, not bundled"
+      - input: {product: "Countertop Ice Maker", keyword: "sorbet maker"}
+        output: {classification: "N", reasoning: "different appliances, not used together"}
+        label: "Pass"
+        reasoning: "Correctly identified as NOT complementary"
+
+  M16_same_category_not_complementary:
+    module: "M16"
+    criterion: "Same Category ≠ Complementary"
+    check: "Verify products in same category but different functions are NOT marked complementary"
+    fail_definition: |
+      - Ice maker + sorbet maker (both frozen) marked C
+      - Eyeliner + lash brush (both makeup) marked C
+      - Puffer jacket + thermal socks (both winter) marked C
+      - Serving tray + beverage holders (both serving) marked C
+    pass_definition: |
+      - Same-category items with different functions classified as N
+      - Only true "used together" relationships marked C
+    examples:
+      - input: {product: "Eyeliner", keyword: "setting powder"}
+        output: {classification: "C", reasoning: "both makeup products"}
+        label: "Fail"
+        reasoning: "Setting powder is for face, eyeliner for eyes - not same area, not same sequence"
+      - input: {product: "Eyeliner", keyword: "setting powder"}
+        output: {classification: "N", reasoning: "different areas of application, not used together"}
+        label: "Pass"
+        reasoning: "Correctly identified - same category but not complementary"
+
+  M16_relationship_type_identified:
+    module: "M16"
+    criterion: "Relationship Type Identified"
+    check: "Verify a specific relationship type is provided for C classifications"
+    fail_definition: |
+      - Classified C but no relationship_type
+      - Vague relationship like "related products"
+    pass_definition: |
+      - Specific relationship type: Maintenance, Storage, Display, Accessory, Workflow, Same-Occasion, Organization
+    examples:
+      - input: {product: "Water Bottle", keyword: "bottle cleaning brush"}
+        output: {classification: "C", relationship_type: null}
+        label: "Fail"
+        reasoning: "Missing relationship_type - should be 'Maintenance'"
+      - input: {product: "Water Bottle", keyword: "bottle cleaning brush"}
+        output: {classification: "C", relationship_type: "Maintenance", relationship: "Brush cleans bottle interior"}
+        label: "Pass"
+        reasoning: "Clear relationship type identified"
+
+# =============================================================================
+# FAILURE CATEGORIES (for bucketing)
+# =============================================================================
+failure_categories:
+  DATA_QUALITY: "Invalid output format, missing fields, unparseable JSON"
+  ENTITY_MISS: "Failed to extract entity that exists in input"
+  ENTITY_HALLUCINATION: "Extracted entity not present in input"
+  CLASSIFICATION_ERROR: "Wrong classification label assigned"
+  REASONING_FLAW: "Correct answer but wrong or missing reasoning"
+  BOUNDARY_ERROR: "Failed word boundary or edge case handling"
+  CASCADE_ERROR: "Error caused by upstream module failure"
+
+# =============================================================================
+# DIAGNOSTIC RUBRICS - Root Cause Analysis for Failures
+# =============================================================================
+# These rubrics help categorize WHY a sample failed (Semantic Mismatch vs Mismatch)
+# Applied after a failure is detected to identify the root cause
+
+diagnostic_rubrics:
+
+  # ---------------------------------------------------------------------------
+  # SEMANTIC MISMATCH DIAGNOSTICS (Output different but acceptable)
+  # ---------------------------------------------------------------------------
+
+  DIAG_synonym_usage:
+    category: "semantic_mismatch"
+    criterion: "Synonym Used"
+    description: "Output uses different word but same meaning"
+    indicators: |
+      - "earbuds" vs "earphones" vs "in-ear headphones"
+      - "water bottle" vs "hydration bottle" vs "drink container"
+      - "ice maker" vs "ice machine" vs "ice generator"
+      - "puffer jacket" vs "quilted jacket" vs "down jacket"
+    action: "Accept as valid - add synonym to expected variations"
+
+  DIAG_granularity_difference:
+    category: "semantic_mismatch"
+    criterion: "Different Specificity Level"
+    description: "Output is more/less specific than expected but still correct"
+    indicators: |
+      - Expected "Headphones" got "True Wireless Earbuds" (more specific)
+      - Expected "Insulated Water Bottle" got "Water Bottle" (less specific)
+      - Expected "Bluetooth Speaker" got "Portable Audio Device" (more generic)
+    action: "Review if specificity level is appropriate for the module"
+
+  DIAG_wording_variation:
+    category: "semantic_mismatch"
+    criterion: "Different Phrasing Same Meaning"
+    description: "Output uses different word order or phrasing"
+    indicators: |
+      - "portable music playback" vs "playing music portably"
+      - "heat protection for cooking" vs "protecting hands from heat while cooking"
+      - "personal audio listening" vs "listening to audio personally"
+    action: "Accept if core meaning preserved"
+
+  DIAG_format_difference:
+    category: "semantic_mismatch"
+    criterion: "Format/Structure Variation"
+    description: "Output has different format but same content"
+    indicators: |
+      - Case difference: "ZKX" vs "zkx" vs "Zkx"
+      - Order difference: [A, B, C] vs [C, A, B]
+      - Spacing: "Le Creuset" vs "LeCreuset"
+      - Punctuation: "Sony - Electronics" vs "Sony Electronics"
+    action: "Normalize format before comparison"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M03 (Competitor Generation)
+  # ---------------------------------------------------------------------------
+
+  DIAG_M03_off_category:
+    module: "M03"
+    category: "mismatch"
+    criterion: "Off-Category Competitor"
+    description: "Listed competitor from wrong product category"
+    indicators: |
+      - Listed apparel brand for electronics product
+      - Listed food brand for home goods product
+      - Brand doesn't sell similar products to ASIN
+    action: "Add category validation to prompt"
+
+  DIAG_M03_count_violation:
+    module: "M03"
+    category: "mismatch"
+    criterion: "Competitor Count Wrong"
+    description: "Too few or too many competitors"
+    indicators: |
+      - Fewer than 5 competitors listed
+      - More than 10 competitors listed
+      - Duplicate competitors inflating count
+    action: "Enforce 5-10 count constraint"
+
+  DIAG_M03_hallucinated_brand:
+    module: "M03"
+    category: "mismatch"
+    criterion: "Hallucinated Competitor"
+    description: "Listed a brand that doesn't exist"
+    indicators: |
+      - Brand name not findable on Amazon/Google
+      - Brand appears made up (e.g., "TechSoundMax Pro")
+      - Combination of real brand parts into fake name
+    action: "Add real brand verification step"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M06 (Product Taxonomy)
+  # ---------------------------------------------------------------------------
+
+  DIAG_M06_wrong_level_count:
+    module: "M06"
+    category: "mismatch"
+    criterion: "Wrong Number of Levels"
+    description: "Taxonomy has incorrect number of hierarchy levels"
+    indicators: |
+      - Only 1-2 levels when 3 required
+      - More than 3 levels returned
+      - Empty levels in hierarchy
+    action: "Enforce exactly 3 levels"
+
+  DIAG_M06_inverted_hierarchy:
+    module: "M06"
+    category: "mismatch"
+    criterion: "Hierarchy Direction Wrong"
+    description: "Levels go broad-to-specific instead of specific-to-broad"
+    indicators: |
+      - Level 1 is "Electronics" (too broad)
+      - Level 3 is specific product type
+      - Order: Department > Category > Product Type (wrong)
+    action: "Clarify specific-to-broad ordering in prompt"
+
+  DIAG_M06_feature_based:
+    module: "M06"
+    category: "mismatch"
+    criterion: "Feature-Based Instead of Type-Based"
+    description: "Taxonomy describes features not product type"
+    indicators: |
+      - "Wireless Products" instead of "Earbuds"
+      - "Insulated Items" instead of "Water Bottle"
+      - "Deep Bass Audio" instead of "Headphones"
+    action: "Emphasize WHAT product IS, not features"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M10 (Validate Primary Use)
+  # ---------------------------------------------------------------------------
+
+  DIAG_M10_feature_list:
+    module: "M10"
+    category: "mismatch"
+    criterion: "Feature List Instead of Function"
+    description: "Output lists features instead of describing use"
+    indicators: |
+      - Output: "Bluetooth 5.2, Deep Bass, Water Resistant"
+      - Output: "32hr battery, wireless, noise canceling"
+      - Contains specs/attributes instead of use description
+    action: "Enforce [VERB]+[NOUN] format"
+
+  DIAG_M10_marketing_language:
+    module: "M10"
+    category: "mismatch"
+    criterion: "Marketing Language Present"
+    description: "Output contains promotional adjectives"
+    indicators: |
+      - Contains: "premium", "amazing", "professional-grade"
+      - Contains: "industry-leading", "best-in-class"
+      - Superlatives instead of functional description
+    action: "Strip adjectives, keep only functional words"
+
+  DIAG_M10_wrong_purpose:
+    module: "M10"
+    category: "mismatch"
+    criterion: "Wrong Primary Purpose"
+    description: "Identified use doesn't match product's main function"
+    indicators: |
+      - Earbuds: "noise cancellation" instead of "audio listening"
+      - Water bottle: "temperature retention" instead of "hydration"
+      - Wrong core function identified
+    action: "Focus on primary purpose, not secondary features"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M11 (Hard Constraints)
+  # ---------------------------------------------------------------------------
+
+  DIAG_M11_over_constrained:
+    module: "M11"
+    category: "mismatch"
+    criterion: "Too Many Hard Constraints"
+    description: "Listed soft features as hard constraints"
+    indicators: |
+      - 2+ constraints for typical consumer product
+      - Quality features listed (Deep Bass, Battery Life)
+      - Materials listed (Stainless Steel, Silicone)
+    action: "Most products have 0 constraints - apply 3-step test"
+
+  DIAG_M11_soft_as_hard:
+    module: "M11"
+    category: "mismatch"
+    criterion: "Soft Feature Marked as Hard"
+    description: "Quality/preference feature marked as constraint"
+    indicators: |
+      - Technology: Bluetooth 5.2, WiFi 6
+      - Durability: Waterproof, Rustproof
+      - Performance: 32hr battery, 26lbs/day
+      - Convenience: 360 swivel, foldable
+    action: "Only device compatibility or safety items are hard"
+
+  DIAG_M11_missed_true_constraint:
+    module: "M11"
+    category: "mismatch"
+    criterion: "Missed Actual Hard Constraint"
+    description: "Failed to identify a true must-have"
+    indicators: |
+      - Phone case without device fit constraint
+      - Oven mitt without heat resistance constraint
+      - Voltage-specific appliance without voltage constraint
+    action: "Rare - only for device-specific or safety items"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M12-M16 (Classification R/S/C/N)
+  # ---------------------------------------------------------------------------
+
+  DIAG_classification_wrong_label:
+    module: "M12-M16"
+    category: "mismatch"
+    criterion: "Wrong Final Classification"
+    description: "R/S/C/N label doesn't match expected"
+    indicators: |
+      - Expected R got S (confused same type with substitute)
+      - Expected S got C (confused substitute with complement)
+      - Expected N got C (false positive on complementary)
+    action: "Review decision tree path"
+
+  DIAG_classification_reasoning_mismatch:
+    module: "M12-M16"
+    category: "mismatch"
+    criterion: "Reasoning Doesn't Match Label"
+    description: "Correct label but wrong reasoning, or vice versa"
+    indicators: |
+      - Said "same product type" but classified as S (substitute)
+      - Said "different use" but classified as R (relevant)
+      - Reasoning contradicts the classification
+    action: "Enforce reasoning-label consistency"
+
+  DIAG_classification_decision_skip:
+    module: "M12-M16"
+    category: "mismatch"
+    criterion: "Skipped Decision Step"
+    description: "Jumped to conclusion without checking prerequisites"
+    indicators: |
+      - Classified R without checking hard constraints
+      - Classified S without confirming different type
+      - Classified C without verifying "used together"
+    action: "Force step-by-step decision tree"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M04 (Competitor Brand Classification)
+  # ---------------------------------------------------------------------------
+
+  DIAG_M04_false_positive:
+    module: "M04"
+    category: "mismatch"
+    criterion: "False Positive - CB When Generic"
+    description: "Marked CB for generic keyword without brand"
+    indicators: |
+      - Keyword: "silicone oven mitt" → CB (wrong)
+      - Keyword: "wireless earbuds" → CB (wrong)
+      - No actual brand name in keyword
+    action: "Only CB when keyword contains brand from list"
+
+  DIAG_M04_false_negative:
+    module: "M04"
+    category: "mismatch"
+    criterion: "False Negative - null When Brand Present"
+    description: "Returned null but keyword contains competitor brand"
+    indicators: |
+      - Keyword: "le creuset oven mitt" → null (wrong)
+      - Keyword: "bose speaker" → null (wrong)
+      - Missed case-insensitive match
+    action: "Case-insensitive brand matching"
+
+  DIAG_M04_own_brand_confusion:
+    module: "M04"
+    category: "mismatch"
+    criterion: "Confused Own Brand with Competitor"
+    description: "Marked own brand as competitor"
+    indicators: |
+      - own_brand="KitchenAid", keyword="kitchenaid mixer" → CB
+      - Classified own brand as competitor brand
+    action: "Exclude own_brand from CB classification"
+
+  # ---------------------------------------------------------------------------
+  # MISMATCH DIAGNOSTICS - M15 (Substitute Check)
+  # ---------------------------------------------------------------------------
+
+  DIAG_M15_overlap_miscalculation:
+    module: "M15"
+    category: "mismatch"
+    criterion: "Primary Use Overlap Wrong"
+    description: "Incorrectly assessed 60% overlap threshold"
+    indicators: |
+      - Said <60% overlap when clearly >60%
+      - Said >60% overlap when clearly different uses
+      - Travel mug vs water bottle: should be S (portable hydration)
+    action: "Compare core function, not surface features"
+
+  DIAG_M15_type_confusion:
+    module: "M15"
+    category: "mismatch"
+    criterion: "Same Type Marked as Substitute"
+    description: "Products are same type but marked S instead of R"
+    indicators: |
+      - Two variants of same product type
+      - Should have been caught in M13 (same type check)
+      - Product type synonyms not recognized
+    action: "M15 only for DIFFERENT types with same use"
+
+# =============================================================================
+# DIAGNOSTIC USAGE GUIDE
+# =============================================================================
+#
+# 1. When a sample fails, run the relevant diagnostic rubrics
+# 2. Each diagnostic identifies the ROOT CAUSE of failure
+# 3. Use findings to:
+#    - Update prompts (if model issue)
+#    - Update rubrics (if evaluation issue)
+#    - Update expected values (if semantic mismatch is acceptable)
+#
+# Example workflow:
+#   Sample fails M11 → Run DIAG_M11_* rubrics
+#   Result: DIAG_M11_soft_as_hard = FAIL
+#   Action: Update M11 prompt to clarify hard vs soft distinction

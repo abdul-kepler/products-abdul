@@ -1,0 +1,73 @@
+{
+  "braintrust_experiment_id": "0ef768c9-04dd-45b6-a6d3-d3a33f763d63",
+  "braintrust_experiment_name": "M08_V2_AssignAttributeRanks_v1",
+  "created": "2026-01-15T20:36:55.613Z",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "5c325eb0-6e7d-4b25-bee0-6847fc4ce263",
+  "dataset_name": "M08_AssignAttributeRanks_V1.1",
+  "dataset_version": "1000196473826414885",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_8_v2_AssignAttributeRanks_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "attribute_table"
+        ],
+        "properties": {
+          "attribute_table": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "attribute_type",
+                "attribute_value",
+                "rank",
+                "wins",
+                "losses"
+              ],
+              "properties": {
+                "rank": {
+                  "type": "integer",
+                  "description": "Rank from 1 (most important) to N within attribute type"
+                },
+                "wins": {
+                  "type": "integer",
+                  "description": "Number of pairwise comparisons won"
+                },
+                "losses": {
+                  "type": "integer",
+                  "description": "Number of pairwise comparisons lost"
+                },
+                "attribute_type": {
+                  "enum": [
+                    "Variant",
+                    "UseCase",
+                    "Audience"
+                  ],
+                  "type": "string",
+                  "description": "Type of attribute"
+                },
+                "attribute_value": {
+                  "type": "string",
+                  "description": "The attribute value (synonyms merged with ' / ' separator)"
+                }
+              },
+              "additionalProperties": false
+            },
+            "description": "Ranked list of attributes with pairwise comparison results"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

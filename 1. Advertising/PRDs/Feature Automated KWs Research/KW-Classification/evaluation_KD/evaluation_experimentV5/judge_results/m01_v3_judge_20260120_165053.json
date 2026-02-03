@@ -1,0 +1,2941 @@
+{
+  "experiment": "V2",
+  "module": "m01_v3",
+  "model": "gpt-4o-mini",
+  "rubrics_version": "v5",
+  "timestamp": "2026-01-20T16:50:53.018799",
+  "data_source": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_V2_ExtractOwnBrandEntities_v3_190126_1.csv",
+  "summary": {
+    "pass": 43,
+    "fail": 32,
+    "error": 0
+  },
+  "pass_rate": 57.333333333333336,
+  "evaluations": [
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand 'Owala' matches the listing brand, and variations in casing are acceptable. The output includes multiple acceptable variations of the brand name, fulfilling the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands ('Owala', 'FreeSip', and 'BlenderBottle') are present in the input data, either in the title, bullet points, or description. The variations in spelling for 'Owala' and 'FreeSip' are acceptable as they are typo variations of valid brands.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output includes only actual brand entities and trademarked product lines, with no standalone generic product words or product categories included.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the output are brand or trademark names, including 'Owala' and 'BlenderBottle', as well as the trademarked product line 'FreeSip'. None of the entities are standalone generic words or generic phrases, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates in the brand entities list. Each entry is unique, and case variations are allowed as per the rubric.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owla",
+          "Oawla",
+          "Owalaa",
+          "FreeSip",
+          "freesip",
+          "FreSip",
+          "BlenderBottle",
+          "blenderbottle"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output did not extract the brand name 'Vibe Beam' correctly, as it only included variations of 'Vibe' and missed the full brand name 'Vibe Beam' which is clearly present in the listing.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe Beem",
+          "Vibe Bem",
+          "Vibe Bema"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe",
+          "vibe",
+          "Vibbe",
+          "Vieb"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes variations of the brand 'JBL' that are acceptable, but it fails to include the product line name 'Vibe Beam', which is present in the input. Additionally, it includes incorrect variations like 'Vibbe' and 'Vieb' that do not correspond to any valid brand or product line.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe Beem",
+          "Vibe Bem",
+          "Vibe Bema"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe",
+          "vibe",
+          "Vibbe",
+          "Vieb"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes standalone generic words 'Vibe' and 'vibe' as separate entities, which violates the rubric's condition of not including standalone generic product words.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe Beem",
+          "Vibe Bem",
+          "Vibe Bema"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe",
+          "vibe",
+          "Vibbe",
+          "Vieb"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Vibe' and its variations, which are standalone generic words and do not meet the criteria for trademarked product lines or sub-brands. The expected output correctly includes 'Vibe Beam' as a trademarked product line.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe Beem",
+          "Vibe Bem",
+          "Vibe Bema"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe",
+          "vibe",
+          "Vibbe",
+          "Vieb"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Vibe' listed twice in different cases ('Vibe' and 'vibe'), which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe Beem",
+          "Vibe Bem",
+          "Vibe Bema"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "JBLl",
+          "JBLB",
+          "Vibe",
+          "vibe",
+          "Vibbe",
+          "Vieb"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand names match or closely match the listing brand 'Cisily', including acceptable minor variations in casing and spelling.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are either exact matches or acceptable typo/spelling variations of the valid brand 'Cisily' found in the input data.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, specifically variations of the brand name 'Cisily', and does not contain any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the output are variations of the brand name 'Cisily', which is a trademarked brand. They do not include any standalone generic words or phrases that would fail the test.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates in the brand entities list. All entries are unique, and case variations are allowed as per the rubric.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cisely",
+          "Cisliy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The extracted brand 'Jikashoo' is a completely wrong brand name, which does not match or closely match the listing brand 'Jikasho'.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jiaksho",
+          "Jikaso",
+          "Jikash"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikaso",
+          "Jiaksho",
+          "Jikashoo"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Jikashoo', which is a made-up brand that does not exist in the input data, violating the rubric's FAIL conditions.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jiaksho",
+          "Jikaso",
+          "Jikash"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikaso",
+          "Jiaksho",
+          "Jikashoo"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the actual brand name 'Jikasho' and does not contain any standalone generic product words or product categories. Therefore, it meets the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jiaksho",
+          "Jikaso",
+          "Jikash"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikaso",
+          "Jiaksho",
+          "Jikashoo"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are variations of the brand name 'Jikasho', which is a trademarked brand. They do not include any standalone generic words or phrases that would fail the test.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jiaksho",
+          "Jikaso",
+          "Jikash"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikaso",
+          "Jiaksho",
+          "Jikashoo"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. Each brand entity is unique, and case variations are allowed.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jiaksho",
+          "Jikaso",
+          "Jikash"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikaso",
+          "Jiaksho",
+          "Jikashoo"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The extracted brand name 'Antarctic Staar' is a completely wrong variation of the correct brand 'Antarctic Star', which does not meet the PASS conditions.",
+      "input": {
+        "brand_name": "Antarctic Star",
+        "bullet_points": "Eco-Conscious Performance\u200c:The ice maker uses an optimized motor and streamlined construction to cut energy consumption by 30%. Lower carbon footprint + save on energy bills \u2013 sustainability meets smart spending.\nTurbo Ice Machine:Chill drinks in just 6 minutes \u2013 26lbs of ice a day capacity crushes summer heat anxiety. Keep the drinks flowing at pool parties, BBQs, or sudden guest arrivals.\nSelf-Cleaning Care\u200c:One-touch maintenance cycle keeps ice tasting fresh. No more funky ice odors! Simply activate weekly (or after 2-week inactivity) for crystal-clear ice you can trust.\nRoad Trip-Ready Compactness\u200c:Fits anywhere with 8.66\"x10.39\"x11.22\" footprint \u2013 Throw a countertop ice maker in your RV, tailgate setup, or beach cabana. Your ultimate hydration sidekick for adventures.\nLibrary-Quiet Operation\u200c:Whisper-quiet tech at <40dB \u2013 Talk, work, or binge undisturbed. Our acoustic engineers obsess over every decibel. So is our ice machine.",
+        "description": "",
+        "manufacturer": "Antarctic Star",
+        "title": "Countertop Ice Maker Machine, 8 Ice Cubes in 6 mins, 26lb/Day Ice with 2 Sizes- Portable Mini, Energy Saving & Basket/Scoop for Home/Party/Travel/Camping/Bar,Black"
+      },
+      "expected": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Str",
+          "Antarctic Sta"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Staar",
+          "Antarctic Sta"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Antarctic Staar', which is a typo variation that does not match the valid brand 'Antarctic Star' and is not an acceptable variation according to the rubric.",
+      "input": {
+        "brand_name": "Antarctic Star",
+        "bullet_points": "Eco-Conscious Performance\u200c:The ice maker uses an optimized motor and streamlined construction to cut energy consumption by 30%. Lower carbon footprint + save on energy bills \u2013 sustainability meets smart spending.\nTurbo Ice Machine:Chill drinks in just 6 minutes \u2013 26lbs of ice a day capacity crushes summer heat anxiety. Keep the drinks flowing at pool parties, BBQs, or sudden guest arrivals.\nSelf-Cleaning Care\u200c:One-touch maintenance cycle keeps ice tasting fresh. No more funky ice odors! Simply activate weekly (or after 2-week inactivity) for crystal-clear ice you can trust.\nRoad Trip-Ready Compactness\u200c:Fits anywhere with 8.66\"x10.39\"x11.22\" footprint \u2013 Throw a countertop ice maker in your RV, tailgate setup, or beach cabana. Your ultimate hydration sidekick for adventures.\nLibrary-Quiet Operation\u200c:Whisper-quiet tech at <40dB \u2013 Talk, work, or binge undisturbed. Our acoustic engineers obsess over every decibel. So is our ice machine.",
+        "description": "",
+        "manufacturer": "Antarctic Star",
+        "title": "Countertop Ice Maker Machine, 8 Ice Cubes in 6 mins, 26lb/Day Ice with 2 Sizes- Portable Mini, Energy Saving & Basket/Scoop for Home/Party/Travel/Camping/Bar,Black"
+      },
+      "expected": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Str",
+          "Antarctic Sta"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Staar",
+          "Antarctic Sta"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the actual brand entity 'Antarctic Star' and does not contain any standalone generic product words or product categories. All entries are valid brand entities.",
+      "input": {
+        "brand_name": "Antarctic Star",
+        "bullet_points": "Eco-Conscious Performance\u200c:The ice maker uses an optimized motor and streamlined construction to cut energy consumption by 30%. Lower carbon footprint + save on energy bills \u2013 sustainability meets smart spending.\nTurbo Ice Machine:Chill drinks in just 6 minutes \u2013 26lbs of ice a day capacity crushes summer heat anxiety. Keep the drinks flowing at pool parties, BBQs, or sudden guest arrivals.\nSelf-Cleaning Care\u200c:One-touch maintenance cycle keeps ice tasting fresh. No more funky ice odors! Simply activate weekly (or after 2-week inactivity) for crystal-clear ice you can trust.\nRoad Trip-Ready Compactness\u200c:Fits anywhere with 8.66\"x10.39\"x11.22\" footprint \u2013 Throw a countertop ice maker in your RV, tailgate setup, or beach cabana. Your ultimate hydration sidekick for adventures.\nLibrary-Quiet Operation\u200c:Whisper-quiet tech at <40dB \u2013 Talk, work, or binge undisturbed. Our acoustic engineers obsess over every decibel. So is our ice machine.",
+        "description": "",
+        "manufacturer": "Antarctic Star",
+        "title": "Countertop Ice Maker Machine, 8 Ice Cubes in 6 mins, 26lb/Day Ice with 2 Sizes- Portable Mini, Energy Saving & Basket/Scoop for Home/Party/Travel/Camping/Bar,Black"
+      },
+      "expected": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Str",
+          "Antarctic Sta"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Staar",
+          "Antarctic Sta"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains a misspelling 'Antarctic Staar', which does not represent a valid brand entity. This violates the requirement for all entities to be accurate brand/trademark names.",
+      "input": {
+        "brand_name": "Antarctic Star",
+        "bullet_points": "Eco-Conscious Performance\u200c:The ice maker uses an optimized motor and streamlined construction to cut energy consumption by 30%. Lower carbon footprint + save on energy bills \u2013 sustainability meets smart spending.\nTurbo Ice Machine:Chill drinks in just 6 minutes \u2013 26lbs of ice a day capacity crushes summer heat anxiety. Keep the drinks flowing at pool parties, BBQs, or sudden guest arrivals.\nSelf-Cleaning Care\u200c:One-touch maintenance cycle keeps ice tasting fresh. No more funky ice odors! Simply activate weekly (or after 2-week inactivity) for crystal-clear ice you can trust.\nRoad Trip-Ready Compactness\u200c:Fits anywhere with 8.66\"x10.39\"x11.22\" footprint \u2013 Throw a countertop ice maker in your RV, tailgate setup, or beach cabana. Your ultimate hydration sidekick for adventures.\nLibrary-Quiet Operation\u200c:Whisper-quiet tech at <40dB \u2013 Talk, work, or binge undisturbed. Our acoustic engineers obsess over every decibel. So is our ice machine.",
+        "description": "",
+        "manufacturer": "Antarctic Star",
+        "title": "Countertop Ice Maker Machine, 8 Ice Cubes in 6 mins, 26lb/Day Ice with 2 Sizes- Portable Mini, Energy Saving & Basket/Scoop for Home/Party/Travel/Camping/Bar,Black"
+      },
+      "expected": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Str",
+          "Antarctic Sta"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Staar",
+          "Antarctic Sta"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The output contains the exact string 'Antarctic Sta' which appears more than once, violating the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Antarctic Star",
+        "bullet_points": "Eco-Conscious Performance\u200c:The ice maker uses an optimized motor and streamlined construction to cut energy consumption by 30%. Lower carbon footprint + save on energy bills \u2013 sustainability meets smart spending.\nTurbo Ice Machine:Chill drinks in just 6 minutes \u2013 26lbs of ice a day capacity crushes summer heat anxiety. Keep the drinks flowing at pool parties, BBQs, or sudden guest arrivals.\nSelf-Cleaning Care\u200c:One-touch maintenance cycle keeps ice tasting fresh. No more funky ice odors! Simply activate weekly (or after 2-week inactivity) for crystal-clear ice you can trust.\nRoad Trip-Ready Compactness\u200c:Fits anywhere with 8.66\"x10.39\"x11.22\" footprint \u2013 Throw a countertop ice maker in your RV, tailgate setup, or beach cabana. Your ultimate hydration sidekick for adventures.\nLibrary-Quiet Operation\u200c:Whisper-quiet tech at <40dB \u2013 Talk, work, or binge undisturbed. Our acoustic engineers obsess over every decibel. So is our ice machine.",
+        "description": "",
+        "manufacturer": "Antarctic Star",
+        "title": "Countertop Ice Maker Machine, 8 Ice Cubes in 6 mins, 26lb/Day Ice with 2 Sizes- Portable Mini, Energy Saving & Basket/Scoop for Home/Party/Travel/Camping/Bar,Black"
+      },
+      "expected": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Str",
+          "Antarctic Sta"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Antarctic Star",
+          "antarctic star",
+          "Antartic Star",
+          "AntarcticStar",
+          "Antarctic Staar",
+          "Antarctic Sta"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes the brand name 'Pioneer Camp' and several minor variations that closely match the listing brand, meeting the PASS conditions.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCmp",
+          "PioneerCamp",
+          "PionerCamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCamp",
+          "PionerCamp",
+          "PioneerCmp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brand variations are either exact matches or acceptable typo variations of the valid brand 'Pioneer Camp' found in the input data.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCmp",
+          "PioneerCamp",
+          "PionerCamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCamp",
+          "PionerCamp",
+          "PioneerCmp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities and does not contain any standalone generic product words or product categories. All entries in the brand_entities list are variations of the brand name 'Pioneer Camp', which is acceptable according to the rubric.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCmp",
+          "PioneerCamp",
+          "PionerCamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCamp",
+          "PionerCamp",
+          "PioneerCmp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities listed in the module output are variations of the brand name 'Pioneer Camp', which is a trademarked brand. Therefore, they meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCmp",
+          "PioneerCamp",
+          "PionerCamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCamp",
+          "PionerCamp",
+          "PioneerCmp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Pioneer Camp' listed twice, which violates the rubric's condition of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCmp",
+          "PioneerCamp",
+          "PionerCamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioner Camp",
+          "PioneerCamp",
+          "PionerCamp",
+          "PioneerCmp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The extracted brand includes 'REVOLN', which is a completely wrong brand name, violating the FAIL condition.",
+      "input": {
+        "brand_name": "REVLON",
+        "bullet_points": "LASTING LINES: Rich color looks freshly applied all day long; transfer-proof, waterproof, smudge-proof and fade-proof\nUP TO 24HR WEAR: Creates the look you want and stays on strong\nEASY APPLICATION: Glides on, creating intensely defined lines that can go from subtle to dramatic. Includes built-in sharpener for the perfect pointed tip and a smudger to blend.\nTWO FINISHES: Available in 12 totally wearable matte and shimmer shades\nOPHTHALMOLOGIST TESTED: Suitable for use on waterline and comfortable to wear",
+        "description": "Product Description\n\nAmerica\u2019s #1 Longwear Eyeliner.* Revlon ColorStay Eyeliner Pencil delivers rich, lasting color that looks freshly applied all day long, and glides on smoothly in totally wearable, everyday shades. Whether you want to go subtle or dramatic, this eyeliner pencil creates the look you want and stays on strong. Formulated with ColorStay Adapti-Flex Color Lock Technology\u2122. Waterproof, smudge-proof, fade-proof, and transfer-proof. Up to 24HR wear. Plus, it has a built-in sharpener and smudger. *Revlon Consumer Products Corporation\u2019s calculation based in part on data reported by Circana, LLC, through its OmniMarket Service of Total US Multi-Outlet for Makeup Category, Eyeliner Subcategory for the 52-week period ending 11-24-2024 using Revlon\u2019s custom definitions.\n\nBrand Story\n\nBy Revlon",
+        "manufacturer": "Revlon",
+        "title": "Revlon ColorStay Pencil Waterproof Eyeliner, Smudge-Proof, Eye Makeup with Built-In Sharpener, Stocking Stuffer for Women, 202 Black Brown, 0.01 oz"
+      },
+      "expected": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVON",
+          "REVLONN",
+          "ColorStay",
+          "Colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVOLN",
+          "REVLONN",
+          "ColorStay",
+          "colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'REVOLN', which is a completely different brand not present in the input, violating the FAIL condition.",
+      "input": {
+        "brand_name": "REVLON",
+        "bullet_points": "LASTING LINES: Rich color looks freshly applied all day long; transfer-proof, waterproof, smudge-proof and fade-proof\nUP TO 24HR WEAR: Creates the look you want and stays on strong\nEASY APPLICATION: Glides on, creating intensely defined lines that can go from subtle to dramatic. Includes built-in sharpener for the perfect pointed tip and a smudger to blend.\nTWO FINISHES: Available in 12 totally wearable matte and shimmer shades\nOPHTHALMOLOGIST TESTED: Suitable for use on waterline and comfortable to wear",
+        "description": "Product Description\n\nAmerica\u2019s #1 Longwear Eyeliner.* Revlon ColorStay Eyeliner Pencil delivers rich, lasting color that looks freshly applied all day long, and glides on smoothly in totally wearable, everyday shades. Whether you want to go subtle or dramatic, this eyeliner pencil creates the look you want and stays on strong. Formulated with ColorStay Adapti-Flex Color Lock Technology\u2122. Waterproof, smudge-proof, fade-proof, and transfer-proof. Up to 24HR wear. Plus, it has a built-in sharpener and smudger. *Revlon Consumer Products Corporation\u2019s calculation based in part on data reported by Circana, LLC, through its OmniMarket Service of Total US Multi-Outlet for Makeup Category, Eyeliner Subcategory for the 52-week period ending 11-24-2024 using Revlon\u2019s custom definitions.\n\nBrand Story\n\nBy Revlon",
+        "manufacturer": "Revlon",
+        "title": "Revlon ColorStay Pencil Waterproof Eyeliner, Smudge-Proof, Eye Makeup with Built-In Sharpener, Stocking Stuffer for Women, 202 Black Brown, 0.01 oz"
+      },
+      "expected": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVON",
+          "REVLONN",
+          "ColorStay",
+          "Colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVOLN",
+          "REVLONN",
+          "ColorStay",
+          "colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output includes only actual brand entities and trademarked product lines, with no standalone generic product words or product categories included as separate entities.",
+      "input": {
+        "brand_name": "REVLON",
+        "bullet_points": "LASTING LINES: Rich color looks freshly applied all day long; transfer-proof, waterproof, smudge-proof and fade-proof\nUP TO 24HR WEAR: Creates the look you want and stays on strong\nEASY APPLICATION: Glides on, creating intensely defined lines that can go from subtle to dramatic. Includes built-in sharpener for the perfect pointed tip and a smudger to blend.\nTWO FINISHES: Available in 12 totally wearable matte and shimmer shades\nOPHTHALMOLOGIST TESTED: Suitable for use on waterline and comfortable to wear",
+        "description": "Product Description\n\nAmerica\u2019s #1 Longwear Eyeliner.* Revlon ColorStay Eyeliner Pencil delivers rich, lasting color that looks freshly applied all day long, and glides on smoothly in totally wearable, everyday shades. Whether you want to go subtle or dramatic, this eyeliner pencil creates the look you want and stays on strong. Formulated with ColorStay Adapti-Flex Color Lock Technology\u2122. Waterproof, smudge-proof, fade-proof, and transfer-proof. Up to 24HR wear. Plus, it has a built-in sharpener and smudger. *Revlon Consumer Products Corporation\u2019s calculation based in part on data reported by Circana, LLC, through its OmniMarket Service of Total US Multi-Outlet for Makeup Category, Eyeliner Subcategory for the 52-week period ending 11-24-2024 using Revlon\u2019s custom definitions.\n\nBrand Story\n\nBy Revlon",
+        "manufacturer": "Revlon",
+        "title": "Revlon ColorStay Pencil Waterproof Eyeliner, Smudge-Proof, Eye Makeup with Built-In Sharpener, Stocking Stuffer for Women, 202 Black Brown, 0.01 oz"
+      },
+      "expected": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVON",
+          "REVLONN",
+          "ColorStay",
+          "Colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVOLN",
+          "REVLONN",
+          "ColorStay",
+          "colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'REVOLN', which is a misspelling of the brand name 'REVLON'. This does not meet the requirement for brand/trademark names, as it introduces a non-existent entity.",
+      "input": {
+        "brand_name": "REVLON",
+        "bullet_points": "LASTING LINES: Rich color looks freshly applied all day long; transfer-proof, waterproof, smudge-proof and fade-proof\nUP TO 24HR WEAR: Creates the look you want and stays on strong\nEASY APPLICATION: Glides on, creating intensely defined lines that can go from subtle to dramatic. Includes built-in sharpener for the perfect pointed tip and a smudger to blend.\nTWO FINISHES: Available in 12 totally wearable matte and shimmer shades\nOPHTHALMOLOGIST TESTED: Suitable for use on waterline and comfortable to wear",
+        "description": "Product Description\n\nAmerica\u2019s #1 Longwear Eyeliner.* Revlon ColorStay Eyeliner Pencil delivers rich, lasting color that looks freshly applied all day long, and glides on smoothly in totally wearable, everyday shades. Whether you want to go subtle or dramatic, this eyeliner pencil creates the look you want and stays on strong. Formulated with ColorStay Adapti-Flex Color Lock Technology\u2122. Waterproof, smudge-proof, fade-proof, and transfer-proof. Up to 24HR wear. Plus, it has a built-in sharpener and smudger. *Revlon Consumer Products Corporation\u2019s calculation based in part on data reported by Circana, LLC, through its OmniMarket Service of Total US Multi-Outlet for Makeup Category, Eyeliner Subcategory for the 52-week period ending 11-24-2024 using Revlon\u2019s custom definitions.\n\nBrand Story\n\nBy Revlon",
+        "manufacturer": "Revlon",
+        "title": "Revlon ColorStay Pencil Waterproof Eyeliner, Smudge-Proof, Eye Makeup with Built-In Sharpener, Stocking Stuffer for Women, 202 Black Brown, 0.01 oz"
+      },
+      "expected": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVON",
+          "REVLONN",
+          "ColorStay",
+          "Colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVOLN",
+          "REVLONN",
+          "ColorStay",
+          "colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates in the brand entities list. All entries are unique, and case variations are treated as different entities.",
+      "input": {
+        "brand_name": "REVLON",
+        "bullet_points": "LASTING LINES: Rich color looks freshly applied all day long; transfer-proof, waterproof, smudge-proof and fade-proof\nUP TO 24HR WEAR: Creates the look you want and stays on strong\nEASY APPLICATION: Glides on, creating intensely defined lines that can go from subtle to dramatic. Includes built-in sharpener for the perfect pointed tip and a smudger to blend.\nTWO FINISHES: Available in 12 totally wearable matte and shimmer shades\nOPHTHALMOLOGIST TESTED: Suitable for use on waterline and comfortable to wear",
+        "description": "Product Description\n\nAmerica\u2019s #1 Longwear Eyeliner.* Revlon ColorStay Eyeliner Pencil delivers rich, lasting color that looks freshly applied all day long, and glides on smoothly in totally wearable, everyday shades. Whether you want to go subtle or dramatic, this eyeliner pencil creates the look you want and stays on strong. Formulated with ColorStay Adapti-Flex Color Lock Technology\u2122. Waterproof, smudge-proof, fade-proof, and transfer-proof. Up to 24HR wear. Plus, it has a built-in sharpener and smudger. *Revlon Consumer Products Corporation\u2019s calculation based in part on data reported by Circana, LLC, through its OmniMarket Service of Total US Multi-Outlet for Makeup Category, Eyeliner Subcategory for the 52-week period ending 11-24-2024 using Revlon\u2019s custom definitions.\n\nBrand Story\n\nBy Revlon",
+        "manufacturer": "Revlon",
+        "title": "Revlon ColorStay Pencil Waterproof Eyeliner, Smudge-Proof, Eye Makeup with Built-In Sharpener, Stocking Stuffer for Women, 202 Black Brown, 0.01 oz"
+      },
+      "expected": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVON",
+          "REVLONN",
+          "ColorStay",
+          "Colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "REVLON",
+          "revlon",
+          "REVLN",
+          "REVOLN",
+          "REVLONN",
+          "ColorStay",
+          "colorstay",
+          "ColrStay",
+          "ColoStay",
+          "ColorStai"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes the brand 'KitchenAid' and acceptable variations of it, such as 'kitchenaid', which closely match the listing brand. Minor variations in casing and spelling are present but do not disqualify the extraction.",
+      "input": {
+        "brand_name": "KitchenAid",
+        "bullet_points": "DURABLE, HEAT RESISTANT SILICONE - The Kitchen Aid Ribbed Soft Silicone mitts are heat resistant up to 500 degrees Fahrenheit to safely shield hands from the heat while cooking and handling hot pans and dishes.\nWATERPROOF & SLIP-RESISTANT - These silicone mitts are water resistant for additional protection from hot spills and spots with a textured, ribbed stripe design for a safe and secure grip.\nSET OF TWO- Includes two (2) generously sized oven mitts that each measures 7\" wide x 13\" long for a comfortable fit.\nADDITIONAL PROTECTION & COMFORT - The 100% cotton cuff provides additional protection from the heat with polyester lining that offers comfort and insulation.\nEASY CARE - These Kitchen Aid oven mitts can be easily cleaned. Simply rinse off with water and wipe them clean.",
+        "description": "Perform your kitchen tasks safely with the Kitchen Aid Ribbed Soft Silicone 2-Piece Oven Mitt Set. The textured, ribb stripe design offers a secure grip while handling hot objects. Made of durable and waterproof silicone with a cotton cuff that provides additional shield from the heat and polyester lining that offers comfort and insulation. Each oven mitt measures 7 inches by 13 inches for a generous fit. They are heat resistant up to 500 degrees Fahrenheit. Coordinate these oven mitts with coordinating Kitchen Aid Ribbed Soft Silicone Pot Holders for a complete set.",
+        "manufacturer": "Town & Country Living",
+        "title": "KITCHENAID Ribbed Soft Silicone Oven Mitt 2-Pack Set, 7.5\"x13\", Milkshake"
+      },
+      "expected": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KichenAid",
+          "KitcenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Contry Living",
+          "Town & Country Livng",
+          "Town & Country Lving"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KitcenAid",
+          "KichenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Country Livng",
+          "Town & Country Livin",
+          "Town & Country Livng"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The output includes a brand 'Town & Country Livng' which is a typo variation of the manufacturer 'Town & Country Living', but 'Town & Country Living' is not a valid brand in the context of the product. The extracted brands must be actual brands present in the input, and 'Town & Country Living' does not qualify as a brand for the product being evaluated.",
+      "input": {
+        "brand_name": "KitchenAid",
+        "bullet_points": "DURABLE, HEAT RESISTANT SILICONE - The Kitchen Aid Ribbed Soft Silicone mitts are heat resistant up to 500 degrees Fahrenheit to safely shield hands from the heat while cooking and handling hot pans and dishes.\nWATERPROOF & SLIP-RESISTANT - These silicone mitts are water resistant for additional protection from hot spills and spots with a textured, ribbed stripe design for a safe and secure grip.\nSET OF TWO- Includes two (2) generously sized oven mitts that each measures 7\" wide x 13\" long for a comfortable fit.\nADDITIONAL PROTECTION & COMFORT - The 100% cotton cuff provides additional protection from the heat with polyester lining that offers comfort and insulation.\nEASY CARE - These Kitchen Aid oven mitts can be easily cleaned. Simply rinse off with water and wipe them clean.",
+        "description": "Perform your kitchen tasks safely with the Kitchen Aid Ribbed Soft Silicone 2-Piece Oven Mitt Set. The textured, ribb stripe design offers a secure grip while handling hot objects. Made of durable and waterproof silicone with a cotton cuff that provides additional shield from the heat and polyester lining that offers comfort and insulation. Each oven mitt measures 7 inches by 13 inches for a generous fit. They are heat resistant up to 500 degrees Fahrenheit. Coordinate these oven mitts with coordinating Kitchen Aid Ribbed Soft Silicone Pot Holders for a complete set.",
+        "manufacturer": "Town & Country Living",
+        "title": "KITCHENAID Ribbed Soft Silicone Oven Mitt 2-Pack Set, 7.5\"x13\", Milkshake"
+      },
+      "expected": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KichenAid",
+          "KitcenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Contry Living",
+          "Town & Country Livng",
+          "Town & Country Lving"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KitcenAid",
+          "KichenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Country Livng",
+          "Town & Country Livin",
+          "Town & Country Livng"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, such as 'KitchenAid' and 'Town & Country Living', without any standalone generic product words or product categories. All entries are valid brand names or variations of them.",
+      "input": {
+        "brand_name": "KitchenAid",
+        "bullet_points": "DURABLE, HEAT RESISTANT SILICONE - The Kitchen Aid Ribbed Soft Silicone mitts are heat resistant up to 500 degrees Fahrenheit to safely shield hands from the heat while cooking and handling hot pans and dishes.\nWATERPROOF & SLIP-RESISTANT - These silicone mitts are water resistant for additional protection from hot spills and spots with a textured, ribbed stripe design for a safe and secure grip.\nSET OF TWO- Includes two (2) generously sized oven mitts that each measures 7\" wide x 13\" long for a comfortable fit.\nADDITIONAL PROTECTION & COMFORT - The 100% cotton cuff provides additional protection from the heat with polyester lining that offers comfort and insulation.\nEASY CARE - These Kitchen Aid oven mitts can be easily cleaned. Simply rinse off with water and wipe them clean.",
+        "description": "Perform your kitchen tasks safely with the Kitchen Aid Ribbed Soft Silicone 2-Piece Oven Mitt Set. The textured, ribb stripe design offers a secure grip while handling hot objects. Made of durable and waterproof silicone with a cotton cuff that provides additional shield from the heat and polyester lining that offers comfort and insulation. Each oven mitt measures 7 inches by 13 inches for a generous fit. They are heat resistant up to 500 degrees Fahrenheit. Coordinate these oven mitts with coordinating Kitchen Aid Ribbed Soft Silicone Pot Holders for a complete set.",
+        "manufacturer": "Town & Country Living",
+        "title": "KITCHENAID Ribbed Soft Silicone Oven Mitt 2-Pack Set, 7.5\"x13\", Milkshake"
+      },
+      "expected": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KichenAid",
+          "KitcenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Contry Living",
+          "Town & Country Livng",
+          "Town & Country Lving"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KitcenAid",
+          "KichenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Country Livng",
+          "Town & Country Livin",
+          "Town & Country Livng"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains a misspelled entity 'Town & Country Livng' which is not a valid brand name, and 'Town & Country Livin' which is also a misspelling. These errors violate the requirement for brand/trademark names.",
+      "input": {
+        "brand_name": "KitchenAid",
+        "bullet_points": "DURABLE, HEAT RESISTANT SILICONE - The Kitchen Aid Ribbed Soft Silicone mitts are heat resistant up to 500 degrees Fahrenheit to safely shield hands from the heat while cooking and handling hot pans and dishes.\nWATERPROOF & SLIP-RESISTANT - These silicone mitts are water resistant for additional protection from hot spills and spots with a textured, ribbed stripe design for a safe and secure grip.\nSET OF TWO- Includes two (2) generously sized oven mitts that each measures 7\" wide x 13\" long for a comfortable fit.\nADDITIONAL PROTECTION & COMFORT - The 100% cotton cuff provides additional protection from the heat with polyester lining that offers comfort and insulation.\nEASY CARE - These Kitchen Aid oven mitts can be easily cleaned. Simply rinse off with water and wipe them clean.",
+        "description": "Perform your kitchen tasks safely with the Kitchen Aid Ribbed Soft Silicone 2-Piece Oven Mitt Set. The textured, ribb stripe design offers a secure grip while handling hot objects. Made of durable and waterproof silicone with a cotton cuff that provides additional shield from the heat and polyester lining that offers comfort and insulation. Each oven mitt measures 7 inches by 13 inches for a generous fit. They are heat resistant up to 500 degrees Fahrenheit. Coordinate these oven mitts with coordinating Kitchen Aid Ribbed Soft Silicone Pot Holders for a complete set.",
+        "manufacturer": "Town & Country Living",
+        "title": "KITCHENAID Ribbed Soft Silicone Oven Mitt 2-Pack Set, 7.5\"x13\", Milkshake"
+      },
+      "expected": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KichenAid",
+          "KitcenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Contry Living",
+          "Town & Country Livng",
+          "Town & Country Lving"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KitcenAid",
+          "KichenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Country Livng",
+          "Town & Country Livin",
+          "Town & Country Livng"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The brand entity 'Town & Country Livng' appears twice in the output, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "KitchenAid",
+        "bullet_points": "DURABLE, HEAT RESISTANT SILICONE - The Kitchen Aid Ribbed Soft Silicone mitts are heat resistant up to 500 degrees Fahrenheit to safely shield hands from the heat while cooking and handling hot pans and dishes.\nWATERPROOF & SLIP-RESISTANT - These silicone mitts are water resistant for additional protection from hot spills and spots with a textured, ribbed stripe design for a safe and secure grip.\nSET OF TWO- Includes two (2) generously sized oven mitts that each measures 7\" wide x 13\" long for a comfortable fit.\nADDITIONAL PROTECTION & COMFORT - The 100% cotton cuff provides additional protection from the heat with polyester lining that offers comfort and insulation.\nEASY CARE - These Kitchen Aid oven mitts can be easily cleaned. Simply rinse off with water and wipe them clean.",
+        "description": "Perform your kitchen tasks safely with the Kitchen Aid Ribbed Soft Silicone 2-Piece Oven Mitt Set. The textured, ribb stripe design offers a secure grip while handling hot objects. Made of durable and waterproof silicone with a cotton cuff that provides additional shield from the heat and polyester lining that offers comfort and insulation. Each oven mitt measures 7 inches by 13 inches for a generous fit. They are heat resistant up to 500 degrees Fahrenheit. Coordinate these oven mitts with coordinating Kitchen Aid Ribbed Soft Silicone Pot Holders for a complete set.",
+        "manufacturer": "Town & Country Living",
+        "title": "KITCHENAID Ribbed Soft Silicone Oven Mitt 2-Pack Set, 7.5\"x13\", Milkshake"
+      },
+      "expected": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KichenAid",
+          "KitcenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Contry Living",
+          "Town & Country Livng",
+          "Town & Country Lving"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "KitchenAid",
+          "kitchenaid",
+          "KitcenAid",
+          "KichenAid",
+          "KitcheAid",
+          "Town & Country Living",
+          "town & country living",
+          "Town & Country Livng",
+          "Town & Country Livin",
+          "Town & Country Livng"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes a completely wrong brand name 'WABACOO', which does not match or closely match the listing brand 'WEBACOO'. This violates the FAIL conditions.",
+      "input": {
+        "brand_name": "WEBACOO",
+        "bullet_points": "\ud83c\udf3f Serve with Webacoo Style: Elevate your dining experience! Whether serving breakfast in bed, organizing snacks on a coffee table, hosting a BBQ party, or displaying decor on your ottoman, this bamboo tray combines practicality with rustic charm. Its versatile design fits seamlessly into kitchens, living rooms, patios, and even commercial settings.\n\ud83c\udf3f Premium Eco-Friendly Bamboo Construction: Crafted from 100% natural, heat-treated bamboo, Webacoo\u2019s serving tray is stronger and more durable than plastic alternatives. Sanded smooth and coated with food-safe oil, it resists stains, splinters, and wear\u2014ideal for daily use and heavy-duty occasions.\n\ud83c\udf3f Ergonomic Handles & Lightweight Design: Sleek, low-profile handles ensure a secure grip, even when fully loaded. At just 15.3\u201d x 9.8\u201d, this lightweight yet sturdy tray effortlessly carries meals, drinks, or decor from room to room. Raised edges prevent spills, keeping items firmly in place.\n\ud83c\udf3f Multipurpose for Home & Beyond: Use it as a breakfast platter, snack organizer, coffee table centerpiece, or decorative storage for keys and remotes. Its minimalist bohemian style also makes it perfect for candle displays, plant holders, or wall art.\n\ud83c\udf3f Easy-Clean & Gift-Ready: Simply wipe with a damp cloth for instant maintenance. With its timeless design and eco-conscious appeal, this bamboo tray is an ideal gift for weddings, housewarmings, birthdays, or Christmas\u2014sure to delight friends, family, or even yourself!\n\ud83c\udf3f Why Choose Us? Durable, lightweight, and endlessly versatile, this bamboo serving tray is designed to last. Upgrade your home or commercial space with a piece that blends functionality, sustainability, and modern elegance.",
+        "description": "",
+        "manufacturer": "Sachsen-Us",
+        "title": "Webacoo Bamboo Tray with Handles - Lightweight Serving Tray for Breakfast in Bed, Coffee Table, BBQ, Kitchen, Ottoman & Party - Perfect for Lap, Couch & Gifting - Large Size Wood Tea Tray - 15\u201dx10\u201d"
+      },
+      "expected": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WEBACO",
+          "WEABCOO",
+          "WEBACOOO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Saschen-Us",
+          "Sachsen-Uss"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WABACOO",
+          "WEABCOO",
+          "WEBACO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Sachsen-Usa",
+          "Sachsen-Usa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Sachsen-Usa', which is a variation of the manufacturer name 'Sachsen-Us' that does not appear in the input. This is a made-up brand variation that does not meet the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "WEBACOO",
+        "bullet_points": "\ud83c\udf3f Serve with Webacoo Style: Elevate your dining experience! Whether serving breakfast in bed, organizing snacks on a coffee table, hosting a BBQ party, or displaying decor on your ottoman, this bamboo tray combines practicality with rustic charm. Its versatile design fits seamlessly into kitchens, living rooms, patios, and even commercial settings.\n\ud83c\udf3f Premium Eco-Friendly Bamboo Construction: Crafted from 100% natural, heat-treated bamboo, Webacoo\u2019s serving tray is stronger and more durable than plastic alternatives. Sanded smooth and coated with food-safe oil, it resists stains, splinters, and wear\u2014ideal for daily use and heavy-duty occasions.\n\ud83c\udf3f Ergonomic Handles & Lightweight Design: Sleek, low-profile handles ensure a secure grip, even when fully loaded. At just 15.3\u201d x 9.8\u201d, this lightweight yet sturdy tray effortlessly carries meals, drinks, or decor from room to room. Raised edges prevent spills, keeping items firmly in place.\n\ud83c\udf3f Multipurpose for Home & Beyond: Use it as a breakfast platter, snack organizer, coffee table centerpiece, or decorative storage for keys and remotes. Its minimalist bohemian style also makes it perfect for candle displays, plant holders, or wall art.\n\ud83c\udf3f Easy-Clean & Gift-Ready: Simply wipe with a damp cloth for instant maintenance. With its timeless design and eco-conscious appeal, this bamboo tray is an ideal gift for weddings, housewarmings, birthdays, or Christmas\u2014sure to delight friends, family, or even yourself!\n\ud83c\udf3f Why Choose Us? Durable, lightweight, and endlessly versatile, this bamboo serving tray is designed to last. Upgrade your home or commercial space with a piece that blends functionality, sustainability, and modern elegance.",
+        "description": "",
+        "manufacturer": "Sachsen-Us",
+        "title": "Webacoo Bamboo Tray with Handles - Lightweight Serving Tray for Breakfast in Bed, Coffee Table, BBQ, Kitchen, Ottoman & Party - Perfect for Lap, Couch & Gifting - Large Size Wood Tea Tray - 15\u201dx10\u201d"
+      },
+      "expected": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WEBACO",
+          "WEABCOO",
+          "WEBACOOO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Saschen-Us",
+          "Sachsen-Uss"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WABACOO",
+          "WEABCOO",
+          "WEBACO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Sachsen-Usa",
+          "Sachsen-Usa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'WABACOO' and 'Sachsen-Usa', which are not valid brand entities as they are either misspellings or variations that do not represent the actual brand. Additionally, 'Sachsen-Usa' is a variation that does not match the original brand name.",
+      "input": {
+        "brand_name": "WEBACOO",
+        "bullet_points": "\ud83c\udf3f Serve with Webacoo Style: Elevate your dining experience! Whether serving breakfast in bed, organizing snacks on a coffee table, hosting a BBQ party, or displaying decor on your ottoman, this bamboo tray combines practicality with rustic charm. Its versatile design fits seamlessly into kitchens, living rooms, patios, and even commercial settings.\n\ud83c\udf3f Premium Eco-Friendly Bamboo Construction: Crafted from 100% natural, heat-treated bamboo, Webacoo\u2019s serving tray is stronger and more durable than plastic alternatives. Sanded smooth and coated with food-safe oil, it resists stains, splinters, and wear\u2014ideal for daily use and heavy-duty occasions.\n\ud83c\udf3f Ergonomic Handles & Lightweight Design: Sleek, low-profile handles ensure a secure grip, even when fully loaded. At just 15.3\u201d x 9.8\u201d, this lightweight yet sturdy tray effortlessly carries meals, drinks, or decor from room to room. Raised edges prevent spills, keeping items firmly in place.\n\ud83c\udf3f Multipurpose for Home & Beyond: Use it as a breakfast platter, snack organizer, coffee table centerpiece, or decorative storage for keys and remotes. Its minimalist bohemian style also makes it perfect for candle displays, plant holders, or wall art.\n\ud83c\udf3f Easy-Clean & Gift-Ready: Simply wipe with a damp cloth for instant maintenance. With its timeless design and eco-conscious appeal, this bamboo tray is an ideal gift for weddings, housewarmings, birthdays, or Christmas\u2014sure to delight friends, family, or even yourself!\n\ud83c\udf3f Why Choose Us? Durable, lightweight, and endlessly versatile, this bamboo serving tray is designed to last. Upgrade your home or commercial space with a piece that blends functionality, sustainability, and modern elegance.",
+        "description": "",
+        "manufacturer": "Sachsen-Us",
+        "title": "Webacoo Bamboo Tray with Handles - Lightweight Serving Tray for Breakfast in Bed, Coffee Table, BBQ, Kitchen, Ottoman & Party - Perfect for Lap, Couch & Gifting - Large Size Wood Tea Tray - 15\u201dx10\u201d"
+      },
+      "expected": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WEBACO",
+          "WEABCOO",
+          "WEBACOOO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Saschen-Us",
+          "Sachsen-Uss"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WABACOO",
+          "WEABCOO",
+          "WEBACO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Sachsen-Usa",
+          "Sachsen-Usa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'WABACOO' and 'Sachsen-Usa', which are not valid variations of the brand names provided in the input data. The expected output contains only valid variations of 'WEBACOO' and 'Sachsen-Us', while the actual output introduces incorrect entities.",
+      "input": {
+        "brand_name": "WEBACOO",
+        "bullet_points": "\ud83c\udf3f Serve with Webacoo Style: Elevate your dining experience! Whether serving breakfast in bed, organizing snacks on a coffee table, hosting a BBQ party, or displaying decor on your ottoman, this bamboo tray combines practicality with rustic charm. Its versatile design fits seamlessly into kitchens, living rooms, patios, and even commercial settings.\n\ud83c\udf3f Premium Eco-Friendly Bamboo Construction: Crafted from 100% natural, heat-treated bamboo, Webacoo\u2019s serving tray is stronger and more durable than plastic alternatives. Sanded smooth and coated with food-safe oil, it resists stains, splinters, and wear\u2014ideal for daily use and heavy-duty occasions.\n\ud83c\udf3f Ergonomic Handles & Lightweight Design: Sleek, low-profile handles ensure a secure grip, even when fully loaded. At just 15.3\u201d x 9.8\u201d, this lightweight yet sturdy tray effortlessly carries meals, drinks, or decor from room to room. Raised edges prevent spills, keeping items firmly in place.\n\ud83c\udf3f Multipurpose for Home & Beyond: Use it as a breakfast platter, snack organizer, coffee table centerpiece, or decorative storage for keys and remotes. Its minimalist bohemian style also makes it perfect for candle displays, plant holders, or wall art.\n\ud83c\udf3f Easy-Clean & Gift-Ready: Simply wipe with a damp cloth for instant maintenance. With its timeless design and eco-conscious appeal, this bamboo tray is an ideal gift for weddings, housewarmings, birthdays, or Christmas\u2014sure to delight friends, family, or even yourself!\n\ud83c\udf3f Why Choose Us? Durable, lightweight, and endlessly versatile, this bamboo serving tray is designed to last. Upgrade your home or commercial space with a piece that blends functionality, sustainability, and modern elegance.",
+        "description": "",
+        "manufacturer": "Sachsen-Us",
+        "title": "Webacoo Bamboo Tray with Handles - Lightweight Serving Tray for Breakfast in Bed, Coffee Table, BBQ, Kitchen, Ottoman & Party - Perfect for Lap, Couch & Gifting - Large Size Wood Tea Tray - 15\u201dx10\u201d"
+      },
+      "expected": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WEBACO",
+          "WEABCOO",
+          "WEBACOOO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Saschen-Us",
+          "Sachsen-Uss"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WABACOO",
+          "WEABCOO",
+          "WEBACO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Sachsen-Usa",
+          "Sachsen-Usa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Sachsen-Usa' listed twice, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "WEBACOO",
+        "bullet_points": "\ud83c\udf3f Serve with Webacoo Style: Elevate your dining experience! Whether serving breakfast in bed, organizing snacks on a coffee table, hosting a BBQ party, or displaying decor on your ottoman, this bamboo tray combines practicality with rustic charm. Its versatile design fits seamlessly into kitchens, living rooms, patios, and even commercial settings.\n\ud83c\udf3f Premium Eco-Friendly Bamboo Construction: Crafted from 100% natural, heat-treated bamboo, Webacoo\u2019s serving tray is stronger and more durable than plastic alternatives. Sanded smooth and coated with food-safe oil, it resists stains, splinters, and wear\u2014ideal for daily use and heavy-duty occasions.\n\ud83c\udf3f Ergonomic Handles & Lightweight Design: Sleek, low-profile handles ensure a secure grip, even when fully loaded. At just 15.3\u201d x 9.8\u201d, this lightweight yet sturdy tray effortlessly carries meals, drinks, or decor from room to room. Raised edges prevent spills, keeping items firmly in place.\n\ud83c\udf3f Multipurpose for Home & Beyond: Use it as a breakfast platter, snack organizer, coffee table centerpiece, or decorative storage for keys and remotes. Its minimalist bohemian style also makes it perfect for candle displays, plant holders, or wall art.\n\ud83c\udf3f Easy-Clean & Gift-Ready: Simply wipe with a damp cloth for instant maintenance. With its timeless design and eco-conscious appeal, this bamboo tray is an ideal gift for weddings, housewarmings, birthdays, or Christmas\u2014sure to delight friends, family, or even yourself!\n\ud83c\udf3f Why Choose Us? Durable, lightweight, and endlessly versatile, this bamboo serving tray is designed to last. Upgrade your home or commercial space with a piece that blends functionality, sustainability, and modern elegance.",
+        "description": "",
+        "manufacturer": "Sachsen-Us",
+        "title": "Webacoo Bamboo Tray with Handles - Lightweight Serving Tray for Breakfast in Bed, Coffee Table, BBQ, Kitchen, Ottoman & Party - Perfect for Lap, Couch & Gifting - Large Size Wood Tea Tray - 15\u201dx10\u201d"
+      },
+      "expected": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WEBACO",
+          "WEABCOO",
+          "WEBACOOO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Saschen-Us",
+          "Sachsen-Uss"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "WEBACOO",
+          "webacoo",
+          "WABACOO",
+          "WEABCOO",
+          "WEBACO",
+          "Sachsen-Us",
+          "sachsen-us",
+          "SachsenUs",
+          "Sachsen-Usa",
+          "Sachsen-Usa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output extracted the brand 'Transformers' correctly, including acceptable minor variations in casing and spelling. Additionally, 'Hasbro' was also extracted correctly, meeting the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Trnasformers",
+          "Transformrs",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroe",
+          "Habsro"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Tranformers",
+          "Transfomers",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbrob",
+          "Hasbroe"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "The extracted brands 'Transformers' and 'Hasbro' are present in the input data. The output includes acceptable typo variations of both brands, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Trnasformers",
+          "Transformrs",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroe",
+          "Habsro"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Tranformers",
+          "Transfomers",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbrob",
+          "Hasbroe"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, specifically 'Transformers' and 'Hasbro', along with various misspellings of these brands. There are no standalone generic product words or product categories included, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Trnasformers",
+          "Transformrs",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroe",
+          "Habsro"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Tranformers",
+          "Transfomers",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbrob",
+          "Hasbroe"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are brand names or variations of the brand names 'Transformers' and 'Hasbro', which are both trademarked. There are no standalone generic words or phrases that would cause a failure according to the rubric.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Trnasformers",
+          "Transformrs",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroe",
+          "Habsro"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Tranformers",
+          "Transfomers",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbrob",
+          "Hasbroe"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact duplicate string 'Hasbro' which appears more than once, violating the rubric's requirement for no exact string duplicates.",
+      "input": {
+        "brand_name": "Transformers",
+        "bullet_points": "EXPERIENCE THE CLASSIC CONVERSION PLAY OF TRANSFORMERS TOYS: Transformers toys that change from robot to vehicle have captivated kids for generations.\n2 TOYS IN 1: This toy robot changes into the signature red and blue Optimus Prime toy truck in 6 simple steps. Easy conversion for kids 6 years old and up.\nFAVORITE TRANSFORMERS CHARACTER: Transformers follows the story of the heroic Autobots, who fight to protect all life, and the evil Decepticons, who seek to conquer the universe. This timeless 11-inch Cyber Commander Series figure depicts Optimus Prime, legendary leader of the Autobots--essential when starting a Transformers toy collection.\nIMAGINE EXCITING BATTLES: Collect other 11-inch Cyber Commander Series Transformers figures so kids can imagine their own Autobot vs. Decepticon battles (Each sold separately. Subject to availability).\nMAKES A GREAT GIFT: This classic Optimus Prime action figure makes the perfect birthday or holiday gift.",
+        "description": "Bring home the excitement of Transformers robots with this Cyber Commander series Optimus Prime figure! The Transformers are sentient robots from the distant planet, Cybertron. Two factions, the heroic Autobots and the evil Decepticons are in an ever-raging battle. The legendary Autobot leader, Optimus Prime, fights to defend all life, while his nemesis, the merciless Decepticon leader, Megatron, fights to destroy it. This timeless 11-inch scale Transformers Optimus Prime figure is essential when starting a Transformers toy collection. Featuring classic Transformers conversion for kids 6 and up, kids can change this Optimus Prime action figure from toy robot to toy truck in 6 easy steps. Collect other Cyber Commander Series figures so kids can create their own Autobot vs. Decepticon battles and imagine Optimus Prime leading the heroic Autobots against the evil Decepticons! (Each sold separately. Subject to availability). Transformers and all related characters are trademarks of Hasbro.",
+        "manufacturer": "Hasbro",
+        "title": "Transformers Toys Heroic Optimus Prime Action Figure - Timeless Large-Scale Figure, Changes into Toy Truck - Toys for Kids 6 and Up, 11-inch (Amazon Exclusive)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Trnasformers",
+          "Transformrs",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbroe",
+          "Habsro"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Transformers",
+          "transformers",
+          "Transfrmers",
+          "Tranformers",
+          "Transfomers",
+          "Hasbro",
+          "hasbro",
+          "Hasbroo",
+          "Hasbrob",
+          "Hasbroe"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BH98GL8Z",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes 'RxCrush' and variations that closely match the brand name 'Rx Crush', meeting the acceptable minor variations in casing and spacing. Additionally, 'Resolve Designs' is also included, which is the manufacturer name, but it does not conflict with the brand extraction.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desgns",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BH98GL8Z",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands in the module output are either valid variations of the brand 'Rx Crush' or the manufacturer 'Resolve Designs', which are present in the input data. The output includes acceptable typo variations and does not contain any hallucinated brands.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desgns",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BH98GL8Z",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities without any standalone generic product words. All entries are variations of the brand names 'RxCrush' and 'Resolve Designs', which are acceptable according to the rubric.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desgns",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BH98GL8Z",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are brand names or variations of the brand name 'RxCrush' and 'Resolve Designs', which are acceptable under the rubric. There are no standalone generic words or phrases that would cause a FAIL.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desgns",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BH98GL8Z",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. All entries are unique, and case variations are treated as different entities, which aligns with the rubric's requirements.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Oral Standard Bore, EO02 Connects and locks to male ENFit (RxCrush pill pouch) and mates to male Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit and female Oral ends. Made of ABS material. Warning, if used incorrectly this adapter will fit onto Luer syringes, will leak and introduces a cross connection hazard. USE ONLY WITH ORAL SYRINGES.\nOral Large Bore, EO05 Connects to male ENFit (RxCrush pill pouches) andlarge boremale Oral syringe. DOES NOT CONNECT TO ENFit SYRINGES.\nAdapter has female ENFit (slip fit, does NOT have locking ENFit) and female Oral ends. The oral end is nonstandard so ensure the ID of this adapter fits the OD of your oral syringe. Made of PVC material 0.205 inch ID / 0.268 inch OD (5.2 mm / 6.8 mm), both ends",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Female ENFit to Female Oral Adapter - QTY 100 100 Standard"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desgns",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CVQJY9C6",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output extracted the brand 'Rx Crush' correctly and included acceptable variations. It also extracted 'Vesco Medical' with minor variations, which are acceptable according to the rubric.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "ENFit\nStandard ENFit Tip\nClear Barrel",
+        "description": "ENFit Syringe",
+        "manufacturer": "Vesco Medical",
+        "title": "ENFit\u00ae Syringe - 20ml - QTY 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "Rx Cruch",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "Vesco Medcal",
+          "Vesco Medial"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "VescoMedcal",
+          "VescoMedicl"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CVQJY9C6",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands 'Rx Crush' and 'Vesco Medical' are present in the input data. The variations of the brands are acceptable as they include typo/spelling variations.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "ENFit\nStandard ENFit Tip\nClear Barrel",
+        "description": "ENFit Syringe",
+        "manufacturer": "Vesco Medical",
+        "title": "ENFit\u00ae Syringe - 20ml - QTY 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "Rx Cruch",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "Vesco Medcal",
+          "Vesco Medial"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "VescoMedcal",
+          "VescoMedicl"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CVQJY9C6",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, 'Rx Crush' and 'Vesco Medical', without any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "ENFit\nStandard ENFit Tip\nClear Barrel",
+        "description": "ENFit Syringe",
+        "manufacturer": "Vesco Medical",
+        "title": "ENFit\u00ae Syringe - 20ml - QTY 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "Rx Cruch",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "Vesco Medcal",
+          "Vesco Medial"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "VescoMedcal",
+          "VescoMedicl"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CVQJY9C6",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'ENFit' and 'Syringe', which are generic terms that do not meet the PASS conditions. 'ENFit' is a trademarked product line, but 'Syringe' is a standalone generic word that is purchasable.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "ENFit\nStandard ENFit Tip\nClear Barrel",
+        "description": "ENFit Syringe",
+        "manufacturer": "Vesco Medical",
+        "title": "ENFit\u00ae Syringe - 20ml - QTY 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "Rx Cruch",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "Vesco Medcal",
+          "Vesco Medial"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "VescoMedcal",
+          "VescoMedicl"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CVQJY9C6",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The exact string 'Vesco Medical' appears in the output, but it is not duplicated. However, 'VescoMedcal' and 'VescoMedicl' are not exact duplicates of 'Vesco Medical', and there are no exact duplicates in the output. Therefore, the output does not meet the PASS conditions.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "ENFit\nStandard ENFit Tip\nClear Barrel",
+        "description": "ENFit Syringe",
+        "manufacturer": "Vesco Medical",
+        "title": "ENFit\u00ae Syringe - 20ml - QTY 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "Rx Crsh",
+          "Rx Cruch",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "Vesco Medcal",
+          "Vesco Medial"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "Vesco Medical",
+          "vesco medical",
+          "VescoMedical",
+          "VescoMedcal",
+          "VescoMedicl"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0B5W8B389",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes 'RxCrush', which closely matches the brand name 'Rx Crush' from the listing, and variations in casing are acceptable. Additionally, 'Resolve Designs' is also correctly extracted, meeting the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Pediatric size RxCrush Pill Pouch. Fits in RxCrush Pill Crusher and other pill crushers that require a pouch. Can be used with 1ml, 3ml, 5ml ENFit syringes or larger. Smooth interior contours that restrict less medication delivering more accurate dose. Full Locking ENFit nozzle for more sure connection to syringe. Zip seal will not leak. RxCrush Pill Pouch with locking ENFit, ISO 80369-3 compliant. Use pouch to contain hazardous drugs to assist with USP<800>, USP<795>, and USP<797> compliance. ENFit tip fits to ENFit syringes. With transition connectors other style syringes can be attached. Syringe not included. See SYEN1-LDT, SYEN3-LDT, SYEN5 or SYEN10-2. Pouch cap not included. See CA02 or CA03. Thickness: 4 mil. Dimensions: 2\" x 4.375\" x 0.5\" each. 7\" x 9\" x 2\" for pack of 50. Optimal pill capacity is about 5, depending on the medication.\nInstructions for PP08 Pediatric Pill Pouch Insert pills into pouch to contain medication dust while crushing with RxCrush Pill Crusher. Connect pouch to a water-filled ENFit syringe. Do not inject water yet. Hold pouch by syringe and crush medications in RxCrush Pill Crusher, (see procedure under RxCrush Pill Crusher PPC11 Inject water into pouch after pills are pulverized. Shake pouch until crushed pills are dissolved in the water. Withdraw contents into syringe. Disconnect syringe from pouch and administer contents into feeding tube, food or drink. Flush pouch with additional water until all medication has been removed from pouch.",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Pediatric Pill Pouch with Locking ENFit - Qty 50"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolve Desgns"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0B5W8B389",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands in the module output are either exact matches or acceptable variations of the brands present in the input data. The variations include acceptable typos and manufacturer variations, which align with the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Pediatric size RxCrush Pill Pouch. Fits in RxCrush Pill Crusher and other pill crushers that require a pouch. Can be used with 1ml, 3ml, 5ml ENFit syringes or larger. Smooth interior contours that restrict less medication delivering more accurate dose. Full Locking ENFit nozzle for more sure connection to syringe. Zip seal will not leak. RxCrush Pill Pouch with locking ENFit, ISO 80369-3 compliant. Use pouch to contain hazardous drugs to assist with USP<800>, USP<795>, and USP<797> compliance. ENFit tip fits to ENFit syringes. With transition connectors other style syringes can be attached. Syringe not included. See SYEN1-LDT, SYEN3-LDT, SYEN5 or SYEN10-2. Pouch cap not included. See CA02 or CA03. Thickness: 4 mil. Dimensions: 2\" x 4.375\" x 0.5\" each. 7\" x 9\" x 2\" for pack of 50. Optimal pill capacity is about 5, depending on the medication.\nInstructions for PP08 Pediatric Pill Pouch Insert pills into pouch to contain medication dust while crushing with RxCrush Pill Crusher. Connect pouch to a water-filled ENFit syringe. Do not inject water yet. Hold pouch by syringe and crush medications in RxCrush Pill Crusher, (see procedure under RxCrush Pill Crusher PPC11 Inject water into pouch after pills are pulverized. Shake pouch until crushed pills are dissolved in the water. Withdraw contents into syringe. Disconnect syringe from pouch and administer contents into feeding tube, food or drink. Flush pouch with additional water until all medication has been removed from pouch.",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Pediatric Pill Pouch with Locking ENFit - Qty 50"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolve Desgns"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0B5W8B389",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output contains only actual brand entities, including variations of 'RxCrush' and 'Resolve Designs', without any standalone generic product words or product categories.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Pediatric size RxCrush Pill Pouch. Fits in RxCrush Pill Crusher and other pill crushers that require a pouch. Can be used with 1ml, 3ml, 5ml ENFit syringes or larger. Smooth interior contours that restrict less medication delivering more accurate dose. Full Locking ENFit nozzle for more sure connection to syringe. Zip seal will not leak. RxCrush Pill Pouch with locking ENFit, ISO 80369-3 compliant. Use pouch to contain hazardous drugs to assist with USP<800>, USP<795>, and USP<797> compliance. ENFit tip fits to ENFit syringes. With transition connectors other style syringes can be attached. Syringe not included. See SYEN1-LDT, SYEN3-LDT, SYEN5 or SYEN10-2. Pouch cap not included. See CA02 or CA03. Thickness: 4 mil. Dimensions: 2\" x 4.375\" x 0.5\" each. 7\" x 9\" x 2\" for pack of 50. Optimal pill capacity is about 5, depending on the medication.\nInstructions for PP08 Pediatric Pill Pouch Insert pills into pouch to contain medication dust while crushing with RxCrush Pill Crusher. Connect pouch to a water-filled ENFit syringe. Do not inject water yet. Hold pouch by syringe and crush medications in RxCrush Pill Crusher, (see procedure under RxCrush Pill Crusher PPC11 Inject water into pouch after pills are pulverized. Shake pouch until crushed pills are dissolved in the water. Withdraw contents into syringe. Disconnect syringe from pouch and administer contents into feeding tube, food or drink. Flush pouch with additional water until all medication has been removed from pouch.",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Pediatric Pill Pouch with Locking ENFit - Qty 50"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolve Desgns"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0B5W8B389",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes variations of the brand name 'RxCrush' and 'Resolve Designs', but it also contains incorrect variations such as 'RxCursh', 'resolvedesigns', 'Resolv Designs', and 'Reslove Designs', which do not accurately represent the brand entities. Therefore, it fails to meet the criteria for acceptable brand entities.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Pediatric size RxCrush Pill Pouch. Fits in RxCrush Pill Crusher and other pill crushers that require a pouch. Can be used with 1ml, 3ml, 5ml ENFit syringes or larger. Smooth interior contours that restrict less medication delivering more accurate dose. Full Locking ENFit nozzle for more sure connection to syringe. Zip seal will not leak. RxCrush Pill Pouch with locking ENFit, ISO 80369-3 compliant. Use pouch to contain hazardous drugs to assist with USP<800>, USP<795>, and USP<797> compliance. ENFit tip fits to ENFit syringes. With transition connectors other style syringes can be attached. Syringe not included. See SYEN1-LDT, SYEN3-LDT, SYEN5 or SYEN10-2. Pouch cap not included. See CA02 or CA03. Thickness: 4 mil. Dimensions: 2\" x 4.375\" x 0.5\" each. 7\" x 9\" x 2\" for pack of 50. Optimal pill capacity is about 5, depending on the medication.\nInstructions for PP08 Pediatric Pill Pouch Insert pills into pouch to contain medication dust while crushing with RxCrush Pill Crusher. Connect pouch to a water-filled ENFit syringe. Do not inject water yet. Hold pouch by syringe and crush medications in RxCrush Pill Crusher, (see procedure under RxCrush Pill Crusher PPC11 Inject water into pouch after pills are pulverized. Shake pouch until crushed pills are dissolved in the water. Withdraw contents into syringe. Disconnect syringe from pouch and administer contents into feeding tube, food or drink. Flush pouch with additional water until all medication has been removed from pouch.",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Pediatric Pill Pouch with Locking ENFit - Qty 50"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolve Desgns"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0B5W8B389",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. Each entry in the brand_entities list is unique, and case variations are treated as different entities, which aligns with the rubric's requirements.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "",
+        "description": "Pediatric size RxCrush Pill Pouch. Fits in RxCrush Pill Crusher and other pill crushers that require a pouch. Can be used with 1ml, 3ml, 5ml ENFit syringes or larger. Smooth interior contours that restrict less medication delivering more accurate dose. Full Locking ENFit nozzle for more sure connection to syringe. Zip seal will not leak. RxCrush Pill Pouch with locking ENFit, ISO 80369-3 compliant. Use pouch to contain hazardous drugs to assist with USP<800>, USP<795>, and USP<797> compliance. ENFit tip fits to ENFit syringes. With transition connectors other style syringes can be attached. Syringe not included. See SYEN1-LDT, SYEN3-LDT, SYEN5 or SYEN10-2. Pouch cap not included. See CA02 or CA03. Thickness: 4 mil. Dimensions: 2\" x 4.375\" x 0.5\" each. 7\" x 9\" x 2\" for pack of 50. Optimal pill capacity is about 5, depending on the medication.\nInstructions for PP08 Pediatric Pill Pouch Insert pills into pouch to contain medication dust while crushing with RxCrush Pill Crusher. Connect pouch to a water-filled ENFit syringe. Do not inject water yet. Hold pouch by syringe and crush medications in RxCrush Pill Crusher, (see procedure under RxCrush Pill Crusher PPC11 Inject water into pouch after pills are pulverized. Shake pouch until crushed pills are dissolved in the water. Withdraw contents into syringe. Disconnect syringe from pouch and administer contents into feeding tube, food or drink. Flush pouch with additional water until all medication has been removed from pouch.",
+        "manufacturer": "Resolve Designs",
+        "title": "RxCrush Pediatric Pill Pouch with Locking ENFit - Qty 50"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrsh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolve Desgns"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0C9SPJ9ZQ",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The extracted brand 'RxCrush' closely matches the listing brand 'Rx Crush', and minor variations in casing and spacing are acceptable. Other variations like 'rxcrush' and 'RxCrsh' also do not violate the rubric conditions.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "Vesco ENFit syringes.\nStandard Tip",
+        "description": "ENFit Syringe. Female tip with purple plunger.Use instead of Luer, Oral, or Catheter syringes for tube feeding.ISO 80369-3 compliant. No cap with syringe. See CA06.Materials: PP, Isoprene.Use with RxCrush Pill Pouches or ENFit feeding tubes and extension sets.Single patient use and Rx only.",
+        "manufacturer": "Resolve Designs",
+        "title": "35 ml RxCrush ENFit Syringe - Qty 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrsh",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0C9SPJ9ZQ",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "All extracted brands in the module output are either present in the input data or are acceptable variations of the valid brand 'Rx Crush' and the manufacturer 'Resolve Designs'. The variations include acceptable typos and spelling variations.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "Vesco ENFit syringes.\nStandard Tip",
+        "description": "ENFit Syringe. Female tip with purple plunger.Use instead of Luer, Oral, or Catheter syringes for tube feeding.ISO 80369-3 compliant. No cap with syringe. See CA06.Materials: PP, Isoprene.Use with RxCrush Pill Pouches or ENFit feeding tubes and extension sets.Single patient use and Rx only.",
+        "manufacturer": "Resolve Designs",
+        "title": "35 ml RxCrush ENFit Syringe - Qty 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrsh",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0C9SPJ9ZQ",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities, such as 'RxCrush' and 'Resolve Designs', without any standalone generic product words or product categories. Therefore, it meets the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "Vesco ENFit syringes.\nStandard Tip",
+        "description": "ENFit Syringe. Female tip with purple plunger.Use instead of Luer, Oral, or Catheter syringes for tube feeding.ISO 80369-3 compliant. No cap with syringe. See CA06.Materials: PP, Isoprene.Use with RxCrush Pill Pouches or ENFit feeding tubes and extension sets.Single patient use and Rx only.",
+        "manufacturer": "Resolve Designs",
+        "title": "35 ml RxCrush ENFit Syringe - Qty 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrsh",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0C9SPJ9ZQ",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "PASS",
+      "reasoning": "All entities in the module output are brand names or trademarked product lines, which meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "Vesco ENFit syringes.\nStandard Tip",
+        "description": "ENFit Syringe. Female tip with purple plunger.Use instead of Luer, Oral, or Catheter syringes for tube feeding.ISO 80369-3 compliant. No cap with syringe. See CA06.Materials: PP, Isoprene.Use with RxCrush Pill Pouches or ENFit feeding tubes and extension sets.Single patient use and Rx only.",
+        "manufacturer": "Resolve Designs",
+        "title": "35 ml RxCrush ENFit Syringe - Qty 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrsh",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0C9SPJ9ZQ",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. All entries are unique, and case variations are treated as different entities.",
+      "input": {
+        "brand_name": "Rx Crush",
+        "bullet_points": "Vesco ENFit syringes.\nStandard Tip",
+        "description": "ENFit Syringe. Female tip with purple plunger.Use instead of Luer, Oral, or Catheter syringes for tube feeding.ISO 80369-3 compliant. No cap with syringe. See CA06.Materials: PP, Isoprene.Use with RxCrush Pill Pouches or ENFit feeding tubes and extension sets.Single patient use and Rx only.",
+        "manufacturer": "Resolve Designs",
+        "title": "35 ml RxCrush ENFit Syringe - Qty 10"
+      },
+      "expected": {
+        "brand_entities": [
+          "Rx Crush",
+          "rx crush",
+          "RxCrush",
+          "RxCrus",
+          "RxCrsh",
+          "Resolve Designs",
+          "resolve designs",
+          "Reslove Designs",
+          "Resolve Desings",
+          "Resolv Designs"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "RxCrush",
+          "rxcrush",
+          "RxCrsh",
+          "RxCursh",
+          "RxCrus",
+          "Resolve Designs",
+          "resolvedesigns",
+          "Resolv Designs",
+          "Reslove Designs",
+          "Resolv Desings"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D1XD1ZV3",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not include 'AirPods Pro 2', which is a specific and relevant brand name from the listing. While it does extract 'Apple' correctly, the absence of the complete product name is a significant oversight.",
+      "input": {
+        "brand_name": "Apple",
+        "bullet_points": "PIONEERING HEARING \u2014 AirPods Pro 2 unlock the world\u2019s first all-in-one hearing health experience: a scientifically validated Hearing Test,* clinical-grade and active Hearing Protection.*\nINTELLIGENT NOISE CONTROL \u2014 Active Noise Cancellation removes up to 2x more background noise.* Transparency mode lets you hear the world around you, and Adaptive Audio seamlessly blends Active Noise Cancellation and Transparency mode for the best listening experience in any environment.* And when you\u2019re speaking with someone nearby, Conversation Awareness automatically lowers the volume of what\u2019s playing.*\nIMPROVED SOUND AND CALL QUALITY \u2014 The Apple-designed H2 chip helps to create deeply immersive sound. The low-distortion, custom-built driver delivers crisp, clear high notes and full, rich bass in stunning definition. Voice Isolation improves the quality of phone calls in loud conditions.*\nCUSTOMIZABLE FIT \u2014 Includes four pairs of silicone tips (XS, S, M, L) to fit a wide range of ear shapes and provide all-day comfort. The tips create an acoustic seal to help keep out noise and secure AirPods Pro 2 in place.\nDUST, SWEAT, AND WATER RESISTANT \u2014 Both AirPods Pro and the MagSafe Charging Case are IP54 dust, sweat, and water resistant, so you can listen comfortably in more conditions.*\nPERSONALIZED SPATIAL AUDIO \u2014 With sound that suits your unique ear shape along with dynamic head tracking, AirPods Pro 2 deliver an immersive listening experience that places sound all around you.* You can also listen to select songs, shows, and movies in Dolby Atmos.\nA HIGHER LEVEL OF CONTROL \u2014 Simply swipe, press, and hold the stem to manage playback functions using Touch control. And with Siri Interactions, simply nod your head yes or shake your head no when Siri asks if you\u2019d like to hear a message, answer a call, or manage a notification.*\nLONG BATTERY LIFE \u2014 Get up to 6 hours of listening time with Active Noise Cancellation enabled. And get up to 30 hours of total listening time with Active Noise Cancellation enabled, using the case.*\nA MORE CAPABLE CASE\u2014 Keep track of AirPods Pro 2 with Precision Finding and a built-in speaker.* A lanyard loop helps keep your AirPods Pro 2 close. Charge with an Apple Watch or MagSafe Charger, USB-C Charge Cable, or Qi-certified charger.\nLEGAL DISCLAIMERS \u2014 This is a summary of the main product features. See \u201cAdditional information\u201d to learn more.",
+        "description": "AirPods Pro earbuds feature up to 2x more Active Noise Cancellation, plus Adaptive Transparency, and Personalized Spatial Audio with dynamic head tracking for immersive sound. Now with multiple ear tips (XS, S, M, L) and up to 6 hours of listening time.",
+        "manufacturer": "Apple",
+        "title": "Apple AirPods Pro 2 Wireless Earbuds, Active Noise Cancellation, Hearing Aid Feature, Bluetooth Headphones, Transparency, Personalized Spatial Audio, High-Fidelity Sound, H2 Chip, USB-C Charging"
+      },
+      "expected": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appel",
+          "Appl",
+          "AirPods Pro",
+          "AirPods Pro 2"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appl",
+          "Applle",
+          "AirPods",
+          "airpods",
+          "AirPod",
+          "AirPdos"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D1XD1ZV3",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'AirPods' and variations like 'AirPod' and 'AirPdos', which are not present in the input data. Additionally, 'Applle' is a typo that does not correspond to a valid brand. Therefore, the output does not meet the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Apple",
+        "bullet_points": "PIONEERING HEARING \u2014 AirPods Pro 2 unlock the world\u2019s first all-in-one hearing health experience: a scientifically validated Hearing Test,* clinical-grade and active Hearing Protection.*\nINTELLIGENT NOISE CONTROL \u2014 Active Noise Cancellation removes up to 2x more background noise.* Transparency mode lets you hear the world around you, and Adaptive Audio seamlessly blends Active Noise Cancellation and Transparency mode for the best listening experience in any environment.* And when you\u2019re speaking with someone nearby, Conversation Awareness automatically lowers the volume of what\u2019s playing.*\nIMPROVED SOUND AND CALL QUALITY \u2014 The Apple-designed H2 chip helps to create deeply immersive sound. The low-distortion, custom-built driver delivers crisp, clear high notes and full, rich bass in stunning definition. Voice Isolation improves the quality of phone calls in loud conditions.*\nCUSTOMIZABLE FIT \u2014 Includes four pairs of silicone tips (XS, S, M, L) to fit a wide range of ear shapes and provide all-day comfort. The tips create an acoustic seal to help keep out noise and secure AirPods Pro 2 in place.\nDUST, SWEAT, AND WATER RESISTANT \u2014 Both AirPods Pro and the MagSafe Charging Case are IP54 dust, sweat, and water resistant, so you can listen comfortably in more conditions.*\nPERSONALIZED SPATIAL AUDIO \u2014 With sound that suits your unique ear shape along with dynamic head tracking, AirPods Pro 2 deliver an immersive listening experience that places sound all around you.* You can also listen to select songs, shows, and movies in Dolby Atmos.\nA HIGHER LEVEL OF CONTROL \u2014 Simply swipe, press, and hold the stem to manage playback functions using Touch control. And with Siri Interactions, simply nod your head yes or shake your head no when Siri asks if you\u2019d like to hear a message, answer a call, or manage a notification.*\nLONG BATTERY LIFE \u2014 Get up to 6 hours of listening time with Active Noise Cancellation enabled. And get up to 30 hours of total listening time with Active Noise Cancellation enabled, using the case.*\nA MORE CAPABLE CASE\u2014 Keep track of AirPods Pro 2 with Precision Finding and a built-in speaker.* A lanyard loop helps keep your AirPods Pro 2 close. Charge with an Apple Watch or MagSafe Charger, USB-C Charge Cable, or Qi-certified charger.\nLEGAL DISCLAIMERS \u2014 This is a summary of the main product features. See \u201cAdditional information\u201d to learn more.",
+        "description": "AirPods Pro earbuds feature up to 2x more Active Noise Cancellation, plus Adaptive Transparency, and Personalized Spatial Audio with dynamic head tracking for immersive sound. Now with multiple ear tips (XS, S, M, L) and up to 6 hours of listening time.",
+        "manufacturer": "Apple",
+        "title": "Apple AirPods Pro 2 Wireless Earbuds, Active Noise Cancellation, Hearing Aid Feature, Bluetooth Headphones, Transparency, Personalized Spatial Audio, High-Fidelity Sound, H2 Chip, USB-C Charging"
+      },
+      "expected": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appel",
+          "Appl",
+          "AirPods Pro",
+          "AirPods Pro 2"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appl",
+          "Applle",
+          "AirPods",
+          "airpods",
+          "AirPod",
+          "AirPdos"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D1XD1ZV3",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'AirPods' as a separate entity, which is a standalone generic product word and does not meet the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Apple",
+        "bullet_points": "PIONEERING HEARING \u2014 AirPods Pro 2 unlock the world\u2019s first all-in-one hearing health experience: a scientifically validated Hearing Test,* clinical-grade and active Hearing Protection.*\nINTELLIGENT NOISE CONTROL \u2014 Active Noise Cancellation removes up to 2x more background noise.* Transparency mode lets you hear the world around you, and Adaptive Audio seamlessly blends Active Noise Cancellation and Transparency mode for the best listening experience in any environment.* And when you\u2019re speaking with someone nearby, Conversation Awareness automatically lowers the volume of what\u2019s playing.*\nIMPROVED SOUND AND CALL QUALITY \u2014 The Apple-designed H2 chip helps to create deeply immersive sound. The low-distortion, custom-built driver delivers crisp, clear high notes and full, rich bass in stunning definition. Voice Isolation improves the quality of phone calls in loud conditions.*\nCUSTOMIZABLE FIT \u2014 Includes four pairs of silicone tips (XS, S, M, L) to fit a wide range of ear shapes and provide all-day comfort. The tips create an acoustic seal to help keep out noise and secure AirPods Pro 2 in place.\nDUST, SWEAT, AND WATER RESISTANT \u2014 Both AirPods Pro and the MagSafe Charging Case are IP54 dust, sweat, and water resistant, so you can listen comfortably in more conditions.*\nPERSONALIZED SPATIAL AUDIO \u2014 With sound that suits your unique ear shape along with dynamic head tracking, AirPods Pro 2 deliver an immersive listening experience that places sound all around you.* You can also listen to select songs, shows, and movies in Dolby Atmos.\nA HIGHER LEVEL OF CONTROL \u2014 Simply swipe, press, and hold the stem to manage playback functions using Touch control. And with Siri Interactions, simply nod your head yes or shake your head no when Siri asks if you\u2019d like to hear a message, answer a call, or manage a notification.*\nLONG BATTERY LIFE \u2014 Get up to 6 hours of listening time with Active Noise Cancellation enabled. And get up to 30 hours of total listening time with Active Noise Cancellation enabled, using the case.*\nA MORE CAPABLE CASE\u2014 Keep track of AirPods Pro 2 with Precision Finding and a built-in speaker.* A lanyard loop helps keep your AirPods Pro 2 close. Charge with an Apple Watch or MagSafe Charger, USB-C Charge Cable, or Qi-certified charger.\nLEGAL DISCLAIMERS \u2014 This is a summary of the main product features. See \u201cAdditional information\u201d to learn more.",
+        "description": "AirPods Pro earbuds feature up to 2x more Active Noise Cancellation, plus Adaptive Transparency, and Personalized Spatial Audio with dynamic head tracking for immersive sound. Now with multiple ear tips (XS, S, M, L) and up to 6 hours of listening time.",
+        "manufacturer": "Apple",
+        "title": "Apple AirPods Pro 2 Wireless Earbuds, Active Noise Cancellation, Hearing Aid Feature, Bluetooth Headphones, Transparency, Personalized Spatial Audio, High-Fidelity Sound, H2 Chip, USB-C Charging"
+      },
+      "expected": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appel",
+          "Appl",
+          "AirPods Pro",
+          "AirPods Pro 2"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appl",
+          "Applle",
+          "AirPods",
+          "airpods",
+          "AirPod",
+          "AirPdos"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D1XD1ZV3",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'AirPods' and variations of it, which do not match the required 'AirPods Pro' and 'AirPods Pro 2' entities. Additionally, it contains misspellings and variations that do not represent valid brand entities.",
+      "input": {
+        "brand_name": "Apple",
+        "bullet_points": "PIONEERING HEARING \u2014 AirPods Pro 2 unlock the world\u2019s first all-in-one hearing health experience: a scientifically validated Hearing Test,* clinical-grade and active Hearing Protection.*\nINTELLIGENT NOISE CONTROL \u2014 Active Noise Cancellation removes up to 2x more background noise.* Transparency mode lets you hear the world around you, and Adaptive Audio seamlessly blends Active Noise Cancellation and Transparency mode for the best listening experience in any environment.* And when you\u2019re speaking with someone nearby, Conversation Awareness automatically lowers the volume of what\u2019s playing.*\nIMPROVED SOUND AND CALL QUALITY \u2014 The Apple-designed H2 chip helps to create deeply immersive sound. The low-distortion, custom-built driver delivers crisp, clear high notes and full, rich bass in stunning definition. Voice Isolation improves the quality of phone calls in loud conditions.*\nCUSTOMIZABLE FIT \u2014 Includes four pairs of silicone tips (XS, S, M, L) to fit a wide range of ear shapes and provide all-day comfort. The tips create an acoustic seal to help keep out noise and secure AirPods Pro 2 in place.\nDUST, SWEAT, AND WATER RESISTANT \u2014 Both AirPods Pro and the MagSafe Charging Case are IP54 dust, sweat, and water resistant, so you can listen comfortably in more conditions.*\nPERSONALIZED SPATIAL AUDIO \u2014 With sound that suits your unique ear shape along with dynamic head tracking, AirPods Pro 2 deliver an immersive listening experience that places sound all around you.* You can also listen to select songs, shows, and movies in Dolby Atmos.\nA HIGHER LEVEL OF CONTROL \u2014 Simply swipe, press, and hold the stem to manage playback functions using Touch control. And with Siri Interactions, simply nod your head yes or shake your head no when Siri asks if you\u2019d like to hear a message, answer a call, or manage a notification.*\nLONG BATTERY LIFE \u2014 Get up to 6 hours of listening time with Active Noise Cancellation enabled. And get up to 30 hours of total listening time with Active Noise Cancellation enabled, using the case.*\nA MORE CAPABLE CASE\u2014 Keep track of AirPods Pro 2 with Precision Finding and a built-in speaker.* A lanyard loop helps keep your AirPods Pro 2 close. Charge with an Apple Watch or MagSafe Charger, USB-C Charge Cable, or Qi-certified charger.\nLEGAL DISCLAIMERS \u2014 This is a summary of the main product features. See \u201cAdditional information\u201d to learn more.",
+        "description": "AirPods Pro earbuds feature up to 2x more Active Noise Cancellation, plus Adaptive Transparency, and Personalized Spatial Audio with dynamic head tracking for immersive sound. Now with multiple ear tips (XS, S, M, L) and up to 6 hours of listening time.",
+        "manufacturer": "Apple",
+        "title": "Apple AirPods Pro 2 Wireless Earbuds, Active Noise Cancellation, Hearing Aid Feature, Bluetooth Headphones, Transparency, Personalized Spatial Audio, High-Fidelity Sound, H2 Chip, USB-C Charging"
+      },
+      "expected": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appel",
+          "Appl",
+          "AirPods Pro",
+          "AirPods Pro 2"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appl",
+          "Applle",
+          "AirPods",
+          "airpods",
+          "AirPod",
+          "AirPdos"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D1XD1ZV3",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The output contains the exact string 'Appl' listed twice, which violates the criterion of having no exact string duplicates.",
+      "input": {
+        "brand_name": "Apple",
+        "bullet_points": "PIONEERING HEARING \u2014 AirPods Pro 2 unlock the world\u2019s first all-in-one hearing health experience: a scientifically validated Hearing Test,* clinical-grade and active Hearing Protection.*\nINTELLIGENT NOISE CONTROL \u2014 Active Noise Cancellation removes up to 2x more background noise.* Transparency mode lets you hear the world around you, and Adaptive Audio seamlessly blends Active Noise Cancellation and Transparency mode for the best listening experience in any environment.* And when you\u2019re speaking with someone nearby, Conversation Awareness automatically lowers the volume of what\u2019s playing.*\nIMPROVED SOUND AND CALL QUALITY \u2014 The Apple-designed H2 chip helps to create deeply immersive sound. The low-distortion, custom-built driver delivers crisp, clear high notes and full, rich bass in stunning definition. Voice Isolation improves the quality of phone calls in loud conditions.*\nCUSTOMIZABLE FIT \u2014 Includes four pairs of silicone tips (XS, S, M, L) to fit a wide range of ear shapes and provide all-day comfort. The tips create an acoustic seal to help keep out noise and secure AirPods Pro 2 in place.\nDUST, SWEAT, AND WATER RESISTANT \u2014 Both AirPods Pro and the MagSafe Charging Case are IP54 dust, sweat, and water resistant, so you can listen comfortably in more conditions.*\nPERSONALIZED SPATIAL AUDIO \u2014 With sound that suits your unique ear shape along with dynamic head tracking, AirPods Pro 2 deliver an immersive listening experience that places sound all around you.* You can also listen to select songs, shows, and movies in Dolby Atmos.\nA HIGHER LEVEL OF CONTROL \u2014 Simply swipe, press, and hold the stem to manage playback functions using Touch control. And with Siri Interactions, simply nod your head yes or shake your head no when Siri asks if you\u2019d like to hear a message, answer a call, or manage a notification.*\nLONG BATTERY LIFE \u2014 Get up to 6 hours of listening time with Active Noise Cancellation enabled. And get up to 30 hours of total listening time with Active Noise Cancellation enabled, using the case.*\nA MORE CAPABLE CASE\u2014 Keep track of AirPods Pro 2 with Precision Finding and a built-in speaker.* A lanyard loop helps keep your AirPods Pro 2 close. Charge with an Apple Watch or MagSafe Charger, USB-C Charge Cable, or Qi-certified charger.\nLEGAL DISCLAIMERS \u2014 This is a summary of the main product features. See \u201cAdditional information\u201d to learn more.",
+        "description": "AirPods Pro earbuds feature up to 2x more Active Noise Cancellation, plus Adaptive Transparency, and Personalized Spatial Audio with dynamic head tracking for immersive sound. Now with multiple ear tips (XS, S, M, L) and up to 6 hours of listening time.",
+        "manufacturer": "Apple",
+        "title": "Apple AirPods Pro 2 Wireless Earbuds, Active Noise Cancellation, Hearing Aid Feature, Bluetooth Headphones, Transparency, Personalized Spatial Audio, High-Fidelity Sound, H2 Chip, USB-C Charging"
+      },
+      "expected": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appel",
+          "Appl",
+          "AirPods Pro",
+          "AirPods Pro 2"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Apple",
+          "apple",
+          "Aple",
+          "Appl",
+          "Applle",
+          "AirPods",
+          "airpods",
+          "AirPod",
+          "AirPdos"
+        ]
+      }
+    }
+  ]
+}

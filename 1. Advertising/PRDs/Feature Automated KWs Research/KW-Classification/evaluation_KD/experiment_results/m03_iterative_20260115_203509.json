@@ -1,0 +1,903 @@
+{
+  "module": "M03",
+  "model": "gpt-4o-mini",
+  "samples_count": 5,
+  "iterations": 15,
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "fix": "(baseline)",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 5,
+          "amazon_basics": 2,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (23)"
+            ],
+            "distinct_count": 23
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (22)"
+            ],
+            "distinct_count": 22
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (27)",
+              "contains Amazon Basics/Essentials"
+            ],
+            "distinct_count": 27
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "too many brands (13)",
+              "contains own brand 'kitchenaid'",
+              "contains Amazon Basics/Essentials"
+            ],
+            "distinct_count": 13
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 2,
+      "fix": "categories.\n\n**STOP and verify: 5 \u2264 distinct brands \u2264 10**\n\n\n## NEVER INCLUDE OWN BRAND\n\n**The brand_name from input is: {{brand_name}}**\n\nYou must NEVER include this brand or any variation in your output.\n\nBefore outputting, search your list for \"{{brand_name}}\" - if found, DELETE IT.\n\n\n## FORBIDDEN BRANDS\n\nNever include these generic/retailer brands:\n- Amazon Basics\n- Amazon Essentials\n- AmazonBasics\n- Walmart brands\n- Target brands\n\nThese are NOT competitors - they are retail private labels.\n",
+      "passed": 1,
+      "total": 5,
+      "pass_rate": 0.2,
+      "failure_analysis": {
+        "total_failures": 4,
+        "by_issue": {
+          "count_too_high": 4
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (12)"
+            ],
+            "distinct_count": 12
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (17)"
+            ],
+            "distinct_count": 17
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 3,
+      "fix": "{{brand_name}}\" - if found, DELETE IT.\n\n\n## FORBIDDEN BRANDS\n\nNever include these generic/retailer brands:\n- Amazon Basics\n- Amazon Essentials\n- AmazonBasics\n- Walmart brands\n- Target brands\n\nThese are NOT competitors - they are retail private labels.\n\n\n### STRICT ENFORCEMENT\n\nAfter generating your list:\n1. Count distinct brand roots (first word of each brand)\n2. If count > 10, delete entries starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n",
+      "passed": 1,
+      "total": 5,
+      "pass_rate": 0.2,
+      "failure_analysis": {
+        "total_failures": 4,
+        "by_issue": {
+          "count_too_high": 3,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (12)"
+            ],
+            "distinct_count": 12
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (11)"
+            ],
+            "distinct_count": 11
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 4,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 5,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (17)"
+            ],
+            "distinct_count": 17
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 6,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (12)"
+            ],
+            "distinct_count": 12
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 8
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 7,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 1,
+      "total": 5,
+      "pass_rate": 0.2,
+      "failure_analysis": {
+        "total_failures": 4,
+        "by_issue": {
+          "count_too_high": 4
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (11)"
+            ],
+            "distinct_count": 11
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (16)"
+            ],
+            "distinct_count": 16
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 8,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (16)"
+            ],
+            "distinct_count": 16
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 9,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (16)"
+            ],
+            "distinct_count": 16
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 10,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 5,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (19)"
+            ],
+            "distinct_count": 19
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "too many brands (11)",
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 11
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 11,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 5,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (19)"
+            ],
+            "distinct_count": 19
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "too many brands (11)",
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 11
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 12,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (11)"
+            ],
+            "distinct_count": 11
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (19)"
+            ],
+            "distinct_count": 19
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 13,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (17)"
+            ],
+            "distinct_count": 17
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (18)"
+            ],
+            "distinct_count": 18
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 14,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (11)"
+            ],
+            "distinct_count": 11
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (16)"
+            ],
+            "distinct_count": 16
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (12)"
+            ],
+            "distinct_count": 12
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 9
+          }
+        ]
+      }
+    },
+    {
+      "iteration": 15,
+      "fix": "es starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+      "passed": 0,
+      "total": 5,
+      "pass_rate": 0.0,
+      "failure_analysis": {
+        "total_failures": 5,
+        "by_issue": {
+          "count_too_high": 4,
+          "own_brand": 1
+        },
+        "failed_samples": [
+          {
+            "asin": "B0DSHWLXG6",
+            "product": "Phone Holder",
+            "brand": "Jikasho",
+            "issues": [
+              "too many brands (13)"
+            ],
+            "distinct_count": 13
+          },
+          {
+            "asin": "B0BZYCJK89",
+            "product": "Water Bottle",
+            "brand": "Owala",
+            "issues": [
+              "too many brands (14)"
+            ],
+            "distinct_count": 14
+          },
+          {
+            "asin": "B0CJ4WZXQF",
+            "product": "Sink Caddy",
+            "brand": "Cisily",
+            "issues": [
+              "too many brands (15)"
+            ],
+            "distinct_count": 15
+          },
+          {
+            "asin": "B0D6YNWLTS",
+            "product": "Puffer Jacket",
+            "brand": "Pioneer Camp",
+            "issues": [
+              "too many brands (19)"
+            ],
+            "distinct_count": 19
+          },
+          {
+            "asin": "B08J8GZXKZ",
+            "product": "Oven Mitt",
+            "brand": "KitchenAid",
+            "issues": [
+              "contains own brand 'kitchenaid'"
+            ],
+            "distinct_count": 10
+          }
+        ]
+      }
+    }
+  ],
+  "final_fix": "\n---\n\n## HARD LIMIT: Maximum 10 Distinct Brands\n\n**CRITICAL: You must return AT MOST 10 distinct competitor brands.**\n\nBefore outputting, COUNT your distinct brands:\n- \"iOttie\", \"iottie\", \"IOttie\" = 1 brand (iOttie)\n- \"Sony\", \"Sony WF\", \"Sonny\" = 1 brand (Sony)\n\nIf count > 10: REMOVE the least relevant brands until exactly 10 remain.\nIf count < 5: ADD more brands from adjacent categories.\n\n**STOP and verify: 5 \u2264 distinct brands \u2264 10**\n\n\n## NEVER INCLUDE OWN BRAND\n\n**The brand_name from input is: {{brand_name}}**\n\nYou must NEVER include this brand or any variation in your output.\n\nBefore outputting, search your list for \"{{brand_name}}\" - if found, DELETE IT.\n\n\n## FORBIDDEN BRANDS\n\nNever include these generic/retailer brands:\n- Amazon Basics\n- Amazon Essentials\n- AmazonBasics\n- Walmart brands\n- Target brands\n\nThese are NOT competitors - they are retail private labels.\n\n\n### STRICT ENFORCEMENT\n\nAfter generating your list:\n1. Count distinct brand roots (first word of each brand)\n2. If count > 10, delete entries starting from the bottom\n3. Re-count until exactly 5-10 remain\n4. DO NOT OUTPUT until count is verified\n\n\n### FINAL CHECK BEFORE OUTPUT\n\n\u25a1 Count distinct brands: _____ (must be 5-10)\n\u25a1 If > 10, I have removed: _____\n\u25a1 Verified count is now: _____ \u2713\n\n\n### OWN BRAND BLACKLIST\n\nFor this product, the following are FORBIDDEN in output:\n- \"{{brand_name}}\"\n- Any misspelling of \"{{brand_name}}\"\n- Any variation containing \"{{brand_name}}\"\n\nIf any of these appear in your list, REMOVE THEM IMMEDIATELY.\n",
+  "best_iteration": 2,
+  "best_pass_rate": 0.2
+}

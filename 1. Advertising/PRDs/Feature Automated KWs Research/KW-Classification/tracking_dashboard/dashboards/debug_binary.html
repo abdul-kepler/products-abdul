@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Binary Metrics</title>
+    <script src="modules_data.js"></script>
+</head>
+<body>
+    <h1>Debug Binary Metrics</h1>
+    <div id="result" style="font-family: monospace; white-space: pre;"></div>
+    <script>
+        const output = [];
+
+        output.push('=== Checking modules_data.js loading ===');
+        output.push('progressData defined: ' + (typeof progressData !== 'undefined'));
+        output.push('progressData length: ' + (typeof progressData !== 'undefined' ? progressData.length : 'N/A'));
+        output.push('');
+        output.push('suggestionsData defined: ' + (typeof suggestionsData !== 'undefined'));
+        output.push('appliedData defined: ' + (typeof appliedData !== 'undefined'));
+        output.push('improvementHistory defined: ' + (typeof improvementHistory !== 'undefined'));
+        output.push('MODULE_FOLDER_MAP defined: ' + (typeof MODULE_FOLDER_MAP !== 'undefined'));
+        output.push('');
+        output.push('=== Binary Metrics ===');
+        output.push('binaryMetrics defined: ' + (typeof binaryMetrics !== 'undefined'));
+
+        if (typeof binaryMetrics !== 'undefined') {
+            output.push('binaryMetrics keys: ' + Object.keys(binaryMetrics).join(', '));
+            output.push('');
+            output.push('=== Module Data ===');
+            for (const key of Object.keys(binaryMetrics)) {
+                const m = binaryMetrics[key];
+                output.push(key + ': accuracy=' + m.accuracy + '%, precision=' + m.precision + '%, recall=' + m.recall + '%');
+            }
+        } else {
+            output.push('ERROR: binaryMetrics is NOT defined!');
+            output.push('');
+            output.push('Check browser console for JavaScript errors.');
+        }
+
+        document.getElementById('result').textContent = output.join('\n');
+    </script>
+</body>
+</html>

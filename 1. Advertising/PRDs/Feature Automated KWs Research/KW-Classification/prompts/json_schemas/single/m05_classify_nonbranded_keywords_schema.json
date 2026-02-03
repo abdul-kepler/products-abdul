@@ -1,0 +1,27 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_5_ClassifyNonBrandedKeywords_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "branding_scope_3": {
+          "type": ["string", "null"],
+          "enum": ["NB", null],
+          "description": "NB if keyword is non-branded/generic, null if any brand detected"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Brief explanation of why this classification was chosen"
+        }
+      },
+      "required": ["branding_scope_3", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

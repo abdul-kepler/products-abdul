@@ -1,0 +1,1544 @@
+{
+  "experiment": "V2",
+  "module": "m01a_v2_gemini",
+  "model": "gemini-2.0-flash",
+  "rubrics_version": "v5",
+  "timestamp": "2026-01-20T18:00:23.549595",
+  "data_source": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01A_ExtractOwnBrandVariations/M01A_V2_ExtractOwnBrandVariations_v2_200126_gemini20flash.csv",
+  "summary": {
+    "pass": 16,
+    "fail": 24,
+    "error": 0
+  },
+  "pass_rate": 40.0,
+  "evaluations": [
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated 10 variations of the brand name 'JBL', which meets the requirement of at least 3 variations. The variations include different cases, spacing, and common forms.",
+      "input": {
+        "brand_name": "JBL"
+      },
+      "expected": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "J-B-L",
+          "JBL-",
+          "JBL.",
+          "JBLl",
+          "JBLK",
+          "JBLQ",
+          "JBLT",
+          "JBLX",
+          "JBLZ"
+        ]
+      },
+      "output": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "JLB",
+          "JBK",
+          "JNL",
+          "J.B.L.",
+          "J B L",
+          "JBLl",
+          "JBLk"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes variations like 'JLB', 'JBK', and 'JNL' which are not plausible references to the brand JBL and do not meet the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "JBL"
+      },
+      "expected": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "J-B-L",
+          "JBL-",
+          "JBL.",
+          "JBLl",
+          "JBLK",
+          "JBLQ",
+          "JBLT",
+          "JBLX",
+          "JBLZ"
+        ]
+      },
+      "output": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "JLB",
+          "JBK",
+          "JNL",
+          "J.B.L.",
+          "J B L",
+          "JBLl",
+          "JBLk"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains only 10 variations, which is fewer than the required 8-12 variations.",
+      "input": {
+        "brand_name": "JBL"
+      },
+      "expected": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "J-B-L",
+          "JBL-",
+          "JBL.",
+          "JBLl",
+          "JBLK",
+          "JBLQ",
+          "JBLT",
+          "JBLX",
+          "JBLZ"
+        ]
+      },
+      "output": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "JLB",
+          "JBK",
+          "JNL",
+          "J.B.L.",
+          "J B L",
+          "JBLl",
+          "JBLk"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "FAIL",
+      "reasoning": "The first item in the module output is 'JBL', which is correct. However, the second item 'jbl' is a variation and does not meet the requirement for the first item to be the canonical spelling. Therefore, it fails the criterion.",
+      "input": {
+        "brand_name": "JBL"
+      },
+      "expected": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "J-B-L",
+          "JBL-",
+          "JBL.",
+          "JBLl",
+          "JBLK",
+          "JBLQ",
+          "JBLT",
+          "JBLX",
+          "JBLZ"
+        ]
+      },
+      "output": {
+        "variations": [
+          "JBL",
+          "jbl",
+          "Jbl",
+          "JLB",
+          "JBK",
+          "JNL",
+          "J.B.L.",
+          "J B L",
+          "JBLl",
+          "JBLk"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated 9 variations of the brand name 'Owala', which exceeds the minimum requirement of 3 variations, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "Owala"
+      },
+      "expected": {
+        "variations": [
+          "Owala",
+          "owala",
+          "O-wala",
+          "Owla",
+          "Ohwala",
+          "Owsla",
+          "Owalaa",
+          "Owalla",
+          "Owalq",
+          "Owal",
+          "Owaala",
+          "Owalas"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Owala",
+          "owala",
+          "Owalla",
+          "Ohwala",
+          "Owalq",
+          "Owals",
+          "Owalaa",
+          "Owalao",
+          "O-wala",
+          "Owaala"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Owals', which is not a plausible reference to the brand Owala and does not fit the criteria for valid typos or variations.",
+      "input": {
+        "brand_name": "Owala"
+      },
+      "expected": {
+        "variations": [
+          "Owala",
+          "owala",
+          "O-wala",
+          "Owla",
+          "Ohwala",
+          "Owsla",
+          "Owalaa",
+          "Owalla",
+          "Owalq",
+          "Owal",
+          "Owaala",
+          "Owalas"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Owala",
+          "owala",
+          "Owalla",
+          "Ohwala",
+          "Owalq",
+          "Owals",
+          "Owalaa",
+          "Owalao",
+          "O-wala",
+          "Owaala"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains 10 variations, which is within the acceptable range, but it does not meet the requirement of exactly 8-12 variations as specified in the prompt.",
+      "input": {
+        "brand_name": "Owala"
+      },
+      "expected": {
+        "variations": [
+          "Owala",
+          "owala",
+          "O-wala",
+          "Owla",
+          "Ohwala",
+          "Owsla",
+          "Owalaa",
+          "Owalla",
+          "Owalq",
+          "Owal",
+          "Owaala",
+          "Owalas"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Owala",
+          "owala",
+          "Owalla",
+          "Ohwala",
+          "Owalq",
+          "Owals",
+          "Owalaa",
+          "Owalao",
+          "O-wala",
+          "Owaala"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the module output is 'Owala', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "Owala"
+      },
+      "expected": {
+        "variations": [
+          "Owala",
+          "owala",
+          "O-wala",
+          "Owla",
+          "Ohwala",
+          "Owsla",
+          "Owalaa",
+          "Owalla",
+          "Owalq",
+          "Owal",
+          "Owaala",
+          "Owalas"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Owala",
+          "owala",
+          "Owalla",
+          "Ohwala",
+          "Owalq",
+          "Owals",
+          "Owalaa",
+          "Owalao",
+          "O-wala",
+          "Owaala"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated 10 variations of the brand name 'Cisily', which exceeds the required minimum of 3 variations, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "Cisily"
+      },
+      "expected": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisilyy",
+          "Cisilyi",
+          "Cisilyo",
+          "Cisilyu",
+          "Cisilyt",
+          "Cisily-"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisili",
+          "Cisoley",
+          "Cisilu",
+          "Cisali",
+          "Cisilyy",
+          "Cisilyi"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Cisoley' and 'Cisali', which are not plausible references to the brand 'Cisily' and do not meet the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Cisily"
+      },
+      "expected": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisilyy",
+          "Cisilyi",
+          "Cisilyo",
+          "Cisilyu",
+          "Cisilyt",
+          "Cisily-"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisili",
+          "Cisoley",
+          "Cisilu",
+          "Cisali",
+          "Cisilyy",
+          "Cisilyi"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains 10 variations, which is within the acceptable range, but it does not meet the requirement of generating exactly 8-12 variations as specified in the prompt.",
+      "input": {
+        "brand_name": "Cisily"
+      },
+      "expected": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisilyy",
+          "Cisilyi",
+          "Cisilyo",
+          "Cisilyu",
+          "Cisilyt",
+          "Cisily-"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisili",
+          "Cisoley",
+          "Cisilu",
+          "Cisali",
+          "Cisilyy",
+          "Cisilyi"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the module output is 'Cisily', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "Cisily"
+      },
+      "expected": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisilyy",
+          "Cisilyi",
+          "Cisilyo",
+          "Cisilyu",
+          "Cisilyt",
+          "Cisily-"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Cisily",
+          "cisily",
+          "Cisly",
+          "Cicily",
+          "Cisili",
+          "Cisoley",
+          "Cisilu",
+          "Cisali",
+          "Cisilyy",
+          "Cisilyi"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated multiple variations of the brand name 'Pioneer Camp', including different cases, spacing, and common forms, meeting the requirement of at least 3 variations.",
+      "input": {
+        "brand_name": "Pioneer Camp"
+      },
+      "expected": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pioner Camp",
+          "Pioneere Camp",
+          "Pioneer Cmap",
+          "Pionner Camp",
+          "Pioneer Cemp",
+          "Pioner Cmap"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pineer Camp",
+          "Pionner Camp",
+          "Pioneer Camo",
+          "Pioneer Kam",
+          "Pioner Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Pioneer Camo' and 'Pioneer Kam', which are unrelated terms and do not reference the brand 'Pioneer Camp'. This violates the rubric's FAIL conditions.",
+      "input": {
+        "brand_name": "Pioneer Camp"
+      },
+      "expected": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pioner Camp",
+          "Pioneere Camp",
+          "Pioneer Cmap",
+          "Pionner Camp",
+          "Pioneer Cemp",
+          "Pioner Cmap"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pineer Camp",
+          "Pionner Camp",
+          "Pioneer Camo",
+          "Pioneer Kam",
+          "Pioner Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains only 10 variations, which is fewer than the required 8-12 variations.",
+      "input": {
+        "brand_name": "Pioneer Camp"
+      },
+      "expected": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pioner Camp",
+          "Pioneere Camp",
+          "Pioneer Cmap",
+          "Pionner Camp",
+          "Pioneer Cemp",
+          "Pioner Cmap"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pineer Camp",
+          "Pionner Camp",
+          "Pioneer Camo",
+          "Pioneer Kam",
+          "Pioner Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the variations is 'Pioneer Camp', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "Pioneer Camp"
+      },
+      "expected": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pioner Camp",
+          "Pioneere Camp",
+          "Pioneer Cmap",
+          "Pionner Camp",
+          "Pioneer Cemp",
+          "Pioner Cmap"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "PioneerCamp",
+          "Pioneer-Camp",
+          "Pioneer",
+          "Pineer Camp",
+          "Pionner Camp",
+          "Pioneer Camo",
+          "Pioneer Kam",
+          "Pioner Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The output only contains one unique variation ('Jikasho') repeated multiple times, failing to generate at least 3 distinct variations as required by the rubric.",
+      "input": {
+        "brand_name": "Jikasho"
+      },
+      "expected": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikash",
+          "Jikashoo",
+          "Jikashu",
+          "Jikashp",
+          "Jikash0",
+          "Jikashow",
+          "Jikashos"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output contains only one variation of the brand name 'Jikasho' repeated multiple times, failing to provide plausible variations or valid typos as required by the rubric.",
+      "input": {
+        "brand_name": "Jikasho"
+      },
+      "expected": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikash",
+          "Jikashoo",
+          "Jikashu",
+          "Jikashp",
+          "Jikash0",
+          "Jikashow",
+          "Jikashos"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains only 10 variations, but they are not unique; the same variation 'Jikasho' is repeated multiple times, which does not meet the requirement of generating 8-12 distinct variations.",
+      "input": {
+        "brand_name": "Jikasho"
+      },
+      "expected": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikash",
+          "Jikashoo",
+          "Jikashu",
+          "Jikashp",
+          "Jikash0",
+          "Jikashow",
+          "Jikashos"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the variations is 'Jikasho', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "Jikasho"
+      },
+      "expected": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikash",
+          "Jikashoo",
+          "Jikashu",
+          "Jikashp",
+          "Jikash0",
+          "Jikashow",
+          "Jikashos"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Jikasho",
+          "jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho",
+          "Jikasho"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated 10 variations of the brand name, which exceeds the minimum requirement of 3 variations, thus meeting the PASS conditions.",
+      "input": {
+        "brand_name": "Antarctic Star"
+      },
+      "expected": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Staar",
+          "Antarctic Stsr",
+          "Antarctic Str"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarcic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Starr"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Antarctic Starr', which is a phonetic misspelling but does not match the expected variations. Additionally, 'Antarctic' is a valid variation but could be considered too generic without the full brand name.",
+      "input": {
+        "brand_name": "Antarctic Star"
+      },
+      "expected": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Staar",
+          "Antarctic Stsr",
+          "Antarctic Str"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarcic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Starr"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains only 10 variations, which is fewer than the required 8-12 variations.",
+      "input": {
+        "brand_name": "Antarctic Star"
+      },
+      "expected": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Staar",
+          "Antarctic Stsr",
+          "Antarctic Str"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarcic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Starr"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0F42MT8JX",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the variations is 'Antarctic Star', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "Antarctic Star"
+      },
+      "expected": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Staar",
+          "Antarctic Stsr",
+          "Antarctic Str"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Antarctic Star",
+          "antarctic star",
+          "AntarcticStar",
+          "Antarctic-Star",
+          "Antarctic",
+          "Antartic Star",
+          "Antarcic Star",
+          "Antarctik Star",
+          "Antrctic Star",
+          "Antarctic Starr"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated multiple variations of the brand name 'REVLON', including different cases and slight alterations, meeting the requirement of at least 3 variations.",
+      "input": {
+        "brand_name": "REVLON"
+      },
+      "expected": {
+        "variations": [
+          "REVLON",
+          "RREVLON",
+          "RVLON",
+          "RECLON",
+          "REVPON",
+          "REVLOJ",
+          "RSVLON",
+          "ERVLON",
+          "Revlon",
+          "REVLLN"
+        ]
+      },
+      "output": {
+        "variations": [
+          "REVLON",
+          "revlon",
+          "Revlon",
+          "Revlonn",
+          "Revlan",
+          "Revlonn",
+          "Devlon",
+          "Revkon",
+          "Reblon",
+          "Revlin"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Devon' and 'Revkon', which are not plausible references to the brand REVLON and do not meet the criteria for valid typos or variations.",
+      "input": {
+        "brand_name": "REVLON"
+      },
+      "expected": {
+        "variations": [
+          "REVLON",
+          "RREVLON",
+          "RVLON",
+          "RECLON",
+          "REVPON",
+          "REVLOJ",
+          "RSVLON",
+          "ERVLON",
+          "Revlon",
+          "REVLLN"
+        ]
+      },
+      "output": {
+        "variations": [
+          "REVLON",
+          "revlon",
+          "Revlon",
+          "Revlonn",
+          "Revlan",
+          "Revlonn",
+          "Devlon",
+          "Revkon",
+          "Reblon",
+          "Revlin"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains 10 variations, which is within the acceptable range, but it includes duplicates ('Revlonn' appears twice), which does not meet the requirement for unique variations.",
+      "input": {
+        "brand_name": "REVLON"
+      },
+      "expected": {
+        "variations": [
+          "REVLON",
+          "RREVLON",
+          "RVLON",
+          "RECLON",
+          "REVPON",
+          "REVLOJ",
+          "RSVLON",
+          "ERVLON",
+          "Revlon",
+          "REVLLN"
+        ]
+      },
+      "output": {
+        "variations": [
+          "REVLON",
+          "revlon",
+          "Revlon",
+          "Revlonn",
+          "Revlan",
+          "Revlonn",
+          "Devlon",
+          "Revkon",
+          "Reblon",
+          "Revlin"
+        ]
+      }
+    },
+    {
+      "sample_id": "B000H3I2JG",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the module output is 'REVLON', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "REVLON"
+      },
+      "expected": {
+        "variations": [
+          "REVLON",
+          "RREVLON",
+          "RVLON",
+          "RECLON",
+          "REVPON",
+          "REVLOJ",
+          "RSVLON",
+          "ERVLON",
+          "Revlon",
+          "REVLLN"
+        ]
+      },
+      "output": {
+        "variations": [
+          "REVLON",
+          "revlon",
+          "Revlon",
+          "Revlonn",
+          "Revlan",
+          "Revlonn",
+          "Devlon",
+          "Revkon",
+          "Reblon",
+          "Revlin"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated 10 variations of the brand name 'KitchenAid', which meets the requirement of at least 3 variations. The variations include different cases, spacing, and common forms.",
+      "input": {
+        "brand_name": "KitchenAid"
+      },
+      "expected": {
+        "variations": [
+          "KitchenAid",
+          "KITCHENAID",
+          "KitchenAis",
+          "Kitchenaid",
+          "KutchenAid",
+          "kitchenaid",
+          "KitchwnAid",
+          "KitcyenAid",
+          "KtchenAid",
+          "KitdhenAid"
+        ]
+      },
+      "output": {
+        "variations": [
+          "KitchenAid",
+          "kitchenaid",
+          "Kitchen Aid",
+          "KitchanAid",
+          "KithenAid",
+          "Kitchen-Aid",
+          "KitchenAide",
+          "KichenAid",
+          "KitchinAid",
+          "Kitchen Ade"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Kitchen Aid', 'Kitchen-Aid', and 'Kitchen Ade', which are generic terms or variations that do not conform to the brand name 'KitchenAid' as required by the rubric.",
+      "input": {
+        "brand_name": "KitchenAid"
+      },
+      "expected": {
+        "variations": [
+          "KitchenAid",
+          "KITCHENAID",
+          "KitchenAis",
+          "Kitchenaid",
+          "KutchenAid",
+          "kitchenaid",
+          "KitchwnAid",
+          "KitcyenAid",
+          "KtchenAid",
+          "KitdhenAid"
+        ]
+      },
+      "output": {
+        "variations": [
+          "KitchenAid",
+          "kitchenaid",
+          "Kitchen Aid",
+          "KitchanAid",
+          "KithenAid",
+          "Kitchen-Aid",
+          "KitchenAide",
+          "KichenAid",
+          "KitchinAid",
+          "Kitchen Ade"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output generated 10 variations, which is within the acceptable range, but it includes variations that are not valid (e.g., 'Kitchen Aid' and 'Kitchen-Aid' contain spaces or hyphens). However, since the count is acceptable, it technically meets the count requirement but fails due to the quality of variations.",
+      "input": {
+        "brand_name": "KitchenAid"
+      },
+      "expected": {
+        "variations": [
+          "KitchenAid",
+          "KITCHENAID",
+          "KitchenAis",
+          "Kitchenaid",
+          "KutchenAid",
+          "kitchenaid",
+          "KitchwnAid",
+          "KitcyenAid",
+          "KtchenAid",
+          "KitdhenAid"
+        ]
+      },
+      "output": {
+        "variations": [
+          "KitchenAid",
+          "kitchenaid",
+          "Kitchen Aid",
+          "KitchanAid",
+          "KithenAid",
+          "Kitchen-Aid",
+          "KitchenAide",
+          "KichenAid",
+          "KitchinAid",
+          "Kitchen Ade"
+        ]
+      }
+    },
+    {
+      "sample_id": "B08J8GZXKZ",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "FAIL",
+      "reasoning": "The first item in the variations is 'KitchenAid', which is correct. However, the second item 'kitchenaid' is a variation and not the canonical spelling, which violates the PASS conditions.",
+      "input": {
+        "brand_name": "KitchenAid"
+      },
+      "expected": {
+        "variations": [
+          "KitchenAid",
+          "KITCHENAID",
+          "KitchenAis",
+          "Kitchenaid",
+          "KutchenAid",
+          "kitchenaid",
+          "KitchwnAid",
+          "KitcyenAid",
+          "KtchenAid",
+          "KitdhenAid"
+        ]
+      },
+      "output": {
+        "variations": [
+          "KitchenAid",
+          "kitchenaid",
+          "Kitchen Aid",
+          "KitchanAid",
+          "KithenAid",
+          "Kitchen-Aid",
+          "KitchenAide",
+          "KichenAid",
+          "KitchinAid",
+          "Kitchen Ade"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated 10 variations of the brand name 'WEBACOO', which exceeds the minimum requirement of 3 variations. The variations include different cases, slight modifications, and common forms.",
+      "input": {
+        "brand_name": "WEBACOO"
+      },
+      "expected": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "Web-Acoo",
+          "WBAOO",
+          "WEBACOOO",
+          "WBAKOO",
+          "WABACOO",
+          "WBAKCOO"
+        ]
+      },
+      "output": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "WEBACO",
+          "WEBACOOO",
+          "WEBSCOO",
+          "WEBAQOO",
+          "WEBACOI",
+          "WEBACOO ",
+          "WEBACCO"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'WEBSCOO', which is a generic term and not a valid reference to the brand WEBACOO, violating the rubric's FAIL conditions.",
+      "input": {
+        "brand_name": "WEBACOO"
+      },
+      "expected": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "Web-Acoo",
+          "WBAOO",
+          "WEBACOOO",
+          "WBAKOO",
+          "WABACOO",
+          "WBAKCOO"
+        ]
+      },
+      "output": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "WEBACO",
+          "WEBACOOO",
+          "WEBSCOO",
+          "WEBAQOO",
+          "WEBACOI",
+          "WEBACOO ",
+          "WEBACCO"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains 10 variations, which is within the acceptable range, but it includes duplicates and variations that do not adhere to the expected format, such as 'WEBACOO ' (with a trailing space). Therefore, it does not meet the requirement for exactly 8-12 unique variations.",
+      "input": {
+        "brand_name": "WEBACOO"
+      },
+      "expected": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "Web-Acoo",
+          "WBAOO",
+          "WEBACOOO",
+          "WBAKOO",
+          "WABACOO",
+          "WBAKCOO"
+        ]
+      },
+      "output": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "WEBACO",
+          "WEBACOOO",
+          "WEBSCOO",
+          "WEBAQOO",
+          "WEBACOI",
+          "WEBACOO ",
+          "WEBACCO"
+        ]
+      }
+    },
+    {
+      "sample_id": "B09LCKZBTW",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "PASS",
+      "reasoning": "The first item in the variations is 'WEBACOO', which matches the correct brand spelling.",
+      "input": {
+        "brand_name": "WEBACOO"
+      },
+      "expected": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "Web-Acoo",
+          "WBAOO",
+          "WEBACOOO",
+          "WBAKOO",
+          "WABACOO",
+          "WBAKCOO"
+        ]
+      },
+      "output": {
+        "variations": [
+          "WEBACOO",
+          "webacoo",
+          "Webacoo",
+          "WEBACO",
+          "WEBACOOO",
+          "WEBSCOO",
+          "WEBAQOO",
+          "WEBACOI",
+          "WEBACOO ",
+          "WEBACCO"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01a_has_variations",
+      "criterion": "Variations Generated",
+      "verdict": "PASS",
+      "reasoning": "The module output generated multiple variations of the brand name 'Transformers', including different cases and common misspellings, totaling more than 3 variations.",
+      "input": {
+        "brand_name": "Transformers"
+      },
+      "expected": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Tranfomers",
+          "Tramsformers",
+          "Transfomrers",
+          "Transformerss",
+          "Trensformers"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transformerz",
+          "Transfomers",
+          "Transforners",
+          "Transformrs",
+          "Transfomerz",
+          "Transformars",
+          "Transfomrers",
+          "Transfomerss"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01a_no_unrelated_terms",
+      "criterion": "No Unrelated Terms",
+      "verdict": "FAIL",
+      "reasoning": "The output includes 'Transformerz' and 'Transforners', which are not valid typos or variations of the brand 'Transformers' and could be interpreted as unrelated terms or competitor brands.",
+      "input": {
+        "brand_name": "Transformers"
+      },
+      "expected": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Tranfomers",
+          "Tramsformers",
+          "Transfomrers",
+          "Transformerss",
+          "Trensformers"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transformerz",
+          "Transfomers",
+          "Transforners",
+          "Transformrs",
+          "Transfomerz",
+          "Transformars",
+          "Transfomrers",
+          "Transfomerss"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01a_count_in_range",
+      "criterion": "8-12 Variations Generated",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains 10 variations, which is within the acceptable range, but it does not meet the exact requirement of 8-12 variations as specified in the prompt.",
+      "input": {
+        "brand_name": "Transformers"
+      },
+      "expected": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Tranfomers",
+          "Tramsformers",
+          "Transfomrers",
+          "Transformerss",
+          "Trensformers"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transformerz",
+          "Transfomers",
+          "Transforners",
+          "Transformrs",
+          "Transfomerz",
+          "Transformars",
+          "Transfomrers",
+          "Transfomerss"
+        ]
+      }
+    },
+    {
+      "sample_id": "B077YYP739",
+      "rubric_id": "M01a_first_is_canonical",
+      "criterion": "First Item is Correct Spelling",
+      "verdict": "FAIL",
+      "reasoning": "The first item in the variations is 'Transformers', which is correct. However, the second item 'transformers' is a variation and not the canonical spelling. Therefore, it does not meet the PASS conditions.",
+      "input": {
+        "brand_name": "Transformers"
+      },
+      "expected": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transfomers",
+          "Tranfomers",
+          "Tramsformers",
+          "Transfomrers",
+          "Transformerss",
+          "Trensformers"
+        ]
+      },
+      "output": {
+        "variations": [
+          "Transformers",
+          "transformers",
+          "Transformerz",
+          "Transfomers",
+          "Transforners",
+          "Transformrs",
+          "Transfomerz",
+          "Transformars",
+          "Transfomrers",
+          "Transfomerss"
+        ]
+      }
+    }
+  ]
+}

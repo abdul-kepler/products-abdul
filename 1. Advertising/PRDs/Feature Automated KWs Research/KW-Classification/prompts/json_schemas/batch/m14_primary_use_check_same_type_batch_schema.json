@@ -1,0 +1,46 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_14_PrimaryUseCheckSameType_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Primary use check results for each keyword in the batch (same product type)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being checked"
+              },
+              "same_primary_use": {
+                "type": "boolean",
+                "description": "Whether the keyword's product serves the same primary use as the ASIN"
+              },
+              "relevancy": {
+                "type": "string",
+                "enum": ["R", "N"],
+                "description": "R for RELEVANT if same use, N for NEGATIVE if different use"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why primary uses match or differ"
+              }
+            },
+            "required": ["keyword", "same_primary_use", "relevancy", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

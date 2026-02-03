@@ -1,0 +1,3466 @@
+{
+  "experiment": "V2",
+  "module": "m13",
+  "model": "gpt-4o",
+  "rubrics_version": "v5",
+  "timestamp": "2026-01-20T01:11:58.977590",
+  "data_source": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M13_ProductTypeCheck/M13_ProductTypeCheck_v1_150126_1.csv",
+  "summary": {
+    "pass": 27,
+    "fail": 3,
+    "error": 0
+  },
+  "pass_rate": 90.0,
+  "evaluations": [
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires checking if the YES/NO for same product type is correct based on the M06 taxonomy comparison. The module output correctly identifies 'down jacket' and 'puffer jacket' as closely related, both being insulated jackets designed for warmth. The taxonomy lists 'Puffer Jacket / Puffy Coat' as the product type, which aligns with the keyword 'down jacket'. Therefore, the module's conclusion that they are the same product type is correct, meeting the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "waterproof down jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "down jacket",
+        "reasoning": "1. Core product type in keyword: 'down jacket' (waterproof is a modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: 'down jacket' and 'puffer jacket' are closely related; both refer to insulated jackets designed for warmth, with 'down' indicating the type of insulation. 4. Edge cases: The keyword specifies 'waterproof', which is an attribute, but does not change the fundamental product type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that modifiers such as use-case, material, and brand are properly stripped to identify the core product type. The module output identified 'down jacket' as the core product type, correctly ignoring 'waterproof' as a modifier. The taxonomy and keyword both refer to insulated jackets designed for warmth, and the module's reasoning aligns with this understanding. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "waterproof down jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "down jacket",
+        "reasoning": "1. Core product type in keyword: 'down jacket' (waterproof is a modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: 'down jacket' and 'puffer jacket' are closely related; both refer to insulated jackets designed for warmth, with 'down' indicating the type of insulation. 4. Edge cases: The keyword specifies 'waterproof', which is an attribute, but does not change the fundamental product type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'down jacket' and 'puffer jacket' as the same product type, which aligns with the rubric's PASS conditions. There is no indication of marking synonyms as different types, thus meeting the PASS criteria.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "waterproof down jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "down jacket",
+        "reasoning": "1. Core product type in keyword: 'down jacket' (waterproof is a modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: 'down jacket' and 'puffer jacket' are closely related; both refer to insulated jackets designed for warmth, with 'down' indicating the type of insulation. 4. Edge cases: The keyword specifies 'waterproof', which is an attribute, but does not change the fundamental product type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the module correctly identifies whether the keyword and the ASIN refer to the same product type. The module output states that both the keyword 'packable down jacket' and the ASIN's taxonomy 'Puffer Jacket / Puffy Coat' refer to the same type of product, which is a type of jacket designed for warmth and insulation. The reasoning provided by the module aligns with the taxonomy and the keyword, indicating that the same product type is correctly identified. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "packable down jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "packable down jacket",
+        "reasoning": "1. The core product type in the keyword is 'packable down jacket', where 'packable' describes a feature and 'down jacket' is the main product type. 2. The ASIN's taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat', which is a type of jacket. 3. The keyword 'packable down jacket' directly refers to a type of jacket that is lightweight and can be packed away easily, which aligns with the ASIN's classification as a puffer jacket. 4. Both terms refer to jackets designed for warmth and insulation, with 'packable' being a specific feature of the jacket. 5. Therefore, the keyword is asking for the same product type as the ASIN.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires that modifiers be properly stripped to identify the core product type. The module output identified 'packable down jacket' as the keyword product type, which includes the modifier 'packable'. The core product type should be 'jacket' or 'down jacket', without the modifier. Therefore, the output does not meet the PASS conditions as it did not properly strip the modifier.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "packable down jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "packable down jacket",
+        "reasoning": "1. The core product type in the keyword is 'packable down jacket', where 'packable' describes a feature and 'down jacket' is the main product type. 2. The ASIN's taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat', which is a type of jacket. 3. The keyword 'packable down jacket' directly refers to a type of jacket that is lightweight and can be packed away easily, which aligns with the ASIN's classification as a puffer jacket. 4. Both terms refer to jackets designed for warmth and insulation, with 'packable' being a specific feature of the jacket. 5. Therefore, the keyword is asking for the same product type as the ASIN.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'packable down jacket' and 'puffer jacket / puffy coat' as the same product type, which aligns with the rubric's PASS conditions. There is no indication of marking synonyms as different types, thus meeting the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "packable down jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "packable down jacket",
+        "reasoning": "1. The core product type in the keyword is 'packable down jacket', where 'packable' describes a feature and 'down jacket' is the main product type. 2. The ASIN's taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat', which is a type of jacket. 3. The keyword 'packable down jacket' directly refers to a type of jacket that is lightweight and can be packed away easily, which aligns with the ASIN's classification as a puffer jacket. 4. Both terms refer to jackets designed for warmth and insulation, with 'packable' being a specific feature of the jacket. 5. Therefore, the keyword is asking for the same product type as the ASIN.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires checking if the YES/NO for same product type is correct based on the M06 taxonomy comparison. The module output correctly identifies both the keyword 'packable rain jacket' and the ASIN taxonomy 'Puffer Jacket / Puffy Coat' as types of jackets, which fall under the broader category of jackets. The module's reasoning aligns with the rubric's PASS conditions, as it correctly identifies the same product type despite differences in features.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "packable rain jacket mens",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.9,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'packable rain jacket' (the term 'packable' describes a feature, while 'rain jacket' is the main product type). 2. ASIN taxonomy: The product is classified as a 'Puffer Jacket / Puffy Coat', which is a type of jacket. 3. Matching test: Both 'packable rain jacket' and 'puffer jacket' fall under the broader category of jackets, and both are designed for similar use cases (protection from the elements). 4. Edge cases: The keyword specifies a type of jacket that is packable and suitable for rain, while the ASIN is a puffer jacket that is also lightweight and packable. The differences in insulation and specific use (rain vs cold) do not change the fundamental product type. 5. Confidence: 0.90, as the keyword and ASIN are both jackets designed for outdoor use, despite some differences in features.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that modifiers such as use-case, material, and brand be stripped to identify the core product type. The module output correctly identifies 'jacket' as the core product type from the keyword 'packable rain jacket mens', ignoring the modifier 'packable' and the use-case 'rain'. The ASIN taxonomy also classifies the product as a type of jacket. Therefore, the output meets the PASS conditions as it correctly identifies the core product type and ignores the modifiers.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "packable rain jacket mens",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.9,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'packable rain jacket' (the term 'packable' describes a feature, while 'rain jacket' is the main product type). 2. ASIN taxonomy: The product is classified as a 'Puffer Jacket / Puffy Coat', which is a type of jacket. 3. Matching test: Both 'packable rain jacket' and 'puffer jacket' fall under the broader category of jackets, and both are designed for similar use cases (protection from the elements). 4. Edge cases: The keyword specifies a type of jacket that is packable and suitable for rain, while the ASIN is a puffer jacket that is also lightweight and packable. The differences in insulation and specific use (rain vs cold) do not change the fundamental product type. 5. Confidence: 0.90, as the keyword and ASIN are both jackets designed for outdoor use, despite some differences in features.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'packable rain jacket' and 'puffer jacket' as the same product type, both falling under the broader category of jackets. This aligns with the PASS conditions of recognizing common synonyms as the same product type.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "packable rain jacket mens",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.9,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'packable rain jacket' (the term 'packable' describes a feature, while 'rain jacket' is the main product type). 2. ASIN taxonomy: The product is classified as a 'Puffer Jacket / Puffy Coat', which is a type of jacket. 3. Matching test: Both 'packable rain jacket' and 'puffer jacket' fall under the broader category of jackets, and both are designed for similar use cases (protection from the elements). 4. Edge cases: The keyword specifies a type of jacket that is packable and suitable for rain, while the ASIN is a puffer jacket that is also lightweight and packable. The differences in insulation and specific use (rain vs cold) do not change the fundamental product type. 5. Confidence: 0.90, as the keyword and ASIN are both jackets designed for outdoor use, despite some differences in features.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires checking if the YES/NO for same product type is correct based on the M06 taxonomy comparison. The module output stated 'same_product_type': false, reasoning that a puffer jacket and a rain jacket serve different primary functions (insulation vs. water resistance). This aligns with the rubric's PASS condition, as the module correctly identified that the two are different types, thus saying NO when they are clearly different types.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "ultralight rain jacket packable",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.9,
+        "keyword_product_type": "rain jacket",
+        "reasoning": "1. Core product type in keyword: 'rain jacket' (ultralight and packable are modifiers). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Both keywords and ASIN refer to jackets designed for outerwear, but the ASIN is specifically a puffer jacket, which is a different style than a rain jacket. 4. Edge cases: While both are jackets, they serve different primary functions (insulation vs. water resistance). 5. Confidence: 0.90.",
+        "same_product_type": false
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires that modifiers be properly stripped to identify the core product type. The module output identified 'rain jacket' as the core product type from the keyword, but failed to recognize that 'puffer jacket' and 'rain jacket' are both jackets, thus not properly ignoring the style modifier. The output does not meet the PASS conditions as it treated 'puffer jacket' as different from 'rain jacket', which is a failure to strip the style modifier.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "ultralight rain jacket packable",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.9,
+        "keyword_product_type": "rain jacket",
+        "reasoning": "1. Core product type in keyword: 'rain jacket' (ultralight and packable are modifiers). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Both keywords and ASIN refer to jackets designed for outerwear, but the ASIN is specifically a puffer jacket, which is a different style than a rain jacket. 4. Edge cases: While both are jackets, they serve different primary functions (insulation vs. water resistance). 5. Confidence: 0.90.",
+        "same_product_type": false
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "FAIL",
+      "reasoning": "The rubric requires that common synonyms and regional variations be treated as the same product type. The module output indicates that 'puffer jacket' and 'rain jacket' are considered different product types, despite both being types of jackets. This does not meet the PASS condition of recognizing synonyms as the same product type.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "ultralight rain jacket packable",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.9,
+        "keyword_product_type": "rain jacket",
+        "reasoning": "1. Core product type in keyword: 'rain jacket' (ultralight and packable are modifiers). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Both keywords and ASIN refer to jackets designed for outerwear, but the ASIN is specifically a puffer jacket, which is a different style than a rain jacket. 4. Edge cases: While both are jackets, they serve different primary functions (insulation vs. water resistance). 5. Confidence: 0.90.",
+        "same_product_type": false
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires checking if the YES/NO for same product type is correct based on the M06 taxonomy comparison. The module output indicates 'same_product_type' as true, which aligns with the expected output. The taxonomy comparison shows that both the keyword and the ASIN refer to a type of jacket designed for cold weather, confirming they are the same type. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "winter jacket with hood",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (the phrase 'winter' and 'with hood' are modifiers). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - both the keyword and the ASIN refer to a type of jacket designed for cold weather. 4. Edge cases: The keyword specifies a type of jacket (winter jacket with hood), which is a specific variant of the broader category of jackets. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that modifiers such as use-case, material, brand, and shape are properly stripped to identify the core product type. The module output correctly identifies 'jacket' as the core product type from the keyword 'winter jacket with hood', treating 'winter' and 'with hood' as modifiers. This aligns with the PASS conditions of the rubric, as the core product noun is extracted and modifiers are ignored.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "winter jacket with hood",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (the phrase 'winter' and 'with hood' are modifiers). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - both the keyword and the ASIN refer to a type of jacket designed for cold weather. 4. Edge cases: The keyword specifies a type of jacket (winter jacket with hood), which is a specific variant of the broader category of jackets. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same type. The module output correctly identifies 'jacket' and 'puffer jacket / puffy coat' as the same product type, which aligns with the expected output of recognizing synonyms as the same type. There is no indication of marking synonyms as different types, thus meeting the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "winter jacket with hood",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (the phrase 'winter' and 'with hood' are modifiers). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - both the keyword and the ASIN refer to a type of jacket designed for cold weather. 4. Edge cases: The keyword specifies a type of jacket (winter jacket with hood), which is a specific variant of the broader category of jackets. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires checking if the YES/NO for same product type is correct based on the M06 taxonomy comparison. The module output correctly identifies both the keyword 'ski jacket' and the ASIN taxonomy 'Puffer Jacket / Puffy Coat' as jackets intended for cold weather, including skiing. Therefore, they are considered the same product type, meeting the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "green ski jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "ski jacket",
+        "reasoning": "1. Core product type in keyword: 'ski jacket' (green is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: The keyword 'ski jacket' is a specific type of jacket designed for skiing, while the ASIN is a puffer jacket that can be used for cold weather activities, including skiing. Both are jackets intended for cold weather, making them the same product type. 4. Edge cases: The keyword specifies a use case (skiing) but does not change the fundamental product type, which is still a jacket. 5. Confidence: 0.95.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that modifiers such as use-case, material, brand, and shape be properly ignored to identify the core product type. The module output correctly identifies 'ski jacket' as the core product type, treating 'green' as a color modifier. The reasoning explains that 'ski jacket' is a specific type of jacket designed for skiing, but fundamentally it is still a jacket, aligning with the ASIN's puffer jacket intended for cold weather. Therefore, the output meets the PASS conditions by correctly identifying the core product type and ignoring the use-case modifier.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "green ski jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "ski jacket",
+        "reasoning": "1. Core product type in keyword: 'ski jacket' (green is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: The keyword 'ski jacket' is a specific type of jacket designed for skiing, while the ASIN is a puffer jacket that can be used for cold weather activities, including skiing. Both are jackets intended for cold weather, making them the same product type. 4. Edge cases: The keyword specifies a use case (skiing) but does not change the fundamental product type, which is still a jacket. 5. Confidence: 0.95.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'ski jacket' and 'puffer jacket' as the same product type, both being jackets intended for cold weather. This meets the PASS conditions of recognizing common synonyms as the same product type.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "green ski jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "ski jacket",
+        "reasoning": "1. Core product type in keyword: 'ski jacket' (green is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: The keyword 'ski jacket' is a specific type of jacket designed for skiing, while the ASIN is a puffer jacket that can be used for cold weather activities, including skiing. Both are jackets intended for cold weather, making them the same product type. 4. Edge cases: The keyword specifies a use case (skiing) but does not change the fundamental product type, which is still a jacket. 5. Confidence: 0.95.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the module correctly identifies whether the product types are the same based on the M06 taxonomy comparison. The module output correctly identifies the product as a 'puffer jacket', which matches the taxonomy classification of 'Puffer Jacket / Puffy Coat'. Therefore, the output meets the PASS conditions as it correctly states that the product types are the same.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "blue puffer jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "puffer jacket",
+        "reasoning": "1. The core product type in the keyword is 'puffer jacket' (the term 'blue' is a color modifier and 'men' is a demographic modifier).  \n2. The ASIN's taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat'.  \n3. The matching test shows a direct match: both the keyword and the ASIN refer to the same product type, which is a puffer jacket.  \n4. There are no edge cases or ambiguities present; the keyword is clearly asking for a puffer jacket, which is the same as the ASIN's classification.  \n5. Confidence is high due to the clear alignment between the keyword and the product type in the taxonomy.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the core product noun is extracted from the keyword and that modifiers are properly ignored. The module output correctly identifies 'puffer jacket' as the core product type, ignoring the color modifier 'blue' and the demographic modifier 'men'. The output meets the PASS conditions as it treats 'puffer jacket' as the same product type as identified in the taxonomy, without being influenced by the modifiers.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "blue puffer jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "puffer jacket",
+        "reasoning": "1. The core product type in the keyword is 'puffer jacket' (the term 'blue' is a color modifier and 'men' is a demographic modifier).  \n2. The ASIN's taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat'.  \n3. The matching test shows a direct match: both the keyword and the ASIN refer to the same product type, which is a puffer jacket.  \n4. There are no edge cases or ambiguities present; the keyword is clearly asking for a puffer jacket, which is the same as the ASIN's classification.  \n5. Confidence is high due to the clear alignment between the keyword and the product type in the taxonomy.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'puffer jacket' and 'puffy coat' as the same product type, which aligns with the expected output. There are no instances of marking synonyms as different product types, thus meeting the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "blue puffer jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "puffer jacket",
+        "reasoning": "1. The core product type in the keyword is 'puffer jacket' (the term 'blue' is a color modifier and 'men' is a demographic modifier).  \n2. The ASIN's taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat'.  \n3. The matching test shows a direct match: both the keyword and the ASIN refer to the same product type, which is a puffer jacket.  \n4. There are no edge cases or ambiguities present; the keyword is clearly asking for a puffer jacket, which is the same as the ASIN's classification.  \n5. Confidence is high due to the clear alignment between the keyword and the product type in the taxonomy.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the module correctly identifies whether the keyword and the ASIN refer to the same product type, based on the M06 taxonomy comparison. The module output states that both the keyword 'puffer jacket' and the ASIN taxonomy 'Puffer Jacket / Puffy Coat' refer to the same product type. This matches the expected output of 'same_type': true, indicating a correct YES for the same product type. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "green puffer jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "puffer jacket",
+        "reasoning": "1. The core product type in the keyword is 'puffer jacket' (the term 'green' is a color modifier and 'men' is a demographic modifier). 2. The ASIN taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat'. 3. The matching test shows a direct match: both the keyword and the ASIN refer to the same product type, which is a puffer jacket. 4. There are no edge cases that would suggest a different interpretation. 5. Therefore, the keyword is indeed asking for the same product type as the ASIN.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the core product noun is extracted from the keyword and that modifiers are properly ignored. The module output correctly identifies 'puffer jacket' as the core product type, ignoring the color modifier 'green' and the demographic modifier 'men'. The output matches the expected product type in the taxonomy, confirming that the keyword and ASIN refer to the same product type. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "green puffer jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "puffer jacket",
+        "reasoning": "1. The core product type in the keyword is 'puffer jacket' (the term 'green' is a color modifier and 'men' is a demographic modifier). 2. The ASIN taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat'. 3. The matching test shows a direct match: both the keyword and the ASIN refer to the same product type, which is a puffer jacket. 4. There are no edge cases that would suggest a different interpretation. 5. Therefore, the keyword is indeed asking for the same product type as the ASIN.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'puffer jacket' and 'puffy coat' as the same product type, which aligns with the rubric's PASS conditions. There are no instances of marking synonyms as different product types, such as 'earphones' vs 'earbuds' or 'couch' vs 'sofa'. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "green puffer jacket men",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "puffer jacket",
+        "reasoning": "1. The core product type in the keyword is 'puffer jacket' (the term 'green' is a color modifier and 'men' is a demographic modifier). 2. The ASIN taxonomy identifies the product as a 'Puffer Jacket / Puffy Coat'. 3. The matching test shows a direct match: both the keyword and the ASIN refer to the same product type, which is a puffer jacket. 4. There are no edge cases that would suggest a different interpretation. 5. Therefore, the keyword is indeed asking for the same product type as the ASIN.",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires checking if the YES/NO for same product type is correct based on the M06 taxonomy comparison. The module output indicates 'same_product_type' as true, reasoning that 'jacket' is a broader category that includes 'puffer jackets', which aligns with the taxonomy where 'Puffer Jacket / Puffy Coat' is a specific type under the broader category 'Jacket'. Therefore, the output meets the PASS conditions as it correctly identifies the same product type.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "grey jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (grey is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - 'jacket' is a broader category that includes puffer jackets. 4. Edge cases: The keyword does not specify a type of jacket, but 'jacket' is a general term that encompasses the ASIN's specific type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that modifiers such as use-case, material, brand, and shape be removed to identify the core product type. The module output correctly identifies 'jacket' as the core product type from the keyword 'grey jacket', treating 'grey' as a color modifier. The output meets the PASS conditions as it extracts the core product noun and properly ignores the modifier.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "grey jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (grey is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - 'jacket' is a broader category that includes puffer jackets. 4. Edge cases: The keyword does not specify a type of jacket, but 'jacket' is a general term that encompasses the ASIN's specific type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same type. The module output correctly identifies 'jacket' as a broader category that includes 'puffer jackets,' which aligns with the rubric's requirement to recognize synonyms as the same product type. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "grey jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (grey is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - 'jacket' is a broader category that includes puffer jackets. 4. Edge cases: The keyword does not specify a type of jacket, but 'jacket' is a general term that encompasses the ASIN's specific type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_same_type_correct",
+      "criterion": "Same Type Answer Correct",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires a correct YES/NO determination based on the M06 taxonomy comparison. The module output correctly identified the product type as 'jacket', which is a broader category that includes 'puffer jackets', as per the taxonomy. Therefore, the output meets the PASS conditions by correctly stating that the product types are the same.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "light grey jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (light grey is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - 'jacket' is a broader category that includes puffer jackets. 4. Edge cases: The keyword specifies a color but does not change the product type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_modifiers_stripped",
+      "criterion": "Modifiers Properly Stripped",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the core product noun is extracted from the keyword and that modifiers are properly ignored. The module output correctly identifies 'jacket' as the core product type, ignoring the color modifier 'light grey'. This meets the PASS conditions as the core product noun is extracted and modifiers are ignored.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "light grey jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (light grey is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - 'jacket' is a broader category that includes puffer jackets. 4. Edge cases: The keyword specifies a color but does not change the product type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M13_synonyms_recognized",
+      "criterion": "Synonyms Recognized",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that common synonyms and regional variations are treated as the same product type. The module output correctly identifies 'jacket' as a broader category that includes 'puffer jackets' and 'puffy coats', which are synonyms. The output meets the PASS conditions as it recognizes these synonyms as the same product type.",
+      "input": {
+        "attribute_table": [
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Hikers",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Audience",
+            "attribute_value": "Men",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Travel",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Camping",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Hiking",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Use Case",
+            "attribute_value": "Skiing",
+            "rank": 5
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Medium",
+            "rank": 1
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Lightweight",
+            "rank": 2
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Packable",
+            "rank": 3
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Insulated",
+            "rank": 4
+          },
+          {
+            "attribute_type": "Variant",
+            "attribute_value": "Water Repellent",
+            "rank": 5
+          }
+        ],
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter.\n\nMedium | Fabric type: Nylon | Care instructions: Machine Wash | Origin: Imported",
+        "description": "",
+        "hard_constraints": [
+          "Medium (Size)"
+        ],
+        "keyword": "light grey jacket",
+        "product_attributes": {
+          "category_root": "Clothing, Shoes & Jewelry",
+          "category_sub": "Down & Down Alternative",
+          "color": "Black",
+          "included_components": "",
+          "item_form": "",
+          "material": "Nylon",
+          "model": "",
+          "number_of_items": "",
+          "product_type": "COAT",
+          "size": "Medium",
+          "specific_uses": "",
+          "style": "Modern",
+          "target_audience": ""
+        },
+        "taxonomy": [
+          {
+            "level": 1,
+            "product_type": "Puffer Jacket / Puffy Coat",
+            "rank": 1
+          },
+          {
+            "level": 2,
+            "product_type": "Jacket",
+            "rank": 2
+          },
+          {
+            "level": 3,
+            "product_type": "Men's Clothing / Apparel",
+            "rank": 3
+          }
+        ],
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel",
+        "validated_use": "Cold weather body warmth"
+      },
+      "expected": {
+        "same_type": true
+      },
+      "output": {
+        "confidence": 0.95,
+        "keyword_product_type": "jacket",
+        "reasoning": "1. Core product type in keyword: 'jacket' (light grey is a color modifier). 2. ASIN taxonomy: Puffer Jacket / Puffy Coat. 3. Matching test: Direct match - 'jacket' is a broader category that includes puffer jackets. 4. Edge cases: The keyword specifies a color but does not change the product type. 5. Confidence: 0.95",
+        "same_product_type": true
+      }
+    }
+  ]
+}

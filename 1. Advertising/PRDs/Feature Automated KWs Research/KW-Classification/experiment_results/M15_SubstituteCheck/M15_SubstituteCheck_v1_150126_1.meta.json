@@ -1,0 +1,62 @@
+{
+  "braintrust_experiment_id": "20ad9832-cec0-4e7c-96de-70984a9b7976",
+  "braintrust_experiment_name": "M15_SubstituteCheck_V1.1_v1",
+  "created": "2026-01-15T22:28:58.660Z",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "48c73d5b-c15c-4e63-ae61-fb040bf65543",
+  "dataset_name": "M15_CheckSubstitute_V1.1",
+  "dataset_version": "1000196473827142131",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_15_SubstituteCheck_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "same_primary_use",
+          "classification",
+          "keyword_product_type",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Explanation of why it is or isn't a substitute"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "classification": {
+            "enum": [
+              "S",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "S for SUBSTITUTE if same use, null if different use (passes to M16)"
+          },
+          "same_primary_use": {
+            "type": "boolean",
+            "description": "Whether the different product type satisfies the same primary use"
+          },
+          "keyword_product_type": {
+            "type": "string",
+            "description": "The product type detected from the keyword"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Tracking Dashboard - Model Heatmap</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-yellow: #eab308;
+            --accent-red: #ef4444;
+            --accent-purple: #a855f7;
+            --border-color: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--accent-blue);
+            border-radius: 2px;
+        }
+
+        /* Heatmap Table */
+        .heatmap-container {
+            overflow-x: auto;
+        }
+
+        .heatmap-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .heatmap-table th,
+        .heatmap-table td {
+            padding: 6px 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .heatmap-table th {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .heatmap-table th.module-header {
+            text-align: left;
+            min-width: 100px;
+        }
+
+        .heatmap-table th.version-header {
+            min-width: 50px;
+        }
+
+        .heatmap-table th.model-header {
+            min-width: 90px;
+        }
+
+        .heatmap-table td.version-cell {
+            background: var(--bg-primary);
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .heatmap-table td.module-cell {
+            text-align: left;
+            font-weight: 600;
+            background: var(--bg-secondary);
+        }
+
+        .heatmap-table td.module-cell a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .heatmap-table td.module-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .heatmap-cell {
+            min-width: 70px;
+            font-weight: 600;
+            cursor: default;
+            position: relative;
+        }
+
+        .heatmap-cell .rate-value {
+            font-size: 13px;
+        }
+
+        .heatmap-cell.empty {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+        }
+
+        /* Color scale for pass rates */
+        .rate-0-20 { background: #7f1d1d; color: #fecaca; }
+        .rate-20-40 { background: #9a3412; color: #fed7aa; }
+        .rate-40-60 { background: #a16207; color: #fef3c7; }
+        .rate-60-80 { background: #4d7c0f; color: #d9f99d; }
+        .rate-80-100 { background: #166534; color: #bbf7d0; }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        /* Stats summary */
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 25px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-box .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .stat-box.green .value { color: var(--accent-green); }
+        .stat-box.yellow .value { color: var(--accent-yellow); }
+        .stat-box.red .value { color: var(--accent-red); }
+        .stat-box.blue .value { color: var(--accent-blue); }
+
+        /* Metric toggle */
+        .metric-toggle {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .metric-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .metric-btn:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .metric-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        /* Model colors in header */
+        .model-gpt4omini { color: #22c55e; }
+        .model-gemini { color: #3b82f6; }
+        .model-claude { color: #f59e0b; }
+        .model-gpt5 { color: #a855f7; }
+
+        /* Navigation */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            padding: 6px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .nav-link.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cost Table */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .cost-table th,
+        .cost-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        .cost-table th {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .cost-table td.number {
+            text-align: right;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .cost-table tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .cost-table .total-row {
+            background: var(--bg-primary);
+            font-weight: 700;
+        }
+
+        .cost-table .cost-value {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        /* Rubrics Grid */
+        .rubrics-module {
+            margin-bottom: 24px;
+        }
+
+        .rubrics-module h3 {
+            font-size: 1rem;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rubrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .rubrics-table th,
+        .rubrics-table td {
+            padding: 8px 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .rubrics-table th {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .rubrics-table th.rubric-name {
+            text-align: left;
+            min-width: 200px;
+        }
+
+        .rubrics-table td.rubric-name {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .rubrics-table td.rubric-name.primary {
+            color: var(--accent-purple);
+        }
+
+        .rubrics-table td.rubric-name.secondary {
+            color: var(--text-secondary);
+        }
+
+        .rubric-cell {
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .rubric-cell.empty {
+            color: var(--text-secondary);
+        }
+
+        /* Summary cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .summary-card .card-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .summary-card .card-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .summary-card .card-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prompt Tracking Dashboard</h1>
+            <p>Model Performance Heatmap - Modules × Models</p>
+            <nav class="nav-bar">
+                <a href="modules/m01.html" class="nav-link">M01</a>
+                <a href="modules/m01a.html" class="nav-link">M01a</a>
+                <a href="modules/m01b.html" class="nav-link">M01b</a>
+                <a href="modules/m02.html" class="nav-link">M02</a>
+                <a href="modules/m02b.html" class="nav-link">M02b</a>
+                <a href="modules/m04.html" class="nav-link">M04</a>
+                <a href="modules/m04b.html" class="nav-link">M04b</a>
+                <a href="modules/m05.html" class="nav-link">M05</a>
+                <a href="modules/m05b.html" class="nav-link">M05b</a>
+                <a href="modules/m06.html" class="nav-link">M06</a>
+                <a href="modules/m07.html" class="nav-link">M07</a>
+                <a href="modules/m08.html" class="nav-link">M08</a>
+                <a href="modules/m09.html" class="nav-link">M09</a>
+                <a href="modules/m10.html" class="nav-link">M10</a>
+                <a href="modules/m11.html" class="nav-link">M11</a>
+                <a href="modules/m12.html" class="nav-link">M12</a>
+                <a href="modules/m12b.html" class="nav-link">M12b</a>
+                <a href="modules/m13.html" class="nav-link">M13</a>
+                <a href="modules/m14.html" class="nav-link">M14</a>
+                <a href="modules/m15.html" class="nav-link">M15</a>
+                <a href="modules/m16.html" class="nav-link">M16</a>
+            </nav>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="heatmap">Heatmap</button>
+            <button class="tab-btn" data-tab="binary">Binary</button>
+            <button class="tab-btn" data-tab="m12b">M12B</button>
+            <button class="tab-btn" data-tab="cost">Cost</button>
+            <button class="tab-btn" data-tab="rubrics">Rubrics</button>
+        </div>
+
+        <!-- Tab: Heatmap -->
+        <div class="tab-content active" id="tab-heatmap">
+            <!-- Stats Summary -->
+            <div class="stats-row" id="statsRow"></div>
+
+            <!-- Metric Toggle -->
+            <div class="metric-toggle">
+                <button class="metric-btn active" data-metric="pass_rate">Pass Rate</button>
+                <button class="metric-btn" data-metric="match_rate">Match Rate</button>
+            </div>
+
+            <!-- Heatmap -->
+            <div class="card">
+                <h2>Module × Model Performance</h2>
+                <div class="heatmap-container">
+                    <table class="heatmap-table" id="heatmapTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color rate-0-20"></div> 0-20%</div>
+                    <div class="legend-item"><div class="legend-color rate-20-40"></div> 20-40%</div>
+                    <div class="legend-item"><div class="legend-color rate-40-60"></div> 40-60%</div>
+                    <div class="legend-item"><div class="legend-color rate-60-80"></div> 60-80%</div>
+                    <div class="legend-item"><div class="legend-color rate-80-100"></div> 80-100%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Binary Metrics -->
+        <div class="tab-content" id="tab-binary">
+            <div class="summary-grid" id="binarySummary"></div>
+
+            <div class="card">
+                <h2>Binary Classification Metrics</h2>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 15px;">
+                    Modules: M02, M02B, M04, M04B, M05, M05B, M12, M13, M14, M15, M16
+                </p>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="binaryMetricsTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: M12B Multi-Class -->
+        <div class="tab-content" id="tab-m12b">
+            <div class="summary-grid" id="m12bSummary"></div>
+
+            <div class="card">
+                <h2>M12B Combined Classification (4-class)</h2>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 15px;">
+                    Classes: R (Relevant), N (Not Relevant), S (Substitute), C (Complementary)
+                </p>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="m12bMetricsTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Per-Class F1 Scores</h2>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="m12bPerClassTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="confusionMatrices"></div>
+        </div>
+
+        <!-- Tab: Cost -->
+        <div class="tab-content" id="tab-cost">
+            <div class="summary-grid" id="costSummary"></div>
+
+            <div class="card">
+                <h2>Cost by Model</h2>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="costByModelTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Cost by Module</h2>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="costByModuleTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>All Experiments</h2>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="costExperimentsTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Rubrics -->
+        <div class="tab-content" id="tab-rubrics">
+            <div class="summary-grid" id="rubricsSummary"></div>
+
+            <div class="card">
+                <h2>Worst Performing Rubrics</h2>
+                <div class="heatmap-container">
+                    <table class="cost-table" id="worstRubricsTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Rubrics by Module (Secondary Only)</h2>
+                <div id="rubricsByModule"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="modules_data.js"></script>
+    <script src="cost_data.js"></script>
+    <script src="rubrics_data.js"></script>
+    <script src="binary_metrics_data.js"></script>
+    <script src="m12b_metrics_data.js"></script>
+    <script>
+        // Module list
+        const MODULES = [
+            { id: 'm01', name: 'M01', desc: 'Extract Brand' },
+            { id: 'm01a', name: 'M01a', desc: 'Variations' },
+            { id: 'm01b', name: 'M01b', desc: 'Sub-brands' },
+            { id: 'm02', name: 'M02', desc: 'Own Brand KW' },
+            { id: 'm02b', name: 'M02b', desc: 'Own Brand Path B' },
+            { id: 'm04', name: 'M04', desc: 'Competitor KW' },
+            { id: 'm04b', name: 'M04b', desc: 'Competitor Path B' },
+            { id: 'm05', name: 'M05', desc: 'Generic KW' },
+            { id: 'm05b', name: 'M05b', desc: 'Generic Path B' },
+            { id: 'm06', name: 'M06', desc: 'Taxonomy' },
+            { id: 'm07', name: 'M07', desc: 'Attributes' },
+            { id: 'm08', name: 'M08', desc: 'Rank Attributes' },
+            { id: 'm09', name: 'M09', desc: 'Primary Use' },
+            { id: 'm10', name: 'M10', desc: 'Validate Use' },
+            { id: 'm11', name: 'M11', desc: 'Hard Constraints' },
+            { id: 'm12', name: 'M12', desc: 'HC Violation' },
+            { id: 'm12b', name: 'M12b', desc: 'Combined Class' },
+            { id: 'm13', name: 'M13', desc: 'Product Type' },
+            { id: 'm14', name: 'M14', desc: 'Same Use Check' },
+            { id: 'm15', name: 'M15', desc: 'Substitute' },
+            { id: 'm16', name: 'M16', desc: 'Complementary' }
+        ];
+
+        // Models to display (in order)
+        const MODELS = [
+            { id: 'gpt-4o-mini', name: 'GPT-4o-mini', cssClass: 'model-gpt4omini' },
+            { id: 'gemini-2.0-flash', name: 'Gemini 2.0', cssClass: 'model-gemini' },
+            { id: 'claude-sonnet-4-20250514', name: 'Claude Sonnet', cssClass: 'model-claude' },
+            { id: 'gpt-5', name: 'GPT-5', cssClass: 'model-gpt5' }
+        ];
+
+        let currentMetric = 'pass_rate';
+
+        // Normalize model name for matching
+        function normalizeModel(model) {
+            if (!model) return null;
+            const m = model.toLowerCase();
+            if (m.includes('gpt-4o-mini') || m.includes('gpt4o-mini') || m.includes('4o-mini')) return 'gpt-4o-mini';
+            if (m.includes('gemini')) return 'gemini-2.0-flash';
+            if (m.includes('claude') || m.includes('sonnet')) return 'claude-sonnet-4-20250514';
+            if (m.includes('gpt-5') || m.includes('gpt5')) return 'gpt-5';
+            if (m.includes('gpt-4o') || m.includes('gpt4o')) return 'gpt-4o';  // separate from mini
+            return model;
+        }
+
+        // Get rate class for coloring
+        function getRateClass(rate) {
+            if (rate === null || rate === undefined) return 'empty';
+            if (rate < 20) return 'rate-0-20';
+            if (rate < 40) return 'rate-20-40';
+            if (rate < 60) return 'rate-40-60';
+            if (rate < 80) return 'rate-60-80';
+            return 'rate-80-100';
+        }
+
+        // Filter data for module (respecting sd1/gd1 rules)
+        function getFilteredData(moduleId) {
+            return progressData.filter(d => {
+                const modBase = (d.module_base || d.module || '').toLowerCase().replace(/_v\d+.*$/, '');
+
+                // For M07 and M08, only use gd1 dataset (ignore sd1)
+                if (modBase === 'm07' || modBase === 'm08') {
+                    const dataSource = (d.data_source || '').toLowerCase();
+                    if (dataSource.includes('sd1')) {
+                        return false;
+                    }
+                }
+
+                return modBase === moduleId.toLowerCase();
+            });
+        }
+
+        // Versions to exclude from heatmap (clutter reduction)
+        const EXCLUDED_VERSIONS = {
+            'm01': ['v4'],
+            'm01a': ['v1'],
+            'm07': ['v2'],
+        };
+
+        // Get all versions for a module
+        function getModuleVersions(moduleId) {
+            const moduleData = getFilteredData(moduleId);
+            const excluded = EXCLUDED_VERSIONS[moduleId] || [];
+            const versions = [...new Set(moduleData.map(d => d.prompt_version || 'v1'))]
+                .filter(v => !excluded.includes(v));
+            return versions.sort((a, b) => {
+                const numA = parseInt(a.replace(/\D/g, '')) || 0;
+                const numB = parseInt(b.replace(/\D/g, '')) || 0;
+                return numA - numB;
+            });
+        }
+
+        // Get result for module+version+model
+        function getResult(moduleId, version, modelId) {
+            const moduleData = getFilteredData(moduleId).filter(d => {
+                const normalizedModel = normalizeModel(d.model);
+                const v = d.prompt_version || 'v1';
+                return v === version && normalizedModel === modelId;
+            });
+
+            if (moduleData.length === 0) return null;
+
+            // If multiple, get the one with highest rate
+            moduleData.sort((a, b) => {
+                const rateA = a[currentMetric] || 0;
+                const rateB = b[currentMetric] || 0;
+                return rateB - rateA;
+            });
+
+            return moduleData[0];
+        }
+
+        // Build heatmap table
+        function buildHeatmap() {
+            const thead = document.querySelector('#heatmapTable thead');
+            const tbody = document.querySelector('#heatmapTable tbody');
+
+            // Header row
+            thead.innerHTML = `
+                <tr>
+                    <th class="module-header">Module</th>
+                    <th class="version-header">Ver</th>
+                    ${MODELS.map(m => `<th class="model-header ${m.cssClass}">${m.name}</th>`).join('')}
+                </tr>
+            `;
+
+            // Build rows - each version gets its own row
+            let rows = [];
+            MODULES.forEach(module => {
+                const versions = getModuleVersions(module.id);
+
+                if (versions.length === 0) {
+                    // No data for this module
+                    const cells = MODELS.map(() => `<td class="heatmap-cell empty">-</td>`).join('');
+                    rows.push(`
+                        <tr>
+                            <td class="module-cell" rowspan="1">
+                                <a href="modules/${module.id}.html">${module.name}</a>
+                                <div style="font-size: 10px; color: var(--text-secondary); font-weight: normal;">${module.desc}</div>
+                            </td>
+                            <td class="version-cell">-</td>
+                            ${cells}
+                        </tr>
+                    `);
+                    return;
+                }
+
+                versions.forEach((version, idx) => {
+                    const cells = MODELS.map(model => {
+                        const result = getResult(module.id, version, model.id);
+                        if (!result) {
+                            return `<td class="heatmap-cell empty">-</td>`;
+                        }
+                        const rate = result[currentMetric];
+                        const rateClass = getRateClass(rate);
+                        return `
+                            <td class="heatmap-cell ${rateClass}" title="${module.name} ${version} + ${model.name}: ${rate?.toFixed(1)}%">
+                                <div class="rate-value">${rate !== null && rate !== undefined ? rate.toFixed(0) + '%' : '-'}</div>
+                            </td>
+                        `;
+                    }).join('');
+
+                    // First version row includes module name with rowspan
+                    if (idx === 0) {
+                        rows.push(`
+                            <tr>
+                                <td class="module-cell" rowspan="${versions.length}">
+                                    <a href="modules/${module.id}.html">${module.name}</a>
+                                    <div style="font-size: 10px; color: var(--text-secondary); font-weight: normal;">${module.desc}</div>
+                                </td>
+                                <td class="version-cell">${version}</td>
+                                ${cells}
+                            </tr>
+                        `);
+                    } else {
+                        rows.push(`
+                            <tr>
+                                <td class="version-cell">${version}</td>
+                                ${cells}
+                            </tr>
+                        `);
+                    }
+                });
+            });
+
+            tbody.innerHTML = rows.join('');
+        }
+
+        // Calculate summary stats
+        function buildStats() {
+            const statsRow = document.getElementById('statsRow');
+
+            // Count results per model
+            const modelCounts = {};
+            const modelSums = {};
+            MODELS.forEach(m => {
+                modelCounts[m.id] = 0;
+                modelSums[m.id] = 0;
+            });
+
+            // Iterate through all module+version+model combinations
+            MODULES.forEach(module => {
+                const versions = getModuleVersions(module.id);
+                versions.forEach(version => {
+                    MODELS.forEach(model => {
+                        const result = getResult(module.id, version, model.id);
+                        if (result && result.pass_rate !== undefined) {
+                            modelCounts[model.id]++;
+                            modelSums[model.id] += result.pass_rate;
+                        }
+                    });
+                });
+            });
+
+            // Calculate overall stats
+            let totalResults = 0;
+            let totalSum = 0;
+            let above80 = 0;
+
+            MODULES.forEach(module => {
+                const versions = getModuleVersions(module.id);
+                versions.forEach(version => {
+                    MODELS.forEach(model => {
+                        const result = getResult(module.id, version, model.id);
+                        if (result && result.pass_rate !== undefined) {
+                            totalResults++;
+                            totalSum += result.pass_rate;
+                            if (result.pass_rate >= 80) above80++;
+                        }
+                    });
+                });
+            });
+
+            const avgPassRate = totalResults > 0 ? totalSum / totalResults : 0;
+
+            // Model averages
+            const modelAvgs = MODELS.map(m => ({
+                name: m.name,
+                cssClass: m.cssClass,
+                avg: modelCounts[m.id] > 0 ? modelSums[m.id] / modelCounts[m.id] : 0,
+                count: modelCounts[m.id]
+            }));
+
+            statsRow.innerHTML = `
+                <div class="stat-box blue">
+                    <div class="value">${totalResults}</div>
+                    <div class="label">Total Evaluations</div>
+                </div>
+                <div class="stat-box ${avgPassRate >= 70 ? 'green' : avgPassRate >= 50 ? 'yellow' : 'red'}">
+                    <div class="value">${avgPassRate.toFixed(1)}%</div>
+                    <div class="label">Avg Pass Rate</div>
+                </div>
+                <div class="stat-box green">
+                    <div class="value">${above80}</div>
+                    <div class="label">Cells ≥80%</div>
+                </div>
+                ${modelAvgs.map(m => `
+                    <div class="stat-box">
+                        <div class="value ${m.cssClass}">${m.avg.toFixed(0)}%</div>
+                        <div class="label">${m.name}</div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Metric toggle handler
+        document.querySelectorAll('.metric-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.metric-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMetric = btn.dataset.metric;
+                buildHeatmap();
+                buildStats();
+            });
+        });
+
+        // Initialize
+        buildStats();
+        buildHeatmap();
+
+        // Tab Navigation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+
+                // Update button states
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update content visibility
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+
+                // Lazy load tab content
+                if (tabId === 'binary' && !window.binaryLoaded) {
+                    buildBinaryTab();
+                    window.binaryLoaded = true;
+                }
+                if (tabId === 'cost' && !window.costLoaded) {
+                    buildCostTab();
+                    window.costLoaded = true;
+                }
+                if (tabId === 'rubrics' && !window.rubricsLoaded) {
+                    buildRubricsTab();
+                    window.rubricsLoaded = true;
+                }
+                if (tabId === 'm12b' && !window.m12bLoaded) {
+                    buildM12BTab();
+                    window.m12bLoaded = true;
+                }
+            });
+        });
+
+        // ============== BINARY METRICS TAB ==============
+        function buildBinaryTab() {
+            if (typeof binaryMetricsData === 'undefined') {
+                document.getElementById('tab-binary').innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Binary metrics data not available.</p>';
+                return;
+            }
+
+            const data = Object.values(binaryMetricsData);
+
+            // Calculate summary stats
+            const totalExperiments = data.length;
+            const avgAccuracy = data.reduce((sum, d) => sum + d.accuracy, 0) / totalExperiments;
+            const avgF1 = data.reduce((sum, d) => sum + d.f1, 0) / totalExperiments;
+            const avgMCC = data.reduce((sum, d) => sum + d.mcc, 0) / totalExperiments;
+
+            // Count by module
+            const moduleCount = {};
+            data.forEach(d => {
+                moduleCount[d.module] = (moduleCount[d.module] || 0) + 1;
+            });
+
+            // Summary cards
+            document.getElementById('binarySummary').innerHTML = `
+                <div class="summary-card">
+                    <div class="card-title">Experiments</div>
+                    <div class="card-value" style="color: var(--accent-blue);">${totalExperiments}</div>
+                    <div class="card-sub">${Object.keys(moduleCount).length} modules</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Avg Accuracy</div>
+                    <div class="card-value" style="color: ${avgAccuracy >= 80 ? 'var(--accent-green)' : avgAccuracy >= 60 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${avgAccuracy.toFixed(1)}%</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Avg F1</div>
+                    <div class="card-value" style="color: ${avgF1 >= 70 ? 'var(--accent-green)' : avgF1 >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${avgF1.toFixed(1)}%</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Avg MCC</div>
+                    <div class="card-value" style="color: ${avgMCC >= 0.5 ? 'var(--accent-green)' : avgMCC >= 0.3 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${avgMCC.toFixed(3)}</div>
+                </div>
+            `;
+
+            // Model display names
+            const modelNames = {
+                'gpt-4o-mini': 'GPT-4o-mini',
+                'gpt-5': 'GPT-5',
+                'gemini-2.0-flash': 'Gemini 2.0',
+                'claude-sonnet-4-20250514': 'Claude'
+            };
+
+            // Sort data by module, then version, then model
+            const sortedData = data.sort((a, b) => {
+                // Extract module number for sorting
+                const modNumA = parseInt(a.module.replace(/\D/g, '')) || 0;
+                const modNumB = parseInt(b.module.replace(/\D/g, '')) || 0;
+                if (modNumA !== modNumB) return modNumA - modNumB;
+                // Then by suffix (b comes after non-b)
+                const hasBSuffixA = a.module.endsWith('b') ? 1 : 0;
+                const hasBSuffixB = b.module.endsWith('b') ? 1 : 0;
+                if (hasBSuffixA !== hasBSuffixB) return hasBSuffixA - hasBSuffixB;
+                // Then by version
+                const verA = a.prompt_version || 'v1';
+                const verB = b.prompt_version || 'v1';
+                if (verA !== verB) return verA.localeCompare(verB);
+                // Then by model
+                return (a.model || '').localeCompare(b.model || '');
+            });
+
+            // Build table
+            const table = document.getElementById('binaryMetricsTable');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Ver</th>
+                        <th>Model</th>
+                        <th style="text-align: right;">N</th>
+                        <th style="text-align: right;">TP</th>
+                        <th style="text-align: right;">TN</th>
+                        <th style="text-align: right;">FP</th>
+                        <th style="text-align: right;">FN</th>
+                        <th style="text-align: right;">Acc%</th>
+                        <th style="text-align: right;">Prec%</th>
+                        <th style="text-align: right;">Rec%</th>
+                        <th style="text-align: right;">F1</th>
+                        <th style="text-align: right;">MCC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${sortedData.map(d => {
+                        const modelDisplay = modelNames[d.model] || d.model;
+                        return `
+                            <tr>
+                                <td><strong>${d.module.toUpperCase()}</strong></td>
+                                <td style="color: var(--accent-blue);">${d.prompt_version || 'v1'}</td>
+                                <td>${modelDisplay}</td>
+                                <td class="number">${d.total}</td>
+                                <td class="number" style="color: var(--accent-green);">${d.tp}</td>
+                                <td class="number" style="color: var(--accent-green);">${d.tn}</td>
+                                <td class="number" style="color: ${d.fp > 0 ? 'var(--accent-red)' : 'var(--text-secondary)'};">${d.fp}</td>
+                                <td class="number" style="color: ${d.fn > 0 ? 'var(--accent-red)' : 'var(--text-secondary)'};">${d.fn}</td>
+                                <td class="number ${getRateClass(d.accuracy)}" style="font-weight: 600;">${d.accuracy.toFixed(1)}</td>
+                                <td class="number" style="color: ${d.precision >= 80 ? 'var(--accent-green)' : d.precision >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${d.precision.toFixed(1)}</td>
+                                <td class="number" style="color: ${d.recall >= 80 ? 'var(--accent-green)' : d.recall >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${d.recall.toFixed(1)}</td>
+                                <td class="number" style="color: ${d.f1 >= 70 ? 'var(--accent-green)' : d.f1 >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'}; font-weight: 600;">${d.f1.toFixed(1)}</td>
+                                <td class="number" style="color: ${d.mcc >= 0.5 ? 'var(--accent-green)' : d.mcc >= 0.3 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${d.mcc.toFixed(3)}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            `;
+        }
+
+        // ============== COST TAB ==============
+        function buildCostTab() {
+            if (typeof costData === 'undefined') {
+                document.getElementById('tab-cost').innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Cost data not available. Run calculate_costs.py to generate.</p>';
+                return;
+            }
+
+            const summary = costData.summary;
+
+            // Count estimated experiments
+            const estimatedCount = costData.experiments.filter(e => e.is_estimated).length;
+            const actualCount = summary.total_experiments - estimatedCount;
+
+            // Summary cards
+            document.getElementById('costSummary').innerHTML = `
+                <div class="summary-card">
+                    <div class="card-title">Total Cost</div>
+                    <div class="card-value" style="color: var(--accent-green);">$${summary.total_cost.toFixed(2)}</div>
+                    <div class="card-sub">${summary.total_experiments} experiments</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Total Tokens</div>
+                    <div class="card-value" style="color: var(--accent-blue);">${(summary.total_tokens / 1000000).toFixed(1)}M</div>
+                    <div class="card-sub">Input + Output</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Data Quality</div>
+                    <div class="card-value" style="color: var(--accent-yellow);">${actualCount}/${summary.total_experiments}</div>
+                    <div class="card-sub">${estimatedCount} estimated (2x multiplier)</div>
+                </div>
+            `;
+
+            // Cost by Model table
+            const modelTable = document.getElementById('costByModelTable');
+            modelTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Experiments</th>
+                        <th>Estimated</th>
+                        <th>Total Tokens</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(summary.by_model).sort((a, b) => b[1].total_cost - a[1].total_cost).map(([model, data]) => `
+                        <tr>
+                            <td>${model}</td>
+                            <td class="number">${data.experiments}</td>
+                            <td class="number" style="color: ${data.experiments_estimated > 0 ? 'var(--accent-yellow)' : 'var(--text-secondary)'};">${data.experiments_estimated || 0}</td>
+                            <td class="number">${data.total_tokens.toLocaleString()}</td>
+                            <td class="number cost-value">$${data.total_cost.toFixed(2)}${data.experiments_estimated > 0 ? '*' : ''}</td>
+                        </tr>
+                    `).join('')}
+                    <tr class="total-row">
+                        <td><strong>TOTAL</strong></td>
+                        <td class="number">${summary.total_experiments}</td>
+                        <td class="number">${estimatedCount}</td>
+                        <td class="number">${summary.total_tokens.toLocaleString()}</td>
+                        <td class="number cost-value">$${summary.total_cost.toFixed(2)}</td>
+                    </tr>
+                </tbody>
+            `;
+
+            // Add footnote
+            const modelCard = document.getElementById('costByModelTable').closest('.card');
+            if (!modelCard.querySelector('.footnote')) {
+                const footnote = document.createElement('p');
+                footnote.className = 'footnote';
+                footnote.style.cssText = 'font-size: 11px; color: var(--text-secondary); margin-top: 10px;';
+                footnote.innerHTML = '* Includes estimated costs (2x multiplier applied to account for longer prompts in newer experiments)';
+                modelCard.appendChild(footnote);
+            }
+
+            // Cost by Module table
+            const moduleTable = document.getElementById('costByModuleTable');
+            moduleTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Experiments</th>
+                        <th>Total Tokens</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Object.entries(summary.by_module).sort((a, b) => {
+                        const numA = parseInt(a[0].replace(/\D/g, '')) || 0;
+                        const numB = parseInt(b[0].replace(/\D/g, '')) || 0;
+                        return numA - numB;
+                    }).map(([module, data]) => `
+                        <tr>
+                            <td><strong>${module.toUpperCase()}</strong></td>
+                            <td class="number">${data.experiments}</td>
+                            <td class="number">${data.total_tokens.toLocaleString()}</td>
+                            <td class="number cost-value">$${data.total_cost.toFixed(2)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+
+            // Experiments table
+            const expTable = document.getElementById('costExperimentsTable');
+            expTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Module</th>
+                        <th>Model</th>
+                        <th>Records</th>
+                        <th>Tokens</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${costData.experiments.sort((a, b) => b.final_cost - a.final_cost).map(exp => `
+                        <tr>
+                            <td style="font-size: 11px;">${exp.file}</td>
+                            <td><strong>${exp.module.toUpperCase()}</strong></td>
+                            <td>${exp.model}</td>
+                            <td class="number">${exp.total_records}</td>
+                            <td class="number">${exp.total_tokens.toLocaleString()}</td>
+                            <td class="number cost-value">$${exp.final_cost.toFixed(4)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        // ============== RUBRICS TAB ==============
+        function buildRubricsTab() {
+            if (typeof rubricsData === 'undefined') {
+                document.getElementById('tab-rubrics').innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Rubrics data not available. Run aggregate_rubrics.py to generate.</p>';
+                return;
+            }
+
+            const summary = rubricsData.summary;
+            const modules = rubricsData.modules;
+
+            // Summary cards
+            document.getElementById('rubricsSummary').innerHTML = `
+                <div class="summary-card">
+                    <div class="card-title">Total Rubrics</div>
+                    <div class="card-value" style="color: var(--accent-blue);">${summary.total_rubrics}</div>
+                    <div class="card-sub">${summary.total_modules} modules</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Primary Rubrics</div>
+                    <div class="card-value" style="color: var(--accent-purple);">${summary.primary_rubrics}</div>
+                    <div class="card-sub">Main metrics per module</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Secondary Rubrics</div>
+                    <div class="card-value" style="color: var(--text-secondary);">${summary.secondary_rubrics}</div>
+                    <div class="card-sub">Additional quality checks</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Models Evaluated</div>
+                    <div class="card-value" style="color: var(--accent-green);">${summary.models.length}</div>
+                    <div class="card-sub">${summary.models.slice(0, 3).join(', ')}...</div>
+                </div>
+            `;
+
+            // Worst rubrics table
+            const worstTable = document.getElementById('worstRubricsTable');
+            worstTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Rubric</th>
+                        <th>Criterion</th>
+                        <th>Type</th>
+                        <th>Avg Pass Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${summary.worst_rubrics.slice(0, 15).map(r => `
+                        <tr>
+                            <td><strong>${r.module.toUpperCase()}</strong></td>
+                            <td style="font-size: 11px;">${r.rubric_id}</td>
+                            <td>${r.criterion}</td>
+                            <td style="color: ${r.is_primary ? 'var(--accent-purple)' : 'var(--text-secondary)'};">
+                                ${r.is_primary ? 'Primary' : 'Secondary'}
+                            </td>
+                            <td class="${getRateClass(r.avg_pass_rate)}" style="text-align: center; font-weight: 600;">
+                                ${r.avg_pass_rate.toFixed(1)}%
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+
+            // Rubrics by Module
+            // All models that have rubric data
+            const rubricModels = ['gpt-4o-mini', 'gpt-4o', 'gpt-5', 'gemini-2.0-flash', 'gemini-2.5-pro', 'claude-sonnet-4'];
+            const modelDisplayNames = {
+                'gpt-4o-mini': 'GPT-4o-mini',
+                'gpt-4o': 'GPT-4o',
+                'gpt-5': 'GPT-5',
+                'gemini-2.0-flash': 'Gemini 2.0',
+                'gemini-2.5-pro': 'Gemini 2.5',
+                'claude-sonnet-4': 'Claude',
+            };
+            const byModuleContainer = document.getElementById('rubricsByModule');
+
+            let html = '';
+            const sortedModules = Object.keys(modules).sort((a, b) => {
+                const numA = parseInt(a.replace(/\D/g, '')) || 0;
+                const numB = parseInt(b.replace(/\D/g, '')) || 0;
+                return numA - numB;
+            });
+
+            for (const moduleId of sortedModules) {
+                const mdata = modules[moduleId];
+                const rubrics = Object.entries(mdata.rubrics)
+                    .filter(([_, rdata]) => !rdata.is_primary) // Only secondary rubrics
+                    .sort((a, b) => a[0].localeCompare(b[0]));
+
+                if (rubrics.length === 0) continue;
+
+                html += `
+                    <div class="rubrics-module">
+                        <h3>${moduleId.toUpperCase()} - ${rubrics.length} secondary rubrics</h3>
+                        <table class="rubrics-table">
+                            <thead>
+                                <tr>
+                                    <th class="rubric-name">Rubric</th>
+                                    ${rubricModels.map(m => `<th>${modelDisplayNames[m] || m}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rubrics.map(([rubricId, rdata]) => `
+                                    <tr>
+                                        <td class="rubric-name secondary" title="${rubricId}">${rdata.criterion}</td>
+                                        ${rubricModels.map(m => {
+                                            const result = rdata.results[m];
+                                            if (!result || result.total === 0) {
+                                                return '<td class="rubric-cell empty">-</td>';
+                                            }
+                                            const rate = result.pass_rate;
+                                            return `<td class="rubric-cell ${getRateClass(rate)}">${rate.toFixed(0)}%</td>`;
+                                        }).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            byModuleContainer.innerHTML = html;
+        }
+
+        // ============== M12B MULTI-CLASS TAB ==============
+        function buildM12BTab() {
+            if (typeof m12bMetricsData === 'undefined') {
+                document.getElementById('tab-m12b').innerHTML = '<p style="color: var(--text-secondary); text-align: center;">M12B metrics data not available.</p>';
+                return;
+            }
+
+            const { classes, classNames, results } = m12bMetricsData;
+            const models = Object.keys(results).sort();
+
+            // Find best model
+            let bestModel = models[0];
+            let bestF1 = results[models[0]]?.macro_f1 || 0;
+            models.forEach(m => {
+                if (results[m].macro_f1 > bestF1) {
+                    bestF1 = results[m].macro_f1;
+                    bestModel = m;
+                }
+            });
+
+            // Summary cards
+            const avgAcc = models.reduce((sum, m) => sum + results[m].accuracy, 0) / models.length;
+            const avgMacroF1 = models.reduce((sum, m) => sum + results[m].macro_f1, 0) / models.length;
+
+            document.getElementById('m12bSummary').innerHTML = `
+                <div class="summary-card">
+                    <div class="card-title">Models Tested</div>
+                    <div class="card-value" style="color: var(--accent-blue);">${models.length}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Avg Accuracy</div>
+                    <div class="card-value" style="color: ${avgAcc >= 70 ? 'var(--accent-green)' : avgAcc >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${avgAcc.toFixed(1)}%</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Avg Macro F1</div>
+                    <div class="card-value" style="color: ${avgMacroF1 >= 60 ? 'var(--accent-green)' : avgMacroF1 >= 40 ? 'var(--accent-yellow)' : 'var(--accent-red)'};">${avgMacroF1.toFixed(1)}%</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-title">Best Model</div>
+                    <div class="card-value" style="color: var(--accent-green); font-size: 1.2rem;">${bestModel.replace('claude-sonnet-4-20250514', 'Claude').replace('gemini-2.0-flash', 'Gemini').replace('gpt-4o-mini', 'GPT-4o-mini').replace('gpt-5', 'GPT-5')}</div>
+                    <div class="card-sub">Macro F1: ${bestF1.toFixed(1)}%</div>
+                </div>
+            `;
+
+            // Main metrics table
+            const metricsTable = document.getElementById('m12bMetricsTable');
+            metricsTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>N</th>
+                        <th>Accuracy</th>
+                        <th>Macro F1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${models.map(m => {
+                        const r = results[m];
+                        const accClass = r.accuracy >= 70 ? 'rate-80-100' : r.accuracy >= 60 ? 'rate-60-80' : r.accuracy >= 50 ? 'rate-40-60' : 'rate-20-40';
+                        const f1Class = r.macro_f1 >= 60 ? 'rate-80-100' : r.macro_f1 >= 50 ? 'rate-60-80' : r.macro_f1 >= 40 ? 'rate-40-60' : 'rate-20-40';
+                        return `
+                            <tr>
+                                <td style="text-align: left; font-weight: 500;">${m}</td>
+                                <td>${r.total}</td>
+                                <td class="${accClass}">${r.accuracy.toFixed(1)}%</td>
+                                <td class="${f1Class}">${r.macro_f1.toFixed(1)}%</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            `;
+
+            // Per-class F1 table
+            const perClassTable = document.getElementById('m12bPerClassTable');
+            perClassTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        ${classes.map(c => `<th>${c} (${classNames[c]})</th>`).join('')}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${models.map(m => {
+                        const pc = results[m].per_class;
+                        return `
+                            <tr>
+                                <td style="text-align: left; font-weight: 500;">${m}</td>
+                                ${classes.map(c => {
+                                    const f1 = pc[c].f1;
+                                    const cls = f1 >= 70 ? 'rate-80-100' : f1 >= 50 ? 'rate-60-80' : f1 >= 30 ? 'rate-40-60' : 'rate-20-40';
+                                    return `<td class="${cls}">${f1.toFixed(1)}%</td>`;
+                                }).join('')}
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            `;
+
+            // Confusion matrices
+            const confContainer = document.getElementById('confusionMatrices');
+            confContainer.innerHTML = models.map(m => {
+                const cm = results[m].confusion_matrix;
+                return `
+                    <div class="card">
+                        <h2>Confusion Matrix: ${m}</h2>
+                        <div class="heatmap-container">
+                            <table class="cost-table" style="max-width: 500px;">
+                                <thead>
+                                    <tr>
+                                        <th>Exp \\ Pred</th>
+                                        ${classes.map(c => `<th>${c}</th>`).join('')}
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${classes.map(exp => {
+                                        const rowTotal = classes.reduce((sum, act) => sum + cm[exp][act], 0);
+                                        return `
+                                            <tr>
+                                                <td style="font-weight: 600;">${exp}</td>
+                                                ${classes.map(act => {
+                                                    const val = cm[exp][act];
+                                                    const isCorrect = exp === act;
+                                                    const pct = rowTotal > 0 ? (val / rowTotal * 100) : 0;
+                                                    const bgClass = isCorrect ? (pct >= 70 ? 'rate-80-100' : pct >= 50 ? 'rate-60-80' : 'rate-40-60') : (val > 0 ? 'rate-0-20' : '');
+                                                    return `<td class="${bgClass}">${val}</td>`;
+                                                }).join('')}
+                                                <td style="font-weight: 500;">${rowTotal}</td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

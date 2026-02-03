@@ -1,0 +1,61 @@
+{
+  "experiment_name": "M08_V4_sd03_AssignAttributeRanks_v4_270126_gpt4omini_synthetic",
+  "created": "2026-01-27T22:52:02.750556",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "source": "openai_batch_api",
+  "batch_type": "synthetic",
+  "synthetic_dataset": "03",
+  "dataset_file": "m08_sd03_assign_attribute_ranks.jsonl",
+  "prompt_version": "v4",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_8_AssignAttributeRanks_output",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "attribute_table": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "attribute_type": {
+                  "type": "string",
+                  "enum": [
+                    "Variant",
+                    "Use Case",
+                    "Audience"
+                  ],
+                  "description": "Type of attribute"
+                },
+                "attribute_value": {
+                  "type": "string",
+                  "description": "The attribute value"
+                },
+                "rank": {
+                  "type": "integer",
+                  "description": "Rank from 1 (most important) to N"
+                }
+              },
+              "required": [
+                "attribute_type",
+                "attribute_value",
+                "rank"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Ranked list of attributes"
+          }
+        },
+        "required": [
+          "attribute_table"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "records_count": 91,
+  "downloaded_at": "2026-01-27T22:52:02.750571"
+}

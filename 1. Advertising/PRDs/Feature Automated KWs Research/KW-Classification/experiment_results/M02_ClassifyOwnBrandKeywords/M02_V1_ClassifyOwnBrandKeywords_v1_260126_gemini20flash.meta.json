@@ -1,0 +1,52 @@
+{
+  "braintrust_experiment_id": "a60b9851-d276-4ab1-a24c-5f3a60de3db7",
+  "braintrust_experiment_name": "M02_ClassifyOwnBrandKeywords_gemini",
+  "created": "2026-01-25 17:10:53.903000+00:00",
+  "model": "gemini-2.0-flash",
+  "temperature": 0,
+  "dataset_id": "53159951-ee6a-48b4-aad4-ae602e0b0c99",
+  "dataset_name": "M02_ClassifyOwnBrandKeywords_V1.1",
+  "dataset_version": "1000196473825820121",
+  "prompt_id": "e29d6948-3447-42bb-88fc-bc8e586a0b93",
+  "prompt_version": "1000196549082145562",
+  "prompt_session_id": "cec25360-4859-440a-9cf8-b56a6f3ad484",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_2_ClassifyOwnBrandKeywords_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "branding_scope_1",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why this classification was chosen"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "branding_scope_1": {
+            "enum": [
+              "OB",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "OB if keyword matches brand entity, null otherwise"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 628,
+  "downloaded_at": "2026-01-26T01:46:31.570212"
+}

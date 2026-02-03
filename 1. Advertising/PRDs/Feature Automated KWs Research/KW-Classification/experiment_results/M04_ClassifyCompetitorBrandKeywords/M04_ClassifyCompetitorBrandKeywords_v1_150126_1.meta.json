@@ -1,0 +1,52 @@
+{
+  "braintrust_experiment_id": "24ef12d8-4b2a-44c5-9be7-8141e2304b75",
+  "braintrust_experiment_name": "M04_ClassifyCompetitorBrandKeywords",
+  "created": "2026-01-15T11:26:58.762Z",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "4f84a83f-088b-423a-9e87-3c90822c056f",
+  "dataset_name": "M04_ClassifyCompetitorBrandKeywords_V1.1",
+  "dataset_version": "1000196473826084304",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_4_ClassifyCompetitorBrandKeywords_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "branding_scope_2",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why this classification was chosen"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "branding_scope_2": {
+            "enum": [
+              "CB",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "CB if keyword matches competitor entity, null otherwise"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

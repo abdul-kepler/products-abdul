@@ -1,0 +1,1556 @@
+{
+  "experiment": "V2",
+  "module": "m02b",
+  "model": "gpt-4o",
+  "rubrics_version": "v5",
+  "timestamp": "2026-01-20T00:51:24.520681",
+  "data_source": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M02B_ClassifyOwnBrandKeywords_PathB/M02B_ClassifyOwnBrandKeywords_PathB_v1_150126_1.csv",
+  "summary": {
+    "pass": 70,
+    "fail": 0,
+    "error": 0
+  },
+  "pass_rate": 100.0,
+  "evaluations": [
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'ipod headphones' does not contain any of the brand variations listed in 'variations_own'. The module correctly classified it as null, meeting the PASS conditions.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when the classification is null. The module output has matched_term as null and the expected output also has branding_scope_1 as null, indicating that the classification is null. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not match any partial brand terms within the keyword 'ipod headphones', adhering to the requirement of rejecting partial matches within words. The output indicates no brand terms were found, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not confuse any similar-sounding brands or match different characters. It verified that no brand terms from 'variations_own' or 'related_terms_own' were found in the keyword, meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were matched. The reasoning provided confirms that no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identified that there were no exact matches between the keyword 'ipod headphones' and the terms in 'variations_own' or 'related_terms_own'. The rubric requires exact character matches, and the module did not assume any close spelling matches or incorrect variations, thus meeting the PASS conditions.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no terms from variations_own or related_terms_own in the keyword 'ipod headphones', resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "ipod headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'beats over ear headphones' as null because it does not contain any of the specified brand variations such as 'JBL' or related terms like 'Vibe Beam'. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has matched_term as null and branding_scope_1 as null, which aligns with the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that partial string matches within words are rejected and only whole word or clear brand references are matched. The module output correctly did not match any partial strings or incorrect brand references within the keyword 'beats over ear headphones'. It also provided reasoning that no brand terms from 'variations_own' or 'related_terms_own' were found in the keyword, which aligns with the PASS conditions.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not confuse any similar-sounding brands or variations with the keyword 'beats over ear headphones'. It performed character-by-character verification and did not assume phonetic similarity as a match, meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as the ASIN patterns and PPC terms return null, and there is no indication of a matched brand inside the ASIN string. The output correctly identifies that no brand terms from variations_own or related_terms_own are found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identified that there were no exact matches between the keyword 'beats over ear headphones' and the terms in 'variations_own' or 'related_terms_own'. The rubric requires exact character matches, and the module did not assume any close spelling matches or incorrect singular/plural matches. Therefore, it meets the PASS conditions.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no terms from variations_own or related_terms_own in the keyword, resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "beats over ear headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'skull candy' does not contain any of the brand variations listed ('JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ'), so the module correctly classified it as null. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when the classification is null. The module output has matched_term as null and the expected output has branding_scope_1 as null, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not match any partial string within words or unrelated terms. It did not find any brand terms from 'variations_own' or 'related_terms_own' within the 'keyword', adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no similar-sounding or character-similar brands in the input data. It did not confuse 'skull candy' with any of the variations or related terms provided, and there was no incorrect matching based on phonetic similarity. The output aligns with the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were found. The reasoning provided confirms that no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no exact matches between the keyword 'skull candy' and the terms in 'variations_own' or 'related_terms_own'. The rubric requires exact character matches, and the module output aligns with this requirement by not assuming any close spelling matches or typos not listed in variations.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no terms from variations_own or related_terms_own in the keyword 'skull candy', resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "skull candy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'samsung headphones' does not contain any of the specified brand variations ('JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ') or related terms ('Vibe Beam'). The module correctly classified the keyword as null, meeting the PASS conditions.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has matched_term as null and the expected output has branding_scope_1 as null, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not match any partial brand terms within the keyword 'samsung headphones'. It adhered to the requirement of rejecting partial matches and only considered whole words or clear brand references, as evidenced by the null values for 'matched_term' and 'match_type'.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the module does not confuse similar-sounding brands and performs character-by-character verification. The module output correctly identified that no brand terms from 'variations_own' or 'related_terms_own' were found in the keyword 'samsung headphones'. There was no confusion with similar-sounding brands, and no incorrect matches were made. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were found. The reasoning provided confirms that no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identified that there were no exact matches between the keyword 'samsung headphones' and the terms in 'variations_own' or 'related_terms_own'. The rubric requires exact character matches, and the module did not assume any close spelling matches or incorrect singular/plural matches. Therefore, it meets the PASS conditions.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no terms from variations_own or related_terms_own in the keyword 'samsung headphones', resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "samsung headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in the keyword 'samsung headphones'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'skullcandy headphones' does not contain any of the brand variations listed ('JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ') or related terms ('Vibe Beam'). The module correctly classified the keyword as null, meeting the PASS conditions.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when the classification is null. The module output has matched_term as null and classification as null, which meets the PASS condition.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not match any partial brand terms within the keyword 'skullcandy headphones'. It did not incorrectly identify any partial matches from 'variations_own' or 'related_terms_own', thus adhering to the word boundary handling requirement.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no similar-sounding brands or character matches between the keyword 'skullcandy headphones' and the provided variations or related terms. It did not confuse any similar-sounding brands, and the reasoning indicates a character-by-character verification was performed.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, match_type, and matched_term, indicating no ASIN patterns or PPC terms were found. The reasoning confirms no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identified that there were no exact matches between the keyword 'skullcandy headphones' and the terms in 'related_terms_own' or 'variations_own'. The rubric requires exact character matches, and the module did not assume any close spelling matches or incorrect variations, thus meeting the PASS conditions.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no terms from variations_own or related_terms_own in the keyword 'skullcandy headphones'. Therefore, the match_type is accurately set to null, meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "skullcandy headphones",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified 'heart earbuds' as null because it does not contain any of the specified brand variations or related terms. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has matched_term as null, which aligns with the expected output where branding_scope_1 is null. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that partial string matches within words are rejected and only whole word or clear brand references are matched. The module output correctly did not match any brand terms from 'variations_own' or 'related_terms_own' within the keyword 'heart earbuds', thus adhering to the word boundary handling criterion.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand terms from 'variations_own' or 'related_terms_own' in the keyword 'heart earbuds'. It did not confuse any similar-sounding brands or assume phonetic similarity as a match, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were matched. The reasoning confirms no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires an exact character match for the terms in 'variations_own' or 'related_terms_own' within the keyword. The module correctly identified that no such terms were present in 'heart earbuds', thus meeting the PASS conditions.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no terms from variations_own or related_terms_own in the keyword 'heart earbuds', resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "heart earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'skullcandy' does not contain any of the specified brand variations ('JBL', 'J-B-L', etc.), so the module correctly classified it as null. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when the classification is null. In the module output, the matched_term is null, and the classification (branding_scope_1) is also null, which meets the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that the keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own, and there are no partial matches within words. This aligns with the rubric's requirement to reject partial string matches within words.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that 'skullcandy' does not match any of the variations or related terms provided, demonstrating no confusion with similar-sounding brands. The output did not assume phonetic similarity as a match, and there was no incorrect matching of different characters.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, which aligns with the requirement that ASIN patterns and PPC terms return null. There is no indication of an ASIN pattern or PPC terms being matched, and the keyword 'skullcandy' does not match any brand terms from the variations_own or related_terms_own.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies that 'skullcandy' does not match any terms from 'variations_own' or 'related_terms_own'. There are no exact substring matches, and the module did not assume any close spelling matches, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that the keyword 'skullcandy' does not match any terms from the 'variations_own' or 'related_terms_own'. Since there is no match, the 'match_type' is correctly set to null, which aligns with the rubric's requirements.",
+      "input": {
+        "keyword": "skullcandy",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'skullcandy' does not match any terms from the variations_own or related_terms_own. There are no brand terms present in the keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'raycon bluetooth earbuds' does not contain any of the brand variations listed ('JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ'). The module correctly classified the keyword as null, meeting the PASS conditions.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has matched_term as null and branding_scope_1 as null, which aligns with the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no partial matches or whole word matches from 'variations_own' or 'related_terms_own' within the 'keyword'. It did not incorrectly match any brand inside another word, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no similar-sounding or character-similar brands in the keyword 'raycon bluetooth earbuds' compared to the provided variations and related terms. It did not confuse 'raycon' with any of the variations like 'JBL' or 'Vibe Beam', and there was no incorrect phonetic or character-based matching. Therefore, it meets the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were found. The reasoning provided confirms that no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identified that there were no exact matches between the keyword 'raycon bluetooth earbuds' and the terms in 'variations_own' or 'related_terms_own'. The rubric requires exact character matches, and the module did not assume any close spelling matches or incorrect singular/plural matches. Therefore, it meets the PASS conditions.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no terms from variations_own or related_terms_own in the keyword, resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "raycon bluetooth earbuds",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The module correctly classified the keyword 'earbuds wireless bluetooth raycon' as null because it does not contain any of the brand variations listed in 'variations_own'. Therefore, the output meets the PASS conditions.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when classification is null. The module output has matched_term as null and classification as null, which meets the PASS condition.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly did not match any partial brand terms within the keyword, adhering to the requirement of rejecting partial matches within words. It also did not incorrectly identify any brand terms, meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no brand terms from 'variations_own' or 'related_terms_own' in the keyword. It did not confuse any similar-sounding brands or assume phonetic similarity as a match, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating that no ASIN patterns or PPC terms were detected. Additionally, the reasoning confirms that no brand terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identified that there were no exact matches for the brand terms from 'variations_own' or 'related_terms_own' in the keyword. The rubric requires exact character matches, and the module adhered to this by not assuming any close spelling matches or typos not listed in variations.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no terms from variations_own or related_terms_own in the keyword, resulting in a null match_type, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "keyword": "earbuds wireless bluetooth raycon",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "No brand terms from variations_own or related_terms_own found in keyword"
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_correct_classification",
+      "criterion": "Correct OB/null Classification",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the keyword be classified as null if it does not contain any brand variations. The keyword 'raycon earbuds wireless' does not contain any of the specified brand variations ('JBL', 'J-B-L', etc.) or related terms ('Vibe Beam'). The module correctly classified the keyword as null, meeting the PASS conditions.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_matched_term_valid",
+      "criterion": "Matched Term Exists in Variations",
+      "verdict": "PASS",
+      "reasoning": "The rubric requires that the matched_term is null when the classification is null. The module output has matched_term as null and classification as null, which meets the PASS condition. There is no requirement for matched_term to appear in the variations list since the classification is not OB.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_word_boundary_correct",
+      "criterion": "Word Boundary Handling",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no matches for 'JBL' or 'Vibe Beam' within the keyword 'raycon earbuds wireless'. It did not incorrectly match any partial strings or brand names within other words, thus adhering to the word boundary handling criterion.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_similar_brand_confusion",
+      "criterion": "No Similar Brand Confusion",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there were no matches between the keyword 'raycon earbuds wireless' and the variations or related terms provided. It did not confuse any similar-sounding brands or assume phonetic similarity as a match, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_no_non_brand_patterns",
+      "criterion": "Non-Brand Patterns Rejected",
+      "verdict": "PASS",
+      "reasoning": "The module output meets the PASS conditions as it returns null for branding_scope_1, indicating no ASIN patterns or PPC terms were matched. The reasoning provided confirms that no terms from variations_own or related_terms_own were found in the keyword, aligning with the rubric's requirements.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_exact_character_match",
+      "criterion": "Exact Character Match Required",
+      "verdict": "PASS",
+      "reasoning": "The module output correctly identifies that there are no exact matches between the keyword 'raycon earbuds wireless' and the terms in 'variations_own' or 'related_terms_own'. The rubric requires exact character matches, and the module output adheres to this by not assuming any close spelling matches or typos not listed in the variations. Therefore, it meets the PASS conditions.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M02_match_type_correct",
+      "criterion": "Match Type Correctly Identified",
+      "verdict": "PASS",
+      "reasoning": "The module correctly identified that there are no matches between the keyword 'raycon earbuds wireless' and the terms in 'variations_own' or 'related_terms_own'. The match_type is null, which is appropriate since no terms were matched, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "keyword": "raycon earbuds wireless",
+        "related_terms_own": "Vibe Beam",
+        "variations_own": "JBL, J-B-L, JBL-, JBL., JBLl, JBLK, JBLQ, JBLT, JBLX, JBLZ"
+      },
+      "expected": {
+        "branding_scope_1": null
+      },
+      "output": {
+        "branding_scope_1": null,
+        "confidence": 0.98,
+        "match_type": null,
+        "matched_term": null,
+        "reasoning": "The keyword 'raycon earbuds wireless' does not contain any terms from the variations_own or related_terms_own. There are no matches for 'JBL' or 'Vibe Beam'."
+      }
+    }
+  ]
+}

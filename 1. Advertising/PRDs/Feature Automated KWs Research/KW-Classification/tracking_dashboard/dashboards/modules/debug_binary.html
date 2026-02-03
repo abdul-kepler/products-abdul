@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Binary Metrics (from modules folder)</title>
+    <script src="../modules_data.js"></script>
+</head>
+<body>
+    <h1>Debug Binary Metrics (from modules folder)</h1>
+    <p>This page tests loading modules_data.js from the modules/ subdirectory using "../modules_data.js"</p>
+    <div id="result" style="font-family: monospace; white-space: pre; background: #f0f0f0; padding: 20px;"></div>
+    <script>
+        const output = [];
+
+        output.push('=== Checking modules_data.js loading ===');
+        output.push('progressData defined: ' + (typeof progressData !== 'undefined'));
+        output.push('progressData length: ' + (typeof progressData !== 'undefined' ? progressData.length : 'N/A'));
+        output.push('');
+        output.push('=== Binary Metrics ===');
+        output.push('binaryMetrics defined: ' + (typeof binaryMetrics !== 'undefined'));
+
+        if (typeof binaryMetrics !== 'undefined') {
+            output.push('binaryMetrics type: ' + typeof binaryMetrics);
+            output.push('binaryMetrics keys: ' + Object.keys(binaryMetrics).join(', '));
+            output.push('');
+            output.push('=== Module Data ===');
+            for (const key of Object.keys(binaryMetrics)) {
+                const m = binaryMetrics[key];
+                output.push(key + ': acc=' + m.accuracy + '%, prec=' + m.precision + '%, rec=' + m.recall + '%, f1=' + m.f1 + '%');
+            }
+            output.push('');
+            output.push('SUCCESS: Binary metrics loaded correctly!');
+        } else {
+            output.push('');
+            output.push('ERROR: binaryMetrics is NOT defined!');
+            output.push('');
+            output.push('Possible causes:');
+            output.push('1. modules_data.js failed to load (check Network tab)');
+            output.push('2. JavaScript error in modules_data.js (check Console tab)');
+            output.push('3. binaryMetrics section missing from file');
+        }
+
+        document.getElementById('result').textContent = output.join('\n');
+    </script>
+</body>
+</html>

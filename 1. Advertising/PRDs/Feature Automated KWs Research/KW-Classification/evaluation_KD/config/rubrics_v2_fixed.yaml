@@ -1,0 +1,132 @@
+# KW Classification Judge Rubrics - Fixed Version for Validation
+# This file contains MODIFIED rubrics to test fixes for failing criteria
+
+version: "2.4-fixed"
+created: "2026-01-16"
+updated: "2026-01-16"
+note: "Testing fixes for M01 failing rubrics"
+approach: "binary_pass_fail"
+
+judges:
+  poll_panel:
+    - model: "gpt-4o-mini"
+      provider: "openai"
+      temperature: 0.0
+
+  output_format:
+    reasoning: "string - explain your evaluation BEFORE giving label"
+    label: "Pass | Fail"
+
+rubrics:
+
+  # ---------------------------------------------------------------------------
+  # M01: Extract Own Brand Entities - FIXED RUBRICS
+  # ---------------------------------------------------------------------------
+  M01_brand_extracted:
+    module: "M01"
+    criterion: "Brand Extracted"
+    check: "Check if the brand name was extracted from the listing"
+    fail_definition: |
+      - No brand extracted when listing clearly has one
+      - Extracted completely wrong brand name
+    pass_definition: |
+      - Extracted brand matches or closely matches listing brand
+      - Minor variations (casing, spacing) are acceptable
+    examples:
+      - input: {listing_brand: "JBL", title: "JBL Flip 6 Speaker"}
+        output: {brand: "JBL"}
+        label: "Pass"
+        reasoning: "Correctly extracted 'JBL' matching the listing brand"
+
+  M01_no_hallucination:
+    module: "M01"
+    criterion: "No Hallucinated Brand"
+    check: "Check if extracted brand actually exists in the input"
+    fail_definition: |
+      - Extracted a completely different brand not present anywhere in input
+      - Made up a brand that doesn't exist (e.g., "Town & Country Living" when input only has "KitchenAid")
+      - NOTE: This does NOT include typo variations of valid brands
+    pass_definition: |
+      - Extracted brand appears in title, bullet points, or listing brand field
+      - Product line names from the title are acceptable (e.g., "JBL Deep Bass" when title contains "JBL Deep Bass Sound Earbuds")
+      - Typo/spelling variations of valid brands are acceptable (e.g., "Revlonn", "Pioneerr Camp" derived from actual brand)
+      - Manufacturer variations are acceptable (e.g., "SachsenUsa" from manufacturer "Sachsen-Us")
+      - Sub-brands and product lines are acceptable (e.g., "Vibe Beam", "ColorStay", "FreeSip")
+    examples:
+      - input: {listing_brand: "JBL", title: "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds"}
+        output: {brand_entities: ["JBL", "jbl", "JBL Deep Bass", "Vibe Beam"]}
+        label: "Pass"
+        reasoning: "All entities traceable to input - 'Vibe Beam' is JBL product line"
+
+  # FIXED: M01_no_product_words
+  # Original issue: Rubric fails sub-brands like "Vibe Beam" which contain product category words
+  # Fix: Allow trademarked product lines that contain product-like words
+  M01_no_product_words:
+    module: "M01"
+    criterion: "No Product Words in Brand"
+    check: "Check that generic product words weren't included as brand"
+    fail_definition: |
+      - Included standalone generic words like "Wireless", "Bluetooth", "Speaker" as separate entities
+      - Included product category by itself (e.g., "Earbuds" alone, "Wallet" alone)
+      - NOTE: Does NOT apply to trademarked product lines (Vibe Beam, ColorStay, FreeSip are OK)
+    pass_definition: |
+      - Only actual brand entities extracted, no standalone generic terms
+      - Trademarked product lines are acceptable even if they contain product-sounding words
+      - Sub-brands like "Vibe Beam", "ColorStay", "FreeSip" are valid brand entities
+    examples:
+      - input: {title: "JBL Flip 6 Portable Bluetooth Speaker"}
+        output: {brand_entities: ["JBL", "Bluetooth"]}
+        label: "Fail"
+        reasoning: "'Bluetooth' is a standalone generic term, not a brand"
+      - input: {title: "JBL Vibe Beam True Wireless Earbuds"}
+        output: {brand_entities: ["JBL", "Vibe Beam"]}
+        label: "Pass"
+        reasoning: "'Vibe Beam' is JBL's trademarked product line, not a generic term"
+
+  # FIXED: M01_amazon_test_applied
+  # Original issue: Rubric fails sub-brands that end with product-like words
+  # Fix: Trademarked product lines are exempt from Amazon Test
+  M01_amazon_test_applied:
+    module: "M01"
+    criterion: "Amazon Test Applied"
+    check: "Verify each entity passed the 'Can I buy this on Amazon?' test"
+    fail_definition: |
+      - Standalone generic word that is purchasable (wallet, bottle, earbuds, toys)
+      - Generic phrase ending in purchasable product ("Portable Speaker", "Wireless Earbuds")
+      - NOTE: Does NOT apply to trademarked product lines (Vibe Beam, ColorStay, FreeSip)
+    pass_definition: |
+      - All entities are brand/trademark names or trademarked product lines
+      - Trademarked product lines are exempt from Amazon Test (you can't buy "Vibe Beam" without "JBL")
+      - Sub-brands like "Vibe Beam", "ColorStay", "FreeSip" pass this test
+    examples:
+      - input: {title: "Badiya Wallet RFID Blocking"}
+        output: {brand_entities: ["Badiya", "Wallet"]}
+        label: "Fail"
+        reasoning: "'Wallet' alone is purchasable on Amazon - not a brand"
+      - input: {title: "JBL Vibe Beam True Wireless Earbuds"}
+        output: {brand_entities: ["JBL", "Vibe Beam"]}
+        label: "Pass"
+        reasoning: "'Vibe Beam' is JBL's trademarked product line - you cannot buy generic 'Vibe Beam' on Amazon"
+
+  # FIXED: M01_no_duplicates
+  # Original issue: Rubric fails when case variations exist (JBL + jbl)
+  # Fix: Only fail on EXACT string duplicates (same casing)
+  M01_no_duplicates:
+    module: "M01"
+    criterion: "No Duplicate Entities"
+    check: "Verify the brand entities list has no exact duplicates"
+    fail_definition: |
+      - EXACT same string appears more than once (e.g., "JBL" appears twice)
+      - NOTE: Case variations are ALLOWED (JBL and jbl are different, not duplicates)
+    pass_definition: |
+      - No exact string duplicates in the list
+      - Case variations count as different entities (JBL, jbl, Jbl are all unique)
+    examples:
+      - input: {brand: "JBL"}
+        output: {brand_entities: ["JBL", "jbl", "JBL", "Vibe"]}
+        label: "Fail"
+        reasoning: "'JBL' appears twice (exact duplicate)"
+      - input: {brand: "JBL"}
+        output: {brand_entities: ["JBL", "jbl", "JLB", "Vibe Beam"]}
+        label: "Pass"
+        reasoning: "All entities are unique strings (JBL and jbl are case variants, not duplicates)"

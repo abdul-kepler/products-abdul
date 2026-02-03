@@ -1,0 +1,75 @@
+{
+  "braintrust_experiment_id": "a4d8c5ae-e6c9-4216-8411-27374ea94dc2",
+  "braintrust_experiment_name": "M02B_ClassifyOwnBrandKeywords_gpt5",
+  "created": "2026-01-25 20:01:38.429000+00:00",
+  "model": "gpt-5",
+  "temperature": 0,
+  "dataset_id": "7810034c-ef1c-4b0b-b78e-56c3f09754a7",
+  "dataset_name": "M02B_ClassifyOwnBrandKeywords_PathB_V1.1",
+  "dataset_version": "1000196473844592112",
+  "prompt_id": "ee286952-601f-4271-878c-3ea073848cf1",
+  "prompt_version": "1000196549653695992",
+  "prompt_session_id": "7a7c6f1c-dba2-469a-bb14-387d34469c25",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_2b_ClassifyOwnBrandKeywords_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "branding_scope_1",
+          "matched_term",
+          "match_type",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why this classification was chosen"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "match_type": {
+            "enum": [
+              "brand_variation",
+              "sub_brand",
+              "manufacturer",
+              "standard",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Type of match found"
+          },
+          "matched_term": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The brand term found in the keyword"
+          },
+          "branding_scope_1": {
+            "enum": [
+              "OB",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "OB if keyword matches own brand, null otherwise"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 235,
+  "downloaded_at": "2026-01-26T01:43:34.090342"
+}

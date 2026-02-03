@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M01B - Extract Brand Related Terms - Evaluation Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta { color: #888; font-size: 0.9rem; }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .card .value { font-size: 1.8rem; font-weight: bold; }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover { background: rgba(255,255,255,0.08); }
+        .rubric-title { font-weight: 600; }
+        .rubric-stats { display: flex; gap: 15px; align-items: center; }
+        .stat { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+        .stat.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .stat.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .rate { color: #00d9ff; }
+        .rubric-content { display: none; padding: 20px; }
+        .rubric-content.open { display: block; }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass { border-left-color: #00ff88; }
+        .eval-item.fail { border-left-color: #ff4757; }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id { font-family: monospace; color: #00d9ff; }
+        .verdict { font-weight: bold; padding: 2px 10px; border-radius: 4px; }
+        .verdict.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .verdict.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .output-box.expected h4 { color: #00ff88; }
+        .output-box.actual h4 { color: #00d9ff; }
+        .output-box pre {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .reasoning {
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+        }
+        a { color: #00d9ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>M01B - Extract Brand Related Terms</h1>
+            <p class="meta">
+                Source: m01b_judge_20260115_231705.json | Generated: 2026-01-15 23:17:05<br>
+                <a href="SUMMARY_DASHBOARD.html">&larr; Back to Summary</a>
+            </p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">80</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">60</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">20</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">75.0%</div>
+            </div>
+        </div>
+
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Sub-brands Identified</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">6 Pass</span>
+                        <span class="stat fail">14 Fail</span>
+                        <span class="rate">30%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified the sub-brand &#x27;Vibe Beam&#x27; from the input data, which meets the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified the major sub-brand &#x27;FreeSip&#x27; associated with the Owala brand, meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, despite the presence of a specific product (the puffer jacket) that could be considered a sub-brand or product line under the Pioneer Camp brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, despite the presence of a specific product (Cisily Kitchen Sink Caddy Organizer) that could be considered a sub-brand or product line.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, which is a clear omission given that the input data describes a specific product (Jikasho Vacuum Magnetic Suction Phone Holder) that should have been recognized as a sub-brand or product line.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, which is a clear omission given that the input data describes a specific product (Countertop Ice Maker) that could be considered a sub-brand or product line of Antarctic Star.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, despite the presence of the &#x27;KitchenAid Ribbed Soft Silicone&#x27; product line in the input data.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified the major sub-brand &#x27;ColorStay&#x27; from the input data, which meets the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Sachsen-Us&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Sachsen-Us&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands, despite the product being associated with the brand &#x27;Webacoo&#x27;. This is a missed opportunity to capture an obvious sub-brand present in the listing.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output only identified &#x27;Cyber Commander Series&#x27; as a sub-brand, but it missed the major sub-brand &#x27;Transformers&#x27; itself, which is an obvious and essential part of the brand&#x27;s identity.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands, despite the presence of &#x27;RxCrush&#x27; as a major sub-brand in the input data.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, which is a clear omission given that the input data suggests a specific product (ENFit Syringe) that could be considered a sub-brand or product line.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, despite the presence of specific product identifiers like &#x27;EO02&#x27; and &#x27;EO05&#x27; in the description, which are relevant to the Rx Crush brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, despite the presence of the &#x27;RxCrush Pill Pouch&#x27; and &#x27;RxCrush Pill Crusher&#x27; in the input data, which are obvious sub-brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified the major sub-brand &#x27;Easy One Touch&#x27; from the input data, meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [
+    &quot;Dolby Atmos&quot;
+  ],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified the major sub-brand &#x27;AirPods Pro&#x27;, which meets the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified the major sub-brand &#x27;ALTA Series&#x27; from the input data, meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Good Grips&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands, missing the obvious sub-brand &#x27;Good Grips&#x27; present in the input data.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, missing the major sub-brand &#x27;Aconcagua&#x27; associated with the product, which is an obvious omission.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Curtis&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Curtis&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not identify any sub-brands or product lines, missing the specific sub-brand &#x27;EFIC117-SS&#x27; associated with the Frigidaire ice maker, which is an obvious and relevant product line.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">No Universal Standards as Brand-Specific</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">18 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <span class="rate">90%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes brand-owned terms and proprietary tech related to JBL, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes the proprietary term &#x27;FreeSip&#x27; as a sub-brand, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It correctly includes only brand-owned terms and proprietary tech, meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes brand-owned terms and proprietary information, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes brand-owned terms related to the product, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms, and it only includes brand-owned terms, meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes brand-owned terms related to the product, and there are no mentions of terms like &#x27;Bluetooth&#x27;, &#x27;USB-C&#x27;, &#x27;WiFi&#x27;, or industry certifications.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes the brand-owned term &#x27;ColorStay&#x27; and does not mention any universal standards like &#x27;Bluetooth&#x27;, &#x27;USB-C&#x27;, or &#x27;WiFi&#x27;, nor does it list any industry certifications.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Sachsen-Us&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Sachsen-Us&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output did not include the manufacturer information, which is a brand-specific term. According to the rubric, only brand-owned terms should be included, and the absence of the manufacturer name indicates a failure to meet the criterion.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output only includes brand-specific terms such as &#x27;Cyber Commander Series&#x27; and does not list any universal standards or industry certifications as brand-specific, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards or industry certifications as brand-specific terms. It only includes brand-owned terms related to the manufacturer and product, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not include any universal standards listed as brand-specific terms. It only contains brand-owned terms related to the manufacturer and does not mention any universal standards like &#x27;Bluetooth&#x27;, &#x27;USB-C&#x27;, or &#x27;WiFi&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes brand-owned terms related to the product, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes brand-owned terms and proprietary tech, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It only includes the proprietary term &#x27;Easy One Touch&#x27; as a sub-brand, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [
+    &quot;Dolby Atmos&quot;
+  ],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Dolby Atmos&#x27; in the searchable_standards, which is an industry certification and not a brand-specific term, violating the rubric&#x27;s FAIL conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not include any universal standards or industry certifications as brand-specific terms. It only lists brand-owned terms, specifically the sub-brand &#x27;ALTA Series&#x27;, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Good Grips&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It correctly identifies the manufacturer as null and does not include any industry certifications or universal terms like &#x27;Bluetooth&#x27;, &#x27;USB-C&#x27;, or &#x27;WiFi&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It correctly includes only brand-owned terms and proprietary technology, meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Curtis&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Curtis&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output does not list any universal standards as brand-specific terms. It correctly identifies the manufacturer as null and does not include any terms like &#x27;Bluetooth&#x27;, &#x27;USB-C&#x27;, or &#x27;WiFi&#x27;, which would have led to a FAIL condition.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Manufacturer Null When Same as Brand</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">17 Pass</span>
+                        <span class="stat fail">3 Fail</span>
+                        <span class="rate">85%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;JBL&#x27;. This meets the PASS conditions outlined in the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The manufacturer &#x27;BlenderBottle&#x27; does not match the brand name &#x27;Owala&#x27;, so the output correctly returns the manufacturer object. There are no case-insensitive matches to consider, as the names are different.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, which matches the brand name &#x27;Pioneer Camp&#x27;, fulfilling the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;Cisily&#x27;, fulfilling the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;Jikasho&#x27;, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;Antarctic Star&#x27;, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns the manufacturer object only when it is genuinely different from the brand name &#x27;KitchenAid&#x27;, which is not the case here as the manufacturer is &#x27;Town &amp; Country Living&#x27;. Additionally, there is no case-insensitive match issue since the manufacturer does not match or contain the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;Revlon&#x27; (case-insensitive). This meets the PASS conditions outlined in the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Sachsen-Us&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Sachsen-Us&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, which meets the rubric&#x27;s requirement since the manufacturer does not match the brand name. The output adheres to the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned the manufacturer object even though the manufacturer &#x27;Hasbro&#x27; does not differ from the brand name &#x27;Transformers&#x27;, violating the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The manufacturer &#x27;Resolve Designs&#x27; does not match or contain the brand name &#x27;Rx Crush&#x27;, so the output correctly returns the manufacturer object.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The manufacturer output is not null, even though the manufacturer does not match the brand name. However, the rubric requires that the manufacturer should return null when it matches or contains the brand name, which is not applicable here. The output fails to recognize that the manufacturer is not the same as the brand name, but it does not meet the criteria for returning null.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The manufacturer &#x27;Resolve Designs&#x27; is different from the brand name &#x27;Rx Crush&#x27;, so the output correctly returns the manufacturer object. There are no case-insensitive matches to consider since the names do not match.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The manufacturer output did not return null despite the manufacturer name &#x27;Resolve Designs&#x27; being different from the brand name &#x27;Rx Crush&#x27;. The output fails to meet the requirement that the manufacturer should return null when it matches or contains the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;iOttie&#x27;. This meets the PASS conditions outlined in the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [
+    &quot;Dolby Atmos&quot;
+  ],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;Apple&#x27;. It also does not return a manufacturer object, which aligns with the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;THERMOS&#x27;, fulfilling the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Good Grips&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly returned null for the manufacturer, as it matches the brand name &#x27;OXO&#x27;. It also did not return a manufacturer object, which aligns with the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly returns null for the manufacturer, as it matches the brand name &#x27;The North Face&#x27;. This meets the PASS conditions outlined in the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Curtis&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Curtis&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returns null for the manufacturer, which is correct since the manufacturer &#x27;Curtis&#x27; does not match or contain the brand name &#x27;Frigidaire&#x27;. This meets the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Searchable Standards Defaults to Empty</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">19 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <span class="rate">95%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Vibe Beam&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;BlenderBottle&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;BlenderBottle&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;FreeSip&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s PASS conditions. There are no included standards that violate the criteria.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. There are no included standards that violate the FAIL conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s PASS conditions. There are no included standards that violate the FAIL conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Town &amp; Country Living&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Town &amp; Country&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s PASS conditions. There are no included standards that violate the FAIL conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the PASS condition. It does not include any non-universal standards or brand-specific technologies.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Sachsen-Us&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Sachsen-Us&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly has an empty array for &#x27;searchable_standards&#x27;, which aligns with the rubric&#x27;s requirement for most products. Additionally, it does not include any non-universal or brand-specific technologies, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Hasbro&quot;,
+    &quot;searchable&quot;: true,
+    &quot;short&quot;: &quot;Hasbro&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Cyber Commander Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly includes an empty array for searchable_standards, which aligns with the rubric&#x27;s requirement for most products. There are no included standards that violate the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Vesco Medical&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Vesco&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the PASS condition of being empty for most products. It does not include any non-universal standards or brand-specific technologies.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly has an empty array for searchable_standards, which aligns with the rubric&#x27;s requirement for most products. There are no included standards that violate the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Resolve Designs&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Resolve&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the PASS condition. It does not include any non-universal standards or brand-specific technologies.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [
+    &quot;Dolby Atmos&quot;
+  ],
+  &quot;sub_brands&quot;: [
+    &quot;AirPods Pro&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Dolby Atmos&#x27; in the searchable standards, which is a brand-specific technology and does not meet the rubric&#x27;s criteria for truly universal and searched standards.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;ALTA Series&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output has an empty array for searchable_standards, which meets the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: [
+    &quot;Good Grips&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly has an empty array for searchable_standards, which aligns with the rubric&#x27;s requirement for most products. It does not include any non-universal standards or brand-specific technologies, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains an empty array for searchable_standards, which aligns with the rubric&#x27;s requirement for most products. There are no included standards that violate the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: {
+    &quot;name&quot;: &quot;Curtis&quot;,
+    &quot;searchable&quot;: false,
+    &quot;short&quot;: &quot;Curtis&quot;
+  },
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;manufacturer&quot;: null,
+  &quot;searchable_standards&quot;: [],
+  &quot;sub_brands&quot;: []
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly includes an empty array for searchable_standards, which aligns with the rubric&#x27;s requirement for most products. Additionally, it does not include any non-universal or brand-specific technologies, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>

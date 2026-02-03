@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Judge Report - M08</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .tab.active {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: #00d9ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .rubric-title {
+            font-weight: 600;
+        }
+        .rubric-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .stat {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .stat.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .stat.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+            transition: width 0.3s;
+        }
+        .rubric-content {
+            display: none;
+            padding: 20px;
+        }
+        .rubric-content.open {
+            display: block;
+        }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass {
+            border-left-color: #00ff88;
+        }
+        .eval-item.fail {
+            border-left-color: #ff4757;
+        }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id {
+            font-family: monospace;
+            color: #00d9ff;
+        }
+        .verdict {
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+        .verdict.pass {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .verdict.fail {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .reasoning {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #aaa;
+            white-space: pre-wrap;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .output-box.expected h4 {
+            color: #00ff88;
+        }
+        .output-box.actual h4 {
+            color: #00d9ff;
+        }
+        .output-content {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .input-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .input-section h4 {
+            font-size: 0.8rem;
+            color: #ffa502;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .input-content {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .input-field {
+            margin-bottom: 8px;
+        }
+        .input-field strong {
+            color: #ccc;
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible-header:hover {
+            opacity: 0.8;
+        }
+        .collapsible-content {
+            display: none;
+        }
+        .collapsible-content.open {
+            display: block;
+        }
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+        .toggle-icon.open {
+            transform: rotate(90deg);
+        }
+        .match-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .match-indicator.exact {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+        .match-indicator.partial {
+            background: rgba(255, 165, 2, 0.2);
+            color: #ffa502;
+        }
+        .match-indicator.mismatch {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+        .match-details {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        .match-details .overlap {
+            color: #00ff88;
+        }
+        .match-details .missing {
+            color: #ff4757;
+        }
+        .match-details .extra {
+            color: #ffa502;
+        }
+        .sample-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .sample-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .sample-content {
+            display: none;
+            padding: 15px;
+        }
+        .sample-content.open {
+            display: block;
+        }
+        .mini-eval {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .mini-eval:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .detail-modal.open {
+            display: block;
+        }
+        .modal-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LLM Judge Report - M08</h1>
+            <p class="meta">Model: gpt-4o-mini | Generated: 2026-01-14 00:20:51</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">36</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">16</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">20</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">44.4%</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('by-rubric')">By Rubric</div>
+            <div class="tab" onclick="showTab('by-sample')">By Sample</div>
+        </div>
+
+        <div id="by-rubric" class="tab-content active">
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M08_ranks_assigned')">
+                    <span class="rubric-title">Ranks Assigned</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">12 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.0%"></div>
+                        </div>
+                        <span>0%</span>
+                    </div>
+                </div>
+                <div id="M08_ranks_assigned" class="rubric-content">
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes, each having an associated rank.
+2. I will check each attribute to ensure that it has a rank value between 1 and 5, as specified in the rubric.
+3. The attributes listed in the module output are:
+   - Bluetooth 5.2: rank 1
+   - Deep Bass Sound: rank 2
+   - Water and Dust Resistant: rank 3
+   - Up to 32 Hours Battery Life: rank 4
+   - Hands-Free Call with VoiceAware: rank 5
+   - Comfortable fit: rank 6 (this rank is outside the allowed range)
+   - Daily Entertainment (Use Case): rank 1
+   - Adults (Audience): rank 1
+4. The attribute &quot;Comfortable fit&quot; has a rank of 6, which is outside the allowed range of 1-5. Additionally, there is a missing rank for the &quot;Audience&quot; attribute, as it should not have a rank of 1 if it is not specified in the expected output.
+5. Since there is an attribute with a rank outside the specified range and missing ranks, the output fails to meet the PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute in the `attribute_table` is assigned a rank value.
+3. The ranks assigned to the attributes are as follows:
+   - For &quot;Variant&quot;:
+     - BPA-Free: rank 1
+     - 24 Ounce: rank 2
+     - Stainless Steel: rank 3
+     - FreeSip Spout: rank 4
+     - Dishwasher-Safe Lid: rank 5
+     - Double-Wall Insulation: rank 6 (this rank is outside the acceptable range of 1-5)
+   - For &quot;UseCase&quot;:
+     - General Hydration: rank 1
+     - Sports: rank 2
+     - Travel: rank 3
+   - For &quot;Audience&quot;:
+     - Adults: rank 1 (but the expected output shows a missing audience entry)
+4. The ranks for the &quot;Variant&quot; attributes include a rank of 6 for &quot;Double-Wall Insulation,&quot; which is outside the specified range of 1-5.
+5. Additionally, the &quot;Audience&quot; attribute is not correctly represented in the expected output, which indicates a missing rank for the audience category.
+
+Given that there is a rank outside the acceptable range and missing ranks for some attributes, the output fails to meet the rubric&#x27;s PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. The ranks assigned to the attributes are as follows:
+   - Variants:
+     - &quot;304 Stainless Steel&quot; - rank 1
+     - &quot;Automatic Draining System&quot; - rank 2
+     - &quot;High Brush Holder&quot; - rank 3
+     - &quot;Large Capacity&quot; - rank 4
+     - &quot;Rustproof&quot; - rank 5
+     - &quot;Ergonomic Partition Design&quot; - rank 6 (this rank is outside the acceptable range of 1-5)
+   - Use Cases:
+     - &quot;Kitchen Countertop&quot; - rank 1
+     - &quot;Gifts&quot; - rank 2
+     - &quot;Bathrooms&quot; - rank 3
+     - &quot;Kitchen&quot; - rank 4
+   - Audience:
+     - &quot;None&quot; - rank 1 (this is not a valid audience and does not fit the context)
+4. The ranks assigned to the attributes must be between 1 and 5, and there should be no missing ranks. 
+5. The attribute &quot;Ergonomic Partition Design&quot; has a rank of 6, which is outside the acceptable range. Additionally, the &quot;Audience&quot; category has a rank that does not represent a valid audience type.
+6. Therefore, the output fails to meet the rubric criterion due to the presence of ranks outside the specified range and the inclusion of an invalid audience.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. I will check each attribute to ensure that:
+   - All ranks are within the range of 1-5.
+   - There are no missing ranks for any attributes.
+
+4. Analyzing the ranks:
+   - For &quot;Variant&quot;:
+     - &quot;Black&quot; has rank 1 (valid)
+     - &quot;Lightweight&quot; has rank 2 (valid)
+     - &quot;Packable&quot; has rank 3 (valid)
+     - &quot;Water Repellent&quot; has rank 4 (valid)
+     - &quot;Insulated&quot; has rank 5 (valid)
+     - &quot;Windproof&quot; has rank 6 (invalid, outside the range of 1-5)
+   
+   - For &quot;UseCase&quot;:
+     - &quot;Travel&quot; has rank 1 (valid)
+     - &quot;Camping&quot; has rank 2 (valid)
+     - &quot;Hiking&quot; has rank 3 (valid)
+     - &quot;Skiing&quot; has rank 4 (valid)
+     - &quot;Casual Wear&quot; has rank 5 (valid)
+
+   - For &quot;Audience&quot;:
+     - &quot;Men&quot; has rank 1 (valid)
+     - &quot;Hikers&quot; has rank 2 (valid)
+
+5. The presence of &quot;Windproof&quot; with a rank of 6 clearly violates the rubric condition that requires all ranks to be between 1-5. Additionally, there are no missing ranks, but the presence of an invalid rank is sufficient to fail the evaluation.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. The ranks assigned to the attributes are as follows:
+   - Variants: Ranks are 1, 2, 3, 4, 5, and 6. However, there is a rank of 6 assigned to &quot;24 N52 magnet dual-ring system,&quot; which is outside the specified range of 1-5.
+   - Use Cases: Ranks are 1, 2, 3, 4, and 5, which are all within the specified range.
+   - Audiences: Ranks are 1, 2, 3, 4, and 5, which are also within the specified range.
+4. The presence of a rank of 6 for one of the variants indicates that not all ranks are within the required range of 1-5.
+5. Additionally, there are no missing ranks for any attributes, but the presence of a rank outside the specified range is sufficient to determine a failure.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. I will check each attribute to ensure that:
+   - All ranks are within the range of 1-5.
+   - There are no missing ranks for any attributes.
+
+4. Analyzing the ranks:
+   - For the &quot;Variant&quot; attributes:
+     - &quot;ENFit&quot; has rank 1 (PASS)
+     - &quot;20 ml capacity&quot; has rank 2 (PASS)
+     - &quot;Qty 10 pack&quot; has rank 3 (PASS)
+     - &quot;Standard ENFit tip&quot; has rank 4 (PASS)
+     - &quot;Clear barrel&quot; has rank 5 (PASS)
+     - &quot;Non-sterile&quot; has rank 6 (FAIL - outside range)
+     - &quot;Plastic&quot; has rank 7 (FAIL - outside range)
+   - For the &quot;Use Case&quot; attributes:
+     - &quot;Enteral tube feeding&quot; has rank 1 (PASS)
+     - &quot;ENFit connector syringe use&quot; has rank 2 (PASS)
+   - For the &quot;Audience&quot; attributes:
+     - &quot;Patients requiring enteral feeding&quot; has rank 1 (PASS)
+     - &quot;Caregivers administering tube feeds&quot; has rank 2 (PASS)
+     - &quot;Clinical users in healthcare settings&quot; has rank 3 (PASS)
+
+5. The ranks for &quot;Non-sterile&quot; and &quot;Plastic&quot; are outside the acceptable range of 1-5, which constitutes a failure according to the rubric.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The rubric criterion requires that all attributes have rank values between 1 and 5, and there should be no missing ranks.
+2. In the module output, the attributes are categorized into three types: Variants, Use Cases, and Audiences.
+3. For the &quot;Variant&quot; attributes:
+   - The ranks assigned are: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
+   - Ranks 6, 7, 8, 9, and 10 exceed the maximum allowed rank of 5.
+4. For the &quot;Use Case&quot; attributes:
+   - The ranks assigned are: 1, 2, 3, 4, 5, 6.
+   - Rank 6 exceeds the maximum allowed rank of 5.
+5. For the &quot;Audience&quot; attributes:
+   - The ranks assigned are: 1, 2, 3, 4, 5, 6.
+   - Rank 6 exceeds the maximum allowed rank of 5.
+6. Additionally, there are no missing ranks for any of the attributes, but the presence of ranks exceeding the allowed range of 1-5 is a clear violation of the rubric.
+
+Given that there are multiple ranks assigned that are outside the acceptable range, the output fails to meet the rubric&#x27;s requirements.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. I will check each attribute to ensure that:
+   - All ranks are within the range of 1-5.
+   - There are no missing ranks for any attributes.
+
+4. Upon reviewing the `attribute_table`:
+   - For &quot;Variant&quot;:
+     - &quot;Waterproof formula&quot; has rank 1 (PASS)
+     - &quot;Smudge-proof and transfer-proof wear&quot; has rank 2 (PASS)
+     - &quot;Up to 24-hour wear&quot; has rank 3 (PASS)
+     - &quot;Pencil eyeliner format&quot; has rank 4 (PASS)
+     - &quot;Built-in sharpener&quot; has rank 5 (PASS)
+     - &quot;Built-in smudger&quot; has rank 6 (FAIL, as it exceeds the rank range of 1-5)
+   
+   - For &quot;UseCase&quot;:
+     - &quot;all-day eye makeup wear&quot; has rank 1 (PASS)
+     - &quot;dramatic eye definition&quot; has rank 2 (PASS)
+     - &quot;long-lasting makeup for events or travel&quot; has rank 3 (PASS)
+     - &quot;waterline application&quot; has rank 4 (PASS)
+     - &quot;subtle everyday makeup looks&quot; has rank 5 (PASS)
+
+   - For &quot;Audience&quot;:
+     - &quot;women makeup users&quot; has rank 1 (PASS)
+     - &quot;long-wear makeup seekers&quot; has rank 2 (PASS)
+     - &quot;everyday makeup wearers&quot; has rank 3 (PASS)
+     - &quot;beauty enthusiasts&quot; has rank 4 (PASS)
+     - &quot;gift and stocking stuffer shoppers&quot; has rank 5 (PASS)
+
+5. The presence of &quot;Built-in smudger&quot; with a rank of 6 is a clear violation of the rubric criterion, as it is outside the allowed range of 1-5. Additionally, all attributes must have ranks, and while most do, the rank for &quot;Built-in smudger&quot; is invalid.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. The ranks assigned to the attributes are as follows:
+   - For &quot;Variant&quot;:
+     - Heat resistant up to 500°F: rank 1
+     - Soft ribbed silicone exterior: rank 2
+     - Waterproof silicone material: rank 3
+     - Slip-resistant textured grip: rank 4
+     - 2-pack set: rank 5
+     - 7.5 x 13 inch size: rank 6 (this is outside the 1-5 range)
+   - For &quot;UseCase&quot;:
+     - oven cooking and baking: rank 1
+     - handling hot pans and dishes: rank 2
+     - grilling and stovetop cooking: rank 3
+     - kitchen heat protection: rank 4
+     - everyday kitchen use: rank 5
+   - For &quot;Audience&quot;:
+     - home cooks: rank 1
+     - baking enthusiasts: rank 2
+     - frequent kitchen users: rank 3
+     - safety-conscious cooks: rank 4
+     - KitchenAid brand loyalists: rank 5
+4. The ranks for the &quot;Variant&quot; attributes include a rank of 6, which is outside the acceptable range of 1-5. This violates the rubric&#x27;s conditions.
+5. Additionally, there are no missing ranks for any attributes, but the presence of a rank outside the specified range is sufficient to fail the evaluation.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute has an associated rank value.
+3. I will check each attribute to ensure that:
+   - All ranks are within the range of 1-5.
+   - There are no missing ranks for any attributes.
+
+4. Upon reviewing the ranks:
+   - For the &quot;Variant&quot; attributes:
+     - &quot;15” x 10” large size&quot; has a rank of 1 (valid).
+     - &quot;Natural bamboo construction&quot; has a rank of 2 (valid).
+     - &quot;Eco-friendly material&quot; has a rank of 3 (valid).
+     - &quot;Lightweight design&quot; has a rank of 4 (valid).
+     - &quot;Ergonomic built-in handles&quot; has a rank of 5 (valid).
+     - &quot;Raised spill-prevention edges&quot; has a rank of 6 (invalid, outside the range).
+   - For the &quot;UseCase&quot; attributes:
+     - &quot;breakfast in bed serving&quot; has a rank of 1 (valid).
+     - &quot;coffee table snack serving&quot; has a rank of 2 (valid).
+     - &quot;BBQ and party serving&quot; has a rank of 3 (valid).
+     - &quot;kitchen and dining use&quot; has a rank of 4 (valid).
+     - &quot;ottoman and couch tray use&quot; has a rank of 5 (valid).
+     - &quot;decorative home organization&quot; has a rank of 6 (invalid, outside the range).
+     - &quot;gifting for special occasions&quot; has a rank of 7 (invalid, outside the range).
+   - For the &quot;Audience&quot; attributes:
+     - &quot;homeowners&quot; has a rank of 1 (valid).
+     - &quot;eco-conscious consumers&quot; has a rank of 2 (valid).
+     - &quot;hosts and entertainers&quot; has a rank of 3 (valid).
+     - &quot;apartment dwellers&quot; has a rank of 4 (valid).
+     - &quot;gift buyers&quot; has a rank of 5 (valid).
+     - &quot;home decor enthusiasts&quot; has a rank of 6 (invalid, outside the range).
+
+5. The presence of ranks that are outside the 1-5 range and the presence of missing ranks (as some attributes have ranks greater than 5) leads to a conclusion that the output does not meet the PASS conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute in the `attribute_table` is assigned a rank value.
+3. I will check each attribute to ensure that:
+   - All ranks are within the range of 1 to 5.
+   - There are no missing ranks for any attributes.
+4. Upon reviewing the ranks:
+   - The &quot;Variant&quot; attributes have ranks of 1, 2, 3, 4, 5, and one rank of 6 for &quot;Cyber Commander Series,&quot; which is outside the acceptable range of 1-5.
+   - The &quot;UseCase&quot; attributes have ranks of 1, 2, 3, and 4, which are within the acceptable range.
+   - The &quot;Audience&quot; attributes have ranks of 1, 2, and 3, which are also within the acceptable range.
+5. The presence of a rank of 6 for the &quot;Cyber Commander Series&quot; attribute indicates that there is a rank outside the specified range of 1-5.
+6. Additionally, the &quot;Variant&quot; category is missing ranks for &quot;Amazon Exclusive&quot; and &quot;Red and blue truck mode,&quot; which are present in the expected output but not in the module output.
+
+Given these observations, the module output fails to meet the rubric criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_assigned_M8_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_assigned_M8_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_assigned_M8_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_assigned_M8_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_assigned_M8_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output contains an `attribute_table` with various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. Each attribute in the `attribute_table` has an associated rank value.
+3. I will check each attribute to ensure that:
+   - All ranks are within the range of 1 to 5.
+   - There are no missing ranks for any attributes.
+
+4. Analyzing the ranks:
+   - For the &quot;Variant&quot; attributes:
+     - &quot;ENFit&quot; has rank 1 (PASS)
+     - &quot;35 ml capacity&quot; has rank 2 (PASS)
+     - &quot;Qty 10 pack&quot; has rank 3 (PASS)
+     - &quot;Female tip&quot; has rank 4 (PASS)
+     - &quot;Purple plunger&quot; has rank 5 (PASS)
+     - &quot;ISO 80369-3 compliant&quot; has rank 6 (FAIL - outside the range of 1-5)
+   - For the &quot;UseCase&quot; attributes:
+     - &quot;Tube feeding&quot; has rank 1 (PASS)
+     - &quot;Replacing Luer/oral/catheter syringes for enteral use&quot; has rank 2 (PASS)
+     - &quot;Medication administration via feeding tube&quot; has rank 3 (PASS)
+     - &quot;Use with RxCrush pill pouches&quot; has rank 4 (PASS)
+     - &quot;Use with ENFit feeding tubes&quot; has rank 5 (PASS)
+   - For the &quot;Audience&quot; attributes:
+     - &quot;Patients requiring enteral feeding&quot; has rank 1 (PASS)
+     - &quot;Caregivers administering tube feeds/medications&quot; has rank 2 (PASS)
+     - &quot;Clinical users in healthcare settings&quot; has rank 3 (PASS)
+     - &quot;Prescription purchasers&quot; has rank 4 (PASS)
+
+5. The presence of the attribute &quot;ISO 80369-3 compliant&quot; with a rank of 6 clearly violates the rubric condition that requires all ranks to be between 1-5. Additionally, the ranks for &quot;Variant&quot; attributes exceed the maximum allowed rank.
+
+6. Since there is at least one attribute with a rank outside the required range and no missing ranks, the output fails to meet the rubric criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M08_ranks_logical')">
+                    <span class="rubric-title">Ranks Logical</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">4 Pass</span>
+                        <span class="stat fail">8 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                        <span>33%</span>
+                    </div>
+                </div>
+                <div id="M08_ranks_logical" class="rubric-content">
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes of the JBL Vibe Beam earbuds based on their importance for purchase decisions.
+2. The core functional attributes include &quot;Deep Bass Sound,&quot; &quot;Up to 32 Hours Battery Life,&quot; &quot;Bluetooth 5.2,&quot; and &quot;Water and Dust Resistant.&quot; These attributes are essential for the performance and usability of the earbuds.
+3. The ranking of these core functional attributes is as follows:
+   - &quot;Bluetooth 5.2&quot; is ranked 1
+   - &quot;Deep Bass Sound&quot; is ranked 2
+   - &quot;Water and Dust Resistant&quot; is ranked 3
+   - &quot;Up to 32 Hours Battery Life&quot; is ranked 4
+   - &quot;Hands-Free Call with VoiceAware&quot; is ranked 5
+4. The ranking reflects a logical order where the most critical features for audio performance and usability are prioritized. However, &quot;Bluetooth 5.2&quot; is ranked higher than &quot;Deep Bass Sound,&quot; which is a core feature for audio quality. This could be seen as a misplacement since sound quality is typically more important than the version of Bluetooth.
+5. Optional/aesthetic attributes such as &quot;Comfortable fit&quot; are ranked lower (rank 6), which aligns with the rubric&#x27;s requirement that these should not be prioritized over core functional attributes.
+6. The &quot;Use Case&quot; and &quot;Audience&quot; attributes are also included, but they do not affect the ranking of the product&#x27;s core features.
+7. Overall, while the ranking of some core attributes is logical, the placement of &quot;Bluetooth 5.2&quot; above &quot;Deep Bass Sound&quot; indicates a failure to prioritize the most important purchase decision factors correctly.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes of the Owala FreeSip Insulated Stainless Steel Water Bottle. The attributes are categorized into &quot;Variant&quot; and &quot;Use Case.&quot;
+2. According to the rubric, core functional attributes should be ranked higher than optional or aesthetic attributes. Core functional attributes for a water bottle typically include material (e.g., stainless steel), insulation, size (e.g., 24 ounces), and functionality (e.g., FreeSip spout).
+3. In the module output, the ranking of the &quot;Variant&quot; attributes is as follows:
+   - BPA-Free (Rank 1)
+   - 24 Ounce (Rank 2)
+   - Stainless Steel (Rank 3)
+   - FreeSip Spout (Rank 4)
+   - Dishwasher-Safe Lid (Rank 5)
+   - Double-Wall Insulation (Rank 6)
+4. The &quot;Use Case&quot; attributes are ranked as follows:
+   - General Hydration (Rank 1)
+   - Sports (Rank 2)
+   - Travel (Rank 3)
+5. The ranking of the &quot;Variant&quot; attributes shows that BPA-Free is ranked highest, which is a trivial attribute compared to the core functional attributes like Double-Wall Insulation and Stainless Steel. This is illogical as it places a non-essential attribute above essential ones.
+6. The &quot;Use Case&quot; rankings also reflect a logical order, with &quot;General Hydration&quot; ranked highest, which is appropriate, but the overall ranking of the &quot;Variant&quot; attributes fails to prioritize core functional attributes correctly.
+7. The expected output ranks core functional attributes (like Double-Wall Insulation and Stainless Steel) higher than optional attributes (like BPA-Free and Dishwasher-Safe Lid), which aligns with the importance of purchase decision factors.
+
+Given the above analysis, the module output fails to meet the rubric criterion as it ranks trivial attributes higher than essential ones.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes of the product, including both functional and aesthetic features.
+2. The core functional attributes, such as &quot;304 Stainless Steel,&quot; &quot;Automatic Draining System,&quot; &quot;High Brush Holder,&quot; &quot;Large Capacity,&quot; and &quot;Rustproof,&quot; are ranked as 1 to 5. This indicates that they are considered important for the purchase decision.
+3. However, the ranking of &quot;High Brush Holder&quot; at rank 3 and &quot;Large Capacity&quot; at rank 4 suggests that while they are functional, they may not be as critical as the material and drainage system, which are ranked higher.
+4. The optional/aesthetic attributes, such as &quot;Ergonomic Partition Design,&quot; are ranked lower (rank 6), which aligns with the expectation that these should be less important than core functional attributes.
+5. The use cases are also ranked, with &quot;Kitchen Countertop&quot; at rank 1, which is appropriate as it reflects a primary use for the product.
+6. The ranking of &quot;Gifts&quot; at rank 2 and &quot;Bathrooms&quot; at rank 3 is logical, as these are secondary use cases.
+7. However, the ranking of &quot;Large Capacity&quot; at rank 4, while still functional, may not be as critical as the core attributes like &quot;Rustproof&quot; (rank 5) and &quot;Automatic Draining System&quot; (rank 2). This could indicate a slight misalignment in the importance of the attributes.
+8. Overall, the ranking does not show any trivial attributes ranked higher than essential ones, nor does it display any illogical ranking where aesthetic features are prioritized over core functions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes of the puffer jacket, including variants, use cases, and audiences.
+2. According to the rubric, core functional attributes should be ranked higher than optional or aesthetic attributes. In this case, attributes like &quot;Insulated,&quot; &quot;Water Repellent,&quot; and &quot;Windproof&quot; are essential for the jacket&#x27;s functionality and should be prioritized.
+3. The ranking of the variants shows that &quot;Black&quot; is ranked 1, which is a color attribute and not a core functional attribute. This is a significant issue as it indicates that a trivial attribute is ranked higher than essential ones.
+4. The ranking of &quot;Insulated&quot; (ranked 5) and &quot;Windproof&quot; (ranked 6) is also problematic, as these are critical functional attributes that should be ranked higher than aesthetic attributes like color.
+5. The use cases are ranked in a way that &quot;Travel&quot; is ranked 1, which is acceptable as it reflects a common use for the jacket. However, the overall ranking of the attributes does not align with the importance of the purchase decision factors.
+6. The presence of essential attributes ranked lower than trivial ones (e.g., color) constitutes an illogical ranking, which directly violates the rubric&#x27;s conditions.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes related to the Jikasho Vacuum Magnetic Suction Phone Holder. The attributes are categorized into three types: Variants, Use Cases, and Audiences.
+2. For the **Variant** attributes, the module ranks the &quot;Vacuum-lock suction mechanism&quot; as rank 1, which is a core functional attribute essential for the product&#x27;s performance. The &quot;Washable nano-gel base&quot; is ranked 2, which is also important for maintaining the product&#x27;s usability. However, the &quot;24 N52 magnet dual-ring system,&quot; which is crucial for the product&#x27;s magnetic grip, is ranked 6, which is illogical as it should be ranked higher due to its importance in ensuring a stable hold.
+3. The **Use Case** attributes are ranked logically, with &quot;hands-free driving navigation&quot; ranked 1, followed by &quot;dashboard or windshield phone mounting,&quot; which are both critical for the product&#x27;s intended use. The subsequent ranks for other use cases also reflect their importance in relation to the product&#x27;s functionality.
+4. The **Audience** attributes are ranked appropriately, with &quot;drivers&quot; and &quot;rideshare drivers&quot; ranked highest, which aligns with the primary target market for this product.
+5. Overall, while the Use Cases and Audiences are ranked logically, the Variants section contains a significant flaw where a critical functional attribute (the magnetic grip) is ranked lower than less essential attributes. This violates the rubric&#x27;s requirement for higher ranks for more important purchase decision factors.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes related to the ENFit® Syringe, including variants, use cases, and audiences.
+2. The core functional attributes, such as &quot;ENFit,&quot; &quot;20 ml capacity,&quot; and &quot;Standard ENFit tip,&quot; are ranked 1, 2, and 4 respectively. These attributes are essential for the syringe&#x27;s functionality and are appropriately ranked higher.
+3. The optional attributes, such as &quot;Qty 10 pack,&quot; &quot;Non-sterile,&quot; &quot;Plastic,&quot; and &quot;Clear barrel,&quot; are ranked lower (3, 6, 7, and 5 respectively). This indicates that they are considered less important than the core functional attributes.
+4. The use cases are also ranked logically, with &quot;Enteral tube feeding&quot; ranked 1 and &quot;ENFit connector syringe use&quot; ranked 2, reflecting their importance in the context of the product.
+5. The audience attributes are ranked in a way that prioritizes the most relevant users, with &quot;Patients requiring enteral feeding&quot; ranked 1, followed by &quot;Caregivers&quot; and &quot;Clinical users,&quot; which is logical given the product&#x27;s intended use.
+6. Overall, the ranking reflects the importance of each attribute in the purchase decision process, with core functional attributes receiving higher ranks than optional or aesthetic attributes.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. **Core Functional Attributes:** The module output ranks the core functional attributes of the ice maker, such as &quot;8 ice cubes in 6 minutes&quot; (rank 1) and &quot;26 lb daily ice production&quot; (rank 2), very highly. These attributes are essential for the product&#x27;s primary function, which is to produce ice quickly and in sufficient quantity. The ranking reflects their importance in the purchase decision.
+
+2. **Optional/Aesthetic Attributes:** The output ranks optional or aesthetic attributes, such as &quot;Black color finish&quot; (rank 10), much lower than the core functional attributes. This is appropriate as color is not a critical factor in the decision-making process for an ice maker.
+
+3. **Logical Ranking:** The ranking of attributes appears logical. The most critical features that directly impact the performance and utility of the ice maker are prioritized. For example, the &quot;Portable countertop form factor&quot; (rank 4) and &quot;Quiet operation under 40 dB&quot; (rank 8) are also ranked appropriately, as they contribute to the usability and convenience of the product.
+
+4. **Comparison with Expected Output:** The module output closely aligns with the expected output in terms of ranking core functional attributes higher than optional features. However, there is a slight deviation in the ranking of &quot;Quiet operation under 40 dB&quot; (rank 8 in the module output vs. rank 5 in the expected output) and &quot;Energy-saving motor&quot; (rank 6 in the module output vs. rank 7 in the expected output). Despite these minor differences, the overall ranking logic remains intact.
+
+5. **Overall Assessment:** The module output adheres to the PASS conditions of the rubric. It ranks core functional attributes higher than optional ones and reflects the importance of each factor in the buying decision.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes of the product, including variants, use cases, and audiences.
+2. For the &quot;Variant&quot; attributes, the top three ranks are given to &quot;Waterproof formula,&quot; &quot;Smudge-proof and transfer-proof wear,&quot; and &quot;Up to 24-hour wear.&quot; These attributes are essential for the product&#x27;s core functionality, as they directly relate to the performance and longevity of the eyeliner.
+3. The next ranks include &quot;Pencil eyeliner format,&quot; &quot;Built-in sharpener,&quot; and &quot;Built-in smudger.&quot; While these attributes are useful, they are more about convenience and usability rather than core functionality. However, they are ranked lower than the essential attributes, which aligns with the rubric&#x27;s expectations.
+4. The &quot;Use Case&quot; attributes are ranked with &quot;all-day eye makeup wear&quot; at rank 1, which is a critical factor for consumers. The subsequent ranks include &quot;dramatic eye definition,&quot; &quot;long-lasting makeup for events or travel,&quot; and others, which also reflect the importance of the product&#x27;s use cases.
+5. The &quot;Audience&quot; attributes are ranked with &quot;women makeup users&quot; at rank 1, followed by &quot;long-wear makeup seekers,&quot; which is logical as these audiences are likely to prioritize the product&#x27;s core functionalities.
+6. Overall, the ranking of attributes reflects the importance of core functional attributes over optional/aesthetic ones, adhering to the rubric&#x27;s PASS conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. **Core Functional Attributes:** The module output ranks the core functional attributes as follows:
+   - Heat resistant up to 500°F (Rank 1)
+   - Slip-resistant textured grip (Rank 4)
+   - Waterproof silicone material (Rank 3)
+   - Soft ribbed silicone exterior (Rank 2)
+
+   The most critical functional attribute, heat resistance, is ranked highest, which is appropriate. The slip-resistant grip, while important, is ranked lower than the heat resistance but higher than some optional attributes. The waterproof material is also ranked appropriately, reflecting its importance. However, the soft ribbed silicone exterior is ranked higher than the slip-resistant grip, which may not align with the core functional importance.
+
+2. **Optional/Aesthetic Attributes:** The optional attributes such as the 2-pack set, size, cotton cuff, polyester lining, and color are ranked lower, which is appropriate. However, the 2-pack set is ranked 5, which is acceptable but could be considered more of a convenience than a core function.
+
+3. **Logical Ranking:** The ranking of attributes reflects the importance of the purchase decision. The most critical functional attributes are ranked higher than optional or aesthetic attributes. However, the ranking of the soft ribbed silicone exterior above the slip-resistant grip is illogical, as the grip is more essential for safety and functionality.
+
+4. **Overall Assessment:** While the module output does rank some core functional attributes higher than optional ones, the placement of the soft ribbed silicone exterior above the slip-resistant grip indicates a failure to fully adhere to the logical ranking criterion.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output ranks various attributes of the product, including variants, use cases, and audiences.
+2. For the &quot;Variant&quot; attributes, the output ranks &quot;15” x 10” large size&quot; as rank 1, which is a size specification. While size is important, it is not as critical as the material and construction quality, which are ranked lower. The &quot;Natural bamboo construction&quot; and &quot;Eco-friendly material&quot; are ranked 2 and 3, respectively, which should be higher given their importance in the context of durability and sustainability.
+3. The &quot;Lightweight design&quot; and &quot;Ergonomic built-in handles&quot; are ranked 4 and 5, which is reasonable, but the ranking of the size at 1 is not logical when compared to the core functional attributes.
+4. The &quot;Raised spill-prevention edges&quot; is ranked 6, which is acceptable but again reflects a lower priority than the core functional attributes.
+5. In the &quot;Use Case&quot; section, the rankings appear logical, with &quot;breakfast in bed serving&quot; and &quot;coffee table snack serving&quot; ranked 1 and 2, which are practical uses of the tray. However, &quot;decorative home organization&quot; is ranked lower than &quot;BBQ and party serving,&quot; which may not reflect the primary functional use of the tray.
+6. The &quot;Audience&quot; rankings seem logical, with &quot;homeowners&quot; and &quot;eco-conscious consumers&quot; ranked highest, reflecting the target market for this product.
+
+Overall, the ranking of the &quot;Variant&quot; attributes fails to prioritize the most essential functional attributes (material and construction) over less critical ones (size). This misalignment indicates an illogical ranking system.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. **Core Functional Attributes:** The module output ranks the &quot;Optimus Prime character&quot; (rank 2), &quot;Robot-to-truck transformation&quot; (rank 3), and &quot;2-in-1 transforming toy&quot; (rank 4) as core functional attributes. These attributes are essential for the toy&#x27;s primary function and appeal, which is to transform and represent a popular character. However, the &quot;11-inch large-scale figure&quot; is ranked 1, which is more of a descriptive attribute rather than a core functional one. This is a misstep as it should be ranked lower than the core functional attributes.
+
+2. **Optional/Aesthetic Attributes:** The &quot;Cyber Commander Series&quot; (rank 6) and other variants like &quot;Amazon Exclusive&quot; and &quot;Red and blue truck mode&quot; are not ranked in the output but would typically be considered optional or aesthetic attributes. The ranking of these attributes should be lower than the core functional attributes.
+
+3. **Logical Ranking:** The ranking does not reflect the importance of the purchase decision factors accurately. The most critical attributes related to the toy&#x27;s functionality (character, transformation, and 2-in-1 feature) should be ranked higher than the size of the figure. The ranking of &quot;11-inch large-scale figure&quot; as rank 1 is illogical since it does not directly impact the toy&#x27;s playability or functionality.
+
+4. **Trivial Attributes:** The ranking of the &quot;11-inch large-scale figure&quot; higher than essential attributes like the transformation feature indicates a failure to prioritize the most important factors in the purchase decision.
+
+Overall, the output fails to meet the rubric&#x27;s PASS conditions as it ranks a trivial attribute higher than essential ones and does not reflect the logical importance of the purchase decision factors.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item fail">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict fail">FAIL</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_ranks_logical_M8_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_ranks_logical_M8_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_ranks_logical_M8_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_ranks_logical_M8_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_ranks_logical_M8_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. **Core Functional Attributes:** The module output ranks &quot;ENFit&quot; (rank 1), &quot;35 ml capacity&quot; (rank 2), &quot;Qty 10 pack&quot; (rank 3), &quot;Female tip&quot; (rank 4), and &quot;Purple plunger&quot; (rank 5). While &quot;ENFit&quot; is a core functional attribute, the ranking of &quot;Female tip&quot; and &quot;Purple plunger&quot; higher than &quot;35 ml capacity&quot; is questionable. The &quot;ISO 80369-3 compliant&quot; attribute is ranked 6, which is also a core functional attribute. The essential attributes should be ranked higher than optional or aesthetic attributes.
+
+2. **Optional/Aesthetic Attributes:** The attributes &quot;Purple plunger&quot; and &quot;Female tip&quot; are more aesthetic or specific features rather than core functional attributes. They are ranked higher than &quot;35 ml capacity,&quot; which is a critical functional aspect of the syringe. This indicates a failure to prioritize essential attributes correctly.
+
+3. **Logical Ranking:** The ranking reflects a lack of logical consistency. For example, &quot;Purple plunger&quot; (rank 5) is ranked higher than &quot;ISO 80369-3 compliant&quot; (rank 6), which is a significant compliance standard for medical devices. This suggests that the ranking does not accurately reflect the importance of these attributes in the purchase decision.
+
+4. **Use Cases and Audiences:** The use cases and audience rankings appear to be logical, with &quot;Tube feeding&quot; ranked highest among use cases and &quot;Patients requiring enteral feeding&quot; ranked highest among audiences. However, the overall ranking of the variants undermines the logical structure of the output.
+
+Overall, the module output fails to rank the core functional attributes appropriately and places optional attributes higher than essential ones, leading to an illogical ranking.
+
+**Verdict:** FAIL</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="toggleRubric('M08_rank_distribution')">
+                    <span class="rubric-title">Rank Distribution</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">12 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100.0%"></div>
+                        </div>
+                        <span>100%</span>
+                    </div>
+                </div>
+                <div id="M08_rank_distribution" class="rubric-content">
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0BQPGJ9LQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0BQPGJ9LQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0BQPGJ9LQ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0BQPGJ9LQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0BQPGJ9LQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0BQPGJ9LQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0BQPGJ9LQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a list of attributes with their corresponding ranks. The ranks assigned to the attributes vary, indicating that there is a distribution of ranks rather than all attributes being assigned the same value.
+2. The ranks assigned to the attributes range from 1 to 6 for the &quot;Variant&quot; attributes, and the &quot;Use Case&quot; and &quot;Audience&quot; attributes are both ranked 1. This indicates a clear hierarchy of importance among the &quot;Variant&quot; attributes, as they are ranked differently.
+3. However, the &quot;Use Case&quot; and &quot;Audience&quot; attributes both share the same rank of 1, which suggests that there is no differentiation in importance between these two categories. This could be seen as a lack of clear hierarchy for these specific attributes.
+4. Despite the shared rank for &quot;Use Case&quot; and &quot;Audience,&quot; the overall distribution of ranks among the &quot;Variant&quot; attributes shows a clear hierarchy, which is a key aspect of the PASS conditions.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0BZYCJK89</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0BZYCJK89_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0BZYCJK89_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0BZYCJK89_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0BZYCJK89_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0BZYCJK89_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0BZYCJK89_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking of various attributes categorized into &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; attributes, ranks range from 1 to 6, indicating a clear hierarchy of importance among the variants. Each variant has a different rank, which satisfies the condition of having a range of ranks used.
+3. For the &quot;UseCase&quot; attributes, ranks range from 1 to 3, again showing a clear hierarchy of importance. Each use case is assigned a different rank, which meets the requirement for rank distribution.
+4. The &quot;Audience&quot; attribute has only one entry with a rank of 1. While this does not provide a range, it does not violate the rubric since it is not the only category being evaluated.
+5. Overall, the ranks are distributed across the attributes, and there is a clear differentiation in importance levels among the ranked items.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0CJ4WZXQF</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0CJ4WZXQF_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0CJ4WZXQF_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0CJ4WZXQF_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0CJ4WZXQF_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0CJ4WZXQF_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0CJ4WZXQF_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking of various attributes categorized as &quot;Variant&quot; and &quot;UseCase.&quot;
+2. For the &quot;Variant&quot; attributes, ranks range from 1 to 6, indicating a clear hierarchy of importance among the variants. Each variant has a unique rank, which satisfies the condition of having a range of ranks used.
+3. For the &quot;UseCase&quot; attributes, ranks also range from 1 to 4, again showing a clear hierarchy of importance. Each use case has a distinct rank, which meets the requirement for differentiation in importance levels.
+4. The &quot;Audience&quot; attribute is ranked as 1, but it is labeled as &quot;None,&quot; which does not contribute to the differentiation of importance since it does not represent a valid audience. However, this does not affect the overall rank distribution of the other attributes.
+5. Overall, the ranks are not all the same value, and there is a clear hierarchy of importance shown across the attributes.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0D6YNWLTS</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0D6YNWLTS_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0D6YNWLTS_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0D6YNWLTS_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0D6YNWLTS_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0D6YNWLTS_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0D6YNWLTS_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a rank distribution for various attributes categorized into &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; attributes, ranks range from 1 to 6, indicating a clear hierarchy of importance among the variants. Each variant has a unique rank, which satisfies the condition of having a range of ranks used.
+3. For the &quot;Use Case&quot; attributes, ranks range from 1 to 5, again showing a clear hierarchy with no repeated ranks. Each use case is assigned a different rank, demonstrating differentiation in importance.
+4. The &quot;Audience&quot; attributes also show a range of ranks from 1 to 2, with &quot;Hikers&quot; ranked higher than &quot;Men,&quot; indicating a clear hierarchy.
+5. Overall, the ranks are not all the same value, and there is a clear differentiation between the importance levels of the attributes.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0DSHWLXG6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0DSHWLXG6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0DSHWLXG6_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0DSHWLXG6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0DSHWLXG6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0DSHWLXG6_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0DSHWLXG6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking of various attributes categorized into &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; attributes, ranks range from 1 to 6, indicating a clear hierarchy of importance among the different features of the product. Each feature has a unique rank, which satisfies the condition of having a range of ranks used.
+3. The &quot;Use Case&quot; attributes also show a range of ranks from 1 to 5, with each use case assigned a different rank, demonstrating differentiation in importance.
+4. The &quot;Audience&quot; attributes similarly have ranks from 1 to 6, with each audience type receiving a distinct rank, again indicating a clear hierarchy.
+5. Overall, there is no instance where all attributes share the same rank, and there is a clear differentiation between the importance levels of the various attributes.
+
+Since the output meets the conditions for a PASS, with a range of ranks used and a clear hierarchy of importance shown across all categories, it fulfills the rubric criterion.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0CVQJY9C6</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0CVQJY9C6_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0CVQJY9C6_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0CVQJY9C6_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0CVQJY9C6_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0CVQJY9C6_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0CVQJY9C6_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking system for various attributes categorized as &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; category, ranks are assigned from 1 to 7, indicating a clear hierarchy of importance among the variants. The ranks are not all the same, which satisfies the requirement for a range of ranks used.
+3. The &quot;Use Case&quot; category also shows a ranking of 1 and 2, indicating a differentiation in importance between the two use cases.
+4. The &quot;Audience&quot; category ranks three different audiences from 1 to 3, again demonstrating a clear hierarchy of importance.
+5. Overall, the ranks across all categories are distributed and show a clear hierarchy, with no attributes sharing the same rank within their respective categories.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0F42MT8JX</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0F42MT8JX_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0F42MT8JX_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0F42MT8JX_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0F42MT8JX_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0F42MT8JX_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0F42MT8JX_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking system for various attributes categorized as &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. Each attribute within these categories has been assigned a unique rank, indicating a clear hierarchy of importance. For example, the &quot;8 ice cubes in 6 minutes&quot; variant is ranked 1, while &quot;Black color finish&quot; is ranked 10, showing a range of ranks from 1 to 10.
+3. The ranks for the &quot;Use Case&quot; and &quot;Audience&quot; categories also demonstrate a similar distribution, with ranks ranging from 1 to 6 for each respective category.
+4. There is no repetition of ranks within any category, and each attribute is distinctly ranked, fulfilling the requirement for a range of ranks used.
+5. The output effectively differentiates between the importance levels of the attributes, as evidenced by the varying ranks assigned to each.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B000H3I2JG</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B000H3I2JG_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B000H3I2JG_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B000H3I2JG_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B000H3I2JG_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B000H3I2JG_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B000H3I2JG_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking of various attributes categorized into &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; category, ranks range from 1 to 6, indicating a clear hierarchy of importance among the attributes. Each attribute has a different rank, which satisfies the requirement for a range of ranks used.
+3. The &quot;Use Case&quot; category also shows ranks from 1 to 5, with each use case having a unique rank, further demonstrating differentiation in importance.
+4. The &quot;Audience&quot; category ranks attributes from 1 to 5, again showing a clear hierarchy with no repeated ranks.
+5. Overall, the ranks are distributed across all categories, and there is a clear hierarchy of importance shown, as higher ranks are assigned to attributes deemed more significant.
+
+Since the output meets the conditions for a PASS, with a range of ranks used and a clear hierarchy of importance shown, it does not fall into the FAIL conditions where all attributes would have the same rank or show no differentiation.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B08J8GZXKZ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B08J8GZXKZ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B08J8GZXKZ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B08J8GZXKZ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B08J8GZXKZ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B08J8GZXKZ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B08J8GZXKZ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking system for various attributes categorized into &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; attributes, ranks range from 1 to 6, indicating a clear hierarchy of importance among the different features of the oven mitts. Each attribute has a unique rank, which satisfies the condition of having a range of ranks used.
+3. The &quot;Use Case&quot; attributes also show a range of ranks from 1 to 5, with each use case assigned a different rank, further demonstrating a clear hierarchy of importance.
+4. The &quot;Audience&quot; attributes similarly have ranks from 1 to 5, with each audience type receiving a distinct rank, again indicating differentiation in importance.
+5. Overall, there is no instance of all attributes having the same rank, nor is there a lack of differentiation between importance levels.
+
+Since the module output meets the criteria of having a distributed range of ranks and shows a clear hierarchy of importance, it passes the evaluation.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B09LCKZBTW</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B09LCKZBTW_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B09LCKZBTW_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B09LCKZBTW_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B09LCKZBTW_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B09LCKZBTW_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B09LCKZBTW_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking system for various attributes categorized as Variants, Use Cases, and Audiences.
+2. Each attribute has been assigned a rank, and the ranks vary across the different attributes. For example, in the Variants section, the ranks range from 1 to 6, indicating a clear hierarchy of importance among the attributes.
+3. The Use Cases also show a range of ranks from 1 to 7, again demonstrating differentiation in importance.
+4. The Audience section similarly has ranks from 1 to 6, which further supports the presence of a clear hierarchy.
+5. There are no instances where all attributes share the same rank, which would indicate a lack of differentiation. Instead, the ranks are distributed across the attributes, fulfilling the PASS conditions of the rubric.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B077YYP739</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B077YYP739_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B077YYP739_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B077YYP739_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B077YYP739_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B077YYP739_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B077YYP739_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a ranking of various attributes categorized into &quot;Variant,&quot; &quot;Use Case,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; category, ranks range from 1 to 6, indicating a clear hierarchy of importance among the variants. Each variant has a different rank, which satisfies the requirement for a range of ranks used.
+3. The &quot;Use Case&quot; category also shows a range of ranks from 1 to 4, with each use case assigned a unique rank, demonstrating differentiation in importance.
+4. The &quot;Audience&quot; category ranks the three audience types from 1 to 3, again showing a clear hierarchy.
+5. Overall, there is no instance where all attributes have the same rank, and there is a clear differentiation between importance levels across all categories.
+
+Since the output meets the conditions for a PASS, with a clear distribution of ranks and a hierarchy of importance shown, it fulfills the rubric criterion.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="eval-item pass">
+                        <div class="eval-header">
+                            <span class="sample-id">M8_B0C9SPJ9ZQ</span>
+                            <span class="match-indicator exact">✓ MATCH</span>
+                            <span class="verdict pass">PASS</span>
+                        </div>
+                        <div class="input-section">
+                            <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0C9SPJ9ZQ_input')">
+                                <h4>Input Data</h4>
+                                <span class="toggle-icon" id="M08_rank_distribution_M8_B0C9SPJ9ZQ_input_icon">▶</span>
+                            </div>
+                            <div id="M08_rank_distribution_M8_B0C9SPJ9ZQ_input" class="collapsible-content">
+                                <div class="input-content">
+                                    <div class="input-field"><strong>Brand:</strong> N/A</div>
+                                    <div class="input-field"><strong>Title:</strong> N/A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h4>Expected Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                            <div class="output-box actual">
+                                <h4>Actual Output</h4>
+                                <div class="output-content">{}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapsible-header" onclick="toggleCollapsible('M08_rank_distribution_M8_B0C9SPJ9ZQ_reason')">
+                            <h4 style="color: #888; font-size: 0.8rem;">Judge Reasoning</h4>
+                            <span class="toggle-icon" id="M08_rank_distribution_M8_B0C9SPJ9ZQ_reason_icon">▶</span>
+                        </div>
+                        <div id="M08_rank_distribution_M8_B0C9SPJ9ZQ_reason" class="collapsible-content">
+                            <div class="reasoning">**Reasoning:**
+1. The module output presents a rank distribution for various attributes categorized as &quot;Variant,&quot; &quot;UseCase,&quot; and &quot;Audience.&quot;
+2. For the &quot;Variant&quot; attributes, ranks range from 1 to 6, indicating a clear hierarchy of importance among the variants. Each variant has a unique rank, which satisfies the condition of having a range of ranks used.
+3. The &quot;UseCase&quot; attributes also show a rank distribution from 1 to 5, with each use case assigned a different rank, further demonstrating a clear hierarchy of importance.
+4. The &quot;Audience&quot; attributes are ranked from 1 to 4, again showing differentiation in importance levels among the audiences.
+5. Overall, there is no instance of all attributes having the same rank, nor is there a lack of differentiation between importance levels.
+
+Since the module output meets the criteria of having a range of ranks and a clear hierarchy of importance, it passes the evaluation.
+
+**Verdict:** PASS</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="by-sample" class="tab-content">
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0BQPGJ9LQ')">
+                    <span class="sample-id">M8_B0BQPGJ9LQ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0BQPGJ9LQ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0BQPGJ9LQ')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0BQPGJ9LQ')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0BQPGJ9LQ')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0BZYCJK89')">
+                    <span class="sample-id">M8_B0BZYCJK89</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0BZYCJK89" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0BZYCJK89')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0BZYCJK89')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0BZYCJK89')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0CJ4WZXQF')">
+                    <span class="sample-id">M8_B0CJ4WZXQF</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 66.66666666666666%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0CJ4WZXQF" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0CJ4WZXQF')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0CJ4WZXQF')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0CJ4WZXQF')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0D6YNWLTS')">
+                    <span class="sample-id">M8_B0D6YNWLTS</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0D6YNWLTS" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0D6YNWLTS')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0D6YNWLTS')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0D6YNWLTS')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0DSHWLXG6')">
+                    <span class="sample-id">M8_B0DSHWLXG6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0DSHWLXG6" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0DSHWLXG6')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0DSHWLXG6')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0DSHWLXG6')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0CVQJY9C6')">
+                    <span class="sample-id">M8_B0CVQJY9C6</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 66.66666666666666%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0CVQJY9C6" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0CVQJY9C6')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0CVQJY9C6')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0CVQJY9C6')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0F42MT8JX')">
+                    <span class="sample-id">M8_B0F42MT8JX</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 66.66666666666666%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0F42MT8JX" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0F42MT8JX')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0F42MT8JX')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0F42MT8JX')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B000H3I2JG')">
+                    <span class="sample-id">M8_B000H3I2JG</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">2 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 66.66666666666666%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B000H3I2JG" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B000H3I2JG')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B000H3I2JG')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B000H3I2JG')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B08J8GZXKZ')">
+                    <span class="sample-id">M8_B08J8GZXKZ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B08J8GZXKZ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B08J8GZXKZ')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B08J8GZXKZ')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B08J8GZXKZ')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B09LCKZBTW')">
+                    <span class="sample-id">M8_B09LCKZBTW</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B09LCKZBTW" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B09LCKZBTW')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B09LCKZBTW')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B09LCKZBTW')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B077YYP739')">
+                    <span class="sample-id">M8_B077YYP739</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B077YYP739" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B077YYP739')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B077YYP739')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B077YYP739')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sample-section">
+                <div class="sample-header" onclick="toggleSample('M8_B0C9SPJ9ZQ')">
+                    <span class="sample-id">M8_B0C9SPJ9ZQ</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">1 Pass</span>
+                        <span class="stat fail">2 Fail</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 33.33333333333333%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sample-M8_B0C9SPJ9ZQ" class="sample-content">
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_assigned', 'M8_B0C9SPJ9ZQ')">
+                        <span>Ranks Assigned</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_ranks_logical', 'M8_B0C9SPJ9ZQ')">
+                        <span>Ranks Logical</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+
+                    <div class="mini-eval" onclick="showDetail('M08_rank_distribution', 'M8_B0C9SPJ9ZQ')">
+                        <span>Rank Distribution</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleRubric(rubricId) {
+            document.getElementById(rubricId).classList.toggle('open');
+        }
+
+        function toggleSample(sampleId) {
+            document.getElementById('sample-' + sampleId).classList.toggle('open');
+        }
+
+        function toggleCollapsible(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + '_icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

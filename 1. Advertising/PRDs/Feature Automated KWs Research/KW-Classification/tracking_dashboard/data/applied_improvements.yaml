@@ -1,0 +1,103 @@
+# Applied Improvements Tracking
+# Links suggestions to prompt versions and tracks their impact
+
+version: "1.0"
+last_updated: "2026-01-19"
+
+# Prompt version changelog with applied suggestions
+prompt_versions:
+  M01:
+    v1:
+      file: "m01_extract_own_brand_entities.md"
+      date: "2026-01-15"
+      description: "Initial version"
+      applied_suggestions: []
+      baseline_pass_rate: 33.3
+      model: "gpt-4o-mini"
+
+    v2:
+      file: "m01_v2_extract_own_brand_entities.md"
+      date: "2026-01-19"
+      description: "Minor example changes, same structure as v1"
+      applied_suggestions: []
+      pass_rate: 27.0  # Regression on same model
+      model: "gpt-4o-mini"
+      notes: "No major changes, just example updates"
+
+    v3:
+      file: "m01_v3_extract_own_brand_entities.md"
+      date: "2026-01-19"
+      description: "Major improvements based on evaluation feedback"
+      applied_suggestions:
+        - id: "M01_SUG_001"
+          rubric: "No Hallucinated Brand"
+          suggestion_summary: "Skip ENTIRE sub-brand when last word is generic"
+          prompt_change: |
+            Added section "🚫 DO NOT Extract Partial Sub-Brands":
+            - When multi-word sub-brand fails Amazon Test, skip ENTIRE concept
+            - Example: "Sound Pro" → "pro" is generic → skip both words, NOT just "Pro"
+            - Only extract main brand (e.g., "Bose")
+          expected_impact: "60% → 90%+ for No Hallucinated Brand rubric"
+          status: "APPLIED"
+
+        - id: "M01_SUG_002"
+          rubric: "Brand Extracted"
+          suggestion_summary: "Handle multi-word brand names like 'Hydro Flask'"
+          prompt_change: |
+            Added section "Handle Multi-Word Brand Names":
+            - Extract full form: "Hydro Flask", "hydro flask"
+            - Extract merged: "HydroFlask", "hydroflask"
+            - Extract first word: "Hydro", "hydro"
+            - Apply typos to merged and first word
+          expected_impact: "Better coverage for multi-word brands"
+          status: "APPLIED"
+
+      pass_rate: 77.3
+      model: "gpt-5"
+      improvement_vs_baseline: "+44.0%"
+      notes: "Best version - combines prompt improvements with stronger model"
+
+# Pending suggestions not yet applied
+pending_suggestions:
+  M01:
+    - id: "M01_SUG_003"
+      rubric: "No Product Words in Brand"
+      suggestion: "Add AirPods, iPhone, iPad to product words exclusion list"
+      status: "PROPOSED"
+      priority: "Medium"
+
+    - id: "M01_SUG_004"
+      rubric: "No Duplicate Entities"
+      suggestion: "Add explicit character-by-character duplicate check instruction"
+      status: "PROPOSED"
+      priority: "Medium"
+
+  M04:
+    - id: "M04_SUG_001"
+      rubric: "Correct CB/null Classification"
+      suggestion: "Fix dataset - brands not in competitor_entities should expect null"
+      status: "DATA_FIX_NEEDED"
+      priority: "Critical"
+      affected_keywords:
+        - "oven mitts oxo"
+        - "blue q oven mitt"
+        - "sur la table oven mitts"
+        - "pioneer woman oven mitts"
+        - "cuisinart oven mitts"
+
+# Impact summary
+impact_summary:
+  M01:
+    baseline: 33.3
+    current: 77.3
+    improvement: 44.0
+    applied_count: 2
+    pending_count: 2
+
+  M04:
+    baseline: 43.3
+    current: 60.0
+    improvement: 16.7
+    applied_count: 0
+    pending_count: 1
+    notes: "Improvement from model upgrade (gpt-4o-mini → gpt-4o), not prompt changes"

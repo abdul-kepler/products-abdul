@@ -1,0 +1,4036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M02 - Classify Own Brand Keywords - Evaluation Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta { color: #888; font-size: 0.9rem; }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .card .value { font-size: 1.8rem; font-weight: bold; }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover { background: rgba(255,255,255,0.08); }
+        .rubric-title { font-weight: 600; }
+        .rubric-stats { display: flex; gap: 15px; align-items: center; }
+        .stat { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+        .stat.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .stat.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .rate { color: #00d9ff; }
+        .rubric-content { display: none; padding: 20px; }
+        .rubric-content.open { display: block; }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass { border-left-color: #00ff88; }
+        .eval-item.fail { border-left-color: #ff4757; }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id { font-family: monospace; color: #00d9ff; }
+        .verdict { font-weight: bold; padding: 2px 10px; border-radius: 4px; }
+        .verdict.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .verdict.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .output-box.expected h4 { color: #00ff88; }
+        .output-box.actual h4 { color: #00d9ff; }
+        .output-box pre {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .reasoning {
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+        }
+        a { color: #00d9ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>M02 - Classify Own Brand Keywords</h1>
+            <p class="meta">
+                Source: m02_judge_20260115_232032.json | Generated: 2026-01-15 23:20:32<br>
+                <a href="SUMMARY_DASHBOARD.html">&larr; Back to Summary</a>
+            </p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">140</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">137</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">3</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">97.9%</div>
+            </div>
+        </div>
+
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Correct OB/null Classification</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">20 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <span class="rate">100%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;ipod headphones&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;samsung headphones&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;beats over ear headphones&#x27; does not contain any brand variations from the provided list, so the classification as null is correct.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;skull candy&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified &#x27;skullcandy headphones&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;heart earbuds&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;skullcandy&#x27; does not contain any terms from the brand variations provided, so it was correctly classified as null.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified the keyword &#x27;raycon bluetooth earbuds&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified the keyword &#x27;earbuds wireless bluetooth raycon&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified the keyword &#x27;alexa earbuds wireless 2024&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified the keyword &#x27;raycon earbuds wireless&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;bluetooth earbuds samsung&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;earbuds wireless bluetooth samsung&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;tozo wireless earbuds&#x27; does not contain any brand variations from the provided list, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified the keyword &#x27;jlab earbuds wireless&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified the keyword &#x27;wireless headphones bluetooth&#x27; as null since it does not contain any brand variations from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;bluetooth earphone&#x27; does not contain any brand variations, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly classified &#x27;wireless earphone&#x27; as null since it does not contain any brand variation from the provided list.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;headphones wireless bluetooth&#x27; does not contain any brand variations, so classifying it as null is correct according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The keyword &#x27;jbl vibe buds&#x27; contains the brand term &#x27;JBL&#x27;, which meets the criteria for classification as Own Brand (OB). The module correctly identified this and classified it as OB.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Matched Term Exists in Variations</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">19 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <span class="rate">95%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null because the classification is null, which meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null because the classification is null, which meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null because the classification is null, which meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, and the classification is also null, which meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null because the classification is null, which meets the PASS condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched_term is null, which is acceptable since the classification is also null. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The matched term &#x27;JBL&#x27; is classified as &#x27;OB&#x27;, but it does not appear in the variations list.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Word Boundary Handling</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">20 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <span class="rate">100%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;ipod headphones&#x27;, thus rejecting any partial matches and adhering to the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;samsung headphones&#x27;, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in &#x27;skull candy&#x27;, thus rejecting any partial matches and adhering to the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;skullcandy headphones&#x27;, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the keyword &#x27;heart earbuds&#x27;, thus rejecting any partial matches and adhering to the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that &#x27;skullcandy&#x27; does not match any brand entities and did not produce any partial matches, thus adhering to the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;raycon earbuds wireless&#x27;, thus adhering to the rubric&#x27;s requirement to reject partial matches and only match whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword &#x27;tozo wireless earbuds&#x27;, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities matched in the keyword &#x27;jlab earbuds wireless&#x27;, thus rejecting any partial matches and adhering to the word boundary handling requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the keyword &#x27;wireless headphones bluetooth&#x27;, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the keyword &#x27;bluetooth earphone&#x27;, thus rejecting any partial matches and adhering to the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;wireless earphone&#x27;, thus rejecting any partial matches and adhering to the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities present in the input keyword, thus adhering to the requirement of rejecting partial matches and only matching whole words or clear brand references.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified &#x27;JBL&#x27; as a whole word at the start of the keyword &#x27;jbl vibe buds&#x27; and did not match any partial strings within other words, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">No Similar Brand Confusion</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">19 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <span class="rate">95%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in &#x27;ipod headphones&#x27;, thus avoiding confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in &#x27;samsung headphones&#x27;, thus avoiding any confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;beats over ear headphones&#x27;, thus avoiding any confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that &#x27;skull candy&#x27; does not match any of the similar-sounding brands listed, and it performed a character-by-character verification, leading to a conclusion of no brand confusion.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in &#x27;skullcandy headphones&#x27;, thus avoiding confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in &#x27;heart earbuds&#x27;, thus avoiding any confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that &#x27;skullcandy&#x27; does not match any of the similar-sounding brands listed, and it performed character-by-character verification, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;raycon bluetooth earbuds&#x27;, thus avoiding any confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that &#x27;raycon&#x27; is a different brand not in the provided list and did not confuse it with any similar-sounding brands. It also performed character-by-character verification, ensuring no similar brands were matched incorrectly.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input, thus avoiding any confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword &#x27;raycon earbuds wireless&#x27;, thus avoiding any confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input, thus avoiding any confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword, thus avoiding any confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input &#x27;tozo wireless earbuds&#x27;, thus avoiding confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that &#x27;jlab&#x27; does not match any of the provided brand entities, thus rejecting the similar-sounding brand &#x27;JBL&#x27;. It performed character-by-character verification and found no exact matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input, thus avoiding any confusion with similar-sounding brands. It performed character-by-character verification and did not match any similar brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the keyword &#x27;bluetooth earphone&#x27;, thus avoiding any confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the keyword &#x27;wireless earphone&#x27;, thus avoiding any confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no brand entities found in the input keyword, thus avoiding any confusion with similar-sounding brands. It performed character-by-character verification by not matching any brand entities to the keyword.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output matched &#x27;JBL&#x27; to &#x27;jbl&#x27; without performing character-by-character verification, which is required to avoid confusion with similar-sounding brands.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Non-Brand Patterns Rejected</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">19 Pass</span>
+                        <span class="stat fail">1 Fail</span>
+                        <span class="rate">95%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and there were no brand entities matched in the keyword &#x27;ipod headphones&#x27;, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and there were no brand entities matched in the input data, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and did not match any brand entities in the input data, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and there were no brand entities matched in the keyword &#x27;skull candy&#x27;, meeting all PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and did not match any brand entities in the input data, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and no brand entities were matched in the input data, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, meeting the PASS conditions of the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and there were no brand entities matched in the keyword, fulfilling the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and did not match any brand inside the ASIN string, meeting all PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and there were no brand entities matched in the input keyword, meeting all PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the branding scope, indicating no brand patterns were detected, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and no brand entities were matched in the keyword, meeting all PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the branding scope, indicating no brand patterns were detected, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and no brand entities were found in the keyword, meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and there was no brand entity found in the keyword, meeting all PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the branding scope, indicating no ASIN patterns or PPC terms were matched, which meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and did not match any brand entities in the input data, meeting all PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and no brand entities were matched in the keyword, meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned null for the ASIN patterns and PPC terms, and no brand entities were matched in the keyword, meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output returned &#x27;OB&#x27; for the ASIN pattern because it matched the brand &#x27;JBL&#x27; found at the start of the keyword, which violates the rubric&#x27;s FAIL condition.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Exact Character Match Required</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">20 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <span class="rate">100%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there were no exact matches for brand entities in the keyword &#x27;ipod headphones&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the keyword &#x27;samsung headphones&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the keyword &#x27;beats over ear headphones&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there were no exact matches for the brand entities in the keyword &#x27;skull candy&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the input keyword &#x27;skullcandy headphones&#x27;, thus adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there were no exact matches for brand entities in the keyword &#x27;heart earbuds&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that &#x27;skullcandy&#x27; was not found in the list of brand entities, and there were no spelling or pluralization issues to consider.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there were no exact matches for brand entities in the keyword &#x27;raycon bluetooth earbuds&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the provided keyword, adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there were no exact matches for brand entities in the given keyword, adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there were no exact matches for brand entities in the input keyword, adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the input keyword, adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the provided keyword string, adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the keyword &#x27;tozo wireless earbuds&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no exact substring matches between the keyword &#x27;jlab earbuds wireless&#x27; and the provided brand entities, thus meeting the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for the brand entities in the keyword &#x27;wireless headphones bluetooth&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the keyword &#x27;bluetooth earphone&#x27;, thus adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the keyword &#x27;wireless earphone&#x27;, thus meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there were no exact matches for brand entities in the provided keyword, adhering to the rubric&#x27;s requirement for exact character matches.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified &#x27;JBL&#x27; as an exact match in the keyword &#x27;jbl vibe buds&#x27;, meeting the rubric&#x27;s requirement for exact character match.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Match Type Correctly Identified</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">20 Pass</span>
+                        <span class="stat fail">0 Fail</span>
+                        <span class="rate">100%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;ipod headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;ipod headphones&#x27;, which aligns with the rubric&#x27;s requirement to accurately assess the match type. Since no brand variation, sub-brand, or manufacturer was incorrectly labeled, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;samsung headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in &#x27;samsung headphones&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;beats over ear headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;beats over ear headphones&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skull candy&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities matching &#x27;skull candy&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;skullcandy headphones&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities from the provided list in the keyword &#x27;skullcandy headphones&#x27;, thus it did not incorrectly label any match type.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;heart earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in &#x27;heart earbuds&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification. Since no brand variation, sub-brand, or manufacturer was incorrectly labeled, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.99,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;skullcandy&#x27; (s-k-u-l-l-c-a-n-d-y) not found in &#x27;skullcandy&#x27;. No brand entity found.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identified that there are no brand entities matching &#x27;skullcandy&#x27;, which aligns with the rubric&#x27;s requirement to accurately reflect the match_type. Since no brand_variation, sub_brand, or manufacturer was incorrectly labeled, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon bluetooth earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities from the provided list in the keyword &#x27;raycon bluetooth earbuds&#x27;, thus it did not incorrectly label any match type.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth raycon&#x27;. &#x27;raycon&#x27; is a different brand not in our list.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities from the provided list in the keyword &#x27;earbuds wireless bluetooth raycon&#x27;, and thus returned null for branding_scope_1, which aligns with the rubric&#x27;s requirements.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;alexa earbuds wireless 2024&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the input keyword, which aligns with the rubric&#x27;s requirement for accurate match_type identification. Since no brand_variation, sub_brand, or manufacturer was incorrectly labeled, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;raycon earbuds wireless&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities from the provided list in the keyword &#x27;raycon earbuds wireless&#x27;, thus the match_type is accurately labeled as null.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earbuds samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;bluetooth earbuds samsung&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;earbuds wireless bluetooth samsung&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the provided keyword, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;tozo wireless earbuds&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities from the provided list in the keyword &#x27;tozo wireless earbuds&#x27;, thus meeting the rubric&#x27;s requirement.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.95,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;jlab earbuds wireless&#x27;. The keyword does not contain any exact substring match to the provided brand entities.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities matching the keyword &#x27;jlab earbuds wireless&#x27;, which aligns with the rubric&#x27;s requirement to accurately determine the match type. Since no match was found, it does not violate any PASS or FAIL conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless headphones bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;wireless headphones bluetooth&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;bluetooth earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;bluetooth earphone&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;wireless earphone&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;wireless earphone&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: null,
+  &quot;confidence&quot;: 0.97,
+  &quot;reasoning&quot;: &quot;Verified: No brand entity found in &#x27;headphones wireless bluetooth&#x27;. Generic product search.&quot;,
+  &quot;output_ob&quot;: &quot;&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module correctly identified that there are no brand entities in the keyword &#x27;headphones wireless bluetooth&#x27;, which aligns with the rubric&#x27;s requirement for accurate match_type identification.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;branding_scope_1&quot;: &quot;OB&quot;,
+  &quot;confidence&quot;: 0.98,
+  &quot;reasoning&quot;: &quot;Verified: &#x27;JBL&#x27; (j-b-l) found at start of keyword &#x27;jbl vibe buds&#x27;.&quot;,
+  &quot;output_ob&quot;: &quot;OB&quot;
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output correctly identifies &#x27;JBL&#x27; as a brand_variation from the brand_entities list, which matches the expected output and meets the PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>

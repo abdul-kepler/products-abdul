@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KW Classification - Judge Rubrics v2.2</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #333; border-bottom: 3px solid #2196F3; padding-bottom: 10px; }
+        h2 { color: #1976D2; margin-top: 30px; border-left: 4px solid #2196F3; padding-left: 15px; }
+        .stats { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .stat-box { text-align: center; padding: 15px; background: #E3F2FD; border-radius: 8px; }
+        .stat-value { font-size: 32px; font-weight: bold; color: #1565C0; }
+        .stat-label { color: #666; margin-top: 5px; }
+        .rubric { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .rubric-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .rubric-id { font-family: monospace; background: #E8F5E9; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #2E7D32; }
+        .criterion { font-size: 18px; font-weight: 600; color: #333; }
+        .check { color: #555; margin-bottom: 15px; padding: 10px; background: #FAFAFA; border-radius: 4px; border-left: 3px solid #2196F3; }
+        .definition { margin-bottom: 10px; }
+        .definition-label { font-weight: 600; color: #D32F2F; }
+        .definition-label.pass { color: #388E3C; }
+        pre { background: #263238; color: #AABBC3; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+        .example { background: #FFF3E0; padding: 10px; border-radius: 4px; margin-top: 5px; }
+        .example-label { font-weight: bold; }
+        .example.pass { background: #E8F5E9; }
+        .example.fail { background: #FFEBEE; }
+        .module-summary { display: inline-block; background: #E3F2FD; padding: 2px 8px; border-radius: 12px; font-size: 12px; color: #1565C0; margin-left: 10px; }
+        .toc { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .toc-item { padding: 8px 12px; background: #F5F5F5; border-radius: 4px; }
+        .toc-item a { text-decoration: none; color: #1976D2; }
+        .toc-count { float: right; background: #E3F2FD; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KW Classification - Binary Pass/Fail Rubrics v2.2</h1>
+        
+        <div class="stats">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value">62</div>
+                    <div class="stat-label">Total Rubrics</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Modules Covered</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">Binary</div>
+                    <div class="stat-label">Pass/Fail Only</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">v2.2</div>
+                    <div class="stat-label">Version</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <div class="toc-grid">
+                <div class="toc-item">
+                    <a href="#M01">M01</a>
+                    <span class="toc-count">5 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M01a">M01a</a>
+                    <span class="toc-count">4 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M01b">M01b</a>
+                    <span class="toc-count">4 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M02">M02</a>
+                    <span class="toc-count">7 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M03">M03</a>
+                    <span class="toc-count">2 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M06">M06</a>
+                    <span class="toc-count">4 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M07">M07</a>
+                    <span class="toc-count">4 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M08">M08</a>
+                    <span class="toc-count">3 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M09">M09</a>
+                    <span class="toc-count">4 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M10">M10</a>
+                    <span class="toc-count">2 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M11">M11</a>
+                    <span class="toc-count">5 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M12">M12</a>
+                    <span class="toc-count">2 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M13">M13</a>
+                    <span class="toc-count">3 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M14">M14</a>
+                    <span class="toc-count">3 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M15">M15</a>
+                    <span class="toc-count">2 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M16">M16</a>
+                    <span class="toc-count">4 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M04">M04</a>
+                    <span class="toc-count">2 rubrics</span>
+                </div>
+                <div class="toc-item">
+                    <a href="#M05">M05</a>
+                    <span class="toc-count">2 rubrics</span>
+                </div>
+            </div>
+        </div>
+        <h2 id="M01">M01 <span class="module-summary">5 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Brand Extracted</span>
+                <span class="rubric-id">M01_brand_extracted</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if the brand name was extracted from the listing</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- No brand extracted when listing clearly has one
+- Extracted completely wrong brand name</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Extracted brand matches or closely matches listing brand
+- Minor variations (casing, spacing) are acceptable</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly extracted 'JBL' matching the listing brand
+                </div>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Failed to extract brand when 'Sony' is clearly present
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Hallucinated Brand</span>
+                <span class="rubric-id">M01_no_hallucination</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if extracted brand actually exists in the input</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Extracted a brand name not present in title or listing
+- Made up a brand that doesn't exist</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Extracted brand appears in title, bullet points, or listing brand field</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Hallucinated 'Bose' - not present anywhere in input
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Brand 'Anker' exists in both listing_brand and title
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Product Words in Brand</span>
+                <span class="rubric-id">M01_no_product_words</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that generic product words weren't included as brand</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Included generic words like "Wireless", "Bluetooth", "Speaker"
+- Included product category as part of brand name</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only actual brand entity extracted, no generic terms</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Included 'Portable' which is a product descriptor, not brand
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly extracted only the brand 'JBL'
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Amazon Test Applied</span>
+                <span class="rubric-id">M01_amazon_test_applied</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify each entity passed the 'Can I buy this on Amazon?' test</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Entity ends with purchasable product word (wallet, bottle, earbuds, toys)
+- Entity ends with feature word (wireless, waterproof, deep)
+- Last word of entity is a common noun</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- All entities are pure brand/trademark names
+- No entity ends with purchasable product or feature</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Wallet is purchasable on Amazon - should be just 'Badiya'
+                </div>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'Bass' is an audio feature, 'Deep Bass' is marketing - keep only 'JBL'
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Duplicate Entities</span>
+                <span class="rubric-id">M01_no_duplicates</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify the brand entities list has no duplicates</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Same entity appears more than once in output
+- Case-insensitive duplicates (JBL and jbl both present AND counted as separate)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Each entity in list is unique</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'JBL' appears twice in the list
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> All entities are unique (case variations are allowed but not exact duplicates)
+                </div>
+            </details>
+        </div>
+        <h2 id="M01a">M01a <span class="module-summary">4 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Variations Generated</span>
+                <span class="rubric-id">M01a_has_variations</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if multiple brand variations were generated</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Only exact match returned, no variations
+- Empty or null variations list</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- At least 3 variations generated (case, spacing, common forms)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Only exact match, missing lowercase 'jbl', spaced 'J B L', etc.
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Multiple case variations and common forms included
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Unrelated Terms</span>
+                <span class="rubric-id">M01a_no_unrelated_terms</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that variations are actual brand references</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Includes generic words unrelated to brand
+- Includes competitor brands
+- Includes product category terms</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- All variations are plausible references to the same brand</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Included 'speaker' and 'headphones' which are product types, not brand variations
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> All variations refer to the Sony brand
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">8-12 Variations Generated</span>
+                <span class="rubric-id">M01a_count_in_range</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify exactly 8-12 variations were generated (not fewer, not more)</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Fewer than 8 variations
+- More than 12 variations</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Exactly 8-12 variations in the list</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Only 3 variations - needs 8-12
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> 8 variations in range
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">First Item is Correct Spelling</span>
+                <span class="rubric-id">M01a_first_is_canonical</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify the first variation is the canonical (correct) spelling</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- First item is a typo or variation
+- Canonical spelling not in first position</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- First item matches the correct brand spelling</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> First item 'owala' is lowercase - canonical 'Owala' should be first
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Canonical 'Owala' is first
+                </div>
+            </details>
+        </div>
+        <h2 id="M01b">M01b <span class="module-summary">4 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Sub-brands Identified</span>
+                <span class="rubric-id">M01b_sub_brands_found</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if sub-brands and product lines were extracted</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Missed obvious sub-brands present in listing
+- Example: Missing "Flip" for JBL, "WH-1000X" for Sony</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Major sub-brands and product lines captured</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Missed 'Flip' which is JBL's product line
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified 'Flip' as JBL sub-brand/product line
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Universal Standards as Brand-Specific</span>
+                <span class="rubric-id">M01b_no_universal_standards</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that universal standards weren't listed as brand-specific</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Listed "Bluetooth", "USB-C", "WiFi" as brand-specific terms
+- Listed industry certifications as brand-specific</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only brand-owned terms included (proprietary tech, trademarked names)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Bluetooth 5.0 and USB-C are universal standards, not Sony-specific
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> LDAC and 360 Reality Audio are Sony proprietary technologies
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Manufacturer Null When Same as Brand</span>
+                <span class="rubric-id">M01b_manufacturer_null_when_same</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify manufacturer returns null when it matches brand name</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Returned manufacturer object when manufacturer = brand_name
+- Failed to recognize case-insensitive match</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Returns null when manufacturer matches or contains brand name
+- Returns manufacturer object only when genuinely different</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Manufacturer = brand, should return null
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Case-insensitive match - correctly returned null
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Searchable Standards Defaults to Empty</span>
+                <span class="rubric-id">M01b_searchable_standards_default_empty</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify searchable_standards is empty unless truly universal and searched</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Included ENFit, USB-C, Bluetooth as searchable standards
+- Included brand-specific technologies
+- Included eco-certifications (OEKO-TEX, GOTS)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Empty array for most products
+- Only includes truly searchable licensed tech (Gore-Tex, Dolby Atmos)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> ENFit is ISO standard (universal), Bluetooth is generic - both should be excluded
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Gore-Tex is a licensed material people actually search for
+                </div>
+            </details>
+        </div>
+        <h2 id="M02">M02 <span class="module-summary">7 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Correct OB/null Classification</span>
+                <span class="rubric-id">M02_correct_classification</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if keyword was correctly classified as Own Brand or not</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Marked OB when brand term is NOT in keyword
+- Marked null when brand term IS clearly in keyword</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- OB when keyword contains a term from brand variations
+- null when keyword does not contain any brand variation</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Keyword 'jbl speaker' contains 'jbl' from variations list, should be OB
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Keyword has no JBL brand terms, correctly marked null
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Matched Term Exists in Variations</span>
+                <span class="rubric-id">M02_matched_term_valid</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if the cited matched_term actually exists in variations</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- matched_term is not in the variations list
+- matched_term is null when classification is OB</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- matched_term appears in variations list when OB
+- matched_term is null when classification is null</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'flip' is not in variations list - 'jbl' should be the matched_term
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> 'jbl' correctly identified as the matching variation
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Word Boundary Handling</span>
+                <span class="rubric-id">M02_word_boundary_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that partial string matches within words are rejected</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Matched brand inside another word (e.g., "jbl" in "adjustable")
+- Matched without checking word boundaries</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only matched on whole word or clear brand reference
+- Correctly rejected partial matches</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'jbl' appears inside 'adjustable' - not a brand match
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified no whole-word brand match
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Similar Brand Confusion</span>
+                <span class="rubric-id">M02_no_similar_brand_confusion</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify agent didn't confuse similar-sounding brands</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Matched "jlab" to "JBL" (different characters)
+- Matched similar-sounding but different brands
+- Assumed phonetic similarity = match</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Correctly rejected similar but different brands
+- Character-by-character verification performed</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> jlab (j-l-a-b) ≠ JBL (J-B-L) - different characters, different brand
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified jlab as different brand from JBL
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Non-Brand Patterns Rejected</span>
+                <span class="rubric-id">M02_no_non_brand_patterns</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify ASINs and PPC terms return null</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Returned OB for ASIN pattern (B0XXXXXXXXXX)
+- Returned OB for PPC terms (close-match, broad match)
+- Matched brand inside ASIN string</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- ASIN patterns always return null
+- PPC/match type terms return null</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> ASIN pattern should return null regardless of brand substring
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified as ASIN pattern, not brand keyword
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Exact Character Match Required</span>
+                <span class="rubric-id">M02_exact_character_match</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify singular/plural and exact spelling match</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Matched "transformer" to "Transformers" (singular vs plural)
+- Matched typo not in variations list
+- Assumed close spelling = match</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only exact substring matches accepted
+- Typos only match if explicitly in variations list</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'transformer' (11 chars) ≠ 'Transformers' (12 chars) - singular not in list
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Exact match - 'transformers' found in variations
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Match Type Correctly Identified</span>
+                <span class="rubric-id">M02_match_type_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify match_type field is accurate</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Labeled sub_brand when it's a brand_variation
+- Labeled manufacturer when it's a sub_brand
+- match_type doesn't match which list term came from</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- brand_variation: term from variations_own
+- sub_brand: term from related_terms_own sub-brands
+- manufacturer: term from related_terms_own manufacturer</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'Vibe Beam' comes from related_terms, should be sub_brand
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified as sub_brand from related_terms
+                </div>
+            </details>
+        </div>
+        <h2 id="M03">M03 <span class="module-summary">2 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Competitors Are Relevant</span>
+                <span class="rubric-id">M03_competitors_relevant</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if listed competitors sell similar products</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Listed brands from completely different categories
+- Example: Listing "Nike" as competitor for "JBL" speakers</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- All competitors sell products in the same category</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Nike is apparel brand, not audio competitor
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> All three are audio equipment competitors
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Hallucinated Competitors</span>
+                <span class="rubric-id">M03_no_hallucinated_brands</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that all listed competitors are real brands</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Made up brand names that don't exist
+- Misspelled brands to the point of being unrecognizable</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- All competitors are real, recognizable brands</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Soundmax Pro and AudioTech appear to be hallucinated brands
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> All three are real audio brands
+                </div>
+            </details>
+        </div>
+        <h2 id="M06">M06 <span class="module-summary">4 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Hierarchy Order Correct</span>
+                <span class="rubric-id">M06_hierarchy_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if taxonomy levels go from specific to general</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Hierarchy is inverted (general to specific)
+- Levels are in random order</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Level 1 is most specific, higher levels are broader
+- Example: "Flip 6" → "Portable Speaker" → "Audio Equipment"</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Order is general→specific, should be specific→general
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly ordered from specific to general
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Product Type Accurate</span>
+                <span class="rubric-id">M06_product_type_accurate</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if the product types correctly describe the product</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Wrong product category (e.g., "Headphones" for a speaker)
+- Types don't match what the product actually is</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Types accurately describe the product</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Product is a speaker, not headphones
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identifies as speaker
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Maximum Three Levels</span>
+                <span class="rubric-id">M06_max_three_levels</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify taxonomy has at most 3 levels</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- More than 3 levels in taxonomy
+- Unnecessary categories added</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- 1-3 levels only</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 4 levels - maximum is 3
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Simple product needs only 1 level
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Material/Feature as Separate Levels</span>
+                <span class="rubric-id">M06_no_material_feature_levels</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify material/feature modifiers aren't separate taxonomy levels</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- "Insulated Water Bottle" → "Water Bottle" (material as level)
+- "Silicone Oven Mitt" → "Oven Mitt" (material as level)
+- "Bamboo Serving Tray" → "Serving Tray" (material as level)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Material/feature modifiers combined into single product type
+- Use 1 level for simple products</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Insulated is a feature modifier - should be just 'Water Bottle' (1 level)
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Simple product type, material is an attribute not a level
+                </div>
+            </details>
+        </div>
+        <h2 id="M07">M07 <span class="module-summary">4 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Attributes From Listing</span>
+                <span class="rubric-id">M07_attributes_from_listing</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if extracted attributes come from the actual listing</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Attributes not mentioned in listing
+- Made up specs or features</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- All attributes can be traced to listing content</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Listing says 12hr not 30hr, no mention of noise canceling
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Attributes match listing exactly
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Fabricated Use Cases</span>
+                <span class="rubric-id">M07_no_fabricated_use_cases</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if use cases are realistic and grounded in listing</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Use cases not supported by product type
+- Fabricated scenarios not in listing</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Use cases are reasonable for this product type
+- Mentioned in listing or clearly implied</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Fabricated use cases not supported by listing
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Use cases aligned with listing content
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Audiences Explicit Only or Dash</span>
+                <span class="rubric-id">M07_audiences_explicit_or_dash</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify audiences only include explicit mentions, or '-' for general products</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Generic invented audiences (Adults, Music Lovers, Fitness Enthusiasts)
+- Made up audiences not in listing
+- Empty array when should be ["-"]</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- ["-"] for general consumer products with no specific target
+- Only explicitly mentioned demographics (Men, Kids, Caregivers)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> No specific audience in listing - should return ['-'] not invented audiences
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> General consumer product with no specific target - correctly uses dash
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Specifications Preserve Full Details</span>
+                <span class="rubric-id">M07_specs_preserve_units</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify technical specs include all units, numbers, and context</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Truncated specs ("Energy Saving" instead of "Energy-saving motor (30% reduced)")
+- Missing units ("32 Hours" instead of "Up to 32 Hours Battery Life")
+- Abbreviated specs ("8 Ice Cubes in 6 mins" instead of "8 ice cubes in 6 minutes")</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Full specifications with all numbers, units, and parenthetical details</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Lost the 30% detail - should be 'Energy-saving motor (30% reduced consumption)'
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Full specifications with all numbers and units
+                </div>
+            </details>
+        </div>
+        <h2 id="M08">M08 <span class="module-summary">3 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Important Attributes Ranked High</span>
+                <span class="rubric-id">M08_important_ranked_high</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if most important attributes have highest ranks</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Trivial attributes ranked above critical ones
+- Ranking doesn't reflect purchase decision importance</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Function-critical attributes ranked highest
+- Nice-to-haves ranked lower</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Color/weight ranked above functional attributes
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Functional attributes correctly prioritized
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Unique Ranks Per Type</span>
+                <span class="rubric-id">M08_unique_ranks_per_type</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify each attribute_type has unique sequential ranks (no duplicates)</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Two Variants with same rank
+- Two UseCases with same rank
+- Non-sequential ranks (1, 2, 4 - skipped 3)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Each Variant has unique rank: 1, 2, 3...
+- Each UseCase has unique rank: 1, 2, 3...
+- Each Audience has unique rank: 1, 2, 3...</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Two Variants both ranked 1 - ranks must be unique
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Each Variant has unique sequential rank
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Title Attributes Ranked 1-2</span>
+                <span class="rubric-id">M08_title_attributes_ranked_high</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify attributes appearing in title are ranked 1 or 2 within their type</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Title attribute ranked 3 or lower
+- Non-title attribute ranked above title attribute</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Attributes from title get rank 1-2 within their type</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> True Wireless is in title but ranked 3, while Black is ranked 1
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Title attributes True Wireless and Deep Bass correctly ranked 1-2
+                </div>
+            </details>
+        </div>
+        <h2 id="M09">M09 <span class="module-summary">4 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Captures Core Purpose</span>
+                <span class="rubric-id">M09_captures_core_purpose</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if primary use captures THE one main purpose</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Wrong purpose identified
+- Too broad (e.g., "electronics use")
+- Too narrow (e.g., specific feature instead of use)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Captures the main reason someone buys this product
+- 3-6 words, verb+noun structure</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Too broad - doesn't describe what user does with it
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Captures core purpose concisely
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Marketing Language</span>
+                <span class="rubric-id">M09_no_marketing_language</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that primary use has no specs, adjectives, or marketing</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Includes specs (e.g., "12-hour battery listening")
+- Includes adjectives (e.g., "amazing", "premium")
+- Includes marketing terms (e.g., "industry-leading")</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Simple verb+noun structure
+- No adjectives or marketing language</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Contains marketing language 'premium', 'amazing'
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Clean verb+noun, no marketing
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Word Count 3-6</span>
+                <span class="rubric-id">M09_word_count_3_to_6</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify primary use phrase is 3-6 words</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Fewer than 3 words (too vague)
+- More than 6 words (too detailed)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Exactly 3-6 words</pre>
+            </div>
+            <details>
+                <summary>Examples (3 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Only 1 word - needs 3-6 words for specificity
+                </div>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 9 words - maximum is 6
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> 3 words - within range
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">No Brand or Technology Names</span>
+                <span class="rubric-id">M09_no_brand_tech_names</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify primary use has no brand names or specific technologies</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Contains brand names (JBL, Sony, Nike)
+- Contains technology names (Bluetooth, USB-C, WiFi)
+- Contains trademarked features (VoiceAware, ANC)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Generic functional description only
+- No proprietary terms</pre>
+            </div>
+            <details>
+                <summary>Examples (3 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Contains brand name 'JBL'
+                </div>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Contains technology name 'Bluetooth'
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Generic functional description, no brands/tech
+                </div>
+            </details>
+        </div>
+        <h2 id="M10">M10 <span class="module-summary">2 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Invalid M09 Output Flagged</span>
+                <span class="rubric-id">M10_invalid_correctly_flagged</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if validator correctly identifies M09 issues</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Accepted clearly invalid M09 output
+- Didn't flag marketing language or wrong purpose</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Correctly flagged invalid M09 outputs
+- Or correctly passed valid M09 outputs</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Should have flagged marketing language
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly flagged the issue
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Fix Improves Output</span>
+                <span class="rubric-id">M10_fix_improves_output</span>
+            </div>
+            <div class="check"><strong>Check:</strong> If M09 was invalid, check if the fix is better</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Fix is worse than original
+- Fix still has same problems</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Fix addresses the identified issue
+- Fix follows M09 rules</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Fix still has marketing language
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Fix removes marketing, adds proper structure
+                </div>
+            </details>
+        </div>
+        <h2 id="M11">M11 <span class="module-summary">5 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Only True Hard Constraints</span>
+                <span class="rubric-id">M11_only_true_constraints</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that only non-negotiable attributes are marked as hard</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Preferences marked as hard constraints (color, brand)
+- Nice-to-haves marked as must-haves</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only function-critical attributes marked as hard
+- Would product fail its purpose without this?</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Color is a preference, not a hard constraint
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Only waterproof is truly non-negotiable for outdoor use
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Critical Constraints Not Missed</span>
+                <span class="rubric-id">M11_critical_not_missed</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check that essential constraints aren't missing</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Missed obvious hard constraint
+- Example: Missing "voltage compatibility" for electronics</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- All function-critical constraints identified</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Missed voltage - critical for function
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified voltage as critical
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">NEVER Categories Excluded</span>
+                <span class="rubric-id">M11_never_categories_excluded</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify attributes from NEVER categories are not marked as hard constraints</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Technology versions marked hard (Bluetooth 5.2, WiFi 6, USB 3.0)
+- Durability features marked hard (Waterproof, Rustproof, Long-lasting)
+- Performance specs marked hard (32hr battery, 26lbs/day)
+- Marketing differentiators marked hard (Deep Bass, Self-Cleaning)
+- Material choices marked hard (Stainless Steel, Silicone, Bamboo)
+- Convenience features marked hard (360 swivel, Built-in sharpener)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only true physical requirements marked as hard constraints
+- Most products have 0-1 hard constraints</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> All three are from NEVER categories - BT version, marketing, durability
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Earbuds have 0 hard constraints - all features are quality not mechanism
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Expected 0-1 Hard Constraints</span>
+                <span class="rubric-id">M11_expected_distribution</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify output follows expected distribution (most products have 0-1)</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- 2+ hard constraints for typical consumer products
+- Did not apply 3-step test to eliminate false positives</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- 0 hard constraints for most products (bottles, earbuds, trays, toys)
+- 1 hard constraint for device cases (fit), oven mitts (heat resistance)
+- 2+ only for multi-compatibility products (extremely rare)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 3 constraints for ice maker - 'ice making' is tautology, others are specs. Should be 0.
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Phone case has 1 hard constraint - must fit specific device
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">3-Step Test Applied</span>
+                <span class="rubric-id">M11_three_step_test_applied</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify each attribute was tested with Complete Removal, Mechanism vs Quality, and Validated Use alignment</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Marked constraint without asking "would product be PHYSICALLY UNABLE?"
+- Confused QUALITY (how much) with MECHANISM (enables function)
+- Ignored validated use alignment check</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Each attribute tested against all 3 steps
+- Clear reasoning for why attribute passed/failed test</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 500F is QUALITY (how much protection) not MECHANISM - only Heat Resistant passes
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Only Heat Resistant is MECHANISM. 500F and Silicone are quality/material.
+                </div>
+            </details>
+        </div>
+        <h2 id="M12">M12 <span class="module-summary">2 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Correct R/S/C/N Label</span>
+                <span class="rubric-id">M12_correct_classification</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if the final classification is correct</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Wrong classification (R when should be N, etc.)
+- Doesn't match ground truth</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Classification matches expected label</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Stand is complementary to speaker, not same product
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified as complementary
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Decision Path Followed</span>
+                <span class="rubric-id">M12_decision_path_followed</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if classification follows the decision tree</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Skipped constraint check when constraint violated
+- Wrong reasoning path even if answer correct</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Followed: constraints → type → use → classification</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Should be N due to constraint violation, path not followed
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly followed decision tree
+                </div>
+            </details>
+        </div>
+        <h2 id="M13">M13 <span class="module-summary">3 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Same Type Answer Correct</span>
+                <span class="rubric-id">M13_same_type_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if YES/NO for same product type is correct</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Said YES when clearly different types
+- Said NO when clearly same type</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Correct YES/NO based on M06 taxonomy comparison</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Speakers and headphones are different product types
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Both are speakers, same type
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Modifiers Properly Stripped</span>
+                <span class="rubric-id">M13_modifiers_stripped</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify use-case, material, brand modifiers were removed to identify core product type</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Treated "ice machine for injuries" as different from "ice maker" (use-case modifier)
+- Treated "round wood tray" as different from "serving tray" (material/shape modifier)
+- Treated "jurassic park toys" as different from "toys" (brand modifier)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Core product noun extracted from keyword
+- Modifiers (use-case, material, brand, shape) properly ignored</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> 'for injuries' is USE-CASE modifier not product type - ice machine = ice maker
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified core product type and stripped use-case modifier
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Synonyms Recognized</span>
+                <span class="rubric-id">M13_synonyms_recognized</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify common synonyms and regional variations are treated as same type</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Marked "earphones" as different from "earbuds"
+- Marked "couch" as different from "sofa"
+- Marked "ice machine" as different from "ice maker"</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Common synonyms recognized as same product type</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Earphones and earbuds are synonyms for in-ear audio devices
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly recognized synonym relationship
+                </div>
+            </details>
+        </div>
+        <h2 id="M14">M14 <span class="module-summary">3 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Same Use Answer Correct</span>
+                <span class="rubric-id">M14_same_use_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if YES/NO for same primary use is correct</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Said YES when uses are different
+- Said NO when uses are the same</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Correct YES/NO based on M09/M10 primary use comparison</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Portable audio vs home theater are different uses
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Both are portable/outdoor audio use cases
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Superficial Differences Ignored</span>
+                <span class="rubric-id">M14_superficial_differences_ignored</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify material, form, character, brand differences don't affect primary use match</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Marked different use for "paper food tray" vs "bamboo serving tray" (material)
+- Marked different use for "liquid eyeliner" vs "pencil eyeliner" (form)
+- Marked different use for "bumblebee transformer" vs "optimus prime transformer" (character)
+- Marked different use for "nike shoes" vs "adidas shoes" (brand)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Material, form, character, brand variants classified as SAME primary use (R)
+- Only TRUE use case differences (decorative vs functional) classified as N</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Paper vs bamboo is MATERIAL difference, not use case. Both serve food → R
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Material difference, same primary use (serving food)
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Not Overly Cautious</span>
+                <span class="rubric-id">M14_not_overly_cautious</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify agent isn't classifying as N based on superficial differences when use is same</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Classified N when PRIMARY USE is identical but attributes differ
+- Applied overly strict interpretation of "same use"</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- R classification when fundamental purpose is same
+- N only for TRUE use case differences (decorative vs functional, gaming vs music)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Character is VARIANT, not use case. Both are Transformers toys for play → R
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Same primary use - imaginative play with transforming robot toys
+                </div>
+            </details>
+        </div>
+        <h2 id="M15">M15 <span class="module-summary">2 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Substitute Answer Correct</span>
+                <span class="rubric-id">M15_substitute_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if YES/NO for substitute is correct</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Said YES when products can't substitute each other
+- Said NO when they clearly can (same use, different type)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- YES when: different type BUT same use
+- NO when: different type AND different use</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Both for music listening, headphones can substitute speaker
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified as substitute
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">60% Overlap Rule Applied</span>
+                <span class="rubric-id">M15_sixty_percent_overlap</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify near-substitutes with 60%+ primary use overlap are classified as S</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Rejected substitute when overlap ≥60%
+- Too strict interpretation for near-substitutes (travel mug vs water bottle)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Products with 60%+ primary use overlap classified as S</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Travel mug overlaps ~80% with portable hydration - should be S
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified as substitute
+                </div>
+            </details>
+        </div>
+        <h2 id="M16">M16 <span class="module-summary">4 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Complementary Answer Correct</span>
+                <span class="rubric-id">M16_complementary_correct</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if YES/NO for complementary is correct</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Said YES when products aren't used together
+- Said NO when they clearly are (e.g., speaker + stand)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- YES when products are commonly used together
+- NO when products are unrelated</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Speaker and refrigerator aren't used together
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Stands are commonly used with speakers
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Amazon Bundle Test Applied</span>
+                <span class="rubric-id">M16_amazon_bundle_test</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify agent applied 'Would Amazon show as Frequently Bought Together?' test</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Classified C for products Amazon wouldn't bundle
+- Same category ≠ complementary (ice maker + sorbet maker both frozen but NOT bundled)</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Only classified C if products would realistically be bundled/bought together</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Same category (frozen appliances) but NOT complementary - different appliances, not bundled
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified as NOT complementary
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Same Category ≠ Complementary</span>
+                <span class="rubric-id">M16_same_category_not_complementary</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify products in same category but different functions are NOT marked complementary</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Ice maker + sorbet maker (both frozen) marked C
+- Eyeliner + lash brush (both makeup) marked C
+- Puffer jacket + thermal socks (both winter) marked C
+- Serving tray + beverage holders (both serving) marked C</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Same-category items with different functions classified as N
+- Only true "used together" relationships marked C</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Setting powder is for face, eyeliner for eyes - not same area, not same sequence
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified - same category but not complementary
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Relationship Type Identified</span>
+                <span class="rubric-id">M16_relationship_type_identified</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Verify a specific relationship type is provided for C classifications</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Classified C but no relationship_type
+- Vague relationship like "related products"</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Specific relationship type: Maintenance, Storage, Display, Accessory, Workflow, Same-Occasion, Organization</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Missing relationship_type - should be 'Maintenance'
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Clear relationship type identified
+                </div>
+            </details>
+        </div>
+        <h2 id="M04">M04 <span class="module-summary">2 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Correct CB/null Classification</span>
+                <span class="rubric-id">M04_correct_classification</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if keyword was correctly classified as Competitor Brand or not</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Marked CB when no competitor term in keyword
+- Marked null when competitor term IS clearly in keyword</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- CB when keyword contains a competitor brand term
+- null when keyword has no competitor brand terms</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Keyword contains 'bose' which is in competitors list
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> No competitor brand in keyword
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Competitor Correctly Identified</span>
+                <span class="rubric-id">M04_competitor_identified</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if the matched_competitor field is correct</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Wrong competitor name cited
+- Competitor not in the provided list</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- matched_competitor is the actual competitor found in keyword</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Keyword has 'bose' not 'Sony'
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly identified Bose as the competitor
+                </div>
+            </details>
+        </div>
+        <h2 id="M05">M05 <span class="module-summary">2 rubrics</span></h2>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Correct NB/null Classification</span>
+                <span class="rubric-id">M05_correct_classification</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if keyword was correctly classified as Non-Branded or not</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Marked NB when keyword actually contains a brand
+- Marked null when keyword is clearly generic</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- NB when keyword is generic with no brand terms
+- null when keyword contains a brand (should go to OB or CB)</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Keyword has 'jbl' brand, should not be NB
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Generic product keyword, correctly marked NB
+                </div>
+            </details>
+        </div>
+        <div class="rubric">
+            <div class="rubric-header">
+                <span class="criterion">Hidden Brand Awareness</span>
+                <span class="rubric-id">M05_hidden_brand_check</span>
+            </div>
+            <div class="check"><strong>Check:</strong> Check if evaluator flagged potential unlisted brands</div>
+            <div class="definition">
+                <span class="definition-label">FAIL when:</span>
+                <pre>- Missed obvious brand that wasn't in provided lists
+- Marked NB for keyword with recognizable brand</pre>
+            </div>
+            <div class="definition">
+                <span class="definition-label pass">PASS when:</span>
+                <pre>- Flagged or noted potential brands not in lists
+- Or correctly identified as generic</pre>
+            </div>
+            <details>
+                <summary>Examples (2 cases)</summary>
+                <div class="example fail">
+                    <span class="example-label">Fail:</span> Marshall is a known brand, should flag even if not in list
+                </div>
+                <div class="example pass">
+                    <span class="example-label">Pass:</span> Correctly flagged Marshall as potential brand
+                </div>
+            </details>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "braintrust_experiment_id": "9bec004e-4a1c-4df7-b7b4-23d13e8973e5",
+  "braintrust_experiment_name": "M14_PrimaryUseCheckSameType_V1.1_v1",
+  "created": "2026-01-15T22:26:24.937Z",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "498ae6c2-1bfa-44a3-9948-889856d6d796",
+  "dataset_name": "M14_CheckPrimaryUseSameType_V1.1",
+  "dataset_version": "1000196473827010015",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_14_PrimaryUseCheckSameType_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "same_primary_use",
+          "classification",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Explanation of why the primary uses match or differ"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "classification": {
+            "enum": [
+              "R",
+              "N"
+            ],
+            "type": "string",
+            "description": "R for RELEVANT if same use, N for NEGATIVE if different use"
+          },
+          "same_primary_use": {
+            "type": "boolean",
+            "description": "Whether the keyword's product supports the same primary use"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

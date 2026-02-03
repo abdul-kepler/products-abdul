@@ -1,0 +1,60 @@
+{
+  "braintrust_experiment_id": "72ed5c87-3d3a-4853-ace0-baba0bbbf81e",
+  "braintrust_experiment_name": "M06_GenerateProductTypeTaxonomy_GD_v1",
+  "created": "2026-01-15 21:29:31.014000+00:00",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "cce4a191-6a25-4185-8675-4bda102226da",
+  "dataset_name": "M06_GenerateProductTypeTaxonomy_V1.1",
+  "dataset_version": "1000196473826282962",
+  "prompt_id": "ee5bb5ac-b613-4579-b462-a9b61455d34b",
+  "prompt_version": "1000196486895942787",
+  "prompt_session_id": "72e2e19b-cafd-47cd-b15b-f7df7a62b0b8",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_6_GenerateProductTypeTaxonomy_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "taxonomy"
+        ],
+        "properties": {
+          "taxonomy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "level",
+                "product_type",
+                "rank"
+              ],
+              "properties": {
+                "rank": {
+                  "type": "integer",
+                  "description": "Relevance rank (1=primary, 2=alternative)"
+                },
+                "level": {
+                  "type": "integer",
+                  "description": "Hierarchy level: 1=most specific, 2=broader, 3=broadest"
+                },
+                "product_type": {
+                  "type": "string",
+                  "description": "Product type name at this level"
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Short taxonomy from specific to general (1-3 entries max)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 12,
+  "downloaded_at": "2026-01-21T23:12:47.670898"
+}

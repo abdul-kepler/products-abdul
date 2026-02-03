@@ -1,0 +1,54 @@
+{
+  "braintrust_experiment_id": "6c78f3db-bbbf-4e44-b45a-60210ffbfac4",
+  "braintrust_experiment_name": "M07_V2_ExtractProductAttributes_V2_GD_gpt54o",
+  "created": "2026-01-21 15:46:53.868000+00:00",
+  "model": "gpt-4o",
+  "temperature": 0,
+  "dataset_id": "27a50f6b-44da-4144-b897-85f4de1600b8",
+  "dataset_name": "M07_ExtractProductAttributes_V1.1",
+  "dataset_version": "1000196473826348908",
+  "prompt_id": "fa1a410f-b2fb-4450-81e2-875f0e531732",
+  "prompt_version": "1000196526116138101",
+  "prompt_session_id": "64a9b038-6b95-43b6-a873-97a0c32e4313",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_7_ExtractProductAttributes_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "variants",
+          "use_cases",
+          "audiences"
+        ],
+        "properties": {
+          "variants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Product variants: color, size, model, flavor, storage, etc. Include both Keepa hints AND extracted from listing text."
+          },
+          "audiences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Target audiences: professionals, students, gamers, etc. Extract from listing text and target_audience hint."
+          },
+          "use_cases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Use cases: gaming, business, travel, cooking, etc. Extract from listing text and specific_uses hint."
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 24,
+  "downloaded_at": "2026-01-21T23:13:52.703340"
+}

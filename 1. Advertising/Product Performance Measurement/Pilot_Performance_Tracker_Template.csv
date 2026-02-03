@@ -1,0 +1,54 @@
+Sheet: Account Overview
+Account Name,Account ID,Rollout Date,Pre-Rollout Period Start,Pre-Rollout Period End,Status,Notes
+[Client 1],,YYYY-MM-DD,YYYY-MM-DD,YYYY-MM-DD,Active,
+[Client 2],,YYYY-MM-DD,YYYY-MM-DD,YYYY-MM-DD,Active,
+
+---
+
+Sheet: Pre vs Post Comparison
+Account Name,Period Type,Period Start,Period End,Days,Ad Spend ($),Ad Sales ($),ACOS (%),ROAS,Impressions,Clicks,CTR (%),Orders,CVR (%),CPC ($)
+[Client 1],Pre-Rollout,,,14,0,0,0.00%,0.00,0,0,0.00%,0,0.00%,0.00
+[Client 1],Post-Rollout (Week 1),,,7,0,0,0.00%,0.00,0,0,0.00%,0,0.00%,0.00
+[Client 1],Post-Rollout (Week 2),,,7,0,0,0.00%,0.00,0,0,0.00%,0,0.00%,0.00
+[Client 1],Change vs Baseline,,,,-,-,0 pp,0.00,-,-,0 pp,-,0 pp,-
+
+---
+
+Sheet: Daily Performance (For DoD Analysis)
+Date,Account Name,Ad Spend ($),Ad Sales ($),ACOS (%),ROAS,Impressions,Clicks,CTR (%),Orders,CVR (%),CPC ($),DoD Spend Change (%),DoD Sales Change (%),DoD ACOS Change (pp)
+YYYY-MM-DD,[Client 1],0,0,0.00%,0.00,0,0,0.00%,0,0.00%,0.00,n/a,n/a,n/a
+
+---
+
+Sheet: Weekly Summary (For WoW Analysis)
+Week Start,Week End,Week #,Account Name,Ad Spend ($),Ad Sales ($),ACOS (%),ROAS,Impressions,Clicks,CTR (%),Orders,CVR (%),CPC ($),WoW Spend Change (%),WoW Sales Change (%),WoW ACOS Change (pp)
+YYYY-MM-DD,YYYY-MM-DD,W1,[Client 1],0,0,0.00%,0.00,0,0,0.00%,0,0.00%,0.00,n/a,n/a,n/a
+YYYY-MM-DD,YYYY-MM-DD,W2,[Client 1],0,0,0.00%,0.00,0,0,0.00%,0,0.00%,0.00,0%,0%,0
+
+---
+
+Sheet: Executive Summary Dashboard
+Metric,All Accounts Pre-Rollout (Avg),All Accounts Post-Rollout (Avg),Change,Trend
+Total Ad Spend,$0,$0,0%,-
+Total Ad Sales,$0,$0,0%,-
+Avg ACOS,0.00%,0.00%,0 pp,-
+Avg ROAS,0.00,0.00,0.00,-
+Total Impressions,0,0,0%,-
+Total Clicks,0,0,0%,-
+Avg CTR,0.00%,0.00%,0 pp,-
+Total Orders,0,0,0%,-
+Avg CVR,0.00%,0.00%,0 pp,-
+Avg CPC,$0.00,$0.00,0%,-
+
+---
+
+Sheet: Key Formulas Reference
+Metric,Formula,Notes
+ACOS (%),"=Ad Spend / Ad Sales * 100",Lower is better
+ROAS,=Ad Sales / Ad Spend,Higher is better
+CTR (%),=Clicks / Impressions * 100,Click-through rate
+CVR (%),=Orders / Clicks * 100,Conversion rate
+CPC ($),=Ad Spend / Clicks,Cost per click
+DoD Change (%),=(Today - Yesterday) / Yesterday * 100,Day over day
+WoW Change (%),=(This Week - Last Week) / Last Week * 100,Week over week
+pp (percentage points),=New % - Old %,For comparing percentages

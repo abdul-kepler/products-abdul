@@ -1,0 +1,996 @@
+{
+  "experiment": "V2",
+  "module": "m01",
+  "model": "gpt-4o",
+  "rubrics_version": "v2",
+  "timestamp": "2026-01-16T14:54:00.596366",
+  "data_source": "/Users/katerynadavidenko/AI-Projects/KW-Classification/experiment_results/20260115_v1_01/M01_ExtractOwnBrandEntities/M01_ExtractOwnBrandEntities_V1.csv",
+  "summary": {
+    "pass": 11,
+    "fail": 14,
+    "error": 0
+  },
+  "pass_rate": 44.0,
+  "evaluations": [
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes 'JBL', which matches the listing brand. It also includes variations like 'jbl', 'JLB', and 'J B L', which are acceptable minor variations. Additionally, it captures 'Vibe Beam' and 'VibeBeam', which are part of the product name and closely related to the brand. The output meets the PASS conditions as it extracts the brand and acceptable variations.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "J B L",
+          "JBLl",
+          "Vibe Beam",
+          "VibeBeam",
+          "Vibe Beem",
+          "Vibe Beem",
+          "Vibe Beamn"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output includes brand entities that are present in the input data or are acceptable variations. 'JBL' and 'Vibe Beam' are explicitly mentioned in the input. Variations like 'JLB', 'J B L', and 'VibeBeam' are acceptable typo/spelling variations. No completely different or made-up brands are present in the output.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "J B L",
+          "JBLl",
+          "Vibe Beam",
+          "VibeBeam",
+          "Vibe Beem",
+          "Vibe Beem",
+          "Vibe Beamn"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output includes actual brand entities like 'JBL' and variations of 'Vibe Beam', without including standalone generic product words. All entities are either brand names or acceptable variations, meeting the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "J B L",
+          "JBLl",
+          "Vibe Beam",
+          "VibeBeam",
+          "Vibe Beem",
+          "Vibe Beem",
+          "Vibe Beamn"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Vibe Beam' and variations like 'Vibe Beem' and 'Vibe Beamn', which are not trademarked product lines or sub-brands according to the input data. The expected output includes 'JBL Vibe' and variations, which are missing in the module output. Therefore, the module output does not fully meet the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "J B L",
+          "JBLl",
+          "Vibe Beam",
+          "VibeBeam",
+          "Vibe Beem",
+          "Vibe Beem",
+          "Vibe Beamn"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BQPGJ9LQ",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains the exact string 'Vibe Beem' twice, which violates the rubric criterion of no exact string duplicates.",
+      "input": {
+        "brand_name": "JBL",
+        "bullet_points": "JBL Deep Bass Sound: Get the most from your mixes with high-quality audio from secure, reliable earbuds with 8mm drivers featuring JBL Deep Bass Sound\nComfortable fit: The ergonomic, stick-closed design of the JBL Vibe Beam fits so comfortably you may forget you're wearing them. The closed design excludes external sounds, enhancing the bass performance\nUp to 32 (8h + 24h) hours of battery life and speed charging: With 8 hours of battery life in the earbuds and 24 in the case, the JBL Vibe Beam provide all-day audio. When you need more power, you can speed charge an extra two hours in just 10 minutes.\nHands-free calls with VoiceAware: When you're making hands-free stereo calls on the go, VoiceAware lets you balance how much of your own voice you hear while talking with others\nWater and dust resistant: From the beach to the bike trail, the IP54-certified earbuds and IPX2 charging case are water and dust resistant for all-day experiences",
+        "description": "\"Bring your sound everywhere. With bass you can feel, up to 32 total hours of battery life, and a secure, comfortable stick-closed design, the splash and dust resistant JBL Vibe Beam are designed for your daily entertainment.",
+        "manufacturer": "JBL",
+        "title": "JBL Vibe Beam - True Wireless JBL Deep Bass Sound Earbuds, Bluetooth 5.2, Water & Dust Resistant, Hands-free call with VoiceAware, Up to 32 hours of battery life (White)"
+      },
+      "expected": {
+        "brand_entities": [
+          "JBL",
+          "JBL Vibe",
+          "Vibe Beam",
+          "JBL",
+          "JLB",
+          "JB L",
+          "JayBeeL",
+          "JBL VibeBeam",
+          "JBL Vib Beam",
+          "JBL Vibe Beans",
+          "JBL Vibes Beam",
+          "VibeBeam",
+          "Vibe Beams"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "JBL",
+          "jbl",
+          "JLB",
+          "J B L",
+          "JBLl",
+          "Vibe Beam",
+          "VibeBeam",
+          "Vibe Beem",
+          "Vibe Beem",
+          "Vibe Beamn"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Owla', 'Oawla', 'FreeSippp', and 'FreeSipz', which are not acceptable variations of the brand 'Owala' or 'FreeSip'. These do not closely match the listing brand and are not minor variations in casing or spacing.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "Owala FreeSip",
+          "FreeSip",
+          "Owala",
+          "Owalaa",
+          "Owallah",
+          "Ohwala",
+          "O wala",
+          "O-wala",
+          "Free Sip",
+          "Freesip",
+          "FreeSipp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owalaa",
+          "Owla",
+          "Oawla",
+          "FreeSip",
+          "freesip",
+          "FreeSipp",
+          "FreeSippp",
+          "FreeSipz"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Owla', 'Oawla', 'FreeSippp', and 'FreeSipz', which are not acceptable typo variations or present in the input data. These are considered hallucinated brands.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "Owala FreeSip",
+          "FreeSip",
+          "Owala",
+          "Owalaa",
+          "Owallah",
+          "Ohwala",
+          "O wala",
+          "O-wala",
+          "Free Sip",
+          "Freesip",
+          "FreeSipp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owalaa",
+          "Owla",
+          "Oawla",
+          "FreeSip",
+          "freesip",
+          "FreeSipp",
+          "FreeSippp",
+          "FreeSipz"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes actual brand entities and variations of 'Owala' and 'FreeSip', without any standalone generic product words. It does not include any generic terms like 'Water Bottle' or 'Straw' as separate entities, thus meeting the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "Owala FreeSip",
+          "FreeSip",
+          "Owala",
+          "Owalaa",
+          "Owallah",
+          "Ohwala",
+          "O wala",
+          "O-wala",
+          "Free Sip",
+          "Freesip",
+          "FreeSipp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owalaa",
+          "Owla",
+          "Oawla",
+          "FreeSip",
+          "freesip",
+          "FreeSipp",
+          "FreeSippp",
+          "FreeSipz"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Owla' and 'Oawla', which are not acceptable variations of the brand or product line names according to the expected output. Additionally, 'FreeSippp' and 'FreeSipz' are not recognized variations of the trademarked product line 'FreeSip'. Therefore, the output does not fully meet the PASS conditions.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "Owala FreeSip",
+          "FreeSip",
+          "Owala",
+          "Owalaa",
+          "Owallah",
+          "Ohwala",
+          "O wala",
+          "O-wala",
+          "Free Sip",
+          "Freesip",
+          "FreeSipp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owalaa",
+          "Owla",
+          "Oawla",
+          "FreeSip",
+          "freesip",
+          "FreeSipp",
+          "FreeSippp",
+          "FreeSipz"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0BZYCJK89",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. All entities are unique, and case variations are treated as different entities, which aligns with the rubric's PASS conditions.",
+      "input": {
+        "brand_name": "Owala",
+        "bullet_points": "24-ounce insulated stainless-steel water bottle with a FreeSip spout and push-button lid with lock\nPatented FreeSip spout designed for either sipping upright through the built-in straw or tilting back to swig from the spout opening\nProtective push-to-open lid keeps spout clean; convenient carry loop doubles as a lock\nDouble-wall insulation keeps drinks cold for up to 24 hours; wide opening for cleaning and adding ice; cup holder-friendly base\nBPA, lead, and phthalate-free; hand wash cup, dishwasher-safe lid; not for use with hot liquids",
+        "description": "The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid easily tackles every thirst. With a built-in, easy-clean straw and a wide-mouth opening, the FreeSip reusable bottle is designed for drinking two different ways: sipping upright through the straw or tilting back to swig from the wide-mouth spout opening. Add in a push-to-open lid and playful colors, and staying hydrated has never been simpler\u2014or more fun. Additional features include double-wall insulated stainless steel that keeps drinks cold up to 24 hours, a carry loop that doubles as a lock, a cup holder-friendly base, and a wide opening for easy cleaning and adding ice. The Owala FreeSip Insulated Stainless-Steel Water Bottle with Locking Push-Button Lid is available in three sizes: 24-Ounce, 32-Ounce, and 40-Ounce. Lid is dishwasher safe; hand wash cup. Not for use with hot liquids. Manufacturer\u2019s limited lifetime warranty.",
+        "manufacturer": "BlenderBottle",
+        "title": "Owala FreeSip Insulated Stainless Steel Water Bottle with Straw, BPA-Free Sports Water Bottle, Great for Travel, 24 Oz, Denim"
+      },
+      "expected": {
+        "brand_entities": [
+          "Owala",
+          "Owala FreeSip",
+          "FreeSip",
+          "Owala",
+          "Owalaa",
+          "Owallah",
+          "Ohwala",
+          "O wala",
+          "O-wala",
+          "Free Sip",
+          "Freesip",
+          "FreeSipp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Owala",
+          "owala",
+          "Owalaa",
+          "Owla",
+          "Oawla",
+          "FreeSip",
+          "freesip",
+          "FreeSipp",
+          "FreeSippp",
+          "FreeSipz"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "PASS",
+      "reasoning": "The module output includes 'Cisily', 'cisily', 'Cisiliy', and 'Cisly', which match or closely match the listing brand 'Cisily'. Minor variations in casing and spelling are acceptable according to the rubric. Although 'Cisilyy' is an incorrect variation, the presence of correct and closely matching brand names satisfies the PASS conditions.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "CISILY",
+          "Cisly",
+          "Cisiliy",
+          "Cisely",
+          "Sisily",
+          "Cis ily",
+          "Cis-ily"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisiliy",
+          "Cisly",
+          "Cisilyy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Cisilyy', which is not a valid typo or spelling variation of the brand 'Cisily' as per the rubric. The rubric allows for typo variations, but 'Cisilyy' is not a reasonable typo of 'Cisily' and does not appear in the input data.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "CISILY",
+          "Cisly",
+          "Cisiliy",
+          "Cisely",
+          "Sisily",
+          "Cis ily",
+          "Cis-ily"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisiliy",
+          "Cisly",
+          "Cisilyy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the brand name 'Cisily' and does not include any standalone generic product words. All entities listed are variations of the brand and do not violate the rubric's conditions.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "CISILY",
+          "Cisly",
+          "Cisiliy",
+          "Cisely",
+          "Sisily",
+          "Cis ily",
+          "Cis-ily"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisiliy",
+          "Cisly",
+          "Cisilyy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not include all variations of the brand name as expected. It is missing 'CISILY', 'Cisely', 'Sisily', 'Cis ily', and 'Cis-ily', which are part of the expected output. Therefore, it does not meet the PASS conditions of including all brand/trademark name variations.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "CISILY",
+          "Cisly",
+          "Cisiliy",
+          "Cisely",
+          "Sisily",
+          "Cis ily",
+          "Cis-ily"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisiliy",
+          "Cisly",
+          "Cisilyy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0CJ4WZXQF",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. Each entity is unique, and case variations are allowed as per the rubric.",
+      "input": {
+        "brand_name": "Cisily",
+        "bullet_points": "304 Stainless Steel\nQuality Control 100%\n\u3010AUTOMATIC DRAINAGE SYSTEM\u3011Cisily adopts slope design to achieve perfect drainage effect, aiming at reducing the frequency and time of cleaning the sponge holder, freeing your hands, reducing the burden on your kitchen work, and improving your happiness index.\n\u3010PREMIUM STURDY MATERIAL\u3011 Cisily kitchen sink organizer is made of premium stainless steel which can effectively prevent rust and deformation. And you can clean it easily by rinsing it under a running tap. Take the clutter out of your countertops.\n\u3010REASONABLE DIVIDER DESIGN\u3011 The sponge holder for kitchen sink ergonomic divider design allows it to have 3 separate storage spaces, Different items are placed in different areas. Make the most of every inch of space and make your kitchen look cleaner.\n\u3010SATISFACTION GUARANTEED\u3011The CISILY kitchen sink organizer is ready to use upon receipt, no installation required and is widely used on counters or bathrooms, making it a satisfying gift. If you have any questions during use, please consult our customer service staff. We want to provide you with a pleasant shopping experience.\nUS Patent Number:\uff1a1038566S",
+        "description": "",
+        "manufacturer": "Cisily",
+        "title": "Cisily Kitchen Sink Caddy Organzier with High Brush Holder, Sponge Holder for Sink, 304 Rustproof Stainless, Kitchen Countertop Soap Dispenser Organizer, Kitchen Decor and Accessories"
+      },
+      "expected": {
+        "brand_entities": [
+          "Cisily",
+          "CISILY",
+          "Cisly",
+          "Cisiliy",
+          "Cisely",
+          "Sisily",
+          "Cis ily",
+          "Cis-ily"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Cisily",
+          "cisily",
+          "Cisiliy",
+          "Cisly",
+          "Cisilyy"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output only includes the exact brand name 'Pioneer Camp' and a lowercase variation, but does not include any of the expected minor variations such as 'PioneerCamp', 'Pionner Camp', 'Pioneer Camps', 'Pioner Camp', or 'Pioneer Kamp'. The rubric allows for minor variations, which are missing in the output.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "PioneerCamp",
+          "Pionner Camp",
+          "Pioneer Camps",
+          "Pioner Camp",
+          "Pioneer Kamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes 'Pioneer Camp', which is the exact brand name present in the input data. There are no hallucinated or incorrect brand names, and the output meets the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "PioneerCamp",
+          "Pionner Camp",
+          "Pioneer Camps",
+          "Pioner Camp",
+          "Pioneer Kamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains multiple identical entries of 'Pioneer Camp' and does not include the expected variations such as 'PioneerCamp', 'Pionner Camp', 'Pioneer Camps', 'Pioner Camp', and 'Pioneer Kamp'. The rubric requires only actual brand entities without standalone generic terms, but the output lacks the expected variations, indicating a failure to capture all valid brand entities.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "PioneerCamp",
+          "Pionner Camp",
+          "Pioneer Camps",
+          "Pioner Camp",
+          "Pioneer Kamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output does not meet the rubric criterion because it only includes variations of 'Pioneer Camp' without considering potential misspellings or variations like 'PioneerCamp', 'Pionner Camp', 'Pioneer Camps', 'Pioner Camp', or 'Pioneer Kamp' as expected. The output lacks diversity in brand entity variations, which is necessary to pass the test.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "PioneerCamp",
+          "Pionner Camp",
+          "Pioneer Camps",
+          "Pioner Camp",
+          "Pioneer Kamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0D6YNWLTS",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains multiple exact string duplicates of 'Pioneer Camp', which violates the rubric criterion of having no exact string duplicates in the brand entities list.",
+      "input": {
+        "brand_name": "Pioneer Camp",
+        "bullet_points": "WINDPROOF & WARM The stand collar lightweight puffer jacket is made with windproof, soft nylon fabric to block out cold air and keep you warm. The new winter jacket features elastic cuffs and an adjustable hem, effectively preventing wind from entering and ensuring fit, protecting you in cold weather. The front center zipper has dual side zipper chin guard, providing close-fitting comfort\nWATER-RESISTANT & BREATHABLE The outer layer uses DWR technology with a waterproof rating of 3000mm. The interior is filled with polyester fiber eco-friendly down alternative material, offering enhanced warmth and breathability. This men's down alternative jacket keeps your core comfortable and dry in light rain, helping you stay warm and fight against harsh rainy or misty weather\nLIGHTWEIGHT & PACKABLE DESIGN Ultra-lightweight, weightless experience, weighing only 300g.The men's stand-up collar puffer jacket can be quickly stored and placed in a waterproof storage bag. The storage bag has a drawstring and drawcord, allowing you to attach the jacket to your backpack. Our men's foldable, lightweight insulated puffer coat is ideal for casual wear and outdoor. The lightweight packable design takes up minimal space in your luggage and backpack, making travel stress-free\n4 POCKETS The men's puffy quilted jacket includes 2 external zippered hand warmer pockets and 2 large internal pockets, perfect for storing money, keys, phone, wallet, passport, and other items, providing great privacy and convenience\nOCCASION Suitable for travelling, camping, hiking, skiing, snowboarding, golf and many other outdoor activities, also good choice for casual life such as work, party, men's outerwear jackets & coats for spring fall winter. Best gifts for son, father, husband, friends,father's day gifts, birthday present, a dad gifts, Christmas gift idea etc",
+        "description": "",
+        "manufacturer": null,
+        "title": "Pioneer Camp Mens Lightweight Packable Puffer Jacket Winter Insulated Puffy Coat Water Repellent Warm Quilted Jackets Travel\uff08Black;M\uff09"
+      },
+      "expected": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "PioneerCamp",
+          "Pionner Camp",
+          "Pioneer Camps",
+          "Pioner Camp",
+          "Pioneer Kamp"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Pioneer Camp",
+          "pioneer camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp",
+          "Pioneer Camp"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_brand_extracted",
+      "criterion": "Brand Extracted",
+      "verdict": "FAIL",
+      "reasoning": "The module output contains 'Jikash' and 'Jikashaa', which are not minor variations of the brand 'Jikasho'. These are completely wrong brand names, thus failing the rubric criterion.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "Jikaso",
+          "Jikasho",
+          "Jikashoo",
+          "Jikasho",
+          "Jikasho"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikashoo",
+          "Jikash",
+          "Jikashoo",
+          "Jikashaa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_no_hallucination",
+      "criterion": "No Hallucinated Brand",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Jikash' and 'Jikashaa', which are not acceptable typo variations of the valid brand 'Jikasho'. These do not meet the PASS conditions as they are not present in the input data and do not represent acceptable variations of the brand name.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "Jikaso",
+          "Jikasho",
+          "Jikashoo",
+          "Jikasho",
+          "Jikasho"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikashoo",
+          "Jikash",
+          "Jikashoo",
+          "Jikashaa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_no_product_words",
+      "criterion": "No Product Words in Brand",
+      "verdict": "PASS",
+      "reasoning": "The module output only includes variations of the brand name 'Jikasho' and does not include any standalone generic product words. Therefore, it meets the PASS conditions of the rubric.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "Jikaso",
+          "Jikasho",
+          "Jikashoo",
+          "Jikasho",
+          "Jikasho"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikashoo",
+          "Jikash",
+          "Jikashoo",
+          "Jikashaa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_amazon_test_applied",
+      "criterion": "Amazon Test Applied",
+      "verdict": "FAIL",
+      "reasoning": "The module output includes 'Jikash' and 'Jikashaa', which are not consistent with the expected brand name 'Jikasho'. These variations do not meet the rubric's requirement for brand/trademark names, as they are not recognizable as the intended brand.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "Jikaso",
+          "Jikasho",
+          "Jikashoo",
+          "Jikasho",
+          "Jikasho"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikashoo",
+          "Jikash",
+          "Jikashoo",
+          "Jikashaa"
+        ]
+      }
+    },
+    {
+      "sample_id": "B0DSHWLXG6",
+      "rubric_id": "M01_no_duplicates",
+      "criterion": "No Duplicate Entities",
+      "verdict": "PASS",
+      "reasoning": "The module output contains no exact string duplicates. Case variations and different spellings are present, but they are allowed and do not count as duplicates according to the rubric.",
+      "input": {
+        "brand_name": "Jikasho",
+        "bullet_points": "Vacuum Lock + Gel Base \u2014 For Smooth, Flat Surfaces: Features a rotary vacuum-lock and 4-layer washable gel base that forms a rock-solid hold on flat, non-textured surfaces such as glass, glossy dashboards, or hard leather. Avoid use on curved, soft, or textured materials. To install, firmly press the gel base and rotate the vacuum lock clockwise until tight\nWashable Gel Base \u2014 Restores Grip After Rinsing: The reusable nano-gel base maintains strong adhesion when clean. If suction weakens due to dust or dirt, simply rinse the gel with water and let it air dry\u2014this restores up to 99% of its original stickiness, and built to withstand -40\u00b0F to 194\u00b0F\n360\u00b0 Customizable Viewing Angle: Achieve full viewing flexibility with triple-axis adjustment\u2014360\u00b0 swivel, 180\u00b0 tilt, and foldable arm positioning. Effortlessly switch between portrait and landscape modes. Built-in zinc alloy hinges rated for 7,000+ adjustments\nUnmatched Magnetic Grip for Safe Driving: Upgraded with 24 N52 magnets in a dual-ring layout for ultra-strong, stable hold\u2014even on bumpy roads. No signal interference. Designed for MagSafe iPhones and cases; includes magnetic rings for wider phone compatibility\nWide Device Compatibility & Instant Setup: Supports iPhone 12\u201317 and other smartphones with the included magnetic ring. Mounts firmly to dashboards, mirrors, windows, or smooth tile\u2014ideal for your car, home, or studio. Setup takes seconds. Do not use on armor, silicone, leather, suede, or uneven phone cases, as the magnetic ring may not adhere securely",
+        "description": "",
+        "manufacturer": "Jikasho",
+        "title": "Jikasho Vacuum Magnetic Suction Phone Holder, Foldable and Retractable Hands-Free Suction Cup Phone Mount for Car/Gym/Mirror/Smooth Surface, Compatible with iPhone Android and All Smartphones (Black)"
+      },
+      "expected": {
+        "brand_entities": [
+          "Jikasho",
+          "Jikaso",
+          "Jikasho",
+          "Jikashoo",
+          "Jikasho",
+          "Jikasho"
+        ]
+      },
+      "output": {
+        "brand_entities": [
+          "Jikasho",
+          "jikasho",
+          "Jikashoo",
+          "Jikash",
+          "Jikashoo",
+          "Jikashaa"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohort 1 Feedback Hub v6 - Comprehensive Outcome-Driven UAT</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #ca8a04;
+            --warning-light: #fef9c3;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --orange: #ea580c;
+            --orange-light: #ffedd5;
+            --cyan: #0891b2;
+            --cyan-light: #cffafe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: var(--gray-800); }
+        h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+        h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+
+        .subtitle { color: var(--gray-500); margin-bottom: 24px; }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+        th { font-size: 12px; text-transform: uppercase; color: var(--gray-500); font-weight: 600; background: var(--gray-50); }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-danger { background: var(--danger-light); color: var(--danger); }
+        .badge-warning { background: var(--warning-light); color: var(--warning); }
+        .badge-success { background: var(--success-light); color: var(--success); }
+        .badge-info { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--purple-light); color: var(--purple); }
+        .badge-gray { background: var(--gray-200); color: var(--gray-600); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-secondary { background: var(--gray-200); color: var(--gray-700); }
+        .btn-sm { padding: 4px 8px; font-size: 11px; }
+
+        .problem-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .problem-card.efficiency { border-left: 4px solid var(--danger); }
+        .problem-card.sales { border-left: 4px solid var(--warning); }
+
+        .test-case {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .test-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .test-case-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .test-case-id {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-family: monospace;
+        }
+
+        .test-steps {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            padding: 12px;
+            margin: 12px 0;
+        }
+
+        .test-steps ol {
+            margin-left: 20px;
+        }
+
+        .test-steps li {
+            margin-bottom: 8px;
+        }
+
+        .root-cause-tree {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+
+        .root-cause-item {
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+            font-size: 13px;
+        }
+
+        .root-cause-item.highlight {
+            border-left-color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        .formula-box {
+            background: var(--gray-900);
+            color: #10b981;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+
+        .pass-fail-criteria {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .pass-box {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .fail-box {
+            background: var(--danger-light);
+            border: 1px solid var(--danger);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .scenario-flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .scenario-flow .arrow {
+            color: var(--gray-400);
+            font-size: 18px;
+        }
+
+        .scenario-flow .node {
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .scenario-flow .node.problem { background: var(--danger-light); border-color: var(--danger); }
+        .scenario-flow .node.symptom { background: var(--warning-light); border-color: var(--warning); }
+        .scenario-flow .node.cause { background: var(--primary-light); border-color: var(--primary); }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .tab:hover { color: var(--gray-700); }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        .mockup-banner {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: white;
+            padding: 16px 24px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; }
+
+        .highlight-box {
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .checklist-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3px;
+        }
+
+        code {
+            background: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .pass-fail-criteria { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mockup-banner">
+    v6 - Comprehensive Outcome-Driven UAT Framework | Problem → Symptom → Root Cause → Test
+</div>
+
+<div class="container">
+
+    <h1>UAT Testing Framework</h1>
+    <p class="subtitle">Outcome-driven testing: Start with PROBLEMS, trace to ROOT CAUSES, verify with specific TEST CASES</p>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="showSection('framework')">Framework Overview</div>
+        <div class="tab" onclick="showSection('efficiency')">Problem: Poor Efficiency</div>
+        <div class="tab" onclick="showSection('sales')">Problem: Low Sales</div>
+        <div class="tab" onclick="showSection('checklist')">Full Checklist</div>
+        <div class="tab" onclick="showSection('methodology')">Test Methodology</div>
+    </div>
+
+    <!-- ==================== FRAMEWORK OVERVIEW ==================== -->
+    <div id="framework" class="section active">
+
+        <div class="card">
+            <h2>The Two Core Problems</h2>
+            <p style="margin-bottom: 20px;">Every issue during rollout maps to one of these two problems. UAT tests are designed to catch causes before they become problems.</p>
+
+            <div class="grid-2">
+                <div class="problem-card efficiency">
+                    <h3 style="color: var(--danger);">Problem 1: Poor Efficiency (High ACOS)</h3>
+                    <p>Spending money but not getting good returns</p>
+                    <div style="margin-top: 12px;">
+                        <strong>Symptoms:</strong>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>ACOS above target</li>
+                            <li>High spend, low conversions</li>
+                            <li>Client complaints about wasted spend</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="problem-card sales">
+                    <h3 style="color: var(--warning);">Problem 2: Low Sales</h3>
+                    <p>Not selling enough / missing revenue opportunity</p>
+                    <div style="margin-top: 12px;">
+                        <strong>Sub-types:</strong>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li><strong>Low Spend</strong> - Can't spend the budget</li>
+                            <li><strong>Same Spend, Worse Results</strong> - Spending but on wrong things</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Problem → Root Cause Map</h2>
+            <p style="margin-bottom: 20px;">Each problem has multiple potential root causes. UAT tests verify each root cause is working correctly.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Problem</th>
+                        <th>Symptom</th>
+                        <th>Possible Root Causes</th>
+                        <th>Feature to Test</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="5"><span class="badge badge-danger">High ACOS</span></td>
+                        <td>Bidding too high on poor keywords</td>
+                        <td>CVR overestimated → Bid too high</td>
+                        <td>Bid Optimization</td>
+                    </tr>
+                    <tr>
+                        <td>Bad keywords getting impressions</td>
+                        <td>Negation not catching poor performers</td>
+                        <td>Negation</td>
+                    </tr>
+                    <tr>
+                        <td>Budget going to wrong campaigns</td>
+                        <td>Knapsack prioritizing wrong campaigns</td>
+                        <td>Budget Optimization</td>
+                    </tr>
+                    <tr>
+                        <td>Wrong campaigns active</td>
+                        <td>Pacing activating poor performers</td>
+                        <td>Auto-Pacing</td>
+                    </tr>
+                    <tr>
+                        <td>Manual override gone wrong</td>
+                        <td>User locked wrong campaigns ON</td>
+                        <td>Pacing Locks</td>
+                    </tr>
+                    <tr style="background: var(--gray-50);">
+                        <td rowspan="6"><span class="badge badge-warning">Low Sales</span></td>
+                        <td>Low impressions</td>
+                        <td>Bids too low (CVR underestimated)</td>
+                        <td>Bid Optimization</td>
+                    </tr>
+                    <tr style="background: var(--gray-50);">
+                        <td>Missing keywords</td>
+                        <td>Key terms not in campaigns (migration gap)</td>
+                        <td>KW Research / Migration</td>
+                    </tr>
+                    <tr style="background: var(--gray-50);">
+                        <td>Good campaigns paused</td>
+                        <td>Pacing paused best performers</td>
+                        <td>Auto-Pacing</td>
+                    </tr>
+                    <tr style="background: var(--gray-50);">
+                        <td>Budget not flowing to best</td>
+                        <td>Knapsack allocation wrong</td>
+                        <td>Budget Optimization</td>
+                    </tr>
+                    <tr style="background: var(--gray-50);">
+                        <td>Bids not reaching Amazon</td>
+                        <td>Sync failure</td>
+                        <td>Bid Sync</td>
+                    </tr>
+                    <tr style="background: var(--gray-50);">
+                        <td>Search terms not harvested</td>
+                        <td>Good performers not becoming keywords</td>
+                        <td>Harvesting</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>The Bid Formula - Source of Truth</h2>
+            <p style="margin-bottom: 16px;">Most efficiency and sales issues trace back to this formula. Understanding it is key to testing.</p>
+
+            <div class="formula-box">
+Bid = Target_ACOS × CVR × AOV
+
+Where:
+  Target_ACOS = Client's goal ACOS (e.g., 30% = 0.30)
+  CVR = Conversion Rate estimate (from waterfall)
+  AOV = Average Order Value
+
+Example:
+  Target_ACOS = 0.30 (30%)
+  CVR = 0.05 (5% conversion rate)
+  AOV = $50
+  Bid = 0.30 × 0.05 × $50 = $0.75
+            </div>
+
+            <h4 style="margin-top: 20px;">CVR Waterfall (When keyword-level CVR unavailable)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>Data Source</th>
+                        <th>Confidence</th>
+                        <th>When Used</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 (Best)</td>
+                        <td>ASIN + Keyword + Match Type</td>
+                        <td>1.0</td>
+                        <td>Keyword has conversion history</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>ASIN + Tag + Match Type</td>
+                        <td>0.8</td>
+                        <td>No keyword data, use tag average</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>ASIN + Match Type</td>
+                        <td>0.6</td>
+                        <td>No tag data, use ASIN average</td>
+                    </tr>
+                    <tr>
+                        <td>4 (Worst)</td>
+                        <td>Default CVR</td>
+                        <td>0.4</td>
+                        <td>New ASIN, no historical data</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>Key Testing Insight:</strong> If CVR is wrong, bid is wrong, and either efficiency OR sales suffers.
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li><strong>CVR too high</strong> → Bid too high → High ACOS (efficiency problem)</li>
+                    <li><strong>CVR too low</strong> → Bid too low → Low impressions → Low sales</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== POOR EFFICIENCY TESTS ==================== -->
+    <div id="efficiency" class="section">
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2 style="color: var(--danger); margin-bottom: 0;">Problem: Poor Efficiency (High ACOS)</h2>
+                    <p style="color: var(--gray-500);">Tests to verify system isn't wasting money</p>
+                </div>
+                <div class="progress-indicator">
+                    <span>0 of 8 complete</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+
+            <!-- Test E1: High ACOS Keyword Investigation -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">E1</div>
+                        <div class="test-case-title">High ACOS Keyword - CVR Mismatch Check</div>
+                    </div>
+                    <span class="badge badge-danger">Critical</span>
+                </div>
+
+                <p><strong>Scenario:</strong> A keyword has ACOS significantly above target. Is the system aware and responding?</p>
+
+                <div class="scenario-flow">
+                    <span class="node problem">High ACOS</span>
+                    <span class="arrow">→</span>
+                    <span class="node symptom">Bid Too High?</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">CVR Overestimated?</span>
+                </div>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Keyword Config</strong> → Sort by ACOS descending</li>
+                        <li>Pick the <strong>TOP 3 highest ACOS keywords</strong> (above target)</li>
+                        <li>For each keyword, open <strong>Bid Strategy Logs</strong></li>
+                        <li>Record these values:
+                            <ul>
+                                <li>Current Bid: $____</li>
+                                <li>CVR Used: ____% (from which level?)</li>
+                                <li>Target ACOS: ____%</li>
+                                <li>Actual ACOS: ____%</li>
+                            </ul>
+                        </li>
+                        <li>Calculate expected bid: <code>Target_ACOS × CVR × AOV</code></li>
+                        <li>Compare: Is actual bid close to calculated bid?</li>
+                        <li>Check CVR source: Is the CVR estimate reasonable given actual performance?</li>
+                    </ol>
+                </div>
+
+                <div class="root-cause-tree">
+                    <strong>Possible Root Causes if FAILING:</strong>
+                    <div class="root-cause-item">CVR from waterfall Level 2-4 is much higher than actual keyword CVR</div>
+                    <div class="root-cause-item">CVR data is stale (not refreshed recently)</div>
+                    <div class="root-cause-item">Manual bid override in place (check if bid is locked)</div>
+                    <div class="root-cause-item">Bid change limits preventing necessary decrease</div>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Bid matches formula (within 10%)</li>
+                            <li>CVR source is appropriate</li>
+                            <li>If high ACOS persists, bid is decreasing over time</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Bid doesn't match formula significantly</li>
+                            <li>CVR clearly wrong (10% CVR used but 0 conversions in 30 days)</li>
+                            <li>Bid not decreasing despite poor performance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test E2: Negation Responsiveness -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">E2</div>
+                        <div class="test-case-title">Negation - Poor Performer Removal Speed</div>
+                    </div>
+                    <span class="badge badge-warning">High</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Search terms with high spend and no conversions should be negated. Is it happening?</p>
+
+                <div class="scenario-flow">
+                    <span class="node problem">High ACOS</span>
+                    <span class="arrow">→</span>
+                    <span class="node symptom">Bad search terms still active</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">Negation too slow?</span>
+                </div>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Search Term Report</strong> → Filter: Last 14 days</li>
+                        <li>Sort by <strong>Spend descending</strong></li>
+                        <li>Find search terms with: Spend > $20 AND Conversions = 0</li>
+                        <li>For each, check:
+                            <ul>
+                                <li>Has it been negated? (Check Negative Keywords list)</li>
+                                <li>When was last negation cycle? (Should be every 3 hours)</li>
+                                <li>Does it meet negation criteria?</li>
+                            </ul>
+                        </li>
+                        <li>If NOT negated, investigate why (criteria not met? bug?)</li>
+                    </ol>
+                </div>
+
+                <div class="root-cause-tree">
+                    <strong>Possible Root Causes if FAILING:</strong>
+                    <div class="root-cause-item">Negation trigger not running (check last_run timestamp)</div>
+                    <div class="root-cause-item">Criteria thresholds too lenient</div>
+                    <div class="root-cause-item">Search term doesn't meet minimum impressions/clicks threshold</div>
+                    <div class="root-cause-item">Negation disabled for this ASIN/campaign</div>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Poor performers are negated within 24-48h</li>
+                            <li>Negation cycle running every 3 hours</li>
+                            <li>Clear reason why any non-negated term isn't meeting criteria</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>High-spend zero-conversion terms active for 3+ days</li>
+                            <li>Negation cycle not running</li>
+                            <li>No explanation for why term isn't negated</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test E3: Budget Going to Wrong Campaigns -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">E3</div>
+                        <div class="test-case-title">Budget Allocation - Worst Campaigns Check</div>
+                    </div>
+                    <span class="badge badge-warning">High</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Budget should flow to best ACOS campaigns first. Are worst campaigns getting too much?</p>
+
+                <div class="scenario-flow">
+                    <span class="node problem">High ACOS</span>
+                    <span class="arrow">→</span>
+                    <span class="node symptom">Budget going to bad campaigns</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">Knapsack allocation wrong?</span>
+                </div>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>List all <strong>ACTIVE campaigns</strong> for an ASIN with their:
+                            <ul>
+                                <li>Campaign Name</li>
+                                <li>ACOS (last 7 days)</li>
+                                <li>Daily Budget Allocated</li>
+                                <li>Actual Spend</li>
+                            </ul>
+                        </li>
+                        <li>Sort by ACOS (worst first)</li>
+                        <li>Check: Is the WORST ACOS campaign getting significant budget?</li>
+                        <li>Compare to BEST ACOS campaign - is it getting MORE budget?</li>
+                        <li>Verify economic prioritization is working:
+                            <ul>
+                                <li>Campaigns with ACOS < Target should get priority</li>
+                                <li>Campaigns with ACOS > Target should be deprioritized</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="root-cause-tree">
+                    <strong>Possible Root Causes if FAILING:</strong>
+                    <div class="root-cause-item">Knapsack not running (budget allocation stale)</div>
+                    <div class="root-cause-item">Projection data wrong (predicting good performance for bad campaign)</div>
+                    <div class="root-cause-item">Campaign manually locked ACTIVE</div>
+                    <div class="root-cause-item">Only one campaign, so no choice</div>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Best ACOS campaigns get more budget</li>
+                            <li>Worst ACOS campaigns are deprioritized (less budget or paused)</li>
+                            <li>Clear economic rationale for allocation</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Worst campaign getting most budget</li>
+                            <li>No correlation between ACOS and budget allocation</li>
+                            <li>Good campaigns starved while bad ones funded</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test E4: Pacing Activating Wrong Campaigns -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">E4</div>
+                        <div class="test-case-title">Pacing - Wrong Campaigns Active Check</div>
+                    </div>
+                    <span class="badge badge-info">Medium</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Pacing decides which campaigns to activate/pause. Is it choosing correctly?</p>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Pacing Management</strong> page for an ASIN</li>
+                        <li>List all campaigns with their pacing state:
+                            <ul>
+                                <li>AUTO_ACTIVE / AUTO_PAUSED / LOCKED_ACTIVE / LOCKED_PAUSED</li>
+                            </ul>
+                        </li>
+                        <li>For each AUTO_ACTIVE campaign, verify it SHOULD be active:
+                            <ul>
+                                <li>Has budget allocated?</li>
+                                <li>Has reasonable projected ROI?</li>
+                            </ul>
+                        </li>
+                        <li>For each AUTO_PAUSED campaign, verify it SHOULD be paused:
+                            <ul>
+                                <li>Was it deprioritized by knapsack?</li>
+                                <li>Is there a clear reason for pause?</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Active campaigns are economically viable</li>
+                            <li>Paused campaigns have clear reason</li>
+                            <li>Pacing states match knapsack decisions</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>High-ACOS campaign active while low-ACOS paused</li>
+                            <li>Pacing state doesn't match budget allocation</li>
+                            <li>No clear logic for active/paused decisions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test E5: Bid Decrease Responsiveness -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">E5</div>
+                        <div class="test-case-title">Bid Decrease - Response to Poor Performance</div>
+                    </div>
+                    <span class="badge badge-danger">Critical</span>
+                </div>
+
+                <p><strong>Scenario:</strong> When a keyword performs poorly, does the bid decrease appropriately?</p>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Find a keyword that has had HIGH ACOS for 5+ consecutive days</li>
+                        <li>Go to <strong>Bid Strategy Logs</strong> for this keyword</li>
+                        <li>Look at bid history over the past 7 days:
+                            <ul>
+                                <li>Day 1 Bid: $____</li>
+                                <li>Day 7 Bid: $____</li>
+                                <li>% Change: ____</li>
+                            </ul>
+                        </li>
+                        <li>Verify: Has the bid DECREASED in response to poor ACOS?</li>
+                        <li>If bid is flat/increasing despite poor ACOS, investigate:
+                            <ul>
+                                <li>Is bid at minimum already?</li>
+                                <li>Is there a daily change limit blocking decrease?</li>
+                                <li>Is CVR estimate not updating?</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Bid decreased over the period</li>
+                            <li>Or bid at minimum with clear documentation</li>
+                            <li>CVR estimate updated to reflect poor performance</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Bid flat or increased despite poor ACOS</li>
+                            <li>CVR estimate unchanged despite zero conversions</li>
+                            <li>No explanation for lack of response</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== LOW SALES TESTS ==================== -->
+    <div id="sales" class="section">
+
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2 style="color: var(--warning); margin-bottom: 0;">Problem: Low Sales</h2>
+                    <p style="color: var(--gray-500);">Tests to verify system isn't missing revenue opportunities</p>
+                </div>
+                <div class="progress-indicator">
+                    <span>0 of 10 complete</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+
+            <!-- LOW SPEND PATH -->
+            <h3 style="margin: 24px 0 16px; padding: 12px; background: var(--warning-light); border-radius: 8px;">Path A: Low Spend (Can't spend the budget)</h3>
+
+            <!-- Test S1: Low Bid Due to CVR Underestimate -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S1</div>
+                        <div class="test-case-title">Low Impressions - CVR Underestimate Check</div>
+                    </div>
+                    <span class="badge badge-danger">Critical</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Keywords getting few impressions might have bids too low because CVR is underestimated.</p>
+
+                <div class="scenario-flow">
+                    <span class="node problem">Low Sales</span>
+                    <span class="arrow">→</span>
+                    <span class="node symptom">Low Impressions</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">Bid Too Low?</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">CVR Underestimated?</span>
+                </div>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Keyword Config</strong> → Sort by Impressions ascending (lowest first)</li>
+                        <li>Pick keywords with: Impressions < 100 in last 7 days but historically good</li>
+                        <li>For each, check in <strong>Bid Strategy Logs</strong>:
+                            <ul>
+                                <li>Current Bid: $____</li>
+                                <li>CVR Used: ____% (from which level?)</li>
+                                <li>Historical CVR (before migration): ____%</li>
+                            </ul>
+                        </li>
+                        <li>Compare: Is current CVR estimate much LOWER than historical?</li>
+                        <li>Check competitor bids: Is our bid competitive for this keyword?</li>
+                    </ol>
+                </div>
+
+                <div class="root-cause-tree">
+                    <strong>Possible Root Causes if FAILING:</strong>
+                    <div class="root-cause-item highlight">CVR defaulting to low Level 3-4 value instead of historical data</div>
+                    <div class="root-cause-item">New keyword with no history - using conservative default</div>
+                    <div class="root-cause-item">Historical data not migrated properly</div>
+                    <div class="root-cause-item">Bid at minimum due to budget constraints</div>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>CVR estimate reasonable for keyword history</li>
+                            <li>Low impressions have clear reason (new kw, low search volume)</li>
+                            <li>Bids competitive for the market</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Historically converting keyword now has 0.5% default CVR</li>
+                            <li>Bid significantly lower than pre-migration</li>
+                            <li>CVR not reflecting actual performance data</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test S2: Missing Keywords -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S2</div>
+                        <div class="test-case-title">Missing Keywords - Pre-Migration Comparison</div>
+                    </div>
+                    <span class="badge badge-danger">Critical</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Keywords that drove sales before migration should still be active after migration.</p>
+
+                <div class="scenario-flow">
+                    <span class="node problem">Low Sales</span>
+                    <span class="arrow">→</span>
+                    <span class="node symptom">Missing traffic sources</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">Key keywords not migrated?</span>
+                </div>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Get the <strong>TOP 20 keywords by Sales</strong> from BEFORE migration (Amazon Ads report, last 30 days pre-migration)</li>
+                        <li>For each keyword, search in <strong>Keyword Config</strong> in our system</li>
+                        <li>Create a checklist:
+                            <table style="margin: 12px 0;">
+                                <tr><th>Keyword</th><th>Pre-Migration Sales</th><th>In System?</th><th>Active?</th><th>Current Bid</th></tr>
+                                <tr><td>[keyword 1]</td><td>$____</td><td>Y/N</td><td>Y/N</td><td>$____</td></tr>
+                                <tr><td>[keyword 2]</td><td>$____</td><td>Y/N</td><td>Y/N</td><td>$____</td></tr>
+                                <tr><td>...</td><td></td><td></td><td></td><td></td></tr>
+                            </table>
+                        </li>
+                        <li>Calculate: What % of top 20 keywords are active in our system?</li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>90%+ of top pre-migration keywords are in system</li>
+                            <li>All are active with competitive bids</li>
+                            <li>Any missing have documented reason</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Key revenue keywords missing from system</li>
+                            <li>Keywords in system but paused/inactive</li>
+                            <li>No explanation for missing keywords</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test S3: Good Campaigns Paused -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S3</div>
+                        <div class="test-case-title">Pacing - Good Campaigns Incorrectly Paused</div>
+                    </div>
+                    <span class="badge badge-warning">High</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Pacing might have paused campaigns that were actually performing well.</p>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Pacing Management</strong> → Filter: AUTO_PAUSED campaigns</li>
+                        <li>For each paused campaign, check:
+                            <ul>
+                                <li>Historical ACOS (before paused): ____%</li>
+                                <li>Historical Sales (before paused): $____</li>
+                                <li>Why was it paused? (Check pacing logs)</li>
+                            </ul>
+                        </li>
+                        <li>Identify any campaigns that:
+                            <ul>
+                                <li>Had ACOS BELOW target when paused</li>
+                                <li>Were driving significant sales</li>
+                                <li>Should NOT have been paused based on economics</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>All paused campaigns had poor ACOS or low ROI</li>
+                            <li>Clear economic reason for each pause</li>
+                            <li>No high-performing campaigns paused</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Campaign with ACOS below target is paused</li>
+                            <li>Top sales campaign paused while worse ones active</li>
+                            <li>No clear reason for pause decision</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test S4: Sync Failures -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S4</div>
+                        <div class="test-case-title">Bid Sync - Data Reaching Amazon</div>
+                    </div>
+                    <span class="badge badge-danger">Critical</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Our calculated bids must actually reach Amazon. Sync failures = system not working.</p>
+
+                <div class="scenario-flow">
+                    <span class="node problem">Low Sales</span>
+                    <span class="arrow">→</span>
+                    <span class="node symptom">System bids not on Amazon</span>
+                    <span class="arrow">→</span>
+                    <span class="node cause">Sync Failure</span>
+                </div>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Bid Strategy Logs</strong> → Check Sync Status column</li>
+                        <li>Filter for: Sync Status = FAILED or PENDING for >1 hour</li>
+                        <li>Count: How many keywords have sync issues?</li>
+                        <li>For any failed syncs:
+                            <ul>
+                                <li>What's the error message?</li>
+                                <li>When did it last try?</li>
+                                <li>Is retry happening?</li>
+                            </ul>
+                        </li>
+                        <li>Spot check 5 keywords: Compare Portal bid to Amazon Seller Central bid</li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>95%+ of bids synced successfully</li>
+                            <li>Portal bids match Amazon bids (spot check)</li>
+                            <li>Any failed syncs have clear error and retry</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Significant sync failures (>5%)</li>
+                            <li>Portal and Amazon bids don't match</li>
+                            <li>Failed syncs not retrying</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test S5: Budget Not Flowing to Best -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S5</div>
+                        <div class="test-case-title">Budget Allocation - Best Campaigns Starved</div>
+                    </div>
+                    <span class="badge badge-warning">High</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Best performing campaigns should get budget priority. Are they being starved?</p>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>List all campaigns for an ASIN sorted by ACOS (best first)</li>
+                        <li>For the TOP 3 lowest ACOS campaigns:
+                            <ul>
+                                <li>Daily budget allocated: $____</li>
+                                <li>Actual spend yesterday: $____</li>
+                                <li>% of budget spent: ____</li>
+                                <li>Limited by budget? Y/N</li>
+                            </ul>
+                        </li>
+                        <li>Check: Are best campaigns fully utilizing their budget?</li>
+                        <li>If limited, check: Why not give them more budget?</li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Best campaigns spending their full allocation</li>
+                            <li>If not spending, it's due to market/competition (not our limits)</li>
+                            <li>Budget re-allocated from poor to good campaigns</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Best campaign has $10 budget while worse has $100</li>
+                            <li>Good campaigns limited by budget while bad ones overfunded</li>
+                            <li>Total budget available but not flowing to best</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- SAME SPEND WORSE RESULTS PATH -->
+            <h3 style="margin: 24px 0 16px; padding: 12px; background: var(--orange-light); border-radius: 8px;">Path B: Same Spend, Worse Results</h3>
+
+            <!-- Test S6: Harvesting Check -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S6</div>
+                        <div class="test-case-title">Harvesting - Converting Search Terms Captured</div>
+                    </div>
+                    <span class="badge badge-info">Medium</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Search terms that convert should be harvested into Manual campaigns for better control.</p>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Go to <strong>Search Term Report</strong> → Filter: Last 30 days, Conversions > 0</li>
+                        <li>Sort by Conversions descending</li>
+                        <li>For TOP 10 converting search terms:
+                            <ul>
+                                <li>Is it a keyword in our Manual campaigns?</li>
+                                <li>If not, should it have been harvested?</li>
+                                <li>Check: Does it meet harvesting criteria?</li>
+                            </ul>
+                        </li>
+                        <li>For ASIN-based search terms (10-digit B0...):
+                            <ul>
+                                <li>Is it added to ASIN Targeting campaigns?</li>
+                                <li>Does it show "Harvested" in System Remarks?</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>80%+ of qualifying search terms are harvested</li>
+                            <li>ASIN search terms in ASIN Targeting</li>
+                            <li>Harvested items marked in UI</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>High-converting search terms not in Manual campaigns</li>
+                            <li>Harvesting criteria met but not harvested</li>
+                            <li>ASIN search terms not becoming targets</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+            <!-- Test S7: Bid Increase Response -->
+            <div class="test-case">
+                <div class="test-case-header">
+                    <div>
+                        <div class="test-case-id">S7</div>
+                        <div class="test-case-title">Bid Increase - Response to Good Performance</div>
+                    </div>
+                    <span class="badge badge-warning">High</span>
+                </div>
+
+                <p><strong>Scenario:</strong> Keywords with ACOS below target should get bid increases to capture more volume.</p>
+
+                <div class="test-steps">
+                    <strong>How to Test:</strong>
+                    <ol>
+                        <li>Find keywords with ACOS significantly BELOW target for 5+ days</li>
+                        <li>Check bid history in <strong>Bid Strategy Logs</strong>:
+                            <ul>
+                                <li>Day 1 Bid: $____</li>
+                                <li>Day 7 Bid: $____</li>
+                                <li>Direction: Increased / Flat / Decreased</li>
+                            </ul>
+                        </li>
+                        <li>Verify: Is the system increasing bids to capture more volume?</li>
+                        <li>Check CVR: Has CVR estimate increased to reflect good performance?</li>
+                    </ol>
+                </div>
+
+                <div class="pass-fail-criteria">
+                    <div class="pass-box">
+                        <strong style="color: var(--success);">PASS if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Bid increased for high-performing keywords</li>
+                            <li>CVR estimate updated to reflect conversions</li>
+                            <li>System is aggressive on winners</li>
+                        </ul>
+                    </div>
+                    <div class="fail-box">
+                        <strong style="color: var(--danger);">FAIL if:</strong>
+                        <ul style="margin-left: 16px; margin-top: 8px;">
+                            <li>Great keyword stuck at low bid</li>
+                            <li>CVR not updating despite conversions</li>
+                            <li>Missing opportunity to scale winners</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="checklist-actions">
+                    <button class="btn btn-success" onclick="passTest(this)">✓ Pass</button>
+                    <button class="btn btn-danger" onclick="failTest(this)">✗ Fail</button>
+                    <button class="btn btn-secondary">Skip (N/A)</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== FULL CHECKLIST ==================== -->
+    <div id="checklist" class="section">
+
+        <div class="card">
+            <h2>Complete UAT Checklist</h2>
+            <p style="margin-bottom: 20px;">All test cases in one view. Track progress across the rollout.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Test Case</th>
+                        <th>Problem</th>
+                        <th>Feature</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="6" style="background: var(--danger-light); font-weight: 600;">EFFICIENCY TESTS</td></tr>
+                    <tr>
+                        <td>E1</td>
+                        <td>High ACOS Keyword - CVR Mismatch Check</td>
+                        <td>High ACOS</td>
+                        <td>Bid Optimization</td>
+                        <td><span class="badge badge-danger">Critical</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>E2</td>
+                        <td>Negation - Poor Performer Removal Speed</td>
+                        <td>High ACOS</td>
+                        <td>Negation</td>
+                        <td><span class="badge badge-warning">High</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>E3</td>
+                        <td>Budget Allocation - Worst Campaigns Check</td>
+                        <td>High ACOS</td>
+                        <td>Budget/Knapsack</td>
+                        <td><span class="badge badge-warning">High</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>E4</td>
+                        <td>Pacing - Wrong Campaigns Active Check</td>
+                        <td>High ACOS</td>
+                        <td>Auto-Pacing</td>
+                        <td><span class="badge badge-info">Medium</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>E5</td>
+                        <td>Bid Decrease - Response to Poor Performance</td>
+                        <td>High ACOS</td>
+                        <td>Bid Optimization</td>
+                        <td><span class="badge badge-danger">Critical</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+
+                    <tr><td colspan="6" style="background: var(--warning-light); font-weight: 600;">SALES TESTS - LOW SPEND PATH</td></tr>
+                    <tr>
+                        <td>S1</td>
+                        <td>Low Impressions - CVR Underestimate Check</td>
+                        <td>Low Sales</td>
+                        <td>Bid Optimization</td>
+                        <td><span class="badge badge-danger">Critical</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>S2</td>
+                        <td>Missing Keywords - Pre-Migration Comparison</td>
+                        <td>Low Sales</td>
+                        <td>Migration/Setup</td>
+                        <td><span class="badge badge-danger">Critical</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>S3</td>
+                        <td>Pacing - Good Campaigns Incorrectly Paused</td>
+                        <td>Low Sales</td>
+                        <td>Auto-Pacing</td>
+                        <td><span class="badge badge-warning">High</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>S4</td>
+                        <td>Bid Sync - Data Reaching Amazon</td>
+                        <td>Low Sales</td>
+                        <td>Sync</td>
+                        <td><span class="badge badge-danger">Critical</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>S5</td>
+                        <td>Budget Allocation - Best Campaigns Starved</td>
+                        <td>Low Sales</td>
+                        <td>Budget/Knapsack</td>
+                        <td><span class="badge badge-warning">High</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+
+                    <tr><td colspan="6" style="background: var(--orange-light); font-weight: 600;">SALES TESTS - SAME SPEND PATH</td></tr>
+                    <tr>
+                        <td>S6</td>
+                        <td>Harvesting - Converting Search Terms Captured</td>
+                        <td>Low Sales</td>
+                        <td>Harvesting</td>
+                        <td><span class="badge badge-info">Medium</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>S7</td>
+                        <td>Bid Increase - Response to Good Performance</td>
+                        <td>Low Sales</td>
+                        <td>Bid Optimization</td>
+                        <td><span class="badge badge-warning">High</span></td>
+                        <td><span class="badge badge-gray">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- ==================== METHODOLOGY ==================== -->
+    <div id="methodology" class="section">
+
+        <div class="card">
+            <h2>Test Methodology</h2>
+            <p style="margin-bottom: 20px;">How to approach each test case systematically.</p>
+
+            <h3>1. Start With Outcomes, Not Features</h3>
+            <div class="highlight-box">
+                <strong>Wrong approach:</strong> "Let me check if Bid Optimization is working"<br>
+                <strong>Right approach:</strong> "Let me check if we have any High ACOS keywords and trace why"
+            </div>
+
+            <h3 style="margin-top: 24px;">2. Use Real Data, Not Sample Data</h3>
+            <p>For each test:</p>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>Use ACTUAL keywords from the account being tested</li>
+                <li>Look at REAL performance data (last 7-14 days)</li>
+                <li>Compare to ACTUAL pre-migration benchmarks</li>
+            </ul>
+
+            <h3 style="margin-top: 24px;">3. The Investigation Flow</h3>
+            <div class="test-steps">
+                <ol>
+                    <li><strong>Identify the symptom:</strong> High ACOS keyword, low impressions, missing keyword, etc.</li>
+                    <li><strong>Trace the cause:</strong> What input/logic/data led to this outcome?</li>
+                    <li><strong>Verify the logic:</strong> Given the inputs, is the output correct?</li>
+                    <li><strong>Document the finding:</strong> Pass (working as intended) or Fail (bug/issue)</li>
+                </ol>
+            </div>
+
+            <h3 style="margin-top: 24px;">4. Example Investigation</h3>
+            <div class="test-case">
+                <div class="test-case-title">Example: "Keyword 'dog casket' has 85% ACOS (target is 30%)"</div>
+
+                <div class="test-steps">
+                    <strong>Investigation steps:</strong>
+                    <ol>
+                        <li><strong>Check current bid:</strong> $2.50</li>
+                        <li><strong>Check CVR used:</strong> 8% (from Tag level)</li>
+                        <li><strong>Check AOV:</strong> $75</li>
+                        <li><strong>Calculate expected bid:</strong> 0.30 × 0.08 × $75 = $1.80</li>
+                        <li><strong>Compare:</strong> Actual bid ($2.50) > Expected ($1.80)</li>
+                        <li><strong>Why?</strong> Check if bid is manually locked or change limit preventing decrease</li>
+                        <li><strong>Check actual CVR:</strong> 2% (not 8%!)</li>
+                        <li><strong>Root cause:</strong> CVR estimate (8%) much higher than actual (2%)</li>
+                        <li><strong>Verdict:</strong> FAIL - CVR waterfall using stale tag data</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 24px;">5. When to Report a FAIL</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Report as FAIL when...</th>
+                        <th>Do NOT report as FAIL when...</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>System behavior doesn't match documented logic</td>
+                        <td>Performance is suboptimal due to market conditions</td>
+                    </tr>
+                    <tr>
+                        <td>Data inputs are clearly wrong (CVR way off)</td>
+                        <td>New keyword has conservative defaults (expected)</td>
+                    </tr>
+                    <tr>
+                        <td>Feature not running when it should be</td>
+                        <td>Feature working but results take time</td>
+                    </tr>
+                    <tr>
+                        <td>Sync failures blocking operations</td>
+                        <td>One-off sync retry that succeeded</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 24px;">6. Testing Schedule</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Type</th>
+                        <th>Frequency</th>
+                        <th>Why</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sync checks (S4)</td>
+                        <td>Daily</td>
+                        <td>Sync failures are critical - catch immediately</td>
+                    </tr>
+                    <tr>
+                        <td>CVR/Bid checks (E1, S1)</td>
+                        <td>Every 3 days</td>
+                        <td>Need time for performance data to accumulate</td>
+                    </tr>
+                    <tr>
+                        <td>Pacing/Budget checks (E3, E4, S3, S5)</td>
+                        <td>Weekly</td>
+                        <td>Pacing decisions need time to show impact</td>
+                    </tr>
+                    <tr>
+                        <td>Migration check (S2)</td>
+                        <td>Once at start, once at end</td>
+                        <td>Should be stable after initial setup</td>
+                    </tr>
+                    <tr>
+                        <td>Negation/Harvesting (E2, S6)</td>
+                        <td>Weekly</td>
+                        <td>Need enough data for meaningful assessment</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function passTest(btn) {
+        const testCase = btn.closest('.test-case');
+        testCase.style.borderColor = 'var(--success)';
+        testCase.style.background = 'var(--success-light)';
+        btn.parentElement.innerHTML = '<span class="badge badge-success" style="font-size: 14px; padding: 8px 16px;">PASSED</span>';
+    }
+
+    function failTest(btn) {
+        const testCase = btn.closest('.test-case');
+        testCase.style.borderColor = 'var(--danger)';
+        testCase.style.background = 'var(--danger-light)';
+        btn.parentElement.innerHTML = `
+            <div style="width: 100%;">
+                <span class="badge badge-danger" style="font-size: 14px; padding: 8px 16px; margin-bottom: 12px;">FAILED</span>
+                <div style="margin-top: 12px;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 8px;">Root Cause Found:</label>
+                    <textarea style="width: 100%; padding: 12px; border: 1px solid var(--danger); border-radius: 6px; min-height: 80px;" placeholder="Describe what you found and the root cause..."></textarea>
+                    <button class="btn btn-danger" style="margin-top: 8px;">Create Issue</button>
+                </div>
+            </div>
+        `;
+    }
+</script>
+
+</body>
+</html>

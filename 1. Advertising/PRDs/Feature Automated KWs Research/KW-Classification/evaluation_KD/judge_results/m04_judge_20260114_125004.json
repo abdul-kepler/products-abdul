@@ -1,0 +1,733 @@
+{
+  "module": "m04",
+  "model": "gpt-4o-mini",
+  "timestamp": "2026-01-14T12:50:04.457428",
+  "summary": {
+    "pass": 44,
+    "fail": 36,
+    "error": 0
+  },
+  "pass_rate": 55.00000000000001,
+  "evaluations": [
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"le creuset oven mitt\".\n2. The competitor entities list includes \"Le Creuset\", which is a direct match with the term \"le creuset\" in the keyword.\n3. The module output indicates \"branding_scope_2\" as \"CB\", which is correct because the keyword contains a term from the competitor's list.\n4. The reasoning provided in the module output states that the keyword contains \"le creuset\" which matches the competitor entity \"Le Creuset\". This is accurate.\n5. Since the output correctly identifies the presence of a competitor brand in the keyword and returns \"CB\", it meets the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 726,
+      "sample_id": "M4_B08J8GZXKZ__le creuset oven mitt:le creuset oven mitt",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"le creuset oven mitt\" and a list of competitor entities that includes \"Le Creuset\".\n2. The module output classifies the keyword as \"CB\" (competitor brand) with a high confidence of 0.95, stating that the keyword contains \"le creuset\", which matches the competitor entity \"Le Creuset\".\n3. According to the rubric criterion, own brand terms should never trigger a CB classification. The own brand specified in the input is \"KitchenAid\" and its variations, which are not present in the keyword or the classification.\n4. However, the keyword \"le creuset\" is indeed an own brand term that is being classified as a competitor brand, which violates the rubric's PASS conditions.\n5. The classification of \"le creuset\" as CB indicates that the module has incorrectly identified an own brand term as a competitor, leading to a failure in meeting the criterion.\n\n**Verdict:** FAIL",
+      "tokens_used": 766,
+      "sample_id": "M4_B08J8GZXKZ__le creuset oven mitt:le creuset oven mitt",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"le creuset oven mitt\".\n2. The module output states that the keyword contains \"le creuset\", which it claims matches the competitor entity \"Le Creuset\".\n3. The criterion requires that only complete word/phrase matches are accepted, and substring matches are rejected.\n4. In this case, \"le creuset\" is indeed a complete phrase that matches the competitor entity \"Le Creuset\" exactly, respecting the word boundary.\n5. There are no partial or substring matches involved in this evaluation, as \"le creuset\" and \"Le Creuset\" are considered the same phrase when accounting for case sensitivity.\n6. The output does not confuse generic words with brands, as \"le creuset\" is a recognized brand name and is treated as such.\n\n**Verdict:** PASS",
+      "tokens_used": 756,
+      "sample_id": "M4_B08J8GZXKZ__le creuset oven mitt:le creuset oven mitt",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies \"Le Creuset\" as a known brand based on the keyword \"le creuset oven mitt.\" This matches the competitor entity \"Le Creuset\" listed in the input data.\n2. The output correctly recognizes \"Le Creuset\" regardless of its presence in the competitors list, fulfilling the requirement of detecting known brands using category knowledge.\n3. The output does not miss any known brands that are not in the provided list, as it successfully identifies \"Le Creuset\" which is a well-known brand in the kitchenware category.\n4. The confidence level of 0.95 indicates a high certainty in the detection of the brand, further supporting the accuracy of the output.\n\n**Verdict:** PASS",
+      "tokens_used": 732,
+      "sample_id": "M4_B08J8GZXKZ__le creuset oven mitt:le creuset oven mitt",
+      "sample_idx": 0
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"homwe silicone oven mitt\".\n2. The competitor entities list includes \"HOMWE\" (case insensitive match).\n3. The module output indicates \"branding_scope_2\": \"CB\", which means it has classified the keyword as containing a competitor brand.\n4. The reasoning provided by the module states that the keyword contains \"homwe\", which matches the competitor entity \"HOMWE\".\n5. According to the rubric, the output should return \"CB\" when the keyword contains a term from the competitors list, which it does in this case.\n6. There are no conditions that would lead to a failure, as the module correctly identified the presence of a competitor brand in the keyword.\n\n**Verdict:** PASS",
+      "tokens_used": 734,
+      "sample_id": "M4_B08J8GZXKZ__homwe silicone oven mitt:homwe silicone oven ",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"homwe silicone oven mitt\" and a list of competitor entities, which includes \"HOMWE\".\n2. The module output classifies the keyword as \"CB\" (competitor brand) with a high confidence of 0.95, stating that the keyword contains \"homwe\" which matches the competitor entity \"HOMWE\".\n3. According to the rubric criterion \"Own Brand Excluded\", own brand terms should never trigger CB classification. The own brand specified in the input is \"KitchenAid\" and its variations, which do not include \"homwe\".\n4. However, the classification of \"homwe\" as a competitor brand is problematic because it is a variation of the own brand term \"HOMWE\", which is included in the competitor entities. The output fails to recognize that \"homwe\" is a variation of the own brand term and incorrectly classifies it as a competitor brand.\n5. Since the output classifies an own brand variation as a competitor, it directly violates the FAIL condition of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 789,
+      "sample_id": "M4_B08J8GZXKZ__homwe silicone oven mitt:homwe silicone oven ",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"homwe silicone oven mitt\".\n2. The module output states that the keyword contains \"homwe\", which it claims matches the competitor entity \"HOMWE\".\n3. According to the rubric criterion, only complete word matches are accepted, and partial or substring matches should be rejected.\n4. The term \"homwe\" is indeed a substring of \"HOMWE\", which means it does not constitute a full word match as per the criterion.\n5. The module's reasoning incorrectly identifies \"homwe\" as a complete match to \"HOMWE\", which violates the requirement that only full words should match.\n6. Therefore, the output fails to respect the word boundary criterion.\n\n**Verdict:** FAIL",
+      "tokens_used": 738,
+      "sample_id": "M4_B08J8GZXKZ__homwe silicone oven mitt:homwe silicone oven ",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies the brand \"HOMWE\" as a recognized competitor entity based on the keyword \"homwe silicone oven mitt.\" \n2. The output states that the keyword contains \"homwe,\" which matches the competitor entity \"HOMWE.\" This indicates that the module successfully detected a known brand.\n3. The rubric criterion specifies that known brands should be detected even if they are not in the provided competitors list. However, in this case, \"HOMWE\" is indeed present in the competitor entities list.\n4. The module output does not mention any other known brands that might have been missed, but it does not need to since it successfully identified \"HOMWE.\"\n5. Since the module output correctly identifies a known brand that is present in the competitor list, it meets the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 758,
+      "sample_id": "M4_B08J8GZXKZ__homwe silicone oven mitt:homwe silicone oven ",
+      "sample_idx": 1
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"gorilla grip oven mitts\" and a list of competitor entities, which includes \"GORILLA GRIP\".\n2. The module output indicates \"branding_scope_2\" as \"CB\" (competitor brand) and provides a confidence level of 0.96, along with reasoning that states the keyword contains \"gorilla grip\", which matches the competitor entity \"Gorilla Grip\".\n3. According to the rubric, the output should return \"CB\" only when the keyword contains a term from the competitor's list. In this case, \"gorilla grip\" is indeed present in the keyword and matches the competitor entity \"Gorilla Grip\".\n4. There are no conditions in the rubric that would lead to a failure in this case, as the output correctly identifies the presence of a competitor brand in the keyword.\n\n**Verdict:** PASS",
+      "tokens_used": 766,
+      "sample_id": "M4_B08J8GZXKZ__gorilla grip oven mitts:gorilla grip oven mi",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"gorilla grip oven mitts\" and a list of competitor entities, which includes \"GORILLA GRIP\".\n2. The module output classifies the keyword as \"CB\" (competitor brand) with a high confidence of 0.96, stating that the keyword contains \"gorilla grip\" which matches the competitor entity \"Gorilla Grip\".\n3. According to the rubric criterion \"Own Brand Excluded\", own brand terms should never trigger CB classification. The own brand in this case is \"KitchenAid\" and its variations, which are not present in the keyword or the competitor entities.\n4. However, the keyword \"gorilla grip\" is indeed a direct match to a competitor entity, which is a violation of the PASS conditions. The own brand terms are not relevant here, but the classification of \"gorilla grip\" as a competitor brand is the critical point.\n5. Since the module output classifies \"gorilla grip\" as a competitor brand, it fails to meet the requirement that own brand terms should not trigger CB classification.\n\n**Verdict:** FAIL",
+      "tokens_used": 797,
+      "sample_id": "M4_B08J8GZXKZ__gorilla grip oven mitts:gorilla grip oven mi",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"gorilla grip oven mitts\".\n2. The module output states that the keyword contains \"gorilla grip\", which it claims exactly matches the competitor entity \"Gorilla Grip\".\n3. According to the rubric criterion, only complete word/phrase matches are accepted, and partial or substring matches must be rejected.\n4. The term \"gorilla grip\" is indeed a substring of the competitor entity \"Gorilla Grip\". However, the module output claims it is an exact match, which is misleading because it does not consider the case sensitivity and the context of the full phrase.\n5. The output does not demonstrate that it respects the word boundary criterion, as it identifies a substring match as an exact match.\n6. Therefore, the module output fails to meet the requirement of rejecting substring matches.\n\n**Verdict:** FAIL",
+      "tokens_used": 764,
+      "sample_id": "M4_B08J8GZXKZ__gorilla grip oven mitts:gorilla grip oven mi",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies \"Gorilla Grip\" as a known brand, which is present in the competitor entities list.\n2. The output states that the keyword \"gorilla grip\" matches the competitor entity \"Gorilla Grip\" exactly, demonstrating that the module is capable of recognizing this brand.\n3. The rubric criterion requires that known brands be detected even if they are not in the provided competitors list. However, in this case, \"Gorilla Grip\" is indeed in the list, which means the module has successfully recognized a known brand.\n4. There are no missed known brands in the output since \"Gorilla Grip\" was correctly identified.\n\nSince the module output meets the conditions of recognizing a known brand that is present in the competitors list, it passes the criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 753,
+      "sample_id": "M4_B08J8GZXKZ__gorilla grip oven mitts:gorilla grip oven mi",
+      "sample_idx": 2
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"martha stewart oven mitts\" and a list of competitor entities, which includes \"Martha Stewart\".\n2. The module output indicates \"branding_scope_2\" as \"CB\" (competitor brand) and provides a reasoning that the keyword contains \"Martha Stewart\", which matches a competitor entity.\n3. According to the rubric, the output should return \"CB\" only when the keyword contains a term from the competitors list. In this case, the keyword does indeed contain \"Martha Stewart\", which is a competitor brand.\n4. The output correctly identifies the presence of a competitor brand in the keyword and returns \"CB\" as expected.\n5. There are no conditions that would lead to a failure: the output does not return \"CB\" when there is no competitor brand in the keyword, nor does it return null when there is a match.\n\n**Verdict:** PASS",
+      "tokens_used": 774,
+      "sample_id": "M4_B08J8GZXKZ__martha stewart oven mitts:martha stewart oven ",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"martha stewart oven mitts\" and a list of competitor entities, which includes \"Martha Stewart.\"\n2. The own brand is \"KitchenAid,\" with variations listed, but none of these terms are present in the keyword.\n3. The module output classifies the keyword as \"CB\" (competitor brand) and provides a confidence score of 0.96, stating that the keyword contains \"Martha Stewart,\" which matches a competitor entity.\n4. According to the rubric criterion, own brand terms should never trigger a CB classification. In this case, \"Martha Stewart\" is not an own brand term; it is a competitor brand.\n5. The output does not classify any own brand terms as CB, nor does it match any own brand variations as competitors. Therefore, it does not violate the PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 753,
+      "sample_id": "M4_B08J8GZXKZ__martha stewart oven mitts:martha stewart oven ",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies the keyword \"martha stewart oven mitts\" and notes that it contains the phrase \"Martha Stewart.\"\n2. The reasoning provided states that \"Martha Stewart\" exactly matches a competitor entity, which is true as \"Martha Stewart\" is listed among the competitor entities.\n3. The criterion requires that only complete word/phrase matches are accepted, and the module output correctly identifies \"Martha Stewart\" as a complete match without any substring confusion.\n4. There are no instances of substring matches or confusion with generic words or brands in the output.\n\n**Verdict:** PASS",
+      "tokens_used": 716,
+      "sample_id": "M4_B08J8GZXKZ__martha stewart oven mitts:martha stewart oven ",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies \"Martha Stewart\" as a known brand, which is present in the competitor entities list. This aligns with the PASS condition of recognizing known brands.\n2. The output states that the keyword contains \"Martha Stewart,\" which matches exactly with the competitor entity \"Martha Stewart.\" This indicates that the module is correctly detecting a recognizable brand.\n3. The rubric criterion specifies that known brands should be detected even if they are not in the provided competitors list. However, in this case, \"Martha Stewart\" is indeed in the list, so the module's output is valid.\n4. There are no missed known brands in the output, as it successfully identifies \"Martha Stewart.\"\n\n**Verdict:** PASS",
+      "tokens_used": 736,
+      "sample_id": "M4_B08J8GZXKZ__martha stewart oven mitts:martha stewart oven ",
+      "sample_idx": 3
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"all clad oven mitts\".\n2. The competitor entities list includes \"All-Clad\", which is a direct match to the term \"all clad\" in the keyword (case insensitive).\n3. The module output indicates \"branding_scope_2\" as \"CB\", which is correct because the keyword contains a term from the competitor list.\n4. The reasoning provided in the module output states that the keyword contains \"all clad\" which matches the competitor entity \"All-Clad\". This reasoning is accurate and supports the classification.\n5. There are no conditions that would lead to a failure: the output correctly identifies the presence of a competitor brand in the keyword and returns \"CB\" as expected.\n\n**Verdict:** PASS",
+      "tokens_used": 734,
+      "sample_id": "M4_B08J8GZXKZ__all clad oven mitts:all clad oven mitts",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"all clad oven mitts\" and a list of competitor entities, which includes \"All-Clad.\"\n2. The module output classifies the keyword as \"CB\" (competitor brand) with a high confidence of 0.95, stating that the keyword contains \"all clad,\" which matches the competitor entity \"All-Clad.\"\n3. According to the rubric criterion \"Own Brand Excluded,\" own brand terms should never trigger a CB classification. The own brand in this case is \"KitchenAid,\" which is not mentioned in the keyword or the classification.\n4. However, the keyword \"all clad\" is a variation of the own brand term \"All-Clad,\" which is classified as a competitor brand. This indicates that the module has incorrectly classified an own brand variation as a competitor.\n5. Since the output classifies \"all clad\" as a competitor brand, it fails to meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 770,
+      "sample_id": "M4_B08J8GZXKZ__all clad oven mitts:all clad oven mitts",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"all clad oven mitts\".\n2. The module output states that the keyword contains \"all clad\", which it claims matches the competitor entity \"All-Clad\".\n3. The criterion requires that only complete word/phrase matches are accepted, and partial or substring matches must be rejected.\n4. The term \"all clad\" is a substring of the competitor entity \"All-Clad\". While \"All-Clad\" is a recognized brand, the module's reasoning does not demonstrate that it is treating \"all clad\" as a complete match but rather as a substring match.\n5. The module fails to respect the word boundary criterion because it does not confirm that \"all clad\" is a complete word match with \"All-Clad\"; instead, it implies a partial match.\n\n**Verdict:** FAIL",
+      "tokens_used": 755,
+      "sample_id": "M4_B08J8GZXKZ__all clad oven mitts:all clad oven mitts",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The module output identifies \"All-Clad\" as a known brand, which is present in the competitor entities list.\n2. The reasoning provided states that the keyword \"all clad\" matches the competitor entity \"All-Clad\" exactly, demonstrating that the module is capable of recognizing this brand.\n3. The rubric criterion requires that known brands be detected even if they are not in the provided competitors list. However, in this case, \"All-Clad\" is indeed in the list, which means the module's detection aligns with the PASS conditions.\n4. There are no missed known brands in the output since \"All-Clad\" was correctly identified.\n\n**Verdict:** PASS",
+      "tokens_used": 722,
+      "sample_id": "M4_B08J8GZXKZ__all clad oven mitts:all clad oven mitts",
+      "sample_idx": 4
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"oven mitts oxo\" and a list of competitor entities.\n2. The competitor entities do not include any terms that match the keyword \"oven mitts oxo.\" Therefore, there are no competitor brands present in the keyword.\n3. The module output indicates that the `branding_scope_2` is `null`, which is appropriate since there is no match with the competitor brands.\n4. The reasoning provided in the module output states that the keyword contains \"KitchenAid,\" which matches the own brand entity. However, the criterion specifically requires checking for competitor brands in the keyword, not the own brand.\n5. Since the keyword does not contain any competitor brand, the output of `null` is correct according to the rubric, as it passes to M05.\n6. The expected output indicates that `branding_scope_2` should be \"CB,\" which is incorrect based on the input data.\n\nGiven that the module output correctly returned `null` when there were no competitor brands in the keyword, it aligns with the rubric's PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 801,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts oxo:oven mitts oxo",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"oven mitts oxo\" and specifies \"KitchenAid\" as the own brand with variations of its name listed.\n2. The module output indicates that the branding scope is null, which suggests that it did not classify the keyword as a competitor brand (CB).\n3. However, the reasoning provided in the module output states that the keyword contains \"KitchenAid,\" which matches an own brand entity. This indicates that the module recognized the presence of an own brand term.\n4. According to the rubric criterion, own brand terms should never trigger CB classification. The expected output (ground truth reference) indicates that the correct classification should have been \"CB\" if the own brand term was recognized.\n5. Since the module output states that the branding scope is null but also acknowledges the presence of an own brand term, it creates a contradiction. The presence of \"KitchenAid\" should have led to a null classification, but the reasoning suggests otherwise.\n\nGiven that the module output fails to adhere to the rubric by recognizing an own brand term and still returning a null classification, it does not meet the PASS conditions.\n\n**Verdict:** FAIL",
+      "tokens_used": 796,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts oxo:oven mitts oxo",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"oven mitts oxo,\" which does not contain any reference to the brand \"KitchenAid.\"\n2. The module output states that the keyword contains \"KitchenAid,\" which is incorrect. The keyword does not include this term, and thus, the module is making a substring match rather than a full word match.\n3. The criterion specifically states that only complete word/phrase matches should be accepted, and generic words should not be confused with brands. In this case, \"KitchenAid\" is a brand name, and the module incorrectly identifies it as part of the keyword.\n4. Since the module output incorrectly identifies a substring match (the brand \"KitchenAid\" is not present in the keyword), it fails to respect the word boundary criterion.\n\n**Verdict:** FAIL",
+      "tokens_used": 744,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts oxo:oven mitts oxo",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitor list.\n2. The input data includes a competitor list with various brands, but it does not include \"KitchenAid,\" which is the own brand mentioned in the module output.\n3. The module output identifies \"KitchenAid\" as a recognized brand based on the keyword provided, which is a positive aspect.\n4. However, the output does not mention any other known brands that could have been detected from the input data, such as \"HOMWE,\" which is a known brand but is not recognized in the output.\n5. The expected output indicates that the branding scope should be \"CB,\" which suggests that multiple known brands should have been detected, not just the own brand.\n6. Since the module output fails to recognize any known brands outside of the own brand and does not meet the requirement of detecting recognizable brands from the input data, it does not fulfill the PASS conditions.\n\n**Verdict:** FAIL",
+      "tokens_used": 781,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts oxo:oven mitts oxo",
+      "sample_idx": 5
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"oxo oven mitts\".\n2. The competitor entities list includes various brands, but \"oxo\" is not present in that list.\n3. The module output indicates that the branding scope is `null`, which suggests that it did not find any competitor brand in the keyword.\n4. According to the rubric, the output should return \"CB\" if the keyword contains a term from the competitor list, and `null` if there is no match.\n5. Since \"oxo\" is not a competitor brand, the module correctly returns `null`.\n6. However, the expected output (ground truth reference) indicates that it should return \"CB\", which is incorrect based on the provided keyword and competitor list.\n7. The module's reasoning states that the keyword does not match any own brand entities and does not mention any competitor brands either, which aligns with the correct interpretation of the input data.\n\nGiven that the module output is `null` when it should have returned \"CB\" based on the expected output, it indicates a failure in classification.\n\n**Verdict:** FAIL",
+      "tokens_used": 811,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitts:oxo oven mitts",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies the keyword \"oxo oven mitts\" and lists \"KitchenAid\" as the own brand with its variations.\n2. The module output indicates that the branding scope is null, which means that it did not classify the keyword as a competitor brand (CB).\n3. The reasoning provided in the module output states that the keyword does not match any own brand entities and does not mention any competitor brands either.\n4. According to the rubric criterion, own brand terms should never trigger CB classification. Since the output is null and does not classify the own brand \"KitchenAid\" or its variations as CB, it aligns with the PASS conditions.\n5. The expected output (ground truth reference) indicates a classification of \"CB,\" which contradicts the module output of null. However, the module's output correctly identifies that the keyword does not match any own brand entities, thus adhering to the criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 765,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitts:oxo oven mitts",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"oxo oven mitts.\" The module output states that the keyword does not match any own brand entities, which is accurate since \"oxo\" is not part of the own brand \"KitchenAid.\"\n2. The output also mentions that it does not mention any competitor brands. However, the keyword \"oxo\" is a brand name that could be confused with the competitor entities listed, particularly since \"Ove Glove\" and \"HOMWE\" are both oven mitt brands.\n3. The criterion states that only complete word/phrase matches should be accepted, and generic words should not be confused with brands. The module output does not explicitly reject any substring matches, but it also does not identify any potential confusion with competitor brands.\n4. The output fails to recognize that \"oxo\" is a brand name and could lead to confusion with the competitor entities, which violates the rubric's requirement to respect word boundaries and not confuse generic terms with brand names.\n\n**Verdict:** FAIL",
+      "tokens_used": 798,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitts:oxo oven mitts",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires that known brands be detected, even if they are not included in the provided competitors list.\n2. The input data includes a keyword \"oxo oven mitts\" and a list of competitor entities, which includes brands like \"HOMWE\" and \"Gorilla Grip.\"\n3. The module output states that the keyword does not match any own brand entities and does not mention any competitor brands either.\n4. The output fails to recognize \"OXO,\" which is a well-known brand in kitchenware, including oven mitts. This brand is not listed in the competitor entities but is relevant to the keyword provided.\n5. Since the module output did not detect a known brand (OXO) that is relevant to the keyword, it fails to meet the PASS conditions of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 760,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitts:oxo oven mitts",
+      "sample_idx": 6
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"blue q oven mitt\".\n2. The list of competitor entities includes various brands, but \"blue q\" is not among them.\n3. The module output indicates that the branding scope is `null`, which suggests that it did not find a match with any competitor brands.\n4. According to the rubric, the output should return \"CB\" if the keyword contains a term from the competitor list and `null` otherwise.\n5. Since \"blue q\" does not match any competitor brands, the expected output should be `null`, but the ground truth reference indicates that it should return \"CB\".\n6. The module's reasoning states that the keyword does not match any own brand entities and is not a competitor brand either, which aligns with the input data.\n7. However, the expected output contradicts the module's output, as it suggests that \"CB\" should be returned despite the absence of a competitor brand in the keyword.\n\nGiven that the module output correctly identifies that there is no competitor brand in the keyword and returns `null`, it aligns with the rubric's PASS conditions. However, the expected output indicates a failure in the classification logic.\n\n**Verdict:** FAIL",
+      "tokens_used": 830,
+      "sample_id": "M4_B08J8GZXKZ__blue q oven mitt:blue q oven mitt",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with various entity variations. The module output must ensure that any mention of \"KitchenAid\" or its variations does not trigger a competitor brand (CB) classification.\n2. The keyword provided is \"blue q oven mitt.\" The module output indicates that the branding scope is null, which means it does not classify the keyword as a competitor brand.\n3. The reasoning provided in the module output states that \"Keyword contains 'blue q' which does not match any own brand entities, but it is not a competitor brand either.\" This suggests that the module correctly identified that the keyword does not relate to the own brand \"KitchenAid\" or its variations.\n4. Since the output is null and does not classify the keyword as a competitor brand, it aligns with the PASS conditions of the rubric, which state that own brand terms should return null and not trigger a CB classification.\n\n**Verdict:** PASS",
+      "tokens_used": 766,
+      "sample_id": "M4_B08J8GZXKZ__blue q oven mitt:blue q oven mitt",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword \"blue q oven mitt\" does not contain any substring that matches the competitor entities or the own brand entities provided in the input data.\n2. The module output states that \"Keyword contains 'blue q' which does not match any own brand entities, but it is not a competitor brand either.\" This indicates that the module correctly identifies that \"blue q\" is not a substring of any competitor or own brand entities.\n3. The output does not confuse any generic words with brand names, as \"blue q\" does not resemble any of the listed brands.\n4. Since the module output does not include any partial or substring matches and respects the word boundaries, it adheres to the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 747,
+      "sample_id": "M4_B08J8GZXKZ__blue q oven mitt:blue q oven mitt",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitors list.\n2. The input data includes a keyword \"blue q oven mitt\" and a list of competitor brands, which does not include \"Blue Q.\"\n3. The module output states that the keyword does not match any own brand entities and is not a competitor brand either. However, it fails to recognize \"Blue Q\" as a known brand, which is relevant in the context of oven mitts.\n4. The expected output indicates that the branding scope should have identified \"Blue Q\" as a known brand, which is a failure in the module's output.\n5. Since the module did not detect a known brand that is relevant to the keyword, it does not meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 759,
+      "sample_id": "M4_B08J8GZXKZ__blue q oven mitt:blue q oven mitt",
+      "sample_idx": 7
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"sur la table oven mitts\". \n2. The competitor entities list includes various brands, but none of them are present in the keyword.\n3. The module output indicates that the branding scope is `null`, which suggests that it did not find any competitor brand in the keyword.\n4. The reasoning provided in the module output states that the keyword contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, this does not affect the presence of competitor brands in the keyword.\n5. Since there are no competitor brands in the keyword, the output of `null` is appropriate according to the rubric.\n6. The expected output indicates that the correct classification should be \"CB,\" which implies that the module output is incorrect because it did not identify any competitor brand when it should have.\n\nAccording to the rubric:\n- The output should return \"CB\" when a competitor brand is present in the keyword, which it is not in this case.\n- The module output correctly returned `null` since there are no competitor brands in the keyword.\n\nHowever, the expected output indicates a failure in the module's classification logic, as it should have identified a competitor brand.\n\n**Verdict:** FAIL",
+      "tokens_used": 839,
+      "sample_id": "M4_B08J8GZXKZ__sur la table oven mitts:sur la table oven mi",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies that the own brand is \"KitchenAid\" with variations including \"Kitchen Aid\", \"Kitchenaid\", and \"KichenAid\".\n2. The keyword provided is \"sur la table oven mitts\", which does not explicitly mention \"KitchenAid\" or any of its variations.\n3. The module output indicates that the branding scope is null, which means it did not classify the keyword as a competitor brand (CB).\n4. The reasoning provided in the module output states that the keyword contains \"kitchen\", which is part of the own brand \"KitchenAid\". However, the keyword does not directly reference \"KitchenAid\" or its variations.\n5. Since the module output returned null for the branding scope and did not classify the own brand term as a competitor brand, it aligns with the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 753,
+      "sample_id": "M4_B08J8GZXKZ__sur la table oven mitts:sur la table oven mi",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"sur la table oven mitts,\" which does not contain any direct reference to the own brand \"KitchenAid.\"\n2. The module output states that the keyword contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, the keyword itself does not include \"KitchenAid\" or any of its variations.\n3. The module incorrectly assumes that the presence of the substring \"kitchen\" in the keyword is sufficient to classify it as not a competitor brand. This is a violation of the rubric criterion, which specifies that only complete word matches should be accepted.\n4. The output fails to recognize that \"kitchen\" is a generic term and should not be confused with the brand \"KitchenAid.\" The presence of \"kitchen\" in the keyword does not imply that it is related to the brand, and thus it should not affect the classification of competitor brands.\n5. Since the module output does not respect the word boundary criterion and incorrectly matches a substring to a brand, it fails to meet the conditions for a PASS.\n\n**Verdict:** FAIL",
+      "tokens_used": 818,
+      "sample_id": "M4_B08J8GZXKZ__sur la table oven mitts:sur la table oven mi",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not listed among the competitors. The module output must recognize any relevant brands based on category knowledge.\n2. The input data includes a list of competitor entities and an own brand, \"KitchenAid.\" The module output states that the keyword \"sur la table oven mitts\" contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, it does not mention any other known brands that could be relevant to the category of oven mitts.\n3. The module output fails to recognize any known brands that are not in the provided competitor list, such as \"Homwe,\" which is mentioned in the competitor list but is not acknowledged in the output reasoning. Additionally, it does not identify any other potential brands that could be relevant to the category of oven mitts.\n4. The reasoning provided by the module focuses solely on the own brand and does not address the requirement to detect other known brands, which is a critical aspect of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 804,
+      "sample_id": "M4_B08J8GZXKZ__sur la table oven mitts:sur la table oven mi",
+      "sample_idx": 8
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"oxo oven mitt\".\n2. The competitor entities list includes various brands, but \"oxo\" is not present in that list.\n3. The module output indicates that the `branding_scope_2` is `null`, which suggests that it did not find any competitor brand in the keyword.\n4. According to the rubric, the output should return \"CB\" if the keyword contains a term from the competitor list and `null` otherwise.\n5. Since \"oxo\" does not match any of the competitor brands, the output of `null` is appropriate.\n6. However, the expected output (ground truth reference) indicates that it should return \"CB\", which contradicts the module's reasoning and the rubric's conditions.\n7. The module's reasoning states that the keyword does not mention any competitor brands, which is correct, but it fails to classify correctly according to the expected output.\n\n**Verdict:** FAIL",
+      "tokens_used": 778,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitt:oxo oven mitt",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with several variations of its name listed.\n2. The keyword provided is \"oxo oven mitt,\" which does not include any terms from the own brand \"KitchenAid\" or its variations.\n3. The module output indicates that the branding scope is null, which means it did not classify the keyword as a competitor brand (CB) or an own brand.\n4. The expected output indicates that the correct classification should have been \"CB,\" which suggests that the module output is incorrect in this case.\n5. However, the criterion states that own brand terms should never trigger CB classification. Since \"oxo oven mitt\" does not contain any own brand terms, the module correctly returns null for the branding scope.\n6. The reasoning provided in the module output supports this conclusion, as it states that the keyword does not match any own brand entities.\n\n**Verdict:** PASS",
+      "tokens_used": 759,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitt:oxo oven mitt",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"oxo oven mitt.\" The module output states that this keyword does not match any own brand entities, which is accurate since \"oxo oven mitt\" does not contain \"KitchenAid\" or any of its variations.\n2. The output also claims that it does not mention any competitor brands. However, the keyword \"oxo oven mitt\" could be confused with \"Ove Glove,\" which is a competitor brand. This is a critical point because the rubric specifies that partial or substring matches should be rejected, and \"oxo\" is a substring of \"Ove Glove.\"\n3. The module output fails to recognize that \"Ove Glove\" is a competitor brand that could be confused with the keyword \"oxo oven mitt.\" This indicates a failure to respect the word boundary criterion, as it does not adequately differentiate between the keyword and the competitor brand.\n4. The reasoning provided in the module output does not address the potential confusion with competitor brands, which is a significant oversight according to the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 805,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitt:oxo oven mitt",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires that known brands be detected, even if they are not included in the provided list of competitors.\n2. The input data includes a keyword \"oxo oven mitt\" and a list of competitor entities, which contains various brands related to oven mitts.\n3. The module output states that the keyword does not match any own brand entities and does not mention any competitor brands either.\n4. However, the keyword \"oxo\" refers to a well-known brand that produces kitchenware, including oven mitts. This brand is not listed among the competitors but is a recognizable brand in the category.\n5. The module's failure to mention \"oxo\" indicates that it did not detect a known brand that is relevant to the keyword, which is a clear violation of the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 757,
+      "sample_id": "M4_B08J8GZXKZ__oxo oven mitt:oxo oven mitt",
+      "sample_idx": 9
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"oxo silicone oven mitt\".\n2. The competitor entities list includes various brands, but \"Oxo\" is not present in that list.\n3. According to the rubric, the module should return \"CB\" only if the keyword contains a term from the competitor brands list. Since \"Oxo\" is not in the competitor entities, the correct output should be null.\n4. The module output states that \"branding_scope_2\" is null, which aligns with the expected behavior when there is no match with the competitor brands.\n5. However, the expected output (ground truth reference) indicates that \"branding_scope_2\" should be \"CB\". This discrepancy suggests that the expected output is incorrect based on the provided rubric conditions.\n6. The module's reasoning correctly identifies that \"Oxo\" is not a competitor brand and concludes that the keyword likely belongs to the seller's own brand.\n\n**Verdict:** PASS",
+      "tokens_used": 780,
+      "sample_id": "M4_B08J8GZXKZ__oxo silicone oven mitt:oxo silicone oven mi",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with variations of its name listed.\n2. The keyword \"oxo silicone oven mitt\" includes \"oxo,\" which is not listed as a competitor entity in the provided competitor list.\n3. The module output indicates that the branding scope is null, which suggests that it does not classify the keyword as a competitor brand (CB).\n4. The reasoning provided in the module output states that \"Keyword contains 'Oxo' which is not in the competitor_entities list, indicating it is likely the seller's own brand.\" This implies that the module recognizes \"oxo\" as not being a competitor brand.\n5. Since the own brand term \"KitchenAid\" is not present in the keyword, and the output does not classify \"oxo\" as a competitor brand, it aligns with the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 753,
+      "sample_id": "M4_B08J8GZXKZ__oxo silicone oven mitt:oxo silicone oven mi",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword \"oxo silicone oven mitt\" includes the term \"oxo,\" which is a brand name and not a generic word. The module output correctly identifies that \"Oxo\" is not present in the competitor entities list, suggesting it is likely the seller's own brand.\n2. The output does not contain any substring matches or incorrect associations with competitor brands. It does not confuse \"Oxo\" with any other brand names listed, which aligns with the PASS conditions of the rubric.\n3. The module output does not reference any competitor entities that would violate the word boundary criterion, as it focuses solely on the presence of \"Oxo\" and its absence from the competitor list.\n4. The reasoning provided in the module output is clear and supports the conclusion that \"Oxo\" is a distinct brand, thus respecting the word boundary.\n\n**Verdict:** PASS",
+      "tokens_used": 769,
+      "sample_id": "M4_B08J8GZXKZ__oxo silicone oven mitt:oxo silicone oven mi",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not listed among the competitors. The module output mentions \"Oxo,\" which is a recognized brand in kitchenware.\n2. The output states that \"Oxo\" is likely the seller's own brand because it is not in the provided list of competitor entities. However, \"Oxo\" is indeed a well-known brand in the kitchenware category, which should have been recognized regardless of its absence from the competitor list.\n3. The module fails to identify \"Oxo\" as a known brand, which is a clear oversight since it is a recognizable brand in the context of the keyword \"oxo silicone oven mitt.\"\n4. The output does not meet the PASS conditions because it missed a known brand that is relevant to the input data.\n\n**Verdict:** FAIL",
+      "tokens_used": 758,
+      "sample_id": "M4_B08J8GZXKZ__oxo silicone oven mitt:oxo silicone oven mi",
+      "sample_idx": 10
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"pioneer woman oven mitts\". \n2. The competitor entities list includes various brands, but \"pioneer woman\" is not among them.\n3. The module output indicates a classification of `null` for `branding_scope_2`, which suggests that it did not identify any competitor brand in the keyword.\n4. The reasoning provided in the module output states that the keyword contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, this reasoning is irrelevant to the classification of competitor brands.\n5. According to the rubric, the output should return \"CB\" if the keyword contains a term from the competitor list. Since \"pioneer woman\" does not match any competitor brand, the expected output should be `null`.\n6. The module output correctly identifies that there is no competitor brand in the keyword and returns `null`, which aligns with the rubric's PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 784,
+      "sample_id": "M4_B08J8GZXKZ__pioneer woman oven mitts:pioneer woman oven m",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with variations such as \"Kitchen Aid,\" \"Kitchenaid,\" and \"KichenAid.\"\n2. The keyword provided is \"pioneer woman oven mitts,\" which does not directly include any of the own brand terms related to \"KitchenAid.\"\n3. The module output indicates that the branding scope is null, which means it did not classify the keyword as a competitor brand (CB).\n4. The reasoning provided in the module output states that the keyword contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, the keyword does not explicitly mention \"KitchenAid\" or any of its variations.\n5. The expected output (ground truth reference) indicates that the keyword should be classified as CB, which contradicts the module's output of null.\n6. Since the module output does not classify the own brand term as CB and returns null instead, it aligns with the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 782,
+      "sample_id": "M4_B08J8GZXKZ__pioneer woman oven mitts:pioneer woman oven m",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword \"pioneer woman oven mitts\" does not contain any substring that directly matches the own brand \"KitchenAid\" or its variations. The module output incorrectly identifies \"kitchen\" as a part of the own brand, which is a substring match rather than a full word match.\n2. The criterion states that only complete word matches should be accepted, and generic words should not be confused with brands. In this case, \"kitchen\" is a generic term and should not be associated with the brand \"KitchenAid\" unless it is part of a complete match.\n3. The module's reasoning fails to respect the word boundary criterion by considering \"kitchen\" as a relevant part of the brand, leading to a misclassification of the branding scope.\n\n**Verdict:** FAIL",
+      "tokens_used": 757,
+      "sample_id": "M4_B08J8GZXKZ__pioneer woman oven mitts:pioneer woman oven m",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitors list.\n2. The input data includes a keyword \"pioneer woman oven mitts\" and a list of competitor entities, which includes various brands.\n3. The module output states that the keyword contains \"kitchen,\" which is associated with the own brand \"KitchenAid.\" However, it fails to recognize any other known brands that may be relevant to the keyword.\n4. The expected output indicates that the module should have identified a known brand (CB) related to the keyword, which is not present in the competitor list but is still a recognizable brand in the context of kitchen products.\n5. Since the module output does not identify any known brands outside of its own brand and does not recognize any relevant brands from the input data, it fails to meet the PASS conditions of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 776,
+      "sample_id": "M4_B08J8GZXKZ__pioneer woman oven mitts:pioneer woman oven m",
+      "sample_idx": 11
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"william sonoma oven mitts\". \n2. The competitor entities list includes various brands, but none of them are \"william sonoma\".\n3. The module output indicates that the branding scope is null, which suggests that it did not find a competitor brand in the keyword.\n4. However, the expected output indicates that the correct classification should be \"CB\" because the keyword does not contain any competitor brand, but it should have returned \"CB\" based on the rubric's requirement to classify correctly when a competitor brand is present.\n5. The reasoning provided in the module output states that \"kitchen\" is part of the own brand \"KitchenAid\", which is irrelevant to the classification of competitor brands. The presence of \"kitchen\" does not negate the need to check for competitor brands.\n6. Since the keyword does not contain any competitor brand, the module should have returned null, but it incorrectly classified the output as null when it should have returned \"CB\".\n\n**Verdict:** FAIL",
+      "tokens_used": 801,
+      "sample_id": "M4_B08J8GZXKZ__william sonoma oven mitts:william sonoma oven ",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"william sonoma oven mitts\" and specifies an own brand \"KitchenAid\" with variations of its name.\n2. The module output indicates that the branding scope is `null`, which suggests that it did not classify the keyword as a competitor brand (CB).\n3. The reasoning provided in the module output states that the keyword contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, the keyword itself does not explicitly mention \"KitchenAid\" or any of its variations.\n4. According to the rubric criterion, own brand terms should never trigger CB classification. Since the output is `null`, it aligns with the PASS condition that own brand terms return null and not CB.\n5. The expected output indicates that the keyword should have been classified as CB, which contradicts the module's output. However, the module's output correctly identifies that the keyword does not directly reference the own brand.\n\n**Verdict:** PASS",
+      "tokens_used": 776,
+      "sample_id": "M4_B08J8GZXKZ__william sonoma oven mitts:william sonoma oven ",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"william sonoma oven mitts,\" which does not contain any direct reference to the own brand \"KitchenAid.\"\n2. The module output states that the keyword contains \"kitchen,\" which is part of the own brand \"KitchenAid.\" However, the keyword itself does not match \"KitchenAid\" or any of its variations (e.g., \"Kitchen Aid,\" \"Kitchenaid,\" \"KichenAid\") as a complete word.\n3. The module incorrectly identifies \"kitchen\" as a substring that relates to the own brand, which leads to the conclusion that it is not a competitor brand. This is a failure to respect the word boundary criterion, as \"kitchen\" is a generic term and should not be confused with the brand name.\n4. The output fails to recognize that \"kitchen\" is a common word and does not constitute a full match to the brand \"KitchenAid.\" Therefore, it should not influence the classification of the branding scope.\n\n**Verdict:** FAIL",
+      "tokens_used": 806,
+      "sample_id": "M4_B08J8GZXKZ__william sonoma oven mitts:william sonoma oven ",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"william sonoma oven mitts\" and a list of competitor entities, which contains various known brands.\n2. The module output indicates that the reasoning for the output is based on the presence of the word \"kitchen\" in the keyword, which relates to the own brand \"KitchenAid.\"\n3. However, the criterion specifically states that known brands should be detected regardless of whether they are in the provided competitors list. The expected output indicates that the known brand \"William Sonoma\" should have been recognized, as it is a well-known brand in the kitchenware category.\n4. The module output fails to recognize \"William Sonoma\" as a known brand, which is a significant oversight since it is a recognizable brand in the context of kitchen products.\n5. The module's reasoning does not address the presence of \"William Sonoma\" and instead focuses solely on the own brand, which does not fulfill the requirement of detecting known brands.\n\n**Verdict:** FAIL",
+      "tokens_used": 793,
+      "sample_id": "M4_B08J8GZXKZ__william sonoma oven mitts:william sonoma oven ",
+      "sample_idx": 12
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"cuisinart oven mitts\". \n2. The competitor entities list does not include \"cuisinart\" or any variations of it.\n3. According to the rubric, the module should return \"CB\" if the keyword contains a term from the competitor list and return null if there is no match.\n4. The module output states that the branding_scope_2 is null, which indicates that it did not find a match with any competitor brand.\n5. However, the expected output indicates that \"CB\" should be returned, suggesting that the presence of \"cuisinart\" in the keyword should have triggered a \"CB\" response.\n6. The reasoning provided in the module output mentions that \"cuisinart\" is a known brand and implies a search for either the own brand or a different competitor, but this does not align with the rubric's requirement for classification based solely on the presence of competitor brands.\n7. Since the keyword does not match any competitor brand, the module's output of null is technically correct according to the rubric's conditions. However, the expected output indicates a misunderstanding of the classification criteria.\n\n**Verdict:** FAIL",
+      "tokens_used": 844,
+      "sample_id": "M4_B08J8GZXKZ__cuisinart oven mitts:cuisinart oven mitts",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies the keyword \"cuisinart oven mitts\" and lists \"KitchenAid\" as the own brand with its variations.\n2. The module output indicates that the branding scope is `null`, which means it did not classify the keyword as a competitor brand (CB).\n3. The reasoning provided in the module output states that \"Keyword contains 'cuisinart' which is not in the competitor_entities list,\" suggesting that the module recognizes \"cuisinart\" as a brand but does not classify it as a competitor.\n4. According to the rubric, for the output to pass, own brand terms must return null and not trigger CB classification. Since \"cuisinart\" is not classified as CB and the output is null, it aligns with the PASS conditions.\n5. The expected output indicates that the keyword should be classified as CB, which contradicts the module's output. However, the module's output correctly identifies that \"cuisinart\" is not in the competitor list and does not classify it as a competitor brand.\n\n**Verdict:** PASS",
+      "tokens_used": 810,
+      "sample_id": "M4_B08J8GZXKZ__cuisinart oven mitts:cuisinart oven mitts",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword \"cuisinart oven mitts\" includes the brand \"cuisinart,\" which is a recognized brand in the kitchenware category.\n2. The module output states that \"cuisinart\" is not in the competitor_entities list, which is accurate. However, it fails to recognize that \"cuisinart\" is a brand and should not be confused with any other terms or brands.\n3. The output does not provide a valid branding scope, as it returns null instead of identifying the relationship to the own brand or competitors correctly.\n4. The reasoning provided in the module output suggests that the presence of \"cuisinart\" indicates a search for the own brand or a different competitor, but it does not clarify that \"cuisinart\" is a brand itself and should not be matched with any substring or partial matches.\n5. The output does not respect the word boundary criterion, as it does not adequately address the brand \"cuisinart\" in relation to the competitor entities and fails to provide a complete and accurate assessment.\n\n**Verdict:** FAIL",
+      "tokens_used": 832,
+      "sample_id": "M4_B08J8GZXKZ__cuisinart oven mitts:cuisinart oven mitts",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data includes a keyword \"cuisinart oven mitts\" and a list of competitor entities, which does not include \"Cuisinart.\"\n2. The module output indicates that the keyword contains \"cuisinart,\" which is recognized as a known brand, even though it is not listed among the competitors.\n3. The reasoning provided in the module output states that the presence of \"cuisinart\" suggests a search for either the own brand (KitchenAid) or a different competitor, which aligns with the PASS conditions of the rubric.\n4. The module output does not explicitly mention any known brands that were missed, nor does it indicate that it failed to recognize \"Cuisinart\" as a brand.\n5. Since \"Cuisinart\" is a well-known brand in the kitchenware category and was detected despite not being in the competitor list, the output meets the criteria for passing.\n\n**Verdict:** PASS",
+      "tokens_used": 798,
+      "sample_id": "M4_B08J8GZXKZ__cuisinart oven mitts:cuisinart oven mitts",
+      "sample_idx": 13
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"kitchen oven.\"\n2. The competitor entities list includes various brands, but none of them are present in the keyword \"kitchen oven.\"\n3. According to the rubric, the output should return \"CB\" (competitor brand) only if the keyword contains a term from the competitor list. Since \"kitchen oven\" does not match any competitor brands, the output should be null.\n4. The module output correctly returns null for the \"branding_scope_2\" field, which aligns with the expected output.\n5. The reasoning provided in the module output states that the keyword does not match any own brand entities and is a generic search term, which is a valid explanation for returning null.\n\nSince the module output adheres to the conditions set forth in the rubric, it passes the criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 756,
+      "sample_id": "M4_B08J8GZXKZ__kitchen oven:kitchen oven",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with several variations of its name listed under \"entities.\"\n2. The keyword provided is \"kitchen oven,\" which is a generic term and does not include any of the own brand terms or their variations.\n3. The module output indicates that the \"branding_scope_2\" is null, which means that no own brand terms were triggered for classification as a competitor brand (CB).\n4. The reasoning provided in the module output states that the keyword \"kitchen oven\" does not match any own brand entities, confirming that it is treated as a generic search term.\n5. Since the output correctly identifies that the own brand terms do not trigger a CB classification, it meets the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 731,
+      "sample_id": "M4_B08J8GZXKZ__kitchen oven:kitchen oven",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword \"kitchen oven\" is a generic term and does not correspond to any specific brand or entity listed in the competitor entities or the own brand entities.\n2. The module output correctly identifies that \"kitchen oven\" does not match any of the own brand entities, which include variations of \"KitchenAid\" (e.g., \"KitchenAid\", \"Kitchen Aid\", \"Kitchenaid\", \"KichenAid\").\n3. The reasoning provided in the module output states that \"kitchen oven\" is a generic search term, which aligns with the PASS conditions of the rubric. It does not confuse generic terms with brand names.\n4. There are no substring matches or incorrect matches present in the output, as the module correctly identifies that the keyword does not match any brand entities.\n\n**Verdict:** PASS",
+      "tokens_used": 756,
+      "sample_id": "M4_B08J8GZXKZ__kitchen oven:kitchen oven",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitor list.\n2. The input data includes a competitor list with various brands, and the own brand is \"KitchenAid\" with multiple variations.\n3. The module output states that the keyword \"kitchen oven\" does not match any own brand entities, which is accurate since \"KitchenAid\" is not mentioned in the context of the keyword.\n4. However, the module fails to recognize other known brands that are relevant to the kitchen appliance category, such as \"Frigidaire\" and \"Le Creuset,\" which are present in the competitor list.\n5. The reasoning provided by the module focuses solely on the absence of a match with the own brand, neglecting the broader requirement to identify any known brands related to the keyword \"kitchen oven.\"\n6. Since the module did not detect any known brands, it fails to meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 786,
+      "sample_id": "M4_B08J8GZXKZ__kitchen oven:kitchen oven",
+      "sample_idx": 14
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"oven mitt holder\" and a list of competitor entities.\n2. The competitor entities include brands such as \"Ove Glove,\" \"HOMWE,\" and others.\n3. The module output indicates that the branding scope is `null`.\n4. According to the rubric, the output should return `CB` (competitor brand) only if the keyword contains a term from the competitor list. In this case, \"oven mitt holder\" does not contain any terms from the competitor list.\n5. Since there is no match with any competitor brand in the keyword, the output of `null` is appropriate.\n6. The output reasoning states that the keyword does not match any own brand entities, which is correct but not directly relevant to the classification of competitor brands.\n7. The output correctly identifies that there is no competitor brand present in the keyword, thus fulfilling the condition for returning `null`.\n\n**Verdict:** PASS",
+      "tokens_used": 770,
+      "sample_id": "M4_B08J8GZXKZ__oven mitt holder:oven mitt holder",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with several variations of its name listed as entities.\n2. The keyword provided is \"oven mitt holder,\" which does not include any of the own brand terms related to \"KitchenAid.\"\n3. The module output indicates that the branding scope is null, which means that no own brand terms were triggered for classification.\n4. The reasoning provided in the module output confirms that the keyword \"oven mitt holder\" does not match any own brand entities, aligning with the PASS condition that own brand terms should return null and not trigger CB classification.\n5. Since the output correctly identifies that there are no matches with the own brand terms, it adheres to the rubric criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 713,
+      "sample_id": "M4_B08J8GZXKZ__oven mitt holder:oven mitt holder",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword \"oven mitt holder\" is a complete phrase and does not contain any substrings that could match the competitor entities or the own brand entities.\n2. The module output correctly identifies that the keyword does not match any of the own brand entities, which include variations of \"KitchenAid\" (e.g., \"Kitchen Aid\", \"Kitchenaid\", \"KichenAid\"). None of these variations contain the words \"oven\", \"mitt\", or \"holder\".\n3. The output does not confuse generic terms with brand names, as \"oven mitt holder\" is a generic term and does not relate to any specific brand listed in the competitor entities.\n4. The reasoning provided in the module output is clear and aligns with the rubric criterion, confirming that there are no partial or substring matches.\n\n**Verdict:** PASS",
+      "tokens_used": 749,
+      "sample_id": "M4_B08J8GZXKZ__oven mitt holder:oven mitt holder",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitor list.\n2. The input data includes a competitor list with several known brands, such as \"HOMWE\" and \"Gorilla Grip,\" which are recognized brands in the oven mitt category.\n3. The module output states that the keyword \"oven mitt holder\" does not match any own brand entities, specifically referring to \"KitchenAid\" and its variations.\n4. However, the module fails to recognize any known brands from the competitor list, which is a requirement of the rubric. The reasoning provided does not address the presence of known brands outside of the own brand entities.\n5. Since the module output does not identify any known brands, it does not meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 745,
+      "sample_id": "M4_B08J8GZXKZ__oven mitt holder:oven mitt holder",
+      "sample_idx": 15
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"silicone oven mitts sets,\" which does not contain any terms from the competitor brand list provided.\n2. The competitor entities include brands like \"Ove Glove,\" \"HOMWE,\" \"GORILLA GRIP,\" etc., none of which are present in the keyword.\n3. The module output indicates a `branding_scope_2` of `null`, which is appropriate since there are no competitor brands in the keyword.\n4. The reasoning provided in the module output states that the keyword contains \"KitchenAid,\" which is the own brand entity. However, this is irrelevant to the classification since the criterion only requires checking for competitor brands.\n5. Since the keyword does not contain any competitor brands, the output correctly returns `null`, which aligns with the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 756,
+      "sample_id": "M4_B08J8GZXKZ__silicone oven mitts sets:silicone oven mitts ",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with several variations of its name listed in the \"entities\" array.\n2. The keyword provided is \"silicone oven mitts sets,\" which does not explicitly contain the term \"KitchenAid\" or any of its variations.\n3. The module output indicates that the \"branding_scope_2\" is null, which is consistent with the PASS condition that states own brand terms should return null and not trigger CB classification.\n4. The reasoning provided in the module output states that the keyword contains \"KitchenAid,\" which is incorrect as the keyword does not include this term. However, since the output correctly returns null for \"branding_scope_2,\" it still aligns with the PASS condition.\n5. The module output does not classify \"KitchenAid\" as a competitor brand, which is also in line with the rubric's requirements.\n\n**Verdict:** PASS",
+      "tokens_used": 754,
+      "sample_id": "M4_B08J8GZXKZ__silicone oven mitts sets:silicone oven mitts ",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword \"silicone oven mitts sets\" does not contain any substring that matches the competitor brands listed. \n2. The module output identifies \"KitchenAid\" as an own brand entity, which is correctly noted as not being a competitor brand.\n3. The reasoning provided in the module output states that the keyword contains \"KitchenAid,\" which is accurate. However, it does not clarify that \"KitchenAid\" is not a substring of the keyword \"silicone oven mitts sets,\" but rather a separate entity.\n4. The output does not confuse generic terms with brand names, as \"silicone oven mitts sets\" is a generic description and does not include any brand names from the competitor list.\n5. The module output does not indicate any incorrect substring matches, and it correctly identifies that \"KitchenAid\" is not a competitor brand.\n\nSince the output adheres to the rubric's PASS conditions by not confusing generic words with brands and not allowing substring matches, it meets the criteria.\n\n**Verdict:** PASS",
+      "tokens_used": 798,
+      "sample_id": "M4_B08J8GZXKZ__silicone oven mitts sets:silicone oven mitts ",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not listed among the competitors. The module output should identify any recognizable brands related to the keyword \"silicone oven mitts sets.\"\n2. The module output mentions \"KitchenAid\" as the own brand, which is correctly identified as not being a competitor brand. However, it fails to recognize other known brands that are relevant to the category of silicone oven mitts, such as \"HOMWE\" and \"Gorilla Grip,\" which are present in the competitor list.\n3. The reasoning provided in the module output focuses solely on the own brand and does not address the detection of other known brands that are relevant to the keyword. This indicates a lack of comprehensive brand recognition.\n4. Since the module output does not identify any known brands outside of the own brand, it fails to meet the PASS conditions of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 772,
+      "sample_id": "M4_B08J8GZXKZ__silicone oven mitts sets:silicone oven mitts ",
+      "sample_idx": 16
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"oven mitts pot holders\" and a list of competitor entities.\n2. The module output indicates that the `branding_scope_2` is `null`.\n3. According to the rubric, `null` should be returned when there is no match with any competitor brand in the keyword.\n4. The keyword \"oven mitts pot holders\" does not contain any terms from the competitor list provided.\n5. The reasoning provided in the module output states that the keyword contains \"KitchenAid,\" which is the own brand entity, not a competitor brand.\n6. Since the keyword does not contain any competitor brand, the output of `null` is appropriate and aligns with the rubric's PASS conditions.\n\n**Verdict:** PASS",
+      "tokens_used": 729,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts pot holders:oven mitts pot holde",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The rubric criterion states that own brand terms should never trigger a CB (competitor brand) classification.\n2. The input data includes an own brand \"KitchenAid\" with variations such as \"Kitchen Aid\", \"Kitchenaid\", and \"KichenAid\".\n3. The module output indicates that the \"branding_scope_2\" is null, which is a PASS condition as it means no competitor brand classification was triggered.\n4. However, the reasoning provided in the module output states that the keyword contains \"KitchenAid\" which matches the own brand entity. This suggests that the module recognized the own brand term but did not classify it as a competitor brand.\n5. Since the output correctly returns null for \"branding_scope_2\" and does not classify \"KitchenAid\" as a competitor brand, it aligns with the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 740,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts pot holders:oven mitts pot holde",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"oven mitts pot holders,\" which does not contain any direct reference to the brand \"KitchenAid.\"\n2. The module output states that the keyword contains \"KitchenAid,\" which is incorrect. The keyword does not include any substring or full match of \"KitchenAid.\"\n3. The criterion specifically states that only complete word/phrase matches should be accepted, and partial or substring matches should be rejected. In this case, the module incorrectly identifies \"KitchenAid\" as a match when it is not present in the keyword.\n4. The output also fails to respect the condition that generic words should not be confused with brands. The module's reasoning implies a confusion between the generic terms \"oven mitts\" and \"pot holders\" with the brand \"KitchenAid,\" which is not acceptable.\n\n**Verdict:** FAIL",
+      "tokens_used": 751,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts pot holders:oven mitts pot holde",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The rubric criterion requires the detection of known brands, even if they are not included in the provided competitors list.\n2. The input data includes a list of competitor entities, which contains several known brands such as \"HOMWE,\" \"Le Creuset,\" and \"Gorilla Grip.\"\n3. The module output identifies \"KitchenAid\" as a recognized brand, which is the own brand of the entity being evaluated.\n4. However, the output does not mention any other known brands that are present in the competitor list but were not recognized, such as \"HOMWE\" or \"Gorilla Grip.\"\n5. The reasoning provided in the module output only focuses on the own brand \"KitchenAid\" and does not demonstrate the detection of any additional known brands outside of the competitors list.\n6. Since the output fails to recognize other known brands that are relevant to the category of \"oven mitts pot holders,\" it does not meet the PASS conditions of the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 780,
+      "sample_id": "M4_B08J8GZXKZ__oven mitts pot holders:oven mitts pot holde",
+      "sample_idx": 17
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data contains a keyword \"oven mit set\" and a list of competitor entities.\n2. The competitor entities include various brands, but \"oven mit set\" does not contain any terms from the competitor list.\n3. The module output indicates that the branding_scope_2 is null, which is appropriate since there is no match with any competitor brand in the keyword.\n4. According to the rubric, the output should return CB (competitor brand) only when the keyword contains a term from the competitors list, and null otherwise.\n5. Since the keyword does not match any competitor brands, returning null is the correct action.\n6. The reasoning provided in the module output correctly explains that the keyword does not relate to the own brand \"KitchenAid,\" but it does not need to mention the own brand for the classification to be correct.\n7. There are no conditions that would cause a fail, as the output aligns with the expected behavior of returning null when there is no match.\n\n**Verdict:** PASS",
+      "tokens_used": 795,
+      "sample_id": "M4_B08J8GZXKZ__oven mit set:oven mit set",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with several variations of its name listed under \"entities.\"\n2. The keyword provided is \"oven mit set,\" which does not include any of the own brand terms or their variations.\n3. The module output indicates that the \"branding_scope_2\" is null, which means that the keyword does not trigger a CB classification.\n4. The reasoning provided in the module output confirms that the keyword does not match any own brand entities, supporting the conclusion that it is not related to \"KitchenAid.\"\n5. Since the output correctly identifies that the own brand terms do not trigger a CB classification, it meets the PASS conditions outlined in the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 723,
+      "sample_id": "M4_B08J8GZXKZ__oven mit set:oven mit set",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword provided is \"oven mit set\". \n2. The module output states that this keyword does not match any of the own brand entities associated with \"KitchenAid\".\n3. The own brand entities include variations of \"KitchenAid\" such as \"Kitchen Aid\", \"Kitchenaid\", and \"KichenAid\". None of these variations contain the substring \"oven mit set\".\n4. The output correctly identifies that there are no substring matches or partial matches with the own brand entities, which aligns with the PASS conditions of the rubric.\n5. The reasoning provided in the module output supports the conclusion that the keyword is not related to the own brand, thus respecting the word boundary criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 742,
+      "sample_id": "M4_B08J8GZXKZ__oven mit set:oven mit set",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitors list.\n2. The input data includes a list of competitor entities, which contains several recognizable brands related to oven mitts, such as \"HOMWE\" and \"Gorilla Grip.\"\n3. The module output states that the keyword \"oven mit set\" does not match any of the own brand entities for \"KitchenAid.\" However, it fails to mention or recognize any of the known brands from the competitor list.\n4. The output does not indicate any effort to identify or acknowledge other known brands that are relevant to the keyword, which is a requirement of the rubric.\n5. Since the module output does not detect any known brands, it does not meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 759,
+      "sample_id": "M4_B08J8GZXKZ__oven mit set:oven mit set",
+      "sample_idx": 18
+    },
+    {
+      "rubric_id": "M04_correct_classification",
+      "criterion": "Correct Classification",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input keyword is \"grey oven mitt set\".\n2. The list of competitor entities includes various brands, but none of them are present in the keyword.\n3. According to the rubric, the output should return \"CB\" (competitor brand) if the keyword contains any term from the competitor list. Since \"grey oven mitt set\" does not contain any competitor brand, the expected output should be null.\n4. The module output correctly returns null for the `branding_scope_2` field, which aligns with the expected output.\n5. The reasoning provided in the module output states that the keyword does not match any own brand entities, which is accurate but not directly relevant to the classification of competitor brands.\n6. Since the output is null and there are no competitor brands in the keyword, it meets the PASS conditions of the rubric.\n\n**Verdict:** PASS",
+      "tokens_used": 754,
+      "sample_id": "M4_B08J8GZXKZ__grey oven mitt set:grey oven mitt set",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M04_own_brand_excluded",
+      "criterion": "Own Brand Excluded",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The input data specifies an own brand, \"KitchenAid,\" with several variations of its name listed as entities.\n2. The keyword provided is \"grey oven mitt set,\" which does not include any of the own brand terms related to \"KitchenAid.\"\n3. The module output indicates that the branding scope is null, which means that no own brand terms were triggered for classification.\n4. The reasoning provided in the module output confirms that the keyword does not match any own brand entities, aligning with the PASS condition that own brand terms should return null and not trigger CB classification.\n5. Since the output correctly identifies that there are no matches with the own brand terms, it adheres to the rubric criterion.\n\n**Verdict:** PASS",
+      "tokens_used": 711,
+      "sample_id": "M4_B08J8GZXKZ__grey oven mitt set:grey oven mitt set",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M04_word_boundary_respected",
+      "criterion": "Word Boundary Respected",
+      "verdict": "PASS",
+      "reasoning": "**Reasoning:**\n1. The keyword \"grey oven mitt set\" is a complete phrase and does not contain any substrings that could be confused with the competitor entities or the own brand entities listed.\n2. The module output correctly identifies that the keyword does not match any of the own brand entities, which include variations of \"KitchenAid\" (e.g., \"KitchenAid\", \"Kitchen Aid\", \"Kitchenaid\", \"KichenAid\"). None of these variations are present in the keyword \"grey oven mitt set\".\n3. The output does not indicate any substring matches or confusion with brand names, adhering to the PASS conditions of the rubric.\n4. The reasoning provided in the module output is clear and aligns with the requirement to respect word boundaries, as it confirms that there are no matches with the own brand entities.\n\n**Verdict:** PASS",
+      "tokens_used": 752,
+      "sample_id": "M4_B08J8GZXKZ__grey oven mitt set:grey oven mitt set",
+      "sample_idx": 19
+    },
+    {
+      "rubric_id": "M04_known_brands_detected",
+      "criterion": "Known Brands Detected",
+      "verdict": "FAIL",
+      "reasoning": "**Reasoning:**\n1. The criterion requires the detection of known brands, even if they are not included in the provided competitors list.\n2. The input data includes a list of competitor entities, which contains several recognizable brands such as \"HOMWE,\" \"Le Creuset,\" and \"Gorilla Grip.\"\n3. The module output states that the keyword \"grey oven mitt set\" does not match any of the own brand entities, specifically \"KitchenAid\" and its variations.\n4. However, the module output fails to recognize any known brands from the competitor list, which is a requirement of the rubric. The reasoning provided does not address the presence of known brands in the competitor list.\n5. Since the module output does not identify any known brands, it does not meet the PASS conditions outlined in the rubric.\n\n**Verdict:** FAIL",
+      "tokens_used": 745,
+      "sample_id": "M4_B08J8GZXKZ__grey oven mitt set:grey oven mitt set",
+      "sample_idx": 19
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_12b_CombinedClassification_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Combined R/S/C/N classification results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being classified"
+              },
+              "relevancy": {
+                "type": "string",
+                "enum": ["R", "S", "C", "N"],
+                "description": "R=Relevant, S=Substitute, C=Complementary, N=Negative"
+              },
+              "decision_path": {
+                "type": "string",
+                "description": "The decision tree path taken (e.g., 'HardConstraint:Pass → ProductType:Same → PrimaryUse:Same → R')"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of the classification decision"
+              }
+            },
+            "required": ["keyword", "relevancy", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

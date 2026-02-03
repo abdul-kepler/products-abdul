@@ -1,0 +1,55 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_16_ComplementaryCheck_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Complementary check results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being checked"
+              },
+              "used_together": {
+                "type": "boolean",
+                "description": "Whether the keyword product is commonly used together with the ASIN"
+              },
+              "relevancy": {
+                "type": "string",
+                "enum": ["C", "N"],
+                "description": "C for COMPLEMENTARY if used together, N for NEGATIVE if not"
+              },
+              "relationship_type": {
+                "type": ["string", "null"],
+                "enum": ["Maintenance", "Storage", "Display", "Accessory", "Workflow", "Same-Occasion", "Organization", "Consumables", "Power", null],
+                "description": "Type of complementary relationship, or null if not complementary"
+              },
+              "relationship": {
+                "type": ["string", "null"],
+                "description": "Brief description of how products are used together"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why products are or aren't complementary"
+              }
+            },
+            "required": ["keyword", "used_together", "relevancy", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,4413 @@
+modules:
+  m01:
+    versions:
+      v1:
+        models:
+          gpt-4o-mini:
+            run_id: m01_v1_unknown_220126
+            pass_rate: 57.33
+            match_rate: 86.67
+            total_samples: 75
+            timestamp: '2026-01-22T20:17:28.165227'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 13
+                fail: 2
+                total: 15
+                pass_rate: 86.67
+              M01_no_hallucination:
+                pass: 9
+                fail: 6
+                total: 15
+                pass_rate: 60.0
+              M01_no_product_words:
+                pass: 11
+                fail: 4
+                total: 15
+                pass_rate: 73.33
+              M01_amazon_test_applied:
+                pass: 8
+                fail: 7
+                total: 15
+                pass_rate: 53.33
+              M01_no_duplicates:
+                pass: 2
+                fail: 13
+                total: 15
+                pass_rate: 13.33
+            suggestions:
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 13.33
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 53.33
+              priority: medium
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 73.33
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+      v2:
+        models:
+          gpt-4o:
+            run_id: m01_v2_gpt4o_200126
+            pass_rate: 45.0
+            match_rate: 30.0
+            total_samples: 100
+            timestamp: '2026-01-20T01:42:52.118402'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 6
+                fail: 14
+                total: 20
+                pass_rate: 30.0
+              M01_no_hallucination:
+                pass: 8
+                fail: 12
+                total: 20
+                pass_rate: 40.0
+              M01_no_product_words:
+                pass: 13
+                fail: 7
+                total: 20
+                pass_rate: 65.0
+              M01_amazon_test_applied:
+                pass: 5
+                fail: 15
+                total: 20
+                pass_rate: 25.0
+              M01_no_duplicates:
+                pass: 13
+                fail: 7
+                total: 20
+                pass_rate: 65.0
+            suggestions:
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 25.0
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 30.0
+              priority: high
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 40.0
+              priority: high
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 65.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 65.0
+              priority: medium
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            improvements_from_prev: []
+      v3:
+        models:
+          gpt-4o-mini:
+            run_id: m01_v3_gpt4omini_260126
+            pass_rate: 21.2
+            match_rate: 56.0
+            total_samples: 250
+            timestamp: '2026-01-26T10:55:48.864517'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 28
+                fail: 22
+                total: 50
+                pass_rate: 56.0
+              M01_no_hallucination:
+                pass: 7
+                fail: 43
+                total: 50
+                pass_rate: 14.0
+              M01_no_product_words:
+                pass: 9
+                fail: 41
+                total: 50
+                pass_rate: 18.0
+              M01_amazon_test_applied:
+                pass: 9
+                fail: 41
+                total: 50
+                pass_rate: 18.0
+              M01_no_duplicates:
+                pass: 0
+                fail: 50
+                total: 50
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 14.0
+              priority: high
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 18.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 18.0
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 56.0
+              priority: medium
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m01_v3_gpt5_200126
+            pass_rate: 60.0
+            match_rate: 40.0
+            total_samples: 50
+            timestamp: '2026-01-20T00:31:24.366747'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M01_no_hallucination:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M01_no_product_words:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M01_amazon_test_applied:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M01_no_duplicates:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+            suggestions:
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 40.0
+              priority: high
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 40.0
+              priority: high
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m01_v3_gemini20flash_200126
+            pass_rate: 52.0
+            match_rate: 50.0
+            total_samples: 50
+            timestamp: '2026-01-20T17:59:07.703280'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M01_no_hallucination:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M01_no_product_words:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M01_amazon_test_applied:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M01_no_duplicates:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+            suggestions:
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o:
+            run_id: m01_v3_gpt4o_200126
+            pass_rate: 57.33
+            match_rate: 60.0
+            total_samples: 75
+            timestamp: '2026-01-20T16:50:53.018799'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 9
+                fail: 6
+                total: 15
+                pass_rate: 60.0
+              M01_no_hallucination:
+                pass: 8
+                fail: 7
+                total: 15
+                pass_rate: 53.33
+              M01_no_product_words:
+                pass: 12
+                fail: 3
+                total: 15
+                pass_rate: 80.0
+              M01_amazon_test_applied:
+                pass: 7
+                fail: 8
+                total: 15
+                pass_rate: 46.67
+              M01_no_duplicates:
+                pass: 7
+                fail: 8
+                total: 15
+                pass_rate: 46.67
+            suggestions:
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 46.67
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 46.67
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 53.33
+              priority: medium
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              previous_rate: 30.0
+              current_rate: 60.0
+              improvement: +30.0%
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              previous_rate: 25.0
+              current_rate: 46.67
+              improvement: +21.7%
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              previous_rate: 65.0
+              current_rate: 80.0
+              improvement: +15.0%
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              previous_rate: 40.0
+              current_rate: 53.33
+              improvement: +13.3%
+      v4:
+        models:
+          gpt-4o-mini:
+            run_id: m01_v4_gpt4omini_220126
+            pass_rate: 34.0
+            match_rate: 60.0
+            total_samples: 100
+            timestamp: '2026-01-22T20:15:17.699817'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 12
+                fail: 8
+                total: 20
+                pass_rate: 60.0
+              M01_no_hallucination:
+                pass: 7
+                fail: 13
+                total: 20
+                pass_rate: 35.0
+              M01_no_product_words:
+                pass: 6
+                fail: 14
+                total: 20
+                pass_rate: 30.0
+              M01_amazon_test_applied:
+                pass: 4
+                fail: 16
+                total: 20
+                pass_rate: 20.0
+              M01_no_duplicates:
+                pass: 5
+                fail: 15
+                total: 20
+                pass_rate: 25.0
+            suggestions:
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 20.0
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 25.0
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 30.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 35.0
+              priority: high
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              previous_rate: 0.0
+              current_rate: 25.0
+              improvement: +25.0%
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              previous_rate: 14.0
+              current_rate: 35.0
+              improvement: +21.0%
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              previous_rate: 18.0
+              current_rate: 30.0
+              improvement: +12.0%
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              previous_rate: 56.0
+              current_rate: 60.0
+              improvement: +4.0%
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              previous_rate: 18.0
+              current_rate: 20.0
+              improvement: +2.0%
+          gpt-4o:
+            run_id: m01_v4_gpt4o_210126
+            pass_rate: 53.54
+            match_rate: 76.77
+            total_samples: 495
+            timestamp: '2026-01-21T10:50:59.983181'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 76
+                fail: 23
+                total: 99
+                pass_rate: 76.77
+              M01_no_hallucination:
+                pass: 55
+                fail: 44
+                total: 99
+                pass_rate: 55.56
+              M01_no_product_words:
+                pass: 56
+                fail: 43
+                total: 99
+                pass_rate: 56.57
+              M01_amazon_test_applied:
+                pass: 40
+                fail: 59
+                total: 99
+                pass_rate: 40.4
+              M01_no_duplicates:
+                pass: 38
+                fail: 61
+                total: 99
+                pass_rate: 38.38
+            suggestions:
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 38.38
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 40.4
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 55.56
+              priority: medium
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 56.57
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 76.77
+              priority: low
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              previous_rate: 60.0
+              current_rate: 76.77
+              improvement: +16.8%
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              previous_rate: 53.33
+              current_rate: 55.56
+              improvement: +2.2%
+      v5:
+        models:
+          claude-sonnet-4-20250514:
+            run_id: m01_v5_claudesonnet420250514_260126
+            pass_rate: 46.8
+            match_rate: 68.0
+            total_samples: 250
+            timestamp: '2026-01-26T11:03:40.128225'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 34
+                fail: 16
+                total: 50
+                pass_rate: 68.0
+              M01_no_hallucination:
+                pass: 21
+                fail: 29
+                total: 50
+                pass_rate: 42.0
+              M01_no_product_words:
+                pass: 28
+                fail: 22
+                total: 50
+                pass_rate: 56.0
+              M01_amazon_test_applied:
+                pass: 15
+                fail: 35
+                total: 50
+                pass_rate: 30.0
+              M01_no_duplicates:
+                pass: 19
+                fail: 31
+                total: 50
+                pass_rate: 38.0
+            suggestions:
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 30.0
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 38.0
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 42.0
+              priority: high
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 56.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 68.0
+              priority: medium
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m01_v5_gpt4omini_210126
+            pass_rate: 54.0
+            match_rate: 70.0
+            total_samples: 50
+            timestamp: '2026-01-21T10:40:32.601554'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M01_no_hallucination:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M01_no_product_words:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M01_amazon_test_applied:
+                pass: 3
+                fail: 7
+                total: 10
+                pass_rate: 30.0
+              M01_no_duplicates:
+                pass: 3
+                fail: 7
+                total: 10
+                pass_rate: 30.0
+            suggestions:
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 30.0
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 30.0
+              priority: high
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 70.0
+              priority: low
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              previous_rate: 30.0
+              current_rate: 80.0
+              improvement: +50.0%
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              previous_rate: 35.0
+              current_rate: 60.0
+              improvement: +25.0%
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              previous_rate: 60.0
+              current_rate: 70.0
+              improvement: +10.0%
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              previous_rate: 20.0
+              current_rate: 30.0
+              improvement: +10.0%
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              previous_rate: 25.0
+              current_rate: 30.0
+              improvement: +5.0%
+          gpt-5:
+            run_id: m01_v5_gpt5_210126
+            pass_rate: 48.89
+            match_rate: 45.45
+            total_samples: 495
+            timestamp: '2026-01-21T10:51:13.234838'
+            rubric_breakdown:
+              M01_brand_extracted:
+                pass: 45
+                fail: 54
+                total: 99
+                pass_rate: 45.45
+              M01_no_hallucination:
+                pass: 44
+                fail: 55
+                total: 99
+                pass_rate: 44.44
+              M01_no_product_words:
+                pass: 61
+                fail: 38
+                total: 99
+                pass_rate: 61.62
+              M01_amazon_test_applied:
+                pass: 35
+                fail: 64
+                total: 99
+                pass_rate: 35.35
+              M01_no_duplicates:
+                pass: 57
+                fail: 42
+                total: 99
+                pass_rate: 57.58
+            suggestions:
+            - rubric_id: M01_amazon_test_applied
+              rubric_name: Amazon Test Applied
+              pass_rate: 35.35
+              priority: high
+              suggestion: Strengthen Amazon Test instructions with step-by-step guidance
+              status: pending
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              pass_rate: 44.44
+              priority: high
+              suggestion: Add stricter validation rules to prevent extracting non-existent
+                entities
+              status: pending
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              pass_rate: 45.45
+              priority: high
+              suggestion: Add explicit examples of brand extraction patterns
+              status: pending
+            - rubric_id: M01_no_duplicates
+              rubric_name: No Duplicate Entities
+              pass_rate: 57.58
+              priority: medium
+              suggestion: Add deduplication step in post-processing or prompt instructions
+              status: pending
+            - rubric_id: M01_no_product_words
+              rubric_name: No Product Words in Brand
+              pass_rate: 61.62
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M01_brand_extracted
+              rubric_name: Brand Extracted
+              previous_rate: 40.0
+              current_rate: 45.45
+              improvement: +5.5%
+            - rubric_id: M01_no_hallucination
+              rubric_name: No Hallucinated Brand
+              previous_rate: 40.0
+              current_rate: 44.44
+              improvement: +4.4%
+  m01a:
+    versions:
+      v1:
+        models:
+          gpt-4o-mini:
+            run_id: m01a_v1_unknown_220126
+            pass_rate: 40.0
+            match_rate: 90.0
+            total_samples: 40
+            timestamp: '2026-01-22T20:18:33.656453'
+            rubric_breakdown:
+              M01a_has_variations:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M01a_no_unrelated_terms:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M01a_count_in_range:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M01a_first_is_canonical:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+            suggestions:
+            - rubric_id: M01a_no_unrelated_terms
+              rubric_name: M01a_no_unrelated_terms
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_count_in_range
+              rubric_name: M01a_count_in_range
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_first_is_canonical
+              rubric_name: M01a_first_is_canonical
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+      v2:
+        models:
+          claude-sonnet-4-20250514:
+            run_id: m01a_v2_claudesonnet420250514_260126
+            pass_rate: 43.0
+            match_rate: 88.0
+            total_samples: 200
+            timestamp: '2026-01-26T11:09:35.810793'
+            rubric_breakdown:
+              M01a_has_variations:
+                pass: 44
+                fail: 6
+                total: 50
+                pass_rate: 88.0
+              M01a_no_unrelated_terms:
+                pass: 3
+                fail: 47
+                total: 50
+                pass_rate: 6.0
+              M01a_count_in_range:
+                pass: 0
+                fail: 50
+                total: 50
+                pass_rate: 0.0
+              M01a_first_is_canonical:
+                pass: 39
+                fail: 11
+                total: 50
+                pass_rate: 78.0
+            suggestions:
+            - rubric_id: M01a_count_in_range
+              rubric_name: M01a_count_in_range
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_no_unrelated_terms
+              rubric_name: M01a_no_unrelated_terms
+              pass_rate: 6.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_first_is_canonical
+              rubric_name: M01a_first_is_canonical
+              pass_rate: 78.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m01a_v2_gpt4omini_200126
+            pass_rate: 41.5
+            match_rate: 92.0
+            total_samples: 200
+            timestamp: '2026-01-20T17:25:18.133727'
+            rubric_breakdown:
+              M01a_has_variations:
+                pass: 46
+                fail: 4
+                total: 50
+                pass_rate: 92.0
+              M01a_no_unrelated_terms:
+                pass: 5
+                fail: 45
+                total: 50
+                pass_rate: 10.0
+              M01a_count_in_range:
+                pass: 0
+                fail: 50
+                total: 50
+                pass_rate: 0.0
+              M01a_first_is_canonical:
+                pass: 32
+                fail: 18
+                total: 50
+                pass_rate: 64.0
+            suggestions:
+            - rubric_id: M01a_count_in_range
+              rubric_name: M01a_count_in_range
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_no_unrelated_terms
+              rubric_name: M01a_no_unrelated_terms
+              pass_rate: 10.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_first_is_canonical
+              rubric_name: M01a_first_is_canonical
+              pass_rate: 64.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M01a_no_unrelated_terms
+              rubric_name: M01a_no_unrelated_terms
+              previous_rate: 0.0
+              current_rate: 10.0
+              improvement: +10.0%
+            - rubric_id: M01a_has_variations
+              rubric_name: Has Variations
+              previous_rate: 90.0
+              current_rate: 92.0
+              improvement: +2.0%
+          gemini-2.0-flash:
+            run_id: m01a_v2_gemini20flash_200126
+            pass_rate: 40.0
+            match_rate: 90.0
+            total_samples: 40
+            timestamp: '2026-01-20T18:00:23.549595'
+            rubric_breakdown:
+              M01a_has_variations:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M01a_no_unrelated_terms:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M01a_count_in_range:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M01a_first_is_canonical:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+            suggestions:
+            - rubric_id: M01a_no_unrelated_terms
+              rubric_name: M01a_no_unrelated_terms
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_count_in_range
+              rubric_name: M01a_count_in_range
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01a_first_is_canonical
+              rubric_name: M01a_first_is_canonical
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m01a_v2_gpt5_200126
+            pass_rate: 85.0
+            match_rate: 100.0
+            total_samples: 40
+            timestamp: '2026-01-20T00:49:25.922974'
+            rubric_breakdown:
+              M01a_has_variations:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M01a_no_unrelated_terms:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M01a_count_in_range:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M01a_first_is_canonical:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+            suggestions:
+            - rubric_id: M01a_no_unrelated_terms
+              rubric_name: M01a_no_unrelated_terms
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m01b:
+    versions:
+      v1:
+        models:
+          gpt-4o-mini:
+            run_id: m01b_v1_unknown_220126
+            pass_rate: 67.5
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-22T20:19:47.183365'
+            rubric_breakdown:
+              M01b_sub_brands_found:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M01b_no_universal_standards:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M01b_manufacturer_null_when_same:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M01b_searchable_standards_default_empty:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+            suggestions:
+            - rubric_id: M01b_sub_brands_found
+              rubric_name: M01b_sub_brands_found
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m01b_v1_gpt5_260126
+            pass_rate: 70.5
+            match_rate: 0.0
+            total_samples: 200
+            timestamp: '2026-01-26T11:15:26.324860'
+            rubric_breakdown:
+              M01b_sub_brands_found:
+                pass: 10
+                fail: 40
+                total: 50
+                pass_rate: 20.0
+              M01b_no_universal_standards:
+                pass: 46
+                fail: 4
+                total: 50
+                pass_rate: 92.0
+              M01b_manufacturer_null_when_same:
+                pass: 40
+                fail: 10
+                total: 50
+                pass_rate: 80.0
+              M01b_searchable_standards_default_empty:
+                pass: 45
+                fail: 5
+                total: 50
+                pass_rate: 90.0
+            suggestions:
+            - rubric_id: M01b_sub_brands_found
+              rubric_name: M01b_sub_brands_found
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01b_manufacturer_null_when_same
+              rubric_name: M01b_manufacturer_null_when_same
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m01b_v1_claudesonnet420250514_260126
+            pass_rate: 66.5
+            match_rate: 0.0
+            total_samples: 200
+            timestamp: '2026-01-26T11:20:49.092279'
+            rubric_breakdown:
+              M01b_sub_brands_found:
+                pass: 7
+                fail: 43
+                total: 50
+                pass_rate: 14.0
+              M01b_no_universal_standards:
+                pass: 44
+                fail: 6
+                total: 50
+                pass_rate: 88.0
+              M01b_manufacturer_null_when_same:
+                pass: 39
+                fail: 11
+                total: 50
+                pass_rate: 78.0
+              M01b_searchable_standards_default_empty:
+                pass: 43
+                fail: 7
+                total: 50
+                pass_rate: 86.0
+            suggestions:
+            - rubric_id: M01b_sub_brands_found
+              rubric_name: M01b_sub_brands_found
+              pass_rate: 14.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M01b_manufacturer_null_when_same
+              rubric_name: M01b_manufacturer_null_when_same
+              pass_rate: 78.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m01b_v1_gemini20flash_200126
+            pass_rate: 80.0
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-20T18:01:49.553753'
+            rubric_breakdown:
+              M01b_sub_brands_found:
+                pass: 3
+                fail: 7
+                total: 10
+                pass_rate: 30.0
+              M01b_no_universal_standards:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M01b_manufacturer_null_when_same:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M01b_searchable_standards_default_empty:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+            suggestions:
+            - rubric_id: M01b_sub_brands_found
+              rubric_name: M01b_sub_brands_found
+              pass_rate: 30.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m02:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m02_v1_gemini20flash_260126
+            pass_rate: 76.29
+            match_rate: 90.0
+            total_samples: 350
+            timestamp: '2026-01-26T11:28:51.892006'
+            rubric_breakdown:
+              M02_correct_classification:
+                pass: 45
+                fail: 5
+                total: 50
+                pass_rate: 90.0
+              M02_matched_term_valid:
+                pass: 31
+                fail: 19
+                total: 50
+                pass_rate: 62.0
+              M02_word_boundary_correct:
+                pass: 41
+                fail: 9
+                total: 50
+                pass_rate: 82.0
+              M02_no_similar_brand_confusion:
+                pass: 44
+                fail: 6
+                total: 50
+                pass_rate: 88.0
+              M02_no_non_brand_patterns:
+                pass: 16
+                fail: 34
+                total: 50
+                pass_rate: 32.0
+              M02_exact_character_match:
+                pass: 45
+                fail: 5
+                total: 50
+                pass_rate: 90.0
+              M02_match_type_correct:
+                pass: 45
+                fail: 5
+                total: 50
+                pass_rate: 90.0
+            suggestions:
+            - rubric_id: M02_no_non_brand_patterns
+              rubric_name: M02_no_non_brand_patterns
+              pass_rate: 32.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_matched_term_valid
+              rubric_name: M02_matched_term_valid
+              pass_rate: 62.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_word_boundary_correct
+              rubric_name: M02_word_boundary_correct
+              pass_rate: 82.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m02_v1_gpt5_260126
+            pass_rate: 82.86
+            match_rate: 64.0
+            total_samples: 350
+            timestamp: '2026-01-26T11:37:36.691183'
+            rubric_breakdown:
+              M02_correct_classification:
+                pass: 32
+                fail: 18
+                total: 50
+                pass_rate: 64.0
+              M02_matched_term_valid:
+                pass: 33
+                fail: 17
+                total: 50
+                pass_rate: 66.0
+              M02_word_boundary_correct:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M02_no_similar_brand_confusion:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M02_no_non_brand_patterns:
+                pass: 49
+                fail: 1
+                total: 50
+                pass_rate: 98.0
+              M02_exact_character_match:
+                pass: 43
+                fail: 7
+                total: 50
+                pass_rate: 86.0
+              M02_match_type_correct:
+                pass: 33
+                fail: 17
+                total: 50
+                pass_rate: 66.0
+            suggestions:
+            - rubric_id: M02_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 64.0
+              priority: medium
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            - rubric_id: M02_matched_term_valid
+              rubric_name: M02_matched_term_valid
+              pass_rate: 66.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_match_type_correct
+              rubric_name: M02_match_type_correct
+              pass_rate: 66.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m02_v1_gpt4omini_190126
+            pass_rate: 100.0
+            match_rate: 100.0
+            total_samples: 105
+            timestamp: '2026-01-19T15:22:17.082655'
+            rubric_breakdown:
+              M02_correct_classification:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M02_matched_term_valid:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M02_word_boundary_correct:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M02_no_similar_brand_confusion:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M02_no_non_brand_patterns:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M02_exact_character_match:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M02_match_type_correct:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+  m02b:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m02b_v1_gemini20flash_260126
+            pass_rate: 58.57
+            match_rate: 58.0
+            total_samples: 350
+            timestamp: '2026-01-26T11:46:49.095926'
+            rubric_breakdown:
+              M02_correct_classification:
+                pass: 29
+                fail: 21
+                total: 50
+                pass_rate: 58.0
+              M02_matched_term_valid:
+                pass: 46
+                fail: 4
+                total: 50
+                pass_rate: 92.0
+              M02_word_boundary_correct:
+                pass: 20
+                fail: 30
+                total: 50
+                pass_rate: 40.0
+              M02_no_similar_brand_confusion:
+                pass: 48
+                fail: 2
+                total: 50
+                pass_rate: 96.0
+              M02_no_non_brand_patterns:
+                pass: 19
+                fail: 31
+                total: 50
+                pass_rate: 38.0
+              M02_exact_character_match:
+                pass: 19
+                fail: 31
+                total: 50
+                pass_rate: 38.0
+              M02_match_type_correct:
+                pass: 24
+                fail: 26
+                total: 50
+                pass_rate: 48.0
+            suggestions:
+            - rubric_id: M02_no_non_brand_patterns
+              rubric_name: M02_no_non_brand_patterns
+              pass_rate: 38.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_exact_character_match
+              rubric_name: M02_exact_character_match
+              pass_rate: 38.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_word_boundary_correct
+              rubric_name: M02_word_boundary_correct
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_match_type_correct
+              rubric_name: M02_match_type_correct
+              pass_rate: 48.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 58.0
+              priority: medium
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m02b_v1_gpt5_260126
+            pass_rate: 66.29
+            match_rate: 86.0
+            total_samples: 350
+            timestamp: '2026-01-26T11:55:34.788849'
+            rubric_breakdown:
+              M02_correct_classification:
+                pass: 43
+                fail: 7
+                total: 50
+                pass_rate: 86.0
+              M02_matched_term_valid:
+                pass: 33
+                fail: 17
+                total: 50
+                pass_rate: 66.0
+              M02_word_boundary_correct:
+                pass: 29
+                fail: 21
+                total: 50
+                pass_rate: 58.0
+              M02_no_similar_brand_confusion:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M02_no_non_brand_patterns:
+                pass: 22
+                fail: 28
+                total: 50
+                pass_rate: 44.0
+              M02_exact_character_match:
+                pass: 25
+                fail: 25
+                total: 50
+                pass_rate: 50.0
+              M02_match_type_correct:
+                pass: 30
+                fail: 20
+                total: 50
+                pass_rate: 60.0
+            suggestions:
+            - rubric_id: M02_no_non_brand_patterns
+              rubric_name: M02_no_non_brand_patterns
+              pass_rate: 44.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_exact_character_match
+              rubric_name: M02_exact_character_match
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_word_boundary_correct
+              rubric_name: M02_word_boundary_correct
+              pass_rate: 58.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_match_type_correct
+              rubric_name: M02_match_type_correct
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M02_matched_term_valid
+              rubric_name: M02_matched_term_valid
+              pass_rate: 66.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m02b_v1_gpt4omini_200126
+            pass_rate: 100.0
+            match_rate: 100.0
+            total_samples: 70
+            timestamp: '2026-01-20T00:51:24.520681'
+            rubric_breakdown:
+              M02_correct_classification:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M02_matched_term_valid:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M02_word_boundary_correct:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M02_no_similar_brand_confusion:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M02_no_non_brand_patterns:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M02_exact_character_match:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M02_match_type_correct:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+  m04:
+    versions:
+      v1:
+        models:
+          gpt-4o-mini:
+            run_id: m04_v1_unknown_220126
+            pass_rate: 95.0
+            match_rate: 93.33
+            total_samples: 60
+            timestamp: '2026-01-22T20:21:29.234646'
+            rubric_breakdown:
+              M04_correct_classification:
+                pass: 14
+                fail: 1
+                total: 15
+                pass_rate: 93.33
+              M04_own_brand_excluded:
+                pass: 13
+                fail: 2
+                total: 15
+                pass_rate: 86.67
+              M04_case_insensitive_matching:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+              M04_competitor_identified:
+                pass: 15
+                fail: 0
+                total: 15
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m04_v1_gemini20flash_260126
+            pass_rate: 84.5
+            match_rate: 80.0
+            total_samples: 200
+            timestamp: '2026-01-26T12:06:04.753876'
+            rubric_breakdown:
+              M04_correct_classification:
+                pass: 40
+                fail: 10
+                total: 50
+                pass_rate: 80.0
+              M04_own_brand_excluded:
+                pass: 48
+                fail: 2
+                total: 50
+                pass_rate: 96.0
+              M04_case_insensitive_matching:
+                pass: 42
+                fail: 8
+                total: 50
+                pass_rate: 84.0
+              M04_competitor_identified:
+                pass: 39
+                fail: 11
+                total: 50
+                pass_rate: 78.0
+            suggestions:
+            - rubric_id: M04_competitor_identified
+              rubric_name: M04_competitor_identified
+              pass_rate: 78.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M04_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 80.0
+              priority: low
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            - rubric_id: M04_case_insensitive_matching
+              rubric_name: M04_case_insensitive_matching
+              pass_rate: 84.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m04_v1_gpt5_260126
+            pass_rate: 97.0
+            match_rate: 100.0
+            total_samples: 200
+            timestamp: '2026-01-26T12:00:32.870636'
+            rubric_breakdown:
+              M04_correct_classification:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M04_own_brand_excluded:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M04_case_insensitive_matching:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M04_competitor_identified:
+                pass: 44
+                fail: 6
+                total: 50
+                pass_rate: 88.0
+            suggestions: []
+            improvements_from_prev: []
+  m04b:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m04b_v1_gemini20flash_260126
+            pass_rate: 66.0
+            match_rate: 78.0
+            total_samples: 200
+            timestamp: '2026-01-26T12:17:12.860826'
+            rubric_breakdown:
+              M04_correct_classification:
+                pass: 39
+                fail: 11
+                total: 50
+                pass_rate: 78.0
+              M04_own_brand_excluded:
+                pass: 37
+                fail: 13
+                total: 50
+                pass_rate: 74.0
+              M04_case_insensitive_matching:
+                pass: 41
+                fail: 9
+                total: 50
+                pass_rate: 82.0
+              M04_competitor_identified:
+                pass: 15
+                fail: 35
+                total: 50
+                pass_rate: 30.0
+            suggestions:
+            - rubric_id: M04_competitor_identified
+              rubric_name: M04_competitor_identified
+              pass_rate: 30.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M04_own_brand_excluded
+              rubric_name: M04_own_brand_excluded
+              pass_rate: 74.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M04_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 78.0
+              priority: low
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            - rubric_id: M04_case_insensitive_matching
+              rubric_name: M04_case_insensitive_matching
+              pass_rate: 82.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m04b_v1_gpt5_260126
+            pass_rate: 96.5
+            match_rate: 100.0
+            total_samples: 200
+            timestamp: '2026-01-26T12:11:48.040660'
+            rubric_breakdown:
+              M04_correct_classification:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M04_own_brand_excluded:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M04_case_insensitive_matching:
+                pass: 50
+                fail: 0
+                total: 50
+                pass_rate: 100.0
+              M04_competitor_identified:
+                pass: 43
+                fail: 7
+                total: 50
+                pass_rate: 86.0
+            suggestions: []
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m04b_v1_gpt4omini_200126
+            pass_rate: 80.0
+            match_rate: 60.0
+            total_samples: 40
+            timestamp: '2026-01-20T00:52:38.747693'
+            rubric_breakdown:
+              M04_correct_classification:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M04_own_brand_excluded:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M04_case_insensitive_matching:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M04_competitor_identified:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+            suggestions:
+            - rubric_id: M04_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            - rubric_id: M04_case_insensitive_matching
+              rubric_name: M04_case_insensitive_matching
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m05:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m05_v1_gemini20flash_260126
+            pass_rate: 58.0
+            match_rate: 70.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:21:52.488882'
+            rubric_breakdown:
+              M05_correct_classification:
+                pass: 35
+                fail: 15
+                total: 50
+                pass_rate: 70.0
+              M05_hidden_brand_check:
+                pass: 23
+                fail: 27
+                total: 50
+                pass_rate: 46.0
+            suggestions:
+            - rubric_id: M05_hidden_brand_check
+              rubric_name: M05_hidden_brand_check
+              pass_rate: 46.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M05_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 70.0
+              priority: low
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m05_v1_gpt5_260126
+            pass_rate: 54.0
+            match_rate: 92.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:19:31.394195'
+            rubric_breakdown:
+              M05_correct_classification:
+                pass: 46
+                fail: 4
+                total: 50
+                pass_rate: 92.0
+              M05_hidden_brand_check:
+                pass: 8
+                fail: 42
+                total: 50
+                pass_rate: 16.0
+            suggestions:
+            - rubric_id: M05_hidden_brand_check
+              rubric_name: M05_hidden_brand_check
+              pass_rate: 16.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m05_v1_gpt4omini_200126
+            pass_rate: 100.0
+            match_rate: 100.0
+            total_samples: 4
+            timestamp: '2026-01-20T00:27:50.770592'
+            rubric_breakdown:
+              M05_correct_classification:
+                pass: 2
+                fail: 0
+                total: 2
+                pass_rate: 100.0
+              M05_hidden_brand_check:
+                pass: 2
+                fail: 0
+                total: 2
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+  m05b:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m05b_v1_gemini20flash_260126
+            pass_rate: 48.0
+            match_rate: 70.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:24:33.695595'
+            rubric_breakdown:
+              M05_correct_classification:
+                pass: 35
+                fail: 15
+                total: 50
+                pass_rate: 70.0
+              M05_hidden_brand_check:
+                pass: 13
+                fail: 37
+                total: 50
+                pass_rate: 26.0
+            suggestions:
+            - rubric_id: M05_hidden_brand_check
+              rubric_name: M05_hidden_brand_check
+              pass_rate: 26.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M05_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 70.0
+              priority: low
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m05b_v1_gpt5_260126
+            pass_rate: 56.0
+            match_rate: 90.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:27:00.714843'
+            rubric_breakdown:
+              M05_correct_classification:
+                pass: 45
+                fail: 5
+                total: 50
+                pass_rate: 90.0
+              M05_hidden_brand_check:
+                pass: 11
+                fail: 39
+                total: 50
+                pass_rate: 22.0
+            suggestions:
+            - rubric_id: M05_hidden_brand_check
+              rubric_name: M05_hidden_brand_check
+              pass_rate: 22.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m05b_v1_gpt4omini_200126
+            pass_rate: 90.0
+            match_rate: 90.0
+            total_samples: 20
+            timestamp: '2026-01-20T00:53:10.880745'
+            rubric_breakdown:
+              M05_correct_classification:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M05_hidden_brand_check:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+            suggestions: []
+            improvements_from_prev: []
+  m06:
+    versions:
+      v1:
+        models:
+          gemini-2.5-pro:
+            run_id: m06_v1_gemini25pro_220126
+            pass_rate: 45.0
+            match_rate: 0.0
+            total_samples: 120
+            timestamp: '2026-01-22T20:52:04.327884'
+            rubric_breakdown:
+              M06_three_level_hierarchy:
+                pass: 1
+                fail: 19
+                total: 20
+                pass_rate: 5.0
+              M06_product_type_focused:
+                pass: 18
+                fail: 2
+                total: 20
+                pass_rate: 90.0
+              M06_hierarchy_correct:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+              M06_product_type_accurate:
+                pass: 20
+                fail: 0
+                total: 20
+                pass_rate: 100.0
+              M06_max_three_levels:
+                pass: 11
+                fail: 9
+                total: 20
+                pass_rate: 55.0
+              M06_no_material_feature_levels:
+                pass: 4
+                fail: 16
+                total: 20
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M06_hierarchy_correct
+              rubric_name: Hierarchy Correct
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_three_level_hierarchy
+              rubric_name: M06_three_level_hierarchy
+              pass_rate: 5.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_no_material_feature_levels
+              rubric_name: M06_no_material_feature_levels
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M06_max_three_levels
+              rubric_name: M06_max_three_levels
+              pass_rate: 55.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m06_v1_gpt4omini_220126
+            pass_rate: 43.06
+            match_rate: 0.0
+            total_samples: 72
+            timestamp: '2026-01-22T20:44:41.530821'
+            rubric_breakdown:
+              M06_three_level_hierarchy:
+                pass: 0
+                fail: 12
+                total: 12
+                pass_rate: 0.0
+              M06_product_type_focused:
+                pass: 10
+                fail: 2
+                total: 12
+                pass_rate: 83.33
+              M06_hierarchy_correct:
+                pass: 0
+                fail: 12
+                total: 12
+                pass_rate: 0.0
+              M06_product_type_accurate:
+                pass: 11
+                fail: 1
+                total: 12
+                pass_rate: 91.67
+              M06_max_three_levels:
+                pass: 7
+                fail: 5
+                total: 12
+                pass_rate: 58.33
+              M06_no_material_feature_levels:
+                pass: 3
+                fail: 9
+                total: 12
+                pass_rate: 25.0
+            suggestions:
+            - rubric_id: M06_three_level_hierarchy
+              rubric_name: M06_three_level_hierarchy
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_hierarchy_correct
+              rubric_name: Hierarchy Correct
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_no_material_feature_levels
+              rubric_name: M06_no_material_feature_levels
+              pass_rate: 25.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M06_max_three_levels
+              rubric_name: M06_max_three_levels
+              pass_rate: 58.33
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M06_product_type_focused
+              rubric_name: M06_product_type_focused
+              pass_rate: 83.33
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m06_v1_gpt5_220126
+            pass_rate: 45.83
+            match_rate: 5.0
+            total_samples: 120
+            timestamp: '2026-01-22T20:48:20.016372'
+            rubric_breakdown:
+              M06_three_level_hierarchy:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+              M06_product_type_focused:
+                pass: 18
+                fail: 2
+                total: 20
+                pass_rate: 90.0
+              M06_hierarchy_correct:
+                pass: 1
+                fail: 19
+                total: 20
+                pass_rate: 5.0
+              M06_product_type_accurate:
+                pass: 20
+                fail: 0
+                total: 20
+                pass_rate: 100.0
+              M06_max_three_levels:
+                pass: 12
+                fail: 8
+                total: 20
+                pass_rate: 60.0
+              M06_no_material_feature_levels:
+                pass: 4
+                fail: 16
+                total: 20
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M06_three_level_hierarchy
+              rubric_name: M06_three_level_hierarchy
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_hierarchy_correct
+              rubric_name: Hierarchy Correct
+              pass_rate: 5.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_no_material_feature_levels
+              rubric_name: M06_no_material_feature_levels
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M06_max_three_levels
+              rubric_name: M06_max_three_levels
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m06_v1_claudesonnet420250514_260126
+            pass_rate: 45.67
+            match_rate: 2.0
+            total_samples: 300
+            timestamp: '2026-01-26T12:34:38.829817'
+            rubric_breakdown:
+              M06_three_level_hierarchy:
+                pass: 0
+                fail: 50
+                total: 50
+                pass_rate: 0.0
+              M06_product_type_focused:
+                pass: 44
+                fail: 6
+                total: 50
+                pass_rate: 88.0
+              M06_hierarchy_correct:
+                pass: 1
+                fail: 49
+                total: 50
+                pass_rate: 2.0
+              M06_product_type_accurate:
+                pass: 49
+                fail: 1
+                total: 50
+                pass_rate: 98.0
+              M06_max_three_levels:
+                pass: 33
+                fail: 17
+                total: 50
+                pass_rate: 66.0
+              M06_no_material_feature_levels:
+                pass: 10
+                fail: 40
+                total: 50
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M06_three_level_hierarchy
+              rubric_name: M06_three_level_hierarchy
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_hierarchy_correct
+              rubric_name: Hierarchy Correct
+              pass_rate: 2.0
+              priority: high
+              suggestion: Add examples of correct hierarchy structures
+              status: pending
+            - rubric_id: M06_no_material_feature_levels
+              rubric_name: M06_no_material_feature_levels
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M06_max_three_levels
+              rubric_name: M06_max_three_levels
+              pass_rate: 66.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m07:
+    versions:
+      v1:
+        models:
+          gemini-2.5-pro:
+            run_id: m07_v1_gemini25pro_220126
+            pass_rate: 31.25
+            match_rate: 10.0
+            total_samples: 80
+            timestamp: '2026-01-22T20:54:47.453614'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 2
+                fail: 18
+                total: 20
+                pass_rate: 10.0
+              M07_no_fabricated_use_cases:
+                pass: 19
+                fail: 1
+                total: 20
+                pass_rate: 95.0
+              M07_audiences_explicit_or_dash:
+                pass: 4
+                fail: 16
+                total: 20
+                pass_rate: 20.0
+              M07_specs_preserve_units:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 10.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m07_v1_gpt4omini_220126
+            pass_rate: 45.83
+            match_rate: 16.67
+            total_samples: 48
+            timestamp: '2026-01-22T20:56:22.936126'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 2
+                fail: 10
+                total: 12
+                pass_rate: 16.67
+              M07_no_fabricated_use_cases:
+                pass: 12
+                fail: 0
+                total: 12
+                pass_rate: 100.0
+              M07_audiences_explicit_or_dash:
+                pass: 7
+                fail: 5
+                total: 12
+                pass_rate: 58.33
+              M07_specs_preserve_units:
+                pass: 1
+                fail: 11
+                total: 12
+                pass_rate: 8.33
+            suggestions:
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 8.33
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 16.67
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 58.33
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m07_v1_claudesonnet420250514_260126
+            pass_rate: 47.5
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:25:47.116560'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M07_no_fabricated_use_cases:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M07_audiences_explicit_or_dash:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M07_specs_preserve_units:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m07_v1_gemini20flash_260126
+            pass_rate: 40.0
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:24:38.411896'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M07_no_fabricated_use_cases:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M07_audiences_explicit_or_dash:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M07_specs_preserve_units:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m07_v1_gpt5_260126
+            pass_rate: 57.5
+            match_rate: 30.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:23:24.752965'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 3
+                fail: 7
+                total: 10
+                pass_rate: 30.0
+              M07_no_fabricated_use_cases:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M07_audiences_explicit_or_dash:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M07_specs_preserve_units:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+            suggestions:
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 30.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+      v2:
+        models:
+          gemini-2.5-pro:
+            run_id: m07_v2_gemini25pro_220126
+            pass_rate: 40.0
+            match_rate: 15.0
+            total_samples: 80
+            timestamp: '2026-01-22T20:59:06.703339'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 3
+                fail: 17
+                total: 20
+                pass_rate: 15.0
+              M07_no_fabricated_use_cases:
+                pass: 19
+                fail: 1
+                total: 20
+                pass_rate: 95.0
+              M07_audiences_explicit_or_dash:
+                pass: 10
+                fail: 10
+                total: 20
+                pass_rate: 50.0
+              M07_specs_preserve_units:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 15.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev:
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              previous_rate: 20.0
+              current_rate: 50.0
+              improvement: +30.0%
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              previous_rate: 10.0
+              current_rate: 15.0
+              improvement: +5.0%
+          gpt-4o:
+            run_id: m07_v2_gpt4o_220126
+            pass_rate: 43.75
+            match_rate: 0.0
+            total_samples: 80
+            timestamp: '2026-01-22T21:04:31.635598'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+              M07_no_fabricated_use_cases:
+                pass: 18
+                fail: 2
+                total: 20
+                pass_rate: 90.0
+              M07_audiences_explicit_or_dash:
+                pass: 17
+                fail: 3
+                total: 20
+                pass_rate: 85.0
+              M07_specs_preserve_units:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m07_v2_gpt5_220126
+            pass_rate: 40.0
+            match_rate: 10.0
+            total_samples: 80
+            timestamp: '2026-01-22T21:01:48.889860'
+            rubric_breakdown:
+              M07_attributes_from_listing:
+                pass: 2
+                fail: 18
+                total: 20
+                pass_rate: 10.0
+              M07_no_fabricated_use_cases:
+                pass: 18
+                fail: 2
+                total: 20
+                pass_rate: 90.0
+              M07_audiences_explicit_or_dash:
+                pass: 12
+                fail: 8
+                total: 20
+                pass_rate: 60.0
+              M07_specs_preserve_units:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M07_specs_preserve_units
+              rubric_name: M07_specs_preserve_units
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M07_attributes_from_listing
+              rubric_name: Attributes From Listing
+              pass_rate: 10.0
+              priority: high
+              suggestion: Add rule to only use information explicitly present in the
+                listing
+              status: pending
+            - rubric_id: M07_audiences_explicit_or_dash
+              rubric_name: M07_audiences_explicit_or_dash
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m08:
+    versions:
+      v1:
+        models:
+          gpt-4o-mini:
+            run_id: m08_v1_gpt4omini_220126_2
+            pass_rate: 2.5
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-22T21:09:15.339530'
+            rubric_breakdown:
+              M08_ranks_assigned:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_important_ranked_high:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+              M08_unique_ranks_per_type:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_title_attributes_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M08_ranks_assigned
+              rubric_name: Ranks Assigned
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_unique_ranks_per_type
+              rubric_name: M08_unique_ranks_per_type
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_title_attributes_ranked_high
+              rubric_name: M08_title_attributes_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_important_ranked_high
+              rubric_name: M08_important_ranked_high
+              pass_rate: 10.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m08_v1_claudesonnet420250514_260126
+            pass_rate: 5.0
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:32:23.305177'
+            rubric_breakdown:
+              M08_ranks_assigned:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_important_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_unique_ranks_per_type:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+              M08_title_attributes_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M08_ranks_assigned
+              rubric_name: Ranks Assigned
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_important_ranked_high
+              rubric_name: M08_important_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_title_attributes_ranked_high
+              rubric_name: M08_title_attributes_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_unique_ranks_per_type
+              rubric_name: M08_unique_ranks_per_type
+              pass_rate: 20.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m08_v1_gemini20flash_260126
+            pass_rate: 2.5
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:31:05.154864'
+            rubric_breakdown:
+              M08_ranks_assigned:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_important_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_unique_ranks_per_type:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+              M08_title_attributes_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M08_ranks_assigned
+              rubric_name: Ranks Assigned
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_important_ranked_high
+              rubric_name: M08_important_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_title_attributes_ranked_high
+              rubric_name: M08_title_attributes_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_unique_ranks_per_type
+              rubric_name: M08_unique_ranks_per_type
+              pass_rate: 10.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m08_v1_gpt5_260126
+            pass_rate: 0.0
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:29:43.759988'
+            rubric_breakdown:
+              M08_ranks_assigned:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_important_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_unique_ranks_per_type:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_title_attributes_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M08_ranks_assigned
+              rubric_name: Ranks Assigned
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_important_ranked_high
+              rubric_name: M08_important_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_unique_ranks_per_type
+              rubric_name: M08_unique_ranks_per_type
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_title_attributes_ranked_high
+              rubric_name: M08_title_attributes_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o:
+            run_id: m08_v1_gpt4o_200126
+            pass_rate: 5.0
+            match_rate: 10.0
+            total_samples: 40
+            timestamp: '2026-01-20T01:00:35.082566'
+            rubric_breakdown:
+              M08_ranks_assigned:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+              M08_important_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_unique_ranks_per_type:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+              M08_title_attributes_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M08_important_ranked_high
+              rubric_name: M08_important_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_title_attributes_ranked_high
+              rubric_name: M08_title_attributes_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_ranks_assigned
+              rubric_name: Ranks Assigned
+              pass_rate: 10.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_unique_ranks_per_type
+              rubric_name: M08_unique_ranks_per_type
+              pass_rate: 10.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            improvements_from_prev: []
+      v2:
+        models:
+          gpt-4o:
+            run_id: m08_v2_gpt4o_260126
+            pass_rate: 2.5
+            match_rate: 0.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:28:24.244893'
+            rubric_breakdown:
+              M08_ranks_assigned:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_important_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M08_unique_ranks_per_type:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+              M08_title_attributes_ranked_high:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M08_ranks_assigned
+              rubric_name: Ranks Assigned
+              pass_rate: 0.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            - rubric_id: M08_important_ranked_high
+              rubric_name: M08_important_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_title_attributes_ranked_high
+              rubric_name: M08_title_attributes_ranked_high
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M08_unique_ranks_per_type
+              rubric_name: M08_unique_ranks_per_type
+              pass_rate: 10.0
+              priority: high
+              suggestion: Add clearer ranking criteria with examples
+              status: pending
+            improvements_from_prev: []
+  m09:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m09_v1_gemini20flash_260126
+            pass_rate: 40.0
+            match_rate: 40.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:34:23.813929'
+            rubric_breakdown:
+              M09_captures_core_purpose:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M09_no_marketing_language:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M09_word_count_3_to_6:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+              M09_no_brand_tech_names:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+            suggestions:
+            - rubric_id: M09_word_count_3_to_6
+              rubric_name: M09_word_count_3_to_6
+              pass_rate: 10.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_captures_core_purpose
+              rubric_name: Captures Core Purpose
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_marketing_language
+              rubric_name: M09_no_marketing_language
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_brand_tech_names
+              rubric_name: M09_no_brand_tech_names
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m09_v1_gpt5_260126
+            pass_rate: 30.0
+            match_rate: 40.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:33:27.152804'
+            rubric_breakdown:
+              M09_captures_core_purpose:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M09_no_marketing_language:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+              M09_word_count_3_to_6:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+              M09_no_brand_tech_names:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+            suggestions:
+            - rubric_id: M09_no_marketing_language
+              rubric_name: M09_no_marketing_language
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_word_count_3_to_6
+              rubric_name: M09_word_count_3_to_6
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_captures_core_purpose
+              rubric_name: Captures Core Purpose
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_brand_tech_names
+              rubric_name: M09_no_brand_tech_names
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m09_v1_claudesonnet420250514_260126
+            pass_rate: 20.0
+            match_rate: 30.0
+            total_samples: 40
+            timestamp: '2026-01-26T10:35:26.995079'
+            rubric_breakdown:
+              M09_captures_core_purpose:
+                pass: 3
+                fail: 7
+                total: 10
+                pass_rate: 30.0
+              M09_no_marketing_language:
+                pass: 3
+                fail: 7
+                total: 10
+                pass_rate: 30.0
+              M09_word_count_3_to_6:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M09_no_brand_tech_names:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M09_word_count_3_to_6
+              rubric_name: M09_word_count_3_to_6
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_brand_tech_names
+              rubric_name: M09_no_brand_tech_names
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_captures_core_purpose
+              rubric_name: Captures Core Purpose
+              pass_rate: 30.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_marketing_language
+              rubric_name: M09_no_marketing_language
+              pass_rate: 30.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m09_v1_gpt4omini_200126
+            pass_rate: 62.5
+            match_rate: 50.0
+            total_samples: 40
+            timestamp: '2026-01-20T01:06:58.509576'
+            rubric_breakdown:
+              M09_captures_core_purpose:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M09_no_marketing_language:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M09_word_count_3_to_6:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M09_no_brand_tech_names:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+            suggestions:
+            - rubric_id: M09_captures_core_purpose
+              rubric_name: Captures Core Purpose
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_brand_tech_names
+              rubric_name: M09_no_brand_tech_names
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_no_marketing_language
+              rubric_name: M09_no_marketing_language
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M09_word_count_3_to_6
+              rubric_name: M09_word_count_3_to_6
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m10:
+    versions:
+      v1:
+        models:
+          gpt-5:
+            run_id: m10_v1_gpt5_220126
+            pass_rate: 42.5
+            match_rate: 45.0
+            total_samples: 40
+            timestamp: '2026-01-22T21:10:24.833553'
+            rubric_breakdown:
+              M10_invalid_correctly_flagged:
+                pass: 9
+                fail: 11
+                total: 20
+                pass_rate: 45.0
+              M10_fix_improves_output:
+                pass: 8
+                fail: 12
+                total: 20
+                pass_rate: 40.0
+            suggestions:
+            - rubric_id: M10_fix_improves_output
+              rubric_name: M10_fix_improves_output
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M10_invalid_correctly_flagged
+              rubric_name: Invalid Correctly Flagged
+              pass_rate: 45.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m10_v1_gemini20flash_260126
+            pass_rate: 30.0
+            match_rate: 40.0
+            total_samples: 20
+            timestamp: '2026-01-26T10:36:04.210629'
+            rubric_breakdown:
+              M10_invalid_correctly_flagged:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+              M10_fix_improves_output:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M10_fix_improves_output
+              rubric_name: M10_fix_improves_output
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M10_invalid_correctly_flagged
+              rubric_name: Invalid Correctly Flagged
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m10_v1_claudesonnet420250514_260126
+            pass_rate: 45.0
+            match_rate: 50.0
+            total_samples: 20
+            timestamp: '2026-01-26T10:36:39.506995'
+            rubric_breakdown:
+              M10_invalid_correctly_flagged:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M10_fix_improves_output:
+                pass: 4
+                fail: 6
+                total: 10
+                pass_rate: 40.0
+            suggestions:
+            - rubric_id: M10_fix_improves_output
+              rubric_name: M10_fix_improves_output
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M10_invalid_correctly_flagged
+              rubric_name: Invalid Correctly Flagged
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m10_v1_gpt4omini_200126
+            pass_rate: 20.0
+            match_rate: 20.0
+            total_samples: 20
+            timestamp: '2026-01-20T01:07:48.837867'
+            rubric_breakdown:
+              M10_invalid_correctly_flagged:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+              M10_fix_improves_output:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M10_invalid_correctly_flagged
+              rubric_name: Invalid Correctly Flagged
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M10_fix_improves_output
+              rubric_name: M10_fix_improves_output
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m11:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m11_v1_gemini20flash_260126
+            pass_rate: 42.86
+            match_rate: 0.0
+            total_samples: 70
+            timestamp: '2026-01-26T10:38:58.019962'
+            rubric_breakdown:
+              M11_constraint_count:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M11_constraints_non_negotiable:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M11_only_true_constraints:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M11_critical_not_missed:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M11_never_categories_excluded:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M11_expected_distribution:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M11_three_step_test_applied:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M11_critical_not_missed
+              rubric_name: Critical Not Missed
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_three_step_test_applied
+              rubric_name: M11_three_step_test_applied
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_never_categories_excluded
+              rubric_name: M11_never_categories_excluded
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_constraint_count
+              rubric_name: M11_constraint_count
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_constraints_non_negotiable
+              rubric_name: M11_constraints_non_negotiable
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_expected_distribution
+              rubric_name: M11_expected_distribution
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_only_true_constraints
+              rubric_name: M11_only_true_constraints
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m11_v1_gpt5_260126
+            pass_rate: 65.71
+            match_rate: 0.0
+            total_samples: 70
+            timestamp: '2026-01-26T10:41:05.756818'
+            rubric_breakdown:
+              M11_constraint_count:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M11_constraints_non_negotiable:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M11_only_true_constraints:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M11_critical_not_missed:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M11_never_categories_excluded:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M11_expected_distribution:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M11_three_step_test_applied:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M11_critical_not_missed
+              rubric_name: Critical Not Missed
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_three_step_test_applied
+              rubric_name: M11_three_step_test_applied
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_never_categories_excluded
+              rubric_name: M11_never_categories_excluded
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m11_v1_gpt4omini_200126
+            pass_rate: 52.86
+            match_rate: 70.0
+            total_samples: 70
+            timestamp: '2026-01-20T01:10:20.800444'
+            rubric_breakdown:
+              M11_constraint_count:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M11_constraints_non_negotiable:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M11_only_true_constraints:
+                pass: 6
+                fail: 4
+                total: 10
+                pass_rate: 60.0
+              M11_critical_not_missed:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M11_never_categories_excluded:
+                pass: 5
+                fail: 5
+                total: 10
+                pass_rate: 50.0
+              M11_expected_distribution:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M11_three_step_test_applied:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M11_three_step_test_applied
+              rubric_name: M11_three_step_test_applied
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_constraint_count
+              rubric_name: M11_constraint_count
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_constraints_non_negotiable
+              rubric_name: M11_constraints_non_negotiable
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_never_categories_excluded
+              rubric_name: M11_never_categories_excluded
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_only_true_constraints
+              rubric_name: M11_only_true_constraints
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_critical_not_missed
+              rubric_name: Critical Not Missed
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_expected_distribution
+              rubric_name: M11_expected_distribution
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+      v2:
+        models:
+          claude-sonnet-4-20250514:
+            run_id: m11_v2_claudesonnet420250514_260126
+            pass_rate: 57.14
+            match_rate: 0.0
+            total_samples: 70
+            timestamp: '2026-01-26T10:43:20.814101'
+            rubric_breakdown:
+              M11_constraint_count:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M11_constraints_non_negotiable:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M11_only_true_constraints:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M11_critical_not_missed:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+              M11_never_categories_excluded:
+                pass: 7
+                fail: 3
+                total: 10
+                pass_rate: 70.0
+              M11_expected_distribution:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M11_three_step_test_applied:
+                pass: 0
+                fail: 10
+                total: 10
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M11_critical_not_missed
+              rubric_name: Critical Not Missed
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_three_step_test_applied
+              rubric_name: M11_three_step_test_applied
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_never_categories_excluded
+              rubric_name: M11_never_categories_excluded
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_constraint_count
+              rubric_name: M11_constraint_count
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_only_true_constraints
+              rubric_name: M11_only_true_constraints
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M11_expected_distribution
+              rubric_name: M11_expected_distribution
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m12:
+    versions:
+      v1:
+        models:
+          gpt-5:
+            run_id: m12_v1_gpt5_220126
+            pass_rate: 47.5
+            match_rate: 95.0
+            total_samples: 40
+            timestamp: '2026-01-22T21:11:30.238348'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 19
+                fail: 1
+                total: 20
+                pass_rate: 95.0
+              M12_decision_path_followed:
+                pass: 0
+                fail: 20
+                total: 20
+                pass_rate: 0.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 0.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m12_v1_claudesonnet420250514_260126
+            pass_rate: 62.0
+            match_rate: 96.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:37:13.420083'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 48
+                fail: 2
+                total: 50
+                pass_rate: 96.0
+              M12_decision_path_followed:
+                pass: 14
+                fail: 36
+                total: 50
+                pass_rate: 28.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 28.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m12_v1_gemini20flash_260126
+            pass_rate: 71.0
+            match_rate: 98.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:39:22.995668'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 49
+                fail: 1
+                total: 50
+                pass_rate: 98.0
+              M12_decision_path_followed:
+                pass: 22
+                fail: 28
+                total: 50
+                pass_rate: 44.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 44.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m12_v1_gpt4omini_200126
+            pass_rate: 60.0
+            match_rate: 100.0
+            total_samples: 20
+            timestamp: '2026-01-20T01:10:56.991676'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M12_decision_path_followed:
+                pass: 2
+                fail: 8
+                total: 10
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m12b:
+    versions:
+      v1:
+        models:
+          gpt-4o-mini:
+            run_id: m12b_v1_gpt4omini_260126
+            pass_rate: 41.0
+            match_rate: 60.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:46:54.615963'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 30
+                fail: 20
+                total: 50
+                pass_rate: 60.0
+              M12_decision_path_followed:
+                pass: 11
+                fail: 39
+                total: 50
+                pass_rate: 22.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 22.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M12_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 60.0
+              priority: medium
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m12b_v1_claudesonnet420250514_260126
+            pass_rate: 55.0
+            match_rate: 74.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:41:55.981913'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 37
+                fail: 13
+                total: 50
+                pass_rate: 74.0
+              M12_decision_path_followed:
+                pass: 18
+                fail: 32
+                total: 50
+                pass_rate: 36.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 36.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M12_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 74.0
+              priority: low
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m12b_v1_gemini20flash_260126
+            pass_rate: 48.0
+            match_rate: 68.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:49:13.136610'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 34
+                fail: 16
+                total: 50
+                pass_rate: 68.0
+              M12_decision_path_followed:
+                pass: 14
+                fail: 36
+                total: 50
+                pass_rate: 28.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 28.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M12_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 68.0
+              priority: medium
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m12b_v1_gpt5_260126
+            pass_rate: 56.0
+            match_rate: 80.0
+            total_samples: 100
+            timestamp: '2026-01-26T12:44:22.723474'
+            rubric_breakdown:
+              M12_correct_classification:
+                pass: 40
+                fail: 10
+                total: 50
+                pass_rate: 80.0
+              M12_decision_path_followed:
+                pass: 16
+                fail: 34
+                total: 50
+                pass_rate: 32.0
+            suggestions:
+            - rubric_id: M12_decision_path_followed
+              rubric_name: M12_decision_path_followed
+              pass_rate: 32.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M12_correct_classification
+              rubric_name: Correct Classification
+              pass_rate: 80.0
+              priority: low
+              suggestion: Add more examples of edge cases in the prompt
+              status: pending
+            improvements_from_prev: []
+  m13:
+    versions:
+      v1:
+        models:
+          gpt-5:
+            run_id: m13_v1_gpt5_220126
+            pass_rate: 85.0
+            match_rate: 90.0
+            total_samples: 60
+            timestamp: '2026-01-22T21:14:11.601757'
+            rubric_breakdown:
+              M13_same_type_correct:
+                pass: 18
+                fail: 2
+                total: 20
+                pass_rate: 90.0
+              M13_modifiers_stripped:
+                pass: 16
+                fail: 4
+                total: 20
+                pass_rate: 80.0
+              M13_synonyms_recognized:
+                pass: 17
+                fail: 3
+                total: 20
+                pass_rate: 85.0
+            suggestions:
+            - rubric_id: M13_modifiers_stripped
+              rubric_name: M13_modifiers_stripped
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gemini-2.0-flash:
+            run_id: m13_v1_gemini20flash_220126
+            pass_rate: 85.0
+            match_rate: 85.0
+            total_samples: 60
+            timestamp: '2026-01-22T21:16:05.091900'
+            rubric_breakdown:
+              M13_same_type_correct:
+                pass: 17
+                fail: 3
+                total: 20
+                pass_rate: 85.0
+              M13_modifiers_stripped:
+                pass: 15
+                fail: 5
+                total: 20
+                pass_rate: 75.0
+              M13_synonyms_recognized:
+                pass: 19
+                fail: 1
+                total: 20
+                pass_rate: 95.0
+            suggestions:
+            - rubric_id: M13_modifiers_stripped
+              rubric_name: M13_modifiers_stripped
+              pass_rate: 75.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m13_v1_claudesonnet420250514_260126
+            pass_rate: 72.67
+            match_rate: 76.0
+            total_samples: 150
+            timestamp: '2026-01-26T12:53:15.230504'
+            rubric_breakdown:
+              M13_same_type_correct:
+                pass: 38
+                fail: 12
+                total: 50
+                pass_rate: 76.0
+              M13_modifiers_stripped:
+                pass: 35
+                fail: 15
+                total: 50
+                pass_rate: 70.0
+              M13_synonyms_recognized:
+                pass: 36
+                fail: 14
+                total: 50
+                pass_rate: 72.0
+            suggestions:
+            - rubric_id: M13_modifiers_stripped
+              rubric_name: M13_modifiers_stripped
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M13_synonyms_recognized
+              rubric_name: M13_synonyms_recognized
+              pass_rate: 72.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M13_same_type_correct
+              rubric_name: Same Type Correct
+              pass_rate: 76.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m13_v1_gpt4omini_200126
+            pass_rate: 90.0
+            match_rate: 100.0
+            total_samples: 30
+            timestamp: '2026-01-20T01:11:58.977590'
+            rubric_breakdown:
+              M13_same_type_correct:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M13_modifiers_stripped:
+                pass: 8
+                fail: 2
+                total: 10
+                pass_rate: 80.0
+              M13_synonyms_recognized:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+            suggestions:
+            - rubric_id: M13_modifiers_stripped
+              rubric_name: M13_modifiers_stripped
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+  m14:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m14_v1_gemini20flash_220126
+            pass_rate: 100.0
+            match_rate: 100.0
+            total_samples: 60
+            timestamp: '2026-01-22T21:17:49.369219'
+            rubric_breakdown:
+              M14_same_use_correct:
+                pass: 20
+                fail: 0
+                total: 20
+                pass_rate: 100.0
+              M14_superficial_differences_ignored:
+                pass: 20
+                fail: 0
+                total: 20
+                pass_rate: 100.0
+              M14_not_overly_cautious:
+                pass: 20
+                fail: 0
+                total: 20
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m14_v1_gpt5_220126
+            pass_rate: 80.0
+            match_rate: 80.0
+            total_samples: 60
+            timestamp: '2026-01-22T21:19:32.226976'
+            rubric_breakdown:
+              M14_same_use_correct:
+                pass: 16
+                fail: 4
+                total: 20
+                pass_rate: 80.0
+              M14_superficial_differences_ignored:
+                pass: 16
+                fail: 4
+                total: 20
+                pass_rate: 80.0
+              M14_not_overly_cautious:
+                pass: 16
+                fail: 4
+                total: 20
+                pass_rate: 80.0
+            suggestions:
+            - rubric_id: M14_same_use_correct
+              rubric_name: Same Use Correct
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M14_superficial_differences_ignored
+              rubric_name: M14_superficial_differences_ignored
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M14_not_overly_cautious
+              rubric_name: M14_not_overly_cautious
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m14_v1_claudesonnet420250514_260126
+            pass_rate: 94.0
+            match_rate: 94.0
+            total_samples: 150
+            timestamp: '2026-01-26T12:57:29.599513'
+            rubric_breakdown:
+              M14_same_use_correct:
+                pass: 47
+                fail: 3
+                total: 50
+                pass_rate: 94.0
+              M14_superficial_differences_ignored:
+                pass: 47
+                fail: 3
+                total: 50
+                pass_rate: 94.0
+              M14_not_overly_cautious:
+                pass: 47
+                fail: 3
+                total: 50
+                pass_rate: 94.0
+            suggestions: []
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m14_v1_gpt4omini_200126
+            pass_rate: 100.0
+            match_rate: 100.0
+            total_samples: 30
+            timestamp: '2026-01-20T01:13:14.384437'
+            rubric_breakdown:
+              M14_same_use_correct:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M14_superficial_differences_ignored:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M14_not_overly_cautious:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+  m15:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m15_v1_gemini20flash_220126
+            pass_rate: 37.5
+            match_rate: 50.0
+            total_samples: 40
+            timestamp: '2026-01-22T21:22:03.009006'
+            rubric_breakdown:
+              M15_substitute_correct:
+                pass: 10
+                fail: 10
+                total: 20
+                pass_rate: 50.0
+              M15_sixty_percent_overlap:
+                pass: 5
+                fail: 15
+                total: 20
+                pass_rate: 25.0
+            suggestions:
+            - rubric_id: M15_sixty_percent_overlap
+              rubric_name: M15_sixty_percent_overlap
+              pass_rate: 25.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M15_substitute_correct
+              rubric_name: Substitute Correct
+              pass_rate: 50.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m15_v1_gpt5_220126
+            pass_rate: 47.5
+            match_rate: 75.0
+            total_samples: 40
+            timestamp: '2026-01-22T21:20:42.814339'
+            rubric_breakdown:
+              M15_substitute_correct:
+                pass: 15
+                fail: 5
+                total: 20
+                pass_rate: 75.0
+              M15_sixty_percent_overlap:
+                pass: 4
+                fail: 16
+                total: 20
+                pass_rate: 20.0
+            suggestions:
+            - rubric_id: M15_sixty_percent_overlap
+              rubric_name: M15_sixty_percent_overlap
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M15_substitute_correct
+              rubric_name: Substitute Correct
+              pass_rate: 75.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m15_v1_claudesonnet420250514_260126
+            pass_rate: 17.0
+            match_rate: 20.0
+            total_samples: 100
+            timestamp: '2026-01-26T13:00:40.485286'
+            rubric_breakdown:
+              M15_substitute_correct:
+                pass: 10
+                fail: 40
+                total: 50
+                pass_rate: 20.0
+              M15_sixty_percent_overlap:
+                pass: 7
+                fail: 43
+                total: 50
+                pass_rate: 14.0
+            suggestions:
+            - rubric_id: M15_sixty_percent_overlap
+              rubric_name: M15_sixty_percent_overlap
+              pass_rate: 14.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M15_substitute_correct
+              rubric_name: Substitute Correct
+              pass_rate: 20.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m15_v1_gpt4omini_200126
+            pass_rate: 95.0
+            match_rate: 90.0
+            total_samples: 20
+            timestamp: '2026-01-20T01:14:05.532752'
+            rubric_breakdown:
+              M15_substitute_correct:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M15_sixty_percent_overlap:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+            suggestions: []
+            improvements_from_prev: []
+  m16:
+    versions:
+      v1:
+        models:
+          gemini-2.0-flash:
+            run_id: m16_v1_gemini20flash_220126
+            pass_rate: 32.5
+            match_rate: 70.0
+            total_samples: 80
+            timestamp: '2026-01-22T21:26:29.720948'
+            rubric_breakdown:
+              M16_complementary_correct:
+                pass: 14
+                fail: 6
+                total: 20
+                pass_rate: 70.0
+              M16_amazon_bundle_test:
+                pass: 8
+                fail: 12
+                total: 20
+                pass_rate: 40.0
+              M16_same_category_not_complementary:
+                pass: 1
+                fail: 19
+                total: 20
+                pass_rate: 5.0
+              M16_relationship_type_identified:
+                pass: 3
+                fail: 17
+                total: 20
+                pass_rate: 15.0
+            suggestions:
+            - rubric_id: M16_same_category_not_complementary
+              rubric_name: M16_same_category_not_complementary
+              pass_rate: 5.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_relationship_type_identified
+              rubric_name: M16_relationship_type_identified
+              pass_rate: 15.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_amazon_bundle_test
+              rubric_name: M16_amazon_bundle_test
+              pass_rate: 40.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_complementary_correct
+              rubric_name: Complementary Correct
+              pass_rate: 70.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-5:
+            run_id: m16_v1_gpt5_220126
+            pass_rate: 52.5
+            match_rate: 55.0
+            total_samples: 80
+            timestamp: '2026-01-22T21:24:10.659354'
+            rubric_breakdown:
+              M16_complementary_correct:
+                pass: 11
+                fail: 9
+                total: 20
+                pass_rate: 55.0
+              M16_amazon_bundle_test:
+                pass: 16
+                fail: 4
+                total: 20
+                pass_rate: 80.0
+              M16_same_category_not_complementary:
+                pass: 9
+                fail: 11
+                total: 20
+                pass_rate: 45.0
+              M16_relationship_type_identified:
+                pass: 6
+                fail: 14
+                total: 20
+                pass_rate: 30.0
+            suggestions:
+            - rubric_id: M16_relationship_type_identified
+              rubric_name: M16_relationship_type_identified
+              pass_rate: 30.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_same_category_not_complementary
+              rubric_name: M16_same_category_not_complementary
+              pass_rate: 45.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_complementary_correct
+              rubric_name: Complementary Correct
+              pass_rate: 55.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_amazon_bundle_test
+              rubric_name: M16_amazon_bundle_test
+              pass_rate: 80.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          claude-sonnet-4-20250514:
+            run_id: m16_v1_claudesonnet420250514_260126
+            pass_rate: 49.5
+            match_rate: 76.0
+            total_samples: 200
+            timestamp: '2026-01-26T13:06:50.609670'
+            rubric_breakdown:
+              M16_complementary_correct:
+                pass: 38
+                fail: 12
+                total: 50
+                pass_rate: 76.0
+              M16_amazon_bundle_test:
+                pass: 34
+                fail: 16
+                total: 50
+                pass_rate: 68.0
+              M16_same_category_not_complementary:
+                pass: 22
+                fail: 28
+                total: 50
+                pass_rate: 44.0
+              M16_relationship_type_identified:
+                pass: 5
+                fail: 45
+                total: 50
+                pass_rate: 10.0
+            suggestions:
+            - rubric_id: M16_relationship_type_identified
+              rubric_name: M16_relationship_type_identified
+              pass_rate: 10.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_same_category_not_complementary
+              rubric_name: M16_same_category_not_complementary
+              pass_rate: 44.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_amazon_bundle_test
+              rubric_name: M16_amazon_bundle_test
+              pass_rate: 68.0
+              priority: medium
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            - rubric_id: M16_complementary_correct
+              rubric_name: Complementary Correct
+              pass_rate: 76.0
+              priority: low
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+          gpt-4o-mini:
+            run_id: m16_v1_gpt4omini_200126
+            pass_rate: 75.0
+            match_rate: 90.0
+            total_samples: 40
+            timestamp: '2026-01-20T01:15:38.333262'
+            rubric_breakdown:
+              M16_complementary_correct:
+                pass: 9
+                fail: 1
+                total: 10
+                pass_rate: 90.0
+              M16_amazon_bundle_test:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M16_same_category_not_complementary:
+                pass: 10
+                fail: 0
+                total: 10
+                pass_rate: 100.0
+              M16_relationship_type_identified:
+                pass: 1
+                fail: 9
+                total: 10
+                pass_rate: 10.0
+            suggestions:
+            - rubric_id: M16_relationship_type_identified
+              rubric_name: M16_relationship_type_identified
+              pass_rate: 10.0
+              priority: high
+              suggestion: Review and improve prompt instructions for this criterion
+              status: pending
+            improvements_from_prev: []
+version: '1.0'
+generated_at: '2026-01-26T20:35:00.281914'
+thresholds:
+  critical: 50.0
+  warning: 70.0
+  good: 85.0

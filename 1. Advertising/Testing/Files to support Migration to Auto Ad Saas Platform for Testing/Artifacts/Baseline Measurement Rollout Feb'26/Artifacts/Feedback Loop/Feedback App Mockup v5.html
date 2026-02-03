@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohort 1 Feedback Hub v5 - With Onboarding & Real UAT</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #ca8a04;
+            --warning-light: #fef9c3;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --orange: #ea580c;
+            --orange-light: #ffedd5;
+            --cyan: #0891b2;
+            --cyan-light: #cffafe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        .app-container { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--gray-900);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--gray-700);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h1 { font-size: 18px; font-weight: 600; }
+        .sidebar-header p { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+
+        .nav-section { margin-bottom: 24px; }
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: var(--gray-300);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover { background: var(--gray-800); color: white; }
+        .nav-item.active { background: var(--primary); color: white; }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content { flex: 1; margin-left: 260px; padding: 24px; }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-title { font-size: 24px; font-weight: 600; }
+        .page-subtitle { color: var(--gray-500); font-size: 14px; }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-label { font-size: 12px; color: var(--gray-500); margin-bottom: 8px; }
+        .stat-value { font-size: 28px; font-weight: 700; }
+        .stat-value.success { color: var(--success); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-value.danger { color: var(--danger); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--gray-200); color: var(--gray-700); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+        th { font-size: 12px; text-transform: uppercase; color: var(--gray-500); font-weight: 600; }
+        tr:hover { background: var(--gray-50); }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success { background: var(--success-light); color: var(--success); }
+        .badge-warning { background: var(--warning-light); color: var(--warning); }
+        .badge-danger { background: var(--danger-light); color: var(--danger); }
+        .badge-info { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--purple-light); color: var(--purple); }
+        .badge-gray { background: var(--gray-200); color: var(--gray-600); }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+        .form-hint { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea { min-height: 80px; resize: vertical; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            white-space: nowrap;
+        }
+
+        .tab:hover { color: var(--gray-700); }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 500; }
+
+        /* Progress */
+        .progress-bar { height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; }
+        .progress-fill.success { background: var(--success); }
+
+        /* Grid */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+
+        /* Section toggle */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Mockup Banner */
+        .mockup-banner {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Onboarding specific */
+        .onboarding-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .onboarding-card:hover { border-color: var(--primary); background: var(--gray-50); }
+        .onboarding-card.selected { border-color: var(--primary); background: var(--primary-light); }
+
+        .onboarding-card-title { font-weight: 600; margin-bottom: 4px; }
+        .onboarding-card-desc { font-size: 13px; color: var(--gray-500); }
+
+        /* Stepper */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: var(--gray-200);
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .step.active .step-circle { background: var(--primary); color: white; }
+        .step.completed .step-circle { background: var(--success); color: white; }
+
+        .step-label { font-size: 12px; color: var(--gray-500); }
+        .step.active .step-label { color: var(--primary); font-weight: 500; }
+
+        /* Checklist */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .checklist-item:hover { border-color: var(--primary); background: var(--gray-50); }
+        .checklist-item.checked { background: var(--success-light); border-color: var(--success); }
+        .checklist-item.failed { background: var(--danger-light); border-color: var(--danger); }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .checklist-item.checked .checkbox { background: var(--success); border-color: var(--success); color: white; }
+        .checklist-item.failed .checkbox { background: var(--danger); border-color: var(--danger); color: white; }
+
+        .check-content { flex: 1; }
+        .check-title { font-weight: 500; margin-bottom: 4px; }
+        .check-description { font-size: 13px; color: var(--gray-500); }
+        .check-steps { font-size: 13px; background: var(--gray-100); padding: 12px; border-radius: 6px; margin-top: 8px; }
+        .check-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+        /* Quick Log */
+        .quick-log {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .quick-log-input {
+            display: flex;
+            gap: 12px;
+        }
+
+        .quick-log-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--success);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Severity indicators */
+        .severity-critical {
+            background: var(--danger);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .severity-normal {
+            background: var(--gray-200);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Account card */
+        .account-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .account-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .account-card-name { font-weight: 600; }
+
+        .account-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .account-meta-item label {
+            color: var(--gray-500);
+            font-size: 11px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        /* Go/No-Go */
+        .gonogo-status {
+            text-align: center;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .gonogo-status.go { background: var(--success-light); }
+        .gonogo-status.pending { background: var(--warning-light); }
+        .gonogo-status.nogo { background: var(--danger-light); }
+
+        .gonogo-icon { font-size: 48px; margin-bottom: 12px; }
+        .gonogo-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mockup-banner">
+    v5 - Onboarding Flow + Simplified Severity (Auto-Classified) + Real UAT from PRDs
+</div>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Cohort 1 Hub</h1>
+            <p>Baseline Measurement Rollout</p>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-section-title">Setup</div>
+                <div class="nav-item" onclick="showSection('onboarding')">Onboarding</div>
+                <div class="nav-item" onclick="showSection('accounts')">Accounts (3)</div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Overview</div>
+                <div class="nav-item active" onclick="showSection('dashboard')">Dashboard</div>
+                <div class="nav-item" onclick="showSection('gonogo')">Go/No-Go</div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Testing</div>
+                <div class="nav-item" onclick="showSection('uat')">UAT Checklists</div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Feedback</div>
+                <div class="nav-item" onclick="showSection('submit')">Submit Feedback</div>
+                <div class="nav-item" onclick="showSection('all-feedback')">All Issues <span class="badge">8</span></div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Reference</div>
+                <div class="nav-item" onclick="showSection('guidelines')">Guidelines</div>
+                <div class="nav-item" onclick="showSection('limitations')">Known Limitations</div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- ==================== ONBOARDING ==================== -->
+        <div id="onboarding" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Account Onboarding</h1>
+                    <p class="page-subtitle">Configure accounts for baseline measurement rollout</p>
+                </div>
+                <button class="btn btn-primary" onclick="showSection('accounts')">View All Accounts</button>
+            </div>
+
+            <!-- Stepper -->
+            <div class="stepper">
+                <div class="step completed">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Account Info</div>
+                </div>
+                <div class="step active">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Migration Type</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Scope</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Features</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">Confirm</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Account Info -->
+            <div class="card" id="step1" style="display: none;">
+                <h3 class="card-title">Step 1: Account Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Account Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., PetCaskets">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Seller ID</label>
+                        <input type="text" class="form-input" placeholder="Amazon Seller ID">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Marketplace</label>
+                        <select class="form-select">
+                            <option>Amazon US</option>
+                            <option>Amazon UK</option>
+                            <option>Amazon CA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Primary Contact</label>
+                        <input type="text" class="form-input" placeholder="Team member name">
+                    </div>
+                </div>
+                <button class="btn btn-primary">Next: Migration Type</button>
+            </div>
+
+            <!-- Step 2: Migration Type -->
+            <div class="card" id="step2">
+                <h3 class="card-title">Step 2: Migration Type</h3>
+                <p style="color: var(--gray-500); margin-bottom: 16px;">How is this account being migrated to the system?</p>
+
+                <div class="onboarding-card selected" onclick="selectMigration(this, 'new')">
+                    <div class="onboarding-card-title">New Account (Fresh Start)</div>
+                    <div class="onboarding-card-desc">No existing campaigns. System will create everything from scratch including campaigns, keywords, and targeting.</div>
+                </div>
+
+                <div class="onboarding-card" onclick="selectMigration(this, 'full')">
+                    <div class="onboarding-card-title">Full Migration</div>
+                    <div class="onboarding-card-desc">Existing campaigns will be imported and managed entirely by our system. Client stops manual management.</div>
+                </div>
+
+                <div class="onboarding-card" onclick="selectMigration(this, 'parallel')">
+                    <div class="onboarding-card-title">Parallel Operation</div>
+                    <div class="onboarding-card-desc">Our system creates NEW campaigns alongside existing client campaigns. Client continues managing their original campaigns.</div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button class="btn btn-secondary">Back</button>
+                    <button class="btn btn-primary">Next: Define Scope</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Management Scope -->
+            <div class="card" id="step3" style="display: none;">
+                <h3 class="card-title">Step 3: Management Scope</h3>
+                <p style="color: var(--gray-500); margin-bottom: 16px;">What level of management does this account need?</p>
+
+                <div class="onboarding-card" onclick="selectScope(this, 'full-account')">
+                    <div class="onboarding-card-title">Full Account Management</div>
+                    <div class="onboarding-card-desc">System manages ALL ASINs and ALL campaigns for the entire seller account.</div>
+                </div>
+
+                <div class="onboarding-card selected" onclick="selectScope(this, 'asin-level')">
+                    <div class="onboarding-card-title">ASIN-Level Management</div>
+                    <div class="onboarding-card-desc">System manages specific ASINs only. Other ASINs remain outside system control.</div>
+                </div>
+
+                <div id="asinScopeDetails" style="margin-top: 16px; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                    <h4 style="margin-bottom: 12px;">ASIN Scope Configuration</h4>
+
+                    <div class="form-group">
+                        <label class="form-label">How many ASINs will the system manage?</label>
+                        <div class="form-row">
+                            <input type="number" class="form-input" value="5" style="width: 100px;">
+                            <span style="color: var(--gray-500); align-self: center;">ASINs selected for rollout</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Campaign Ownership</label>
+                        <div class="onboarding-card selected" style="margin-bottom: 8px;" onclick="selectCampaignOwnership(this, 'full')">
+                            <div class="onboarding-card-title">Full Campaign Control</div>
+                            <div class="onboarding-card-desc">System manages ALL campaigns for selected ASINs (Auto, Manual KW, ASIN Targeting)</div>
+                        </div>
+                        <div class="onboarding-card" onclick="selectCampaignOwnership(this, 'partial')">
+                            <div class="onboarding-card-title">Partial Campaign Control</div>
+                            <div class="onboarding-card-desc">System manages some campaign types. Client continues managing others manually.</div>
+                        </div>
+                    </div>
+
+                    <div id="partialCampaignDetails" style="display: none; margin-top: 12px; padding: 12px; background: white; border-radius: 6px;">
+                        <label class="form-label">Select which campaign types the system will manage:</label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" checked> Auto Campaigns
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" checked> Manual Keyword Campaigns
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox"> ASIN Targeting Campaigns
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox"> Sponsored Brand Campaigns
+                            </label>
+                        </div>
+                        <div class="form-hint" style="margin-top: 8px;">Unchecked campaign types will remain under client control</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button class="btn btn-secondary">Back</button>
+                    <button class="btn btn-primary">Next: Features</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Features -->
+            <div class="card" id="step4" style="display: none;">
+                <h3 class="card-title">Step 4: Features to Test</h3>
+                <p style="color: var(--gray-500); margin-bottom: 16px;">Select which features are enabled for this rollout</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Enabled</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Automated Bid Optimization</strong></td>
+                            <td><input type="checkbox" checked></td>
+                            <td><span class="badge badge-success">Core</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Budget Optimization (Knapsack)</strong></td>
+                            <td><input type="checkbox" checked></td>
+                            <td><span class="badge badge-success">Core</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Auto-Pacing</strong></td>
+                            <td><input type="checkbox" checked></td>
+                            <td><span class="badge badge-success">Core</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Automated Negation</strong></td>
+                            <td><input type="checkbox" checked></td>
+                            <td>3-hour trigger cycle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Search Term Harvesting</strong></td>
+                            <td><input type="checkbox" checked></td>
+                            <td>ASIN + Keyword harvesting</td>
+                        </tr>
+                        <tr>
+                            <td><strong>KW Research (R/S/C/N)</strong></td>
+                            <td><input type="checkbox"></td>
+                            <td><span class="badge badge-gray">Optional</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button class="btn btn-secondary">Back</button>
+                    <button class="btn btn-primary">Next: Confirm</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Confirm -->
+            <div class="card" id="step5" style="display: none;">
+                <h3 class="card-title">Step 5: Confirm Setup</h3>
+
+                <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 12px;">Account Summary</h4>
+                    <table>
+                        <tr><td style="width: 200px; color: var(--gray-500);">Account Name</td><td><strong>PetCaskets</strong></td></tr>
+                        <tr><td style="color: var(--gray-500);">Migration Type</td><td>New Account (Fresh Start)</td></tr>
+                        <tr><td style="color: var(--gray-500);">Management Scope</td><td>ASIN-Level (5 ASINs)</td></tr>
+                        <tr><td style="color: var(--gray-500);">Campaign Control</td><td>Full Campaign Control</td></tr>
+                        <tr><td style="color: var(--gray-500);">Features Enabled</td><td>Bid, Budget, Pacing, Negation, Harvesting</td></tr>
+                    </table>
+                </div>
+
+                <div style="padding: 16px; background: var(--primary-light); border-radius: 8px; margin-bottom: 20px;">
+                    <strong style="color: var(--primary-dark);">What happens next:</strong>
+                    <ol style="margin-top: 8px; margin-left: 20px; font-size: 14px; color: var(--gray-700);">
+                        <li>Account is added to monitoring dashboard</li>
+                        <li>UAT checklists are generated based on enabled features</li>
+                        <li>Performance tracking begins from rollout start date</li>
+                        <li>Slack notifications enabled for this account</li>
+                    </ol>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-secondary">Back</button>
+                    <button class="btn btn-success" onclick="completeOnboarding()">Complete Onboarding</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== ACCOUNTS ==================== -->
+        <div id="accounts" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Configured Accounts</h1>
+                    <p class="page-subtitle">3 accounts in Cohort 1 rollout</p>
+                </div>
+                <button class="btn btn-primary" onclick="showSection('onboarding')">+ Add Account</button>
+            </div>
+
+            <div class="account-card">
+                <div class="account-card-header">
+                    <div class="account-card-name">PetCaskets</div>
+                    <span class="badge badge-warning">At Risk</span>
+                </div>
+                <div class="account-meta">
+                    <div class="account-meta-item">
+                        <label>Migration</label>
+                        <span>New Account</span>
+                    </div>
+                    <div class="account-meta-item">
+                        <label>Scope</label>
+                        <span>5 ASINs, Full Control</span>
+                    </div>
+                    <div class="account-meta-item">
+                        <label>Features</label>
+                        <span>Bid, Budget, Pacing, Negation, Harvest</span>
+                    </div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                    <button class="btn btn-sm btn-secondary">Edit</button>
+                    <button class="btn btn-sm btn-secondary">View Issues (3)</button>
+                </div>
+            </div>
+
+            <div class="account-card">
+                <div class="account-card-header">
+                    <div class="account-card-name">GardenTools</div>
+                    <span class="badge badge-success">On Track</span>
+                </div>
+                <div class="account-meta">
+                    <div class="account-meta-item">
+                        <label>Migration</label>
+                        <span>Full Migration</span>
+                    </div>
+                    <div class="account-meta-item">
+                        <label>Scope</label>
+                        <span>Full Account</span>
+                    </div>
+                    <div class="account-meta-item">
+                        <label>Features</label>
+                        <span>Bid, Budget, Pacing, Negation</span>
+                    </div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                    <button class="btn btn-sm btn-secondary">Edit</button>
+                    <button class="btn btn-sm btn-secondary">View Issues (2)</button>
+                </div>
+            </div>
+
+            <div class="account-card">
+                <div class="account-card-header">
+                    <div class="account-card-name">HomeDecor</div>
+                    <span class="badge badge-success">On Track</span>
+                </div>
+                <div class="account-meta">
+                    <div class="account-meta-item">
+                        <label>Migration</label>
+                        <span>Parallel Operation</span>
+                    </div>
+                    <div class="account-meta-item">
+                        <label>Scope</label>
+                        <span>3 ASINs, Partial Control</span>
+                    </div>
+                    <div class="account-meta-item">
+                        <label>Features</label>
+                        <span>Bid, Budget (no Pacing)</span>
+                    </div>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                    <button class="btn btn-sm btn-secondary">Edit</button>
+                    <button class="btn btn-sm btn-secondary">View Issues (1)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== DASHBOARD ==================== -->
+        <div id="dashboard" class="section active">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Week 1 of 2 - 5 days remaining</p>
+                </div>
+                <button class="btn btn-primary" onclick="showSection('submit')">+ Report Issue</button>
+            </div>
+
+            <!-- Stats with simplified severity -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Issues</div>
+                    <div class="stat-value">8</div>
+                </div>
+                <div class="stat-card" style="border: 2px solid var(--danger);">
+                    <div class="stat-label">CRITICAL (Blockers)</div>
+                    <div class="stat-value danger">1</div>
+                    <div style="font-size: 12px; color: var(--danger); margin-top: 4px;">Requires immediate action</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Non-Critical</div>
+                    <div class="stat-value">7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Resolved</div>
+                    <div class="stat-value success">5</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">UAT Progress</div>
+                    <div class="stat-value">72%</div>
+                </div>
+            </div>
+
+            <!-- Quick Log -->
+            <div class="quick-log">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <span style="font-size: 24px;">lightning</span>
+                    <div>
+                        <div style="font-weight: 600; color: var(--success);">Quick Report</div>
+                        <div style="font-size: 13px; color: var(--gray-600);">Describe issue - system auto-classifies severity</div>
+                    </div>
+                </div>
+                <div class="quick-log-input">
+                    <input type="text" placeholder="e.g., 'Bids not syncing to Amazon for PetCaskets' or 'Missing keyword pet memorial'" />
+                    <button class="btn btn-success">Submit</button>
+                </div>
+            </div>
+
+            <!-- Critical Issues (if any) -->
+            <div class="card" style="border-left: 4px solid var(--danger);">
+                <h3 class="card-title" style="color: var(--danger);">CRITICAL Issues (1)</h3>
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px;">These block Go decision - must be resolved</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Account</th>
+                            <th>Why Critical</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>#8</strong> - Bids not syncing to Amazon</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-danger">Sync Failure</span> - Core feature broken</td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Non-Critical Issues -->
+            <div class="card">
+                <h3 class="card-title">Non-Critical Issues (7)</h3>
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px;">Track for improvement but don't block Go decision</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Issue</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#7</td>
+                            <td>Missing keyword "pet memorial"</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-warning">Data Gap</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                        </tr>
+                        <tr>
+                            <td>#6</td>
+                            <td>CVR underestimating for low-volume keywords</td>
+                            <td>GardenTools</td>
+                            <td><span class="badge badge-info">Known Limitation</span></td>
+                            <td><span class="badge badge-success">Documented</span></td>
+                        </tr>
+                        <tr>
+                            <td>#5</td>
+                            <td>Budget not flowing to top campaign</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#4</td>
+                            <td>Pacing paused wrong campaign</td>
+                            <td>GardenTools</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#3</td>
+                            <td>Negation triggered too aggressively</td>
+                            <td>HomeDecor</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ==================== GO/NO-GO ==================== -->
+        <div id="gonogo" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Go/No-Go Decision</h1>
+                    <p class="page-subtitle">Simplified criteria for Cohort 2 rollout</p>
+                </div>
+            </div>
+
+            <!-- Current Status -->
+            <div class="gonogo-status pending">
+                <div class="gonogo-icon">waiting</div>
+                <div class="gonogo-title" style="color: var(--warning);">PENDING</div>
+                <div style="color: var(--gray-600);">1 critical issue must be resolved</div>
+            </div>
+
+            <div class="grid-2">
+                <!-- Criteria -->
+                <div class="card">
+                    <h3 class="card-title">Decision Criteria</h3>
+                    <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px;">Both must be true for GO</p>
+
+                    <div style="padding: 16px; background: var(--danger-light); border-radius: 8px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px;">X</span>
+                            <div>
+                                <div style="font-weight: 600; color: var(--danger);">1. No Critical Issues Open</div>
+                                <div style="font-size: 13px; color: var(--gray-600);">Currently: 1 critical open</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 16px; background: var(--success-light); border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px;">check</span>
+                            <div>
+                                <div style="font-weight: 600; color: var(--success);">2. Performance On Track</div>
+                                <div style="font-size: 13px; color: var(--gray-600);">ACOS within target for all accounts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Link -->
+                <div class="card">
+                    <h3 class="card-title">Performance Status</h3>
+                    <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px;">Linked from Performance Dashboard</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th>Target ACOS</th>
+                                <th>Actual ACOS</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PetCaskets</td>
+                                <td>30%</td>
+                                <td>28%</td>
+                                <td><span class="badge badge-success">On Target</span></td>
+                            </tr>
+                            <tr>
+                                <td>GardenTools</td>
+                                <td>25%</td>
+                                <td>27%</td>
+                                <td><span class="badge badge-warning">Slightly High</span></td>
+                            </tr>
+                            <tr>
+                                <td>HomeDecor</td>
+                                <td>35%</td>
+                                <td>32%</td>
+                                <td><span class="badge badge-success">On Target</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <a href="#" style="display: block; margin-top: 16px; color: var(--primary);">Open Performance Dashboard</a>
+                </div>
+            </div>
+
+            <!-- What Makes Something Critical -->
+            <div class="card">
+                <h3 class="card-title">What Makes an Issue "Critical"?</h3>
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px;">System auto-classifies based on these criteria</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Why It's Critical</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Sync Failure</strong></td>
+                            <td>Data not reaching Amazon = feature doesn't work</td>
+                            <td>Bids calculated but not synced</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Loss/Corruption</strong></td>
+                            <td>Historical data gone or incorrect</td>
+                            <td>Keyword config wiped</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wrong Direction at Scale</strong></td>
+                            <td>System doing opposite of intended across many items</td>
+                            <td>All bids increasing when should decrease</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Client Escalation</strong></td>
+                            <td>Client explicitly escalated to management</td>
+                            <td>Client threatening to leave</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 16px; padding: 12px; background: var(--gray-100); border-radius: 8px; font-size: 13px;">
+                    <strong>Everything else is Non-Critical:</strong> Logic issues, performance suboptimal, missing data, UI bugs, suggestions - these are tracked but don't block Go decision.
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== UAT CHECKLISTS ==================== -->
+        <div id="uat" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">UAT Checklists</h1>
+                    <p class="page-subtitle">Feature-specific tests based on PRD logic</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="showUATTab('bid')">Bid Optimization</div>
+                <div class="tab" onclick="showUATTab('budget')">Budget/Knapsack</div>
+                <div class="tab" onclick="showUATTab('pacing')">Auto-Pacing</div>
+                <div class="tab" onclick="showUATTab('negation')">Negation</div>
+                <div class="tab" onclick="showUATTab('harvesting')">Harvesting</div>
+            </div>
+
+            <!-- BID OPTIMIZATION UAT -->
+            <div id="uat-bid" class="uat-content">
+                <div class="card">
+                    <h3 class="card-title">Automated Bid Optimization</h3>
+                    <p style="color: var(--gray-500); font-size: 13px; margin-bottom: 16px;">Based on CVR estimation and bid calculation logic</p>
+
+                    <div class="progress-bar" style="margin-bottom: 24px;">
+                        <div class="progress-fill success" style="width: 60%"></div>
+                    </div>
+                    <p style="font-size: 12px; color: var(--gray-500); margin-bottom: 16px;">3 of 5 checks complete</p>
+
+                    <!-- Check 1: CVR Calculation -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">CVR values are calculated per targeting type</div>
+                            <div class="check-description">System calculates CVR for: Exact, Phrase, Broad, Auto, Product Targeting</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 24 by Wei Li</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 2: Bid Calculation -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Bid = (Target ACOS * CVR * AOV) formula applied</div>
+                            <div class="check-description">Verify bids are calculated using the documented formula, not arbitrary values</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Go to Bid Strategy Logs for any keyword<br>
+                                2. Check CVR, AOV, Target ACOS values<br>
+                                3. Calculate: Bid = Target_ACOS * CVR * AOV<br>
+                                4. Compare to actual bid shown<br>
+                                <strong>Pass if:</strong> Calculated matches actual (within rounding)
+                            </div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 24 by Wei Li</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 3: CVR Waterfall -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">CVR waterfall fallback working</div>
+                            <div class="check-description">When keyword-level CVR unavailable, system uses Tag-level > ASIN-level > Default CVR</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Find a NEW keyword with no conversion history<br>
+                                2. Check what CVR value is being used<br>
+                                3. Verify it's using Tag or ASIN default, not 0<br>
+                                <strong>CVR Confidence Levels:</strong><br>
+                                - Level 1: ASIN + Keyword + Match Type (1.0)<br>
+                                - Level 2: ASIN + Tag + Match Type (0.8)<br>
+                                - Level 3: ASIN + Match Type (0.6)<br>
+                                - Level 4: Default CVR (0.4)
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check 4: Bid Sync -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Bids are syncing to Amazon successfully</div>
+                            <div class="check-description">Calculated bids must actually reach Amazon Ads API</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Go to Bid Strategy Logs > check Sync Status column<br>
+                                2. Spot-check 3 keywords in Amazon Seller Central<br>
+                                3. Compare Portal bid to Amazon bid<br>
+                                <strong>Pass if:</strong> Sync Status = Success AND Amazon bids match Portal
+                            </div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 23 by Sarah</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 5: Bid Limits -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Bid change limits respected</div>
+                            <div class="check-description">Bids shouldn't change by more than X% per day (configurable per account)</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Find a keyword with bid changes over past 3 days<br>
+                                2. Calculate daily % change<br>
+                                3. Verify no single day exceeds the configured limit<br>
+                                <strong>Pass if:</strong> All daily changes within limit
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUDGET/KNAPSACK UAT -->
+            <div id="uat-budget" class="uat-content" style="display: none;">
+                <div class="card">
+                    <h3 class="card-title">Budget Optimization (Knapsack)</h3>
+                    <p style="color: var(--gray-500); font-size: 13px; margin-bottom: 16px;">Campaign prioritization and budget allocation</p>
+
+                    <div class="progress-bar" style="margin-bottom: 24px;">
+                        <div class="progress-fill success" style="width: 40%"></div>
+                    </div>
+                    <p style="font-size: 12px; color: var(--gray-500); margin-bottom: 16px;">2 of 5 checks complete</p>
+
+                    <!-- Check 1: Campaign Scoring -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Campaigns scored by economic viability</div>
+                            <div class="check-description">Campaigns with ACOS < Target get higher priority than ACOS > Target</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. List all campaigns with their ACOS and budget allocation<br>
+                                2. Verify campaigns with better ACOS get more budget<br>
+                                3. Campaigns above target ACOS should be deprioritized (not excluded entirely)<br>
+                                <strong>Pass if:</strong> Budget flows to economically favorable campaigns first
+                            </div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 24 by Wei Li</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 2: Risk-Adjusted Sales -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Risk-adjusted projections used</div>
+                            <div class="check-description">Tags with higher confidence prioritized over uncertain projections</div>
+                            <div class="check-steps">
+                                <strong>Confidence Multipliers:</strong><br>
+                                - Direct (Keyword-level data): 1.0<br>
+                                - Tag-level (aggregated): 0.8<br>
+                                - ASIN-level (default): 0.6<br>
+                                <strong>How to verify:</strong><br>
+                                1. Compare two campaigns with similar raw projections<br>
+                                2. One should have keyword-level data, one should use defaults<br>
+                                3. Campaign with keyword-level data should get priority<br>
+                                <strong>Pass if:</strong> Higher confidence campaigns get more budget
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check 3: Budget Constraint -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Total allocation doesn't exceed available budget</div>
+                            <div class="check-description">Sum of campaign budgets <= ASIN daily budget</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 23 by Sarah</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 4: Locked Campaigns -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Locked campaigns respected</div>
+                            <div class="check-description">User-locked campaigns maintain state and reserve their budget</div>
+                            <div class="check-steps">
+                                <strong>Pacing States:</strong><br>
+                                - AUTO_ACTIVE: System-controlled, active<br>
+                                - AUTO_PAUSED: System-controlled, paused<br>
+                                - LOCKED_ACTIVE: User locked ON, reserves budget<br>
+                                - LOCKED_PAUSED: User locked OFF, excluded from optimization<br>
+                                <strong>How to verify:</strong><br>
+                                1. Manually lock a campaign ON<br>
+                                2. Run budget optimization<br>
+                                3. Verify locked campaign stays active and budget reserved<br>
+                                <strong>Pass if:</strong> Locked campaigns maintain their state
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check 5: Auto vs Manual Targeting -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Auto and Manual campaigns handled separately</div>
+                            <div class="check-description">Each campaign flagged as Auto or Manual targeting with appropriate logic</div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PACING UAT -->
+            <div id="uat-pacing" class="uat-content" style="display: none;">
+                <div class="card">
+                    <h3 class="card-title">Auto-Pacing</h3>
+                    <p style="color: var(--gray-500); font-size: 13px; margin-bottom: 16px;">Campaign activation/pausing based on budget</p>
+
+                    <div class="progress-bar" style="margin-bottom: 24px;">
+                        <div class="progress-fill success" style="width: 50%"></div>
+                    </div>
+
+                    <!-- Check 1: Scheduled Runs -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Pacing runs on schedule (every 24h)</div>
+                            <div class="check-description">Verify pacing_run_status and next_pacing_run timestamps</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 24 by Wei Li</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 2: Event-Driven Triggers -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Event-driven triggers work</div>
+                            <div class="check-description">Pacing runs when: budget changes, campaign status changes manually</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Change ASIN daily budget in Portal<br>
+                                2. Check if pacing run is triggered immediately<br>
+                                3. Verify campaigns are re-optimized based on new budget<br>
+                                <strong>Pass if:</strong> Budget change triggers pacing within 5 minutes
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check 3: Campaign State Changes -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Campaign states applied to Amazon</div>
+                            <div class="check-description">When pacing decides to pause/activate, changes sync to Amazon</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 23 by Sarah</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 4: UI Controls -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Pacing UI shows correct state</div>
+                            <div class="check-description">ASIN config shows: toggle ON/OFF, "Manage Pacing" link, last run time</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Go to ASIN config page<br>
+                                2. Check Auto-Pacing toggle is visible and functional<br>
+                                3. Click "Manage Pacing" to see detailed page<br>
+                                4. Verify campaign list shows pacing states correctly<br>
+                                <strong>Pass if:</strong> UI accurately reflects pacing state
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEGATION UAT -->
+            <div id="uat-negation" class="uat-content" style="display: none;">
+                <div class="card">
+                    <h3 class="card-title">Automated Negation</h3>
+                    <p style="color: var(--gray-500); font-size: 13px; margin-bottom: 16px;">Search term negation based on performance</p>
+
+                    <div class="progress-bar" style="margin-bottom: 24px;">
+                        <div class="progress-fill success" style="width: 75%"></div>
+                    </div>
+
+                    <!-- Check 1: Trigger Frequency -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Negation runs every 3 hours</div>
+                            <div class="check-description">Trigger changed from 24h to 3h for faster evaluation</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 24 by Wei Li</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 2: Negation Criteria -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Search terms meeting criteria get negated</div>
+                            <div class="check-description">Poor performing search terms added as negative keywords</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 23 by Sarah</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 3: Un-negation -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">Terms no longer meeting criteria are un-negated</div>
+                            <div class="check-description">If performance improves, negative keyword should be removed</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 24 by Wei Li</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 4: ASIN Auto Targeting -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Poor ASIN targets negated in Auto campaigns</div>
+                            <div class="check-description">Target ASINs meeting negation criteria added as negatives in Substitute & Complement</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Find a Target ASIN with poor performance (high ACOS, no conversions)<br>
+                                2. Wait for negation cycle (3h)<br>
+                                3. Check if added as negative in Auto > Substitute and Complement<br>
+                                <strong>Pass if:</strong> Poor ASIN targets are negated automatically
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HARVESTING UAT -->
+            <div id="uat-harvesting" class="uat-content" style="display: none;">
+                <div class="card">
+                    <h3 class="card-title">Search Term Harvesting</h3>
+                    <p style="color: var(--gray-500); font-size: 13px; margin-bottom: 16px;">Converting performing search terms to keywords/targets</p>
+
+                    <div class="progress-bar" style="margin-bottom: 24px;">
+                        <div class="progress-fill success" style="width: 33%"></div>
+                    </div>
+
+                    <!-- Check 1: Keyword Harvesting -->
+                    <div class="checklist-item checked">
+                        <div class="checkbox">check</div>
+                        <div class="check-content">
+                            <div class="check-title">High-performing search terms harvested as keywords</div>
+                            <div class="check-description">Search terms meeting criteria added to Manual Keyword campaigns</div>
+                            <div style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">Checked: Jan 23 by Sarah</div>
+                        </div>
+                    </div>
+
+                    <!-- Check 2: ASIN Harvesting -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">ASIN-based search terms harvested for ASIN Targeting</div>
+                            <div class="check-description">10-digit ASIN search terms meeting criteria added to ASIN Targeting campaigns</div>
+                            <div class="check-steps">
+                                <strong>How to verify:</strong><br>
+                                1. Find search terms that are 10-digit ASINs (B0XXXXXXXXX)<br>
+                                2. Check if they meet harvesting criteria (conversions, clicks, etc.)<br>
+                                3. Verify they're added to ASIN Targeting campaigns<br>
+                                4. Check "System Remarks" shows "Harvested"<br>
+                                <strong>Pass if:</strong> ASIN search terms become ASIN targets
+                            </div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check 3: Harvested Tag -->
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="check-content">
+                            <div class="check-title">Harvested items marked in UI</div>
+                            <div class="check-description">Keyword Config and Search Term Config show "Harvested" in System Remarks</div>
+                            <div class="check-actions">
+                                <button class="btn btn-success btn-sm" onclick="passCheck(this)">Pass</button>
+                                <button class="btn btn-danger btn-sm" onclick="failCheck(this)">Fail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SUBMIT FEEDBACK ==================== -->
+        <div id="submit" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Submit Feedback</h1>
+                    <p class="page-subtitle">System auto-classifies severity based on criteria</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="form-group">
+                    <label class="form-label">Account</label>
+                    <select class="form-select" id="feedbackAccount">
+                        <option>PetCaskets</option>
+                        <option>GardenTools</option>
+                        <option>HomeDecor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Feature (if applicable)</label>
+                    <select class="form-select" id="feedbackFeature">
+                        <option value="">General / Not feature-specific</option>
+                        <option>Bid Optimization</option>
+                        <option>Budget Optimization</option>
+                        <option>Auto-Pacing</option>
+                        <option>Negation</option>
+                        <option>Harvesting</option>
+                        <option>Portal UI</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">What happened?</label>
+                    <textarea class="form-textarea" id="feedbackDescription" placeholder="Describe the issue in detail. Include specific keywords, campaigns, or data points if possible."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Issue Type</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <label class="onboarding-card" style="margin: 0;">
+                            <input type="radio" name="issueType" value="sync" style="margin-right: 8px;">
+                            <div class="onboarding-card-title">Sync Failure</div>
+                            <div class="onboarding-card-desc">Data not reaching Amazon</div>
+                        </label>
+                        <label class="onboarding-card" style="margin: 0;">
+                            <input type="radio" name="issueType" value="logic" style="margin-right: 8px;">
+                            <div class="onboarding-card-title">Logic Issue</div>
+                            <div class="onboarding-card-desc">Feature working but making wrong decisions</div>
+                        </label>
+                        <label class="onboarding-card" style="margin: 0;">
+                            <input type="radio" name="issueType" value="data" style="margin-right: 8px;">
+                            <div class="onboarding-card-title">Data Gap</div>
+                            <div class="onboarding-card-desc">Missing keywords, ASINs, or data</div>
+                        </label>
+                        <label class="onboarding-card" style="margin: 0;">
+                            <input type="radio" name="issueType" value="ui" style="margin-right: 8px;">
+                            <div class="onboarding-card-title">UI/Portal Issue</div>
+                            <div class="onboarding-card-desc">Display, usability, or access problem</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Auto-Classification Notice -->
+                <div style="padding: 16px; background: var(--gray-100); border-radius: 8px; margin-bottom: 20px;">
+                    <strong>Severity Auto-Classification:</strong>
+                    <ul style="margin-top: 8px; margin-left: 20px; font-size: 13px; color: var(--gray-600);">
+                        <li><strong>CRITICAL</strong> if: Sync Failure OR affects all items (not just some) OR client escalation</li>
+                        <li><strong>Non-Critical</strong> for everything else</li>
+                    </ul>
+                    <p style="font-size: 12px; color: var(--gray-500); margin-top: 8px;">You don't need to decide severity - system determines it based on issue type.</p>
+                </div>
+
+                <button class="btn btn-success" onclick="submitFeedback()">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- ==================== ALL FEEDBACK ==================== -->
+        <div id="all-feedback" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">All Issues</h1>
+                    <p class="page-subtitle">8 total - 1 critical - 5 resolved</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Issue</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#8</td>
+                            <td>Bids not syncing to Amazon</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-danger">Sync Failure</span></td>
+                            <td><span class="severity-critical">CRITICAL</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td>#7</td>
+                            <td>Missing keyword "pet memorial"</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-warning">Data Gap</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                        </tr>
+                        <tr>
+                            <td>#6</td>
+                            <td>CVR underestimating for low-volume keywords</td>
+                            <td>GardenTools</td>
+                            <td><span class="badge badge-info">Known Limitation</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-success">Documented</span></td>
+                        </tr>
+                        <tr>
+                            <td>#5</td>
+                            <td>Budget not flowing to top campaign</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#4</td>
+                            <td>Pacing paused wrong campaign</td>
+                            <td>GardenTools</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#3</td>
+                            <td>Negation triggered too aggressively</td>
+                            <td>HomeDecor</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#2</td>
+                            <td>Harvested keyword not appearing in campaigns</td>
+                            <td>GardenTools</td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#1</td>
+                            <td>Portal slow to load Keyword Config</td>
+                            <td>PetCaskets</td>
+                            <td><span class="badge badge-gray">UI Issue</span></td>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ==================== GUIDELINES ==================== -->
+        <div id="guidelines" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Guidelines</h1>
+                    <p class="page-subtitle">How this system works</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Severity Classification (Automatic)</h3>
+                <p style="color: var(--gray-500); margin-bottom: 16px;">You don't choose severity - system determines it</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Criteria (ANY of these)</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: var(--danger-light);">
+                            <td><span class="severity-critical">CRITICAL</span></td>
+                            <td>
+                                <ul style="margin-left: 20px; font-size: 13px;">
+                                    <li>Sync Failure (data not reaching Amazon)</li>
+                                    <li>Data Loss/Corruption</li>
+                                    <li>Wrong direction at scale (all items affected)</li>
+                                    <li>Client escalation to management</li>
+                                </ul>
+                            </td>
+                            <td>Blocks Go decision</td>
+                        </tr>
+                        <tr>
+                            <td><span class="severity-normal">Non-Critical</span></td>
+                            <td>Everything else: Logic issues, performance suboptimal, missing data, UI bugs, suggestions</td>
+                            <td>Track & improve, doesn't block Go</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Issue Resolution Types</h3>
+                <table>
+                    <tr>
+                        <td><span class="badge badge-success">Resolved</span></td>
+                        <td>Fixed in code, deployed, verified working</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-info">Documented</span></td>
+                        <td>Known limitation - documented, no fix planned</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-purple">Backlog</span></td>
+                        <td>Will fix later, not blocking rollout</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Go/No-Go Decision</h3>
+                <p style="color: var(--gray-500); margin-bottom: 16px;">Simple two-part criteria</p>
+
+                <div class="grid-2">
+                    <div style="padding: 16px; background: var(--success-light); border-radius: 8px;">
+                        <strong style="color: var(--success);">GO if BOTH true:</strong>
+                        <ol style="margin-top: 8px; margin-left: 20px; font-size: 14px;">
+                            <li>No Critical issues open</li>
+                            <li>Performance on track (ACOS within target)</li>
+                        </ol>
+                    </div>
+                    <div style="padding: 16px; background: var(--danger-light); border-radius: 8px;">
+                        <strong style="color: var(--danger);">NO-GO if EITHER true:</strong>
+                        <ol style="margin-top: 8px; margin-left: 20px; font-size: 14px;">
+                            <li>Any Critical issue still open</li>
+                            <li>Performance significantly off target</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== KNOWN LIMITATIONS ==================== -->
+        <div id="limitations" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Known Limitations</h1>
+                    <p class="page-subtitle">Document these as "Documented" not "Resolved"</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h4>CVR Estimation Model (Waterfall)</h4>
+                <p style="margin: 8px 0; color: var(--gray-600);">Uses waterfall approach instead of ML. May underestimate or overestimate CVR for keywords with sparse data.</p>
+                <p><strong>Affected:</strong> Bid Optimization accuracy for low-volume keywords</p>
+                <p><strong>Confidence Levels:</strong> Keyword=1.0, Tag=0.8, ASIN=0.6, Default=0.4</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h4>3rd Party Keyword Data Source</h4>
+                <p style="margin: 8px 0; color: var(--gray-600);">Jungle Scout data may be incomplete for niche/legacy keywords. Keywords from Harvesting won't have JS data until manually enriched.</p>
+                <p><strong>Affected:</strong> KW Research completeness</p>
+                <p><strong>Workaround:</strong> Manual keyword import for missing terms</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h4>Pacing State Persistence</h4>
+                <p style="margin: 8px 0; color: var(--gray-600);">User-locked campaigns (LOCKED_ACTIVE, LOCKED_PAUSED) must be manually unlocked to return to auto-management.</p>
+                <p><strong>Affected:</strong> Campaigns that were manually overridden</p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event?.target?.closest('.nav-item')?.classList.add('active');
+    }
+
+    function selectMigration(card, type) {
+        card.parentElement.querySelectorAll('.onboarding-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+    }
+
+    function selectScope(card, type) {
+        card.parentElement.querySelectorAll('.onboarding-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('asinScopeDetails').style.display = type === 'asin-level' ? 'block' : 'none';
+    }
+
+    function selectCampaignOwnership(card, type) {
+        card.parentElement.querySelectorAll('.onboarding-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('partialCampaignDetails').style.display = type === 'partial' ? 'block' : 'none';
+    }
+
+    function completeOnboarding() {
+        alert('Account onboarded successfully! Redirecting to accounts list.');
+        showSection('accounts');
+    }
+
+    function showUATTab(feature) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        document.querySelectorAll('.uat-content').forEach(c => c.style.display = 'none');
+        document.getElementById('uat-' + feature).style.display = 'block';
+    }
+
+    function passCheck(btn) {
+        const item = btn.closest('.checklist-item');
+        item.classList.add('checked');
+        item.querySelector('.checkbox').innerHTML = 'check';
+        const actions = item.querySelector('.check-actions');
+        const steps = item.querySelector('.check-steps');
+        if (actions) actions.remove();
+        if (steps) steps.remove();
+        const meta = document.createElement('div');
+        meta.style.cssText = 'font-size: 12px; color: var(--gray-400); margin-top: 8px;';
+        meta.textContent = 'Checked: Just now by You';
+        item.querySelector('.check-content').appendChild(meta);
+    }
+
+    function failCheck(btn) {
+        const item = btn.closest('.checklist-item');
+        item.classList.add('failed');
+        item.querySelector('.checkbox').innerHTML = 'X';
+        const actions = item.querySelector('.check-actions');
+        if (actions) {
+            actions.innerHTML = `
+                <div style="width: 100%; background: var(--danger-light); padding: 12px; border-radius: 8px;">
+                    <strong style="color: var(--danger);">Issue will be created</strong>
+                    <textarea class="form-textarea" style="margin-top: 8px; min-height: 60px;" placeholder="What did you observe?"></textarea>
+                    <button class="btn btn-danger btn-sm" style="margin-top: 8px;" onclick="alert('Issue created!')">Create Issue</button>
+                </div>
+            `;
+        }
+    }
+
+    function submitFeedback() {
+        const issueType = document.querySelector('input[name="issueType"]:checked')?.value;
+        const severity = issueType === 'sync' ? 'CRITICAL' : 'Non-Critical';
+        alert(`Issue submitted as ${severity}. System determined severity based on issue type.`);
+        showSection('all-feedback');
+    }
+</script>
+
+</body>
+</html>

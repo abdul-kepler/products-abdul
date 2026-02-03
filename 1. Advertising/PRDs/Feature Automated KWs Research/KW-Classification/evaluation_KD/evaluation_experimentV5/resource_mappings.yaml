@@ -1,0 +1,505 @@
+version: '3.0'
+last_updated: '2026-01-25'
+project:
+  name: Keyword-Classification-Pipeline-V1.1
+  id: 17b25eb4-95bf-499b-9ee3-1b6118546ecc
+prompts:
+  m01:
+    local_file: prompts/modules/single/m01_v5_extract_own_brand_entities.md
+    schema_file: prompts/json_schemas/m01_extract_own_brand_entities_schema.json
+    braintrust_id: 9d295c1b-cf53-4014-bc3a-12e8e785b5b1
+    braintrust_slug: m01-v5-extract-own-brand-entities
+    braintrust_name: M01_V5_EXTRACT_OWN_BRAND_ENTITIES
+    type: extraction
+    model: gpt-4o
+  m01_v2:
+    local_file: prompts/modules/single/m01_v2_extract_own_brand_entities.md
+    schema_file: prompts/json_schemas/m01_extract_own_brand_entities_schema.json
+    braintrust_id: 421c42b9-6270-48c3-bb8e-2f66c7d13817
+    braintrust_slug: m01-v2-extract-own-brand-entities
+    braintrust_name: M01_V2_ExtractOwnBrandEntities
+    type: extraction
+    model: gpt-4o
+    notes: V2 with improved extraction
+  m01_v3:
+    local_file: prompts/modules/single/m01_v3_extract_own_brand_entities.md
+    schema_file: prompts/json_schemas/m01_extract_own_brand_entities_schema.json
+    braintrust_id: c5acb5f9-c12f-4c07-a6bf-9ab852c34b6b
+    braintrust_slug: m01-v3-extract-own-brand-entities
+    braintrust_name: M01_V3_ExtractOwnBrandEntities
+    type: extraction
+    model: gpt-5
+    notes: V3 for GPT-5 testing
+  m01a:
+    local_file: prompts/modules/single/m01a_v1_extract_own_brand_variations.md
+    schema_file: prompts/json_schemas/m01a_extract_own_brand_variations_schema.json
+    braintrust_id: 416420ef-b087-4f2b-9ef5-d82edf7cdfbf
+    braintrust_slug: m01a-extract-own-brand-variations
+    braintrust_name: M01A_ExtractOwnBrandVariations
+    type: generation
+    model: gpt-4o-mini
+  m01a_v2:
+    local_file: prompts/modules/single/m01a_v2_extract_own_brand_variations.md
+    schema_file: prompts/json_schemas/m01a_extract_own_brand_variations_schema.json
+    braintrust_id: 7d24e0f6-30f0-4c3c-972e-568e12006701
+    braintrust_slug: m01a-v2-extract-own-brand-variations
+    braintrust_name: M01A_V2_ExtractOwnBrandVariations
+    type: generation
+    model: gpt-5
+    notes: V2 with improved duplicate handling
+  m01b:
+    local_file: prompts/modules/single/m01b_v1_extract_brand_related_terms.md
+    schema_file: prompts/json_schemas/m01b_extract_brand_related_terms_schema.json
+    braintrust_id: 8b4a666e-b140-4ba7-ba67-6be650f3a8b0
+    braintrust_slug: m01b-extract-brand-related-terms
+    braintrust_name: M01B_ExtractBrandRelatedTerms
+    type: extraction
+    model: gpt-4o-mini
+  m02:
+    local_file: prompts/modules/single/m02_v1_classify_own_brand_keywords.md
+    schema_file: prompts/json_schemas/m02_classify_own_brand_keywords_schema.json
+    braintrust_id: 52bb2595-e579-44ca-ab2d-30e567049246
+    braintrust_slug: m02-classify-own-brand-keywords
+    braintrust_name: M02_ClassifyOwnBrandKeywords
+    type: binary_classifier
+    model: gpt-4o-mini
+  m02b:
+    local_file: prompts/modules/single/m02b_v1_classify_own_brand_keywords.md
+    schema_file: prompts/json_schemas/m02b_classify_own_brand_keywords_schema.json
+    braintrust_id: 59b529ec-84e4-4678-93b0-a0781cd80234
+    braintrust_slug: m02b-classify-own-brand-keywords
+    braintrust_name: M02B_ClassifyOwnBrandKeywords_PathB
+    type: binary_classifier
+    model: gpt-4o-mini
+    notes: Path B variant using M01a/M01b outputs
+  m03:
+    local_file: prompts/modules/single/m03_v1_generate_competitor_entities.md
+    schema_file: prompts/json_schemas/m03_generate_competitor_entities_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+    enabled: false
+    notes: Disabled - not ready for automated testing
+  m04:
+    local_file: prompts/modules/single/m04_v1_classify_competitor_brand_keywords.md
+    schema_file: prompts/json_schemas/m04_classify_competitor_brand_keywords_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: binary_classifier
+    model: gpt-4o-mini
+  m04b:
+    local_file: prompts/modules/single/m04b_v1_classify_competitor_brand_keywords.md
+    schema_file: prompts/json_schemas/m04b_classify_competitor_brand_keywords_schema.json
+    braintrust_id: 2e81badf-ce5f-46da-9eec-d7b6f91584d7
+    braintrust_slug: m04b-classify-competitor-brand-keywords
+    braintrust_name: M04B_ClassifyCompetitorBrandKeywords_PathB
+    type: binary_classifier
+    model: gpt-4o-mini
+  m05:
+    local_file: prompts/modules/single/m05_v1_classify_nonbranded_keywords.md
+    schema_file: prompts/json_schemas/m05_classify_nonbranded_keywords_schema.json
+    braintrust_id: b591351d-6a14-42e2-8783-357c8b1556ab
+    braintrust_slug: m05-classify-nonbranded-keywords
+    braintrust_name: M05_ClassifyNonBrandedKeywords
+    type: binary_classifier
+    model: gpt-4o-mini
+  m05b:
+    local_file: prompts/modules/single/m05b_v1_classify_nonbranded_keywords.md
+    schema_file: prompts/json_schemas/m05b_classify_nonbranded_keywords_schema.json
+    braintrust_id: 793a831d-202f-496b-8629-2cadaf8d49d5
+    braintrust_slug: m05b-classify-nonbranded-keywords
+    braintrust_name: M05B_ClassifyNonBrandedKeywords_PathB
+    type: binary_classifier
+    model: gpt-4o-mini
+  m06:
+    local_file: prompts/modules/single/m06_v1_generate_product_type_taxonomy.md
+    schema_file: prompts/json_schemas/m06_generate_product_type_taxonomy_schema.json
+    braintrust_id: ee5bb5ac-b613-4579-b462-a9b61455d34b
+    braintrust_slug: m06-generate-product-type-taxonomy
+    braintrust_name: M06_GenerateProductTypeTaxonomy
+    type: extraction
+    model: gpt-4o-mini
+  m06_v2:
+    local_file: prompts/modules/single/m06_v2_generate_product_type_taxonomy.md
+    schema_file: prompts/json_schemas/m06_v2_generate_product_type_taxonomy_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+    notes: V2 with structured output
+  m06_v3:
+    local_file: prompts/modules/single/m06_v3_generate_product_type_taxonomy.md
+    schema_file: prompts/json_schemas/m06_generate_product_type_taxonomy_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+    notes: V3 simplified version
+  m07:
+    local_file: prompts/modules/single/m07_v1_extract_product_attributes.md
+    schema_file: prompts/json_schemas/m07_extract_product_attributes_schema.json
+    braintrust_id: c10225d0-4dbf-4b7d-8daa-80124142fdca
+    braintrust_slug: m07-extract-product-attributes
+    braintrust_name: M07_ExtractProductAttributes
+    type: extraction
+    model: gpt-4o-mini
+  m07_v2:
+    local_file: prompts/modules/single/m07_v2_extract_product_attributes.md
+    schema_file: prompts/json_schemas/m07_extract_product_attributes_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+    notes: V2 with improved attribute extraction
+  m08:
+    local_file: prompts/modules/single/m08_v1_assign_attribute_ranks.md
+    schema_file: prompts/json_schemas/m08_assign_attribute_ranks_schema.json
+    braintrust_id: d6a085bf-1952-4f92-b220-3011583350d3
+    braintrust_slug: m08-assign-attribute-ranks
+    braintrust_name: M08_AssignAttributeRanks
+    type: ranking
+    model: gpt-4o-mini
+    notes: Fixed 'UseCase' -> 'Use Case' spelling
+  m08_v2_pairwise:
+    local_file: prompts/modules/single/m08_v2_assign_attribute_ranks.md
+    schema_file: prompts/json_schemas/m08_v2_assign_attribute_ranks_schema.json
+    braintrust_id: 2fe1c003-6750-4424-acdc-2353e19e790b
+    braintrust_slug: m08-v2-assign-attribute-ranks
+    braintrust_name: M08_V2_AssignAttributeRanks
+    type: ranking
+    model: gpt-4o-mini
+    notes: Pairwise comparison method with wins/losses
+  m08_v2_hierarchy:
+    local_file: prompts/modules/single/m08_v2_assign_attribute_ranks.md
+    schema_file: prompts/json_schemas/m08_assign_attribute_ranks_schema.json
+    braintrust_id: 69f89a72-b60a-4fe0-9e48-6424537d008e
+    braintrust_slug: m08-assign-attribute-ranks-v2
+    braintrust_name: M08_AssignAttributeRanks_V2
+    type: ranking
+    model: gpt-4o-mini
+    notes: V2 with detailed ranking hierarchy
+  m09:
+    local_file: prompts/modules/single/m09_v1_identify_primary_intended_use.md
+    schema_file: prompts/json_schemas/m09_identify_primary_intended_use_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+  m10:
+    local_file: prompts/modules/single/m10_v1_validate_primary_intended_use.md
+    schema_file: prompts/json_schemas/m10_validate_primary_intended_use_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: validation
+    model: gpt-4o-mini
+  m11:
+    local_file: prompts/modules/single/m11_v1_identify_hard_constraints.md
+    schema_file: prompts/json_schemas/m11_identify_hard_constraints_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+  m11_v2:
+    local_file: prompts/modules/single/m11_v2_identify_hard_constraints.md
+    schema_file: prompts/json_schemas/m11_identify_hard_constraints_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: extraction
+    model: gpt-4o-mini
+    notes: V2 with improved constraint identification
+  m12:
+    local_file: prompts/modules/single/m12_v1_check_hard_constraint.md
+    schema_file: prompts/json_schemas/m12_hard_constraint_violation_check_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: classifier
+    model: gpt-4o-mini
+  m12b:
+    local_file: prompts/modules/single/m12b_v1_combined_classification.md
+    schema_file: prompts/json_schemas/m12b_combined_classification_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: classifier
+    model: gpt-4o-mini
+  m13:
+    local_file: prompts/modules/single/m13_v1_check_product_type.md
+    schema_file: prompts/json_schemas/m13_product_type_check_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: classifier
+    model: gpt-4o-mini
+  m14:
+    local_file: prompts/modules/single/m14_v1_check_primary_use_same_type.md
+    schema_file: prompts/json_schemas/m14_primary_use_check_same_type_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: classifier
+    model: gpt-4o-mini
+  m15:
+    local_file: prompts/modules/single/m15_v1_check_substitute.md
+    schema_file: prompts/json_schemas/m15_substitute_check_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: classifier
+    model: gpt-4o-mini
+  m16:
+    local_file: prompts/modules/single/m16_v1_check_complementary.md
+    schema_file: prompts/json_schemas/m16_complementary_check_v1.1_schema.json
+    braintrust_id: null
+    braintrust_slug: null
+    braintrust_name: null
+    type: classifier
+    model: gpt-4o-mini
+  m04_v2:
+    local_file: prompts/modules/single/m04_v2_classify_competitor_brand_keywords.md
+    schema_file: prompts/json_schemas/m04_classify_competitor_brand_keywords_schema.json
+    braintrust_id: null
+    braintrust_slug: m04-v2-classify-competitor-brand-keywords
+    braintrust_name: M04_V2_CLASSIFY_COMPETITOR_BRAND_KEYWORDS
+datasets:
+  m01:
+    local_file: datasets/single/m01_v1_extract_own_brand_entities.jsonl
+    braintrust_id: e2d331a7-e757-4b66-b87d-97151470a11e
+    braintrust_name: M01_ExtractOwnBrandEntities_V1.1
+    records: 50
+  m01_v2:
+    local_file: datasets/single/m01_v2_extract_own_brand_entities.jsonl
+    braintrust_id: null
+    braintrust_name: null
+    records: 50
+    notes: V2 dataset with improved cases
+  m01_v3:
+    local_file: datasets/single/m01_v3_extract_own_brand_entities.jsonl
+    braintrust_id: ecb73ce1-0090-40ef-bceb-0d71105aeca6
+    braintrust_name: M01_ExtractOwnBrandEntities_V3
+    records: 50
+  m01a:
+    local_file: datasets/single/m01a_v1_extract_own_brand_variations.jsonl
+    braintrust_id: 77aa12e9-c829-4dd4-834e-658b08016a56
+    braintrust_name: M01A_ExtractOwnBrandVariations_V1.1
+    records: 50
+  m01a_v2:
+    local_file: datasets/single/m01a_v2_extract_own_brand_variations.jsonl
+    braintrust_id: f651668c-997f-43fc-81ac-5bc00626c497
+    braintrust_name: M01A_V2_ExtractOwnBrandVariations
+    records: 50
+  m01b:
+    local_file: datasets/single/m01b_v1_extract_brand_related_terms.jsonl
+    braintrust_id: 4136035d-c741-459b-a107-6b185a92aa7b
+    braintrust_name: M01B_ExtractBrandRelatedTerms_V1.1
+    records: 50
+  m02:
+    local_file: datasets/single/m02_v1_classify_own_brand_keywords.jsonl
+    braintrust_id: 53159951-ee6a-48b4-aad4-ae602e0b0c99
+    braintrust_name: M02_ClassifyOwnBrandKeywords_V1.1
+    records: 1000
+  m02b:
+    local_file: datasets/single/m02b_v1_classify_own_brand_keywords.jsonl
+    braintrust_id: 7810034c-ef1c-4b0b-b78e-56c3f09754a7
+    braintrust_name: M02B_ClassifyOwnBrandKeywords_PathB_V1.1
+    records: 1000
+  m03:
+    local_file: datasets/single/m03_v1_generate_competitor_entities.jsonl
+    braintrust_id: null
+    braintrust_name: null
+    records: 50
+  m04:
+    local_file: datasets/single/m04_v1_classify_competitor_brand_keywords.jsonl
+    braintrust_id: 4f84a83f-088b-423a-9e87-3c90822c056f
+    braintrust_name: M04_ClassifyCompetitorBrandKeywords_V1.1
+    records: 4700
+  m04b:
+    local_file: datasets/single/m04b_v1_classify_competitor_brand_keywords.jsonl
+    braintrust_id: 6173da1f-a3e4-4b1b-adb2-fabb2651b84f
+    braintrust_name: M04B_ClassifyCompetitorBrandKeywords_PathB
+    records: 4700
+  m05:
+    local_file: datasets/single/m05_v1_classify_nonbranded_keywords.jsonl
+    braintrust_id: 2b96246a-a4ec-4a26-a2b7-fc0371381f81
+    braintrust_name: M05_ClassifyNonbrandedKeywords_V1.1
+    records: 4700
+  m05b:
+    local_file: datasets/single/m05b_v1_classify_nonbranded_keywords.jsonl
+    braintrust_id: a6e9b14a-702e-4ab8-bc82-1d30583a2d19
+    braintrust_name: M05B_ClassifyNonBrandedKeywords_PathB_V1.1
+    records: 4700
+  m06:
+    local_file: datasets/single/m06_v1_generate_product_type_taxonomy.jsonl
+    braintrust_id: cce4a191-6a25-4185-8675-4bda102226da
+    braintrust_name: M06_GenerateProductTypeTaxonomy_V1.1
+    records: 99
+    notes: Combined v1 + sd1 datasets (2026-01-25)
+  m06_sd1:
+    local_file: null
+    braintrust_id: aaae9cbd-92a3-4642-809e-c53f4eec5168
+    braintrust_name: M06_V2_GenerateProductTypeTaxonomy
+    records: 100
+    deprecated: true
+    notes: MERGED into m06 (2026-01-25) - use m06 dataset instead
+  m07:
+    local_file: datasets/single/m07_sd1_extract_product_attributes.jsonl
+    braintrust_id: 27a50f6b-44da-4144-b897-85f4de1600b8
+    braintrust_name: M07_ExtractProductAttributes_V1.1
+    records: 30
+  m07_sd1:
+    local_file: datasets/single/m07_sd1_extract_product_attributes.jsonl
+    braintrust_id: 8d3adb98-a8bc-4bed-9162-b79a94dc238c
+    braintrust_name: M07_V2_ExtractProductAttributes
+    records: 100
+  m08:
+    local_file: datasets/single/m08_sd1_assign_attribute_ranks.jsonl
+    braintrust_id: 5c325eb0-6e7d-4b25-bee0-6847fc4ce263
+    braintrust_name: M08_AssignAttributeRanks_V1.1
+    records: 30
+  m08_sd1:
+    local_file: datasets/single/m08_sd1_assign_attribute_ranks.jsonl
+    braintrust_id: 08dd82c4-6e93-4eaa-8612-5e727dd404e9
+    braintrust_name: M08_SD1_AssignAttributeRanks
+    records: 100
+  m09:
+    local_file: datasets/single/m09_v1_identify_primary_intended_use.jsonl
+    braintrust_id: a8fdb7f3-c58e-4bc0-8153-a58cd50c8bc6
+    braintrust_name: M09_IdentifyPrimaryIntendedUse_V1.1
+    records: 100
+  m10:
+    local_file: datasets/single/m10_v1_validate_primary_intended_use.jsonl
+    braintrust_id: 329287b2-4ebd-472c-8db3-f7e731cc56e7
+    braintrust_name: M10_ValidatePrimaryIntendedUse_V1.1
+    records: 100
+  m11:
+    local_file: datasets/single/m11_v1_identify_hard_constraints.jsonl
+    braintrust_id: 7f15bfc1-4541-4652-a667-bb1842b43e46
+    braintrust_name: M11_IdentifyHardConstraints_V1.1
+    records: 100
+  m12:
+    local_file: datasets/single/m12_v1_check_hard_constraint.jsonl
+    braintrust_id: cf2c2974-09d6-41b7-93b1-272d3c7e2716
+    braintrust_name: M12_CheckHardConstraint_V1.1
+    records: 4000
+  m12b:
+    local_file: datasets/single/m12b_v1_combined_classification.jsonl
+    braintrust_id: null
+    braintrust_name: null
+    records: 4000
+  m13:
+    local_file: datasets/single/m13_v1_check_product_type.jsonl
+    braintrust_id: 25532e83-5425-401e-9a3a-50782d574776
+    braintrust_name: M13_CheckProductType_V1.1
+    records: 4000
+  m14:
+    local_file: datasets/single/m14_v1_check_primary_use_same_type.jsonl
+    braintrust_id: 498ae6c2-1bfa-44a3-9948-889856d6d796
+    braintrust_name: M14_CheckPrimaryUseSameType_V1.1
+    records: 2000
+  m15:
+    local_file: datasets/single/m15_v1_check_substitute.jsonl
+    braintrust_id: 48c73d5b-c15c-4e63-ae61-fb040bf65543
+    braintrust_name: M15_CheckSubstitute_V1.1
+    records: 1800
+  m16:
+    local_file: datasets/single/m16_v1_check_complementary.jsonl
+    braintrust_id: af991abf-dce7-4155-b279-6b98cae77f86
+    braintrust_name: M16_CheckComplementary_V1.1
+    records: 1500
+module_defaults:
+  m01:
+    prompt: m01
+    dataset: m01
+  m01a:
+    prompt: m01a
+    dataset: m01a
+  m01b:
+    prompt: m01b
+    dataset: m01b
+  m02:
+    prompt: m02
+    dataset: m02
+  m02b:
+    prompt: m02b
+    dataset: m02b
+  m03:
+    prompt: m03
+    dataset: m03
+  m04:
+    prompt: m04
+    dataset: m04
+  m04b:
+    prompt: m04b
+    dataset: m04b
+  m05:
+    prompt: m05
+    dataset: m05
+  m05b:
+    prompt: m05b
+    dataset: m05b
+  m06:
+    prompt: m06
+    dataset: m06
+  m07:
+    prompt: m07
+    dataset: m07
+  m08:
+    prompt: m08
+    dataset: m08
+  m09:
+    prompt: m09
+    dataset: m09
+  m10:
+    prompt: m10
+    dataset: m10
+  m11:
+    prompt: m11
+    dataset: m11
+  m12:
+    prompt: m12
+    dataset: m12
+  m12b:
+    prompt: m12b
+    dataset: m12b
+  m13:
+    prompt: m13
+    dataset: m13
+  m14:
+    prompt: m14
+    dataset: m14
+  m15:
+    prompt: m15
+    dataset: m15
+  m16:
+    prompt: m16
+    dataset: m16
+deleted_prompts:
+- id: 56e6bff2-9360-4de0-a143-f56ff2eae586
+  reason: Duplicate created by mistake on 2026-01-20
+  deleted_on: '2026-01-20'
+legacy_prompt_ids:
+- id: df8c6f85-a4d3-4d14-b1a0-7e5bb656a31e
+  module: m01
+  notes: Old M01 experiment prompt
+- id: 992eaa83-fd62-4308-a31e-d7543b6c0742
+  module: m08
+  notes: Old M08 experiment prompt
+- id: c57f4c81-6692-42c4-877e-77d2ce597fa7
+  module: m08
+  notes: Old M08 SD experiment prompt
+- id: e632d218-b335-47ac-aba4-5f80864981f3
+  module: m08
+  notes: Old M08_V2 SD experiment prompt
+- id: d6da55ae-54fc-4706-9cbe-8e5636151372
+  module: m07
+  notes: Old M07 GD experiment prompt

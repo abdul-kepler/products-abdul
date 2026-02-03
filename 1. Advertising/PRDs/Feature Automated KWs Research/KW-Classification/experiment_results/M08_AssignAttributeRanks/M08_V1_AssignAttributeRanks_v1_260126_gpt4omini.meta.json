@@ -1,0 +1,63 @@
+{
+  "braintrust_experiment_id": "4512427f-f17b-49ae-a16d-bceb0f32022c",
+  "braintrust_experiment_name": "M08_AssignAttributeRanks_sd_v1",
+  "created": "2026-01-14 19:23:41.806000+00:00",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "dataset_id": "8d3adb98-a8bc-4bed-9162-b79a94dc238c",
+  "dataset_name": "M07_V2_ExtractProductAttributes",
+  "dataset_version": "1000196485989362293",
+  "prompt_id": "c57f4c81-6692-42c4-877e-77d2ce597fa7",
+  "prompt_version": "1000196487309347957",
+  "prompt_session_id": "3a10116a-c253-4fd5-a435-8c665cf0807a",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_8_AssignAttributeRanks_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "attribute_table"
+        ],
+        "properties": {
+          "attribute_table": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "attribute_type",
+                "attribute_value",
+                "rank"
+              ],
+              "properties": {
+                "rank": {
+                  "type": "integer",
+                  "description": "Rank from 1 (most important) to N"
+                },
+                "attribute_type": {
+                  "enum": [
+                    "Variant",
+                    "UseCase",
+                    "Audience"
+                  ],
+                  "type": "string",
+                  "description": "Type of attribute"
+                },
+                "attribute_value": {
+                  "type": "string",
+                  "description": "The attribute value"
+                }
+              },
+              "additionalProperties": false
+            },
+            "description": "Ranked list of attributes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 87,
+  "downloaded_at": "2026-01-26T21:38:15.081306"
+}

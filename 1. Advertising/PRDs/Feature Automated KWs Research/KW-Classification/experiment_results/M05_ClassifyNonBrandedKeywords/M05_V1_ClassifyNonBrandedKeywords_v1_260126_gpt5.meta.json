@@ -1,0 +1,52 @@
+{
+  "braintrust_experiment_id": "e11228bf-4903-423d-be3c-81b43399b09b",
+  "braintrust_experiment_name": "M05_ClassifyNonBrandedKeywords_gpt5",
+  "created": "2026-01-25 21:28:31.966000+00:00",
+  "model": "gpt-5",
+  "temperature": 0,
+  "dataset_id": "2b96246a-a4ec-4a26-a2b7-fc0371381f81",
+  "dataset_name": "M05_ClassifyNonbrandedKeywords_V1.1",
+  "dataset_version": "1000196549891641411",
+  "prompt_id": "8edcbc92-4cf6-4545-b117-2892d4ae2033",
+  "prompt_version": "1000196550006331332",
+  "prompt_session_id": "14d2643e-951b-49a8-bacf-2dd73e9c6286",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_5_ClassifyNonBrandedKeywords_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "branding_scope_3",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why this classification was chosen"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "branding_scope_3": {
+            "enum": [
+              "NB",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "NB if keyword is non-branded/generic, null if any brand detected"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 632,
+  "downloaded_at": "2026-01-26T01:52:48.427690"
+}

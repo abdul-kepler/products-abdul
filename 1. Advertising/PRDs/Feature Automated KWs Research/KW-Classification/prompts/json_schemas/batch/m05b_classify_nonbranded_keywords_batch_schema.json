@@ -1,0 +1,50 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_5b_ClassifyNonBrandedKeywords_PathB_Batch_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Classification results for each keyword in the batch",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyword": {
+                "type": "string",
+                "description": "The keyword being classified"
+              },
+              "branding_scope_3": {
+                "type": ["string", "null"],
+                "enum": ["NB", null],
+                "description": "NB if keyword is non-branded, null if brand found"
+              },
+              "found_term": {
+                "type": ["string", "null"],
+                "description": "The brand term found in keyword, or null if non-branded"
+              },
+              "source": {
+                "type": ["string", "null"],
+                "description": "Source of found brand: 'own', competitor name, or 'hidden_brand'"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score from 0.0 to 1.0"
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "Brief explanation of why this classification was chosen"
+              }
+            },
+            "required": ["keyword", "branding_scope_3", "confidence", "reasoning"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["results"],
+      "additionalProperties": false
+    }
+  }
+}

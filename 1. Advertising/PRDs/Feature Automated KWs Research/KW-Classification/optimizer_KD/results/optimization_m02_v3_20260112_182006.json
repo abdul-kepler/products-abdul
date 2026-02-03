@@ -1,0 +1,693 @@
+{
+  "success": true,
+  "best_iteration": 1,
+  "total_iterations": 1,
+  "original_accuracy": 1.0,
+  "best_accuracy": 1.0,
+  "scorers_used": [
+    "ob_exact_match",
+    "ob_typo_match",
+    "ob_sub_brand_match",
+    "ob_manufacturer_match",
+    "nb_generic_keyword",
+    "nb_competitor_brand",
+    "nb_partial_word_match",
+    "general_confidence_calibration",
+    "general_reasoning_quality"
+  ],
+  "criteria_with_rubrics": [
+    {
+      "name": "ob_exact_match",
+      "criterion_type": "OB",
+      "description": "Evaluates if the keyword contains an exact match of a brand name from the variations list",
+      "rubric": {
+        "score_1.0": "Output correctly identifies exact brand match and classifies as OB, with valid reasoning",
+        "score_0.5": "Output identifies a match but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output misses an obvious exact match OR incorrectly claims a match that doesn't exist"
+      },
+      "examples": {
+        "pass": "keyword 'jbl headphones' correctly matched to 'JBL' in variations",
+        "fail": "keyword 'jbl headphones' classified as NB despite 'JBL' in variations"
+      }
+    },
+    {
+      "name": "ob_typo_match",
+      "criterion_type": "OB",
+      "description": "Evaluates if the keyword contains a documented typo or misspelling of the brand name",
+      "rubric": {
+        "score_1.0": "Output correctly identifies a documented typo and classifies as OB, with valid reasoning",
+        "score_0.5": "Output identifies a typo but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output misses a documented typo OR incorrectly claims a typo that doesn't exist"
+      },
+      "examples": {
+        "pass": "keyword 'owalaa bottle' correctly matched to 'Owalaa' in variations",
+        "fail": "keyword 'owalaa bottle' classified as NB despite 'Owalaa' in variations"
+      }
+    },
+    {
+      "name": "ob_sub_brand_match",
+      "criterion_type": "OB",
+      "description": "Evaluates if the keyword contains a sub-brand or product line from the related terms list",
+      "rubric": {
+        "score_1.0": "Output correctly identifies a sub-brand match and classifies as OB, with valid reasoning",
+        "score_0.5": "Output identifies a sub-brand but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output misses a sub-brand match OR incorrectly claims a match that doesn't exist"
+      },
+      "examples": {
+        "pass": "keyword 'vibe beam earbuds' correctly matched to 'Vibe Beam' in related terms",
+        "fail": "keyword 'vibe beam earbuds' classified as NB despite 'Vibe Beam' in related terms"
+      }
+    },
+    {
+      "name": "ob_manufacturer_match",
+      "criterion_type": "OB",
+      "description": "Evaluates if the keyword contains the name of the parent manufacturer from the related terms list",
+      "rubric": {
+        "score_1.0": "Output correctly identifies a manufacturer match and classifies as OB, with valid reasoning",
+        "score_0.5": "Output identifies a manufacturer but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output misses a manufacturer match OR incorrectly claims a match that doesn't exist"
+      },
+      "examples": {
+        "pass": "keyword 'transformers hasbro toys' correctly matched to 'Hasbro' in related terms",
+        "fail": "keyword 'transformers hasbro toys' classified as NB despite 'Hasbro' in related terms"
+      }
+    },
+    {
+      "name": "nb_generic_keyword",
+      "criterion_type": "NB",
+      "description": "Evaluates if the keyword is generic and does not contain any brand terms",
+      "rubric": {
+        "score_1.0": "Output correctly identifies a generic keyword and classifies as NB, with valid reasoning",
+        "score_0.5": "Output identifies a generic keyword but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output incorrectly claims a brand match for a generic keyword"
+      },
+      "examples": {
+        "pass": "keyword 'wireless earbuds' correctly classified as NB",
+        "fail": "keyword 'wireless earbuds' incorrectly classified as OB"
+      }
+    },
+    {
+      "name": "nb_competitor_brand",
+      "criterion_type": "NB",
+      "description": "Evaluates if the keyword contains a competitor's brand name",
+      "rubric": {
+        "score_1.0": "Output correctly identifies a competitor brand and classifies as NB, with valid reasoning",
+        "score_0.5": "Output identifies a competitor brand but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output incorrectly claims a match with own brand for a competitor brand"
+      },
+      "examples": {
+        "pass": "keyword 'camelback bottle' correctly classified as NB",
+        "fail": "keyword 'camelback bottle' incorrectly classified as OB"
+      }
+    },
+    {
+      "name": "nb_partial_word_match",
+      "criterion_type": "NB",
+      "description": "Evaluates if the keyword contains a partial word match that is not a valid brand term",
+      "rubric": {
+        "score_1.0": "Output correctly identifies a partial word match and classifies as NB, with valid reasoning",
+        "score_0.5": "Output identifies a partial word match but with incorrect match_type or weak reasoning",
+        "score_0.0": "Output incorrectly claims a match for a partial word"
+      },
+      "examples": {
+        "pass": "keyword 'howling wolf toy' correctly classified as NB",
+        "fail": "keyword 'howling wolf toy' incorrectly classified as OB"
+      }
+    },
+    {
+      "name": "general_confidence_calibration",
+      "criterion_type": "GENERAL",
+      "description": "Evaluates the classifier's confidence in its decision-making process",
+      "rubric": {
+        "score_1.0": "Output demonstrates high confidence with clear, logical reasoning and correct classification",
+        "score_0.5": "Output shows moderate confidence with some logical gaps or unclear reasoning",
+        "score_0.0": "Output lacks confidence, with unclear reasoning and incorrect classification"
+      },
+      "examples": {
+        "pass": "Output confidently classifies 'jbl headphones' as OB with clear reasoning",
+        "fail": "Output hesitantly classifies 'jbl headphones' as NB with unclear reasoning"
+      }
+    },
+    {
+      "name": "general_reasoning_quality",
+      "criterion_type": "GENERAL",
+      "description": "Evaluates the quality and clarity of the reasoning provided for classification decisions",
+      "rubric": {
+        "score_1.0": "Output provides clear, logical, and well-structured reasoning for classification decisions",
+        "score_0.5": "Output provides reasoning that is somewhat clear but lacks structure or logic",
+        "score_0.0": "Output provides unclear or illogical reasoning for classification decisions"
+      },
+      "examples": {
+        "pass": "Output provides clear reasoning for classifying 'jbl headphones' as OB",
+        "fail": "Output provides unclear reasoning for classifying 'jbl headphones' as NB"
+      }
+    }
+  ],
+  "errors": [],
+  "iteration_results": [
+    {
+      "iteration": 1,
+      "accuracy": 1.0,
+      "pass_rate": 0.75,
+      "prompt_length": 15306,
+      "prompt_diff": null,
+      "aggregate_scores": {
+        "ob_exact_match": 0.6,
+        "ob_typo_match": 0.95,
+        "ob_sub_brand_match": 0.95,
+        "ob_manufacturer_match": 0.85,
+        "nb_generic_keyword": 0.3,
+        "nb_competitor_brand": 0.95,
+        "nb_partial_word_match": 0.9,
+        "general_confidence_calibration": 1.0,
+        "general_reasoning_quality": 0.9
+      },
+      "failures_count": 0,
+      "improvements": [],
+      "improvements_applied": [],
+      "timestamp": "2026-01-12T18:20:06.819930",
+      "test_results": [
+        {
+          "keyword": "ipod headphones",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'ipod headphones' does not contain any terms from the provided brand variations or related terms.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.7777777777777778
+        },
+        {
+          "keyword": "beats over ear headphones",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'beats over ear headphones' does not contain any terms from 'JBL' variations or 'Vibe Beam' related terms.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.7777777777777778
+        },
+        {
+          "keyword": "samsung headphones",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'samsung headphones' does not contain any terms from the provided brand variations or related terms.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 0.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.6666666666666666
+        },
+        {
+          "keyword": "skull candy",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'skull candy'.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 0.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.6666666666666666
+        },
+        {
+          "keyword": "skullcandy headphones",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'skullcandy' is not a variation or related term of the provided brand.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.8888888888888888
+        },
+        {
+          "keyword": "heart earbuds",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'heart earbuds'.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 1.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 1.0
+        },
+        {
+          "keyword": "skullcandy",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword 'skullcandy'.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.7777777777777778
+        },
+        {
+          "keyword": "raycon bluetooth earbuds",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 0.5
+          },
+          "avg_score": 0.7222222222222222
+        },
+        {
+          "keyword": "earbuds wireless bluetooth raycon",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'raycon' is not a variation or related term of the provided brand.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 1.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 1.0
+        },
+        {
+          "keyword": "raycon earbuds wireless",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'raycon' is not a variation or related term of 'JBL' or 'Vibe Beam'.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.8888888888888888
+        },
+        {
+          "keyword": "alexa earbuds wireless 2024",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. The keyword 'alexa earbuds wireless 2024' does not contain any terms from the provided brand variations or related terms.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.8888888888888888
+        },
+        {
+          "keyword": "earbuds wireless bluetooth samsung",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. The keyword 'earbuds wireless bluetooth samsung' does not contain any of the brand variations or related terms provided.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 0.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.6666666666666666
+        },
+        {
+          "keyword": "bluetooth earbuds samsung",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. The keyword 'bluetooth earbuds samsung' does not contain any terms from the provided brand variations or related terms.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 0.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 0.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.6666666666666666
+        },
+        {
+          "keyword": "tozo wireless earbuds",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword. 'tozo' does not match any of the provided brand variations or related terms.",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 1.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 1.0
+        },
+        {
+          "keyword": "jlab earbuds wireless",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "'jlab' is NOT 'JBL' - different characters (j-l-a-b vs J-B-L). JLab is a separate audio brand.",
+            "confidence": 0.97
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 0.8888888888888888
+        },
+        {
+          "keyword": "wireless headphones bluetooth",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 1.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 0.5
+          },
+          "avg_score": 0.9444444444444444
+        },
+        {
+          "keyword": "bluetooth earphone",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 0.5
+          },
+          "avg_score": 0.8333333333333334
+        },
+        {
+          "keyword": "wireless earphone",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 1.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 1.0
+        },
+        {
+          "keyword": "headphones wireless bluetooth",
+          "expected": {
+            "branding_scope_1": null
+          },
+          "output": {
+            "branding_scope": null,
+            "matched_term": null,
+            "match_type": null,
+            "reasoning": "No brand terms from variations_own or related_terms_own found in keyword",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 1.0,
+            "ob_sub_brand_match": 1.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 1.0,
+            "nb_competitor_brand": 1.0,
+            "nb_partial_word_match": 1.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 1.0
+          },
+          "avg_score": 1.0
+        },
+        {
+          "keyword": "jbl vibe buds",
+          "expected": {
+            "branding_scope_1": "OB"
+          },
+          "output": {
+            "branding_scope": "OB",
+            "matched_term": "jbl",
+            "match_type": "brand_variation",
+            "reasoning": "Exact case-insensitive match: 'jbl' in keyword matches 'JBL' in variations_own",
+            "confidence": 0.98
+          },
+          "exact_match": true,
+          "scores": {
+            "ob_exact_match": 1.0,
+            "ob_typo_match": 0.0,
+            "ob_sub_brand_match": 0.0,
+            "ob_manufacturer_match": 1.0,
+            "nb_generic_keyword": 0.0,
+            "nb_competitor_brand": 0.0,
+            "nb_partial_word_match": 0.0,
+            "general_confidence_calibration": 1.0,
+            "general_reasoning_quality": 0.5
+          },
+          "avg_score": 0.3888888888888889
+        }
+      ]
+    }
+  ]
+}

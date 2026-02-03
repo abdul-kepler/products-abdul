@@ -1,0 +1,30 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_10_ValidatePrimaryIntendedUse_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "validated_use": {
+          "type": "string",
+          "description": "The validated primary use phrase - either the original from M9 if it passed validation, or a corrected version if it needed fixing"
+        },
+        "was_corrected": {
+          "type": "boolean",
+          "description": "Whether the original primary use was corrected"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Brief explanation of validation result"
+        }
+      },
+      "required": ["validated_use", "was_corrected", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

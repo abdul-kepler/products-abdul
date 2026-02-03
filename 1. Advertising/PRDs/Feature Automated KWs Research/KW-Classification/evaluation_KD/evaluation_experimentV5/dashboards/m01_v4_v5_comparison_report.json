@@ -1,0 +1,152 @@
+{
+  "module": "M01",
+  "report_title": "M01 V4 vs V5 Prompt Comparison",
+  "generated_at": "2026-01-21T11:11:01.425399",
+  "experiments": {
+    "m01_v4_gpt4omini": {
+      "model": "gpt-4o-mini",
+      "prompt_version": "v4",
+      "pass_rate": 40.2,
+      "num_samples": 99,
+      "rubric_stats": {
+        "Brand Extracted": {
+          "pass": 64,
+          "fail": 35
+        },
+        "No Hallucinated Brand": {
+          "pass": 41,
+          "fail": 58
+        },
+        "No Product Words in Brand": {
+          "pass": 44,
+          "fail": 55
+        },
+        "Amazon Test Applied": {
+          "pass": 24,
+          "fail": 75
+        },
+        "No Duplicate Entities": {
+          "pass": 26,
+          "fail": 73
+        }
+      }
+    },
+    "m01_v4_gpt4o": {
+      "model": "gpt-4o",
+      "prompt_version": "v4",
+      "pass_rate": 53.7,
+      "num_samples": 99,
+      "rubric_stats": {
+        "Brand Extracted": {
+          "pass": 77,
+          "fail": 22
+        },
+        "No Hallucinated Brand": {
+          "pass": 55,
+          "fail": 44
+        },
+        "No Product Words in Brand": {
+          "pass": 55,
+          "fail": 44
+        },
+        "Amazon Test Applied": {
+          "pass": 41,
+          "fail": 58
+        },
+        "No Duplicate Entities": {
+          "pass": 38,
+          "fail": 61
+        }
+      }
+    },
+    "m01_v5_gpt5": {
+      "model": "gpt-5",
+      "prompt_version": "v5",
+      "pass_rate": 48.7,
+      "num_samples": 99,
+      "rubric_stats": {
+        "Brand Extracted": {
+          "pass": 46,
+          "fail": 53
+        },
+        "No Hallucinated Brand": {
+          "pass": 41,
+          "fail": 58
+        },
+        "No Product Words in Brand": {
+          "pass": 60,
+          "fail": 39
+        },
+        "Amazon Test Applied": {
+          "pass": 35,
+          "fail": 64
+        },
+        "No Duplicate Entities": {
+          "pass": 59,
+          "fail": 40
+        }
+      }
+    },
+    "m01_v5_gpt4omini": {
+      "model": "gpt-4o-mini",
+      "prompt_version": "v5",
+      "pass_rate": 58.4,
+      "num_samples": 99,
+      "rubric_stats": {
+        "Brand Extracted": {
+          "pass": 72,
+          "fail": 27
+        },
+        "No Hallucinated Brand": {
+          "pass": 66,
+          "fail": 33
+        },
+        "No Product Words in Brand": {
+          "pass": 74,
+          "fail": 25
+        },
+        "Amazon Test Applied": {
+          "pass": 46,
+          "fail": 53
+        },
+        "No Duplicate Entities": {
+          "pass": 31,
+          "fail": 68
+        }
+      }
+    }
+  },
+  "summary": {
+    "best_performer": "m01_v5_gpt4omini",
+    "best_pass_rate": 58.4,
+    "baseline": "m01_v4_gpt4omini",
+    "baseline_pass_rate": 40.2,
+    "improvement": "+18.2%",
+    "key_improvements": [
+      {
+        "rubric": "No Product Words in Brand",
+        "v4_rate": 44.4,
+        "v5_rate": 74.7,
+        "delta": "+30.3%"
+      },
+      {
+        "rubric": "No Hallucinated Brand",
+        "v4_rate": 41.4,
+        "v5_rate": 66.7,
+        "delta": "+25.3%"
+      },
+      {
+        "rubric": "Amazon Test Applied",
+        "v4_rate": 24.2,
+        "v5_rate": 46.5,
+        "delta": "+22.3%"
+      }
+    ],
+    "notes": [
+      "V5 prompt added OUTPUT RULES at top",
+      "V5 prompt expanded Filter 2 product types",
+      "V5 prompt added Filter 6 for CamelCase decomposition",
+      "gpt-4o-mini with V5 outperforms gpt-4o with V4"
+    ]
+  }
+}

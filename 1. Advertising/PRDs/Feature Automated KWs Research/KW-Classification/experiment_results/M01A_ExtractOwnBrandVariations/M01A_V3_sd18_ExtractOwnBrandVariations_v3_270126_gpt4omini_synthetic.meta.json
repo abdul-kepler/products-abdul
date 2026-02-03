@@ -1,0 +1,39 @@
+{
+  "experiment_name": "M01A_V3_sd18_ExtractOwnBrandVariations_v3_270126_gpt4omini_synthetic",
+  "created": "2026-01-27T21:46:13.981692",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "source": "openai_batch_api",
+  "batch_type": "synthetic",
+  "synthetic_dataset": "18",
+  "dataset_file": "m01a_sd18_extract_own_brand_variations.jsonl",
+  "prompt_version": "v3",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_1a_ExtractOwnBrandVariations_output",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "variations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "minItems": 1,
+            "maxItems": 15,
+            "description": "List of brand name variations including: correct spelling, lowercase, truncated (first word), keyboard typos, phonetic misspellings, spacing/hyphen variants. First item should be the correct spelling."
+          }
+        },
+        "required": [
+          "variations"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "records_count": 89,
+  "downloaded_at": "2026-01-27T21:46:13.981702"
+}

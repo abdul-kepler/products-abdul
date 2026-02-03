@@ -1,0 +1,4598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M01 - Extract Own Brand Entities - Evaluation Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; padding: 30px 0; margin-bottom: 30px; }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .meta { color: #888; font-size: 0.9rem; }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card h3 { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .card .value { font-size: 1.8rem; font-weight: bold; }
+        .card .value.pass { color: #00ff88; }
+        .card .value.fail { color: #ff4757; }
+        .card .value.rate { color: #00d9ff; }
+        .rubric-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        .rubric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .rubric-header:hover { background: rgba(255,255,255,0.08); }
+        .rubric-title { font-weight: 600; }
+        .rubric-stats { display: flex; gap: 15px; align-items: center; }
+        .stat { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
+        .stat.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .stat.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .rate { color: #00d9ff; }
+        .rubric-content { display: none; padding: 20px; }
+        .rubric-content.open { display: block; }
+        .eval-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .eval-item.pass { border-left-color: #00ff88; }
+        .eval-item.fail { border-left-color: #ff4757; }
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sample-id { font-family: monospace; color: #00d9ff; }
+        .verdict { font-weight: bold; padding: 2px 10px; border-radius: 4px; }
+        .verdict.pass { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .verdict.fail { background: rgba(255, 71, 87, 0.2); color: #ff4757; }
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .output-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .output-box h4 {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .output-box.expected h4 { color: #00ff88; }
+        .output-box.actual h4 { color: #00d9ff; }
+        .output-box pre {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .reasoning {
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+        }
+        a { color: #00d9ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>M01 - Extract Own Brand Entities</h1>
+            <p class="meta">
+                Source: m01_judge_20260115_231257.json | Generated: 2026-01-15 23:12:57<br>
+                <a href="SUMMARY_DASHBOARD.html">&larr; Back to Summary</a>
+            </p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Evaluations</h3>
+                <div class="value rate">100</div>
+            </div>
+            <div class="card">
+                <h3>Pass</h3>
+                <div class="value pass">33</div>
+            </div>
+            <div class="card">
+                <h3>Fail</h3>
+                <div class="value fail">67</div>
+            </div>
+            <div class="card">
+                <h3>Pass Rate</h3>
+                <div class="value rate">33.0%</div>
+            </div>
+        </div>
+
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Brand Extracted</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">15 Pass</span>
+                        <span class="stat fail">5 Fail</span>
+                        <span class="rate">75%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;JBL Vibe&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;JBL&quot;,
+    &quot;JLB&quot;,
+    &quot;JB L&quot;,
+    &quot;JayBeeL&quot;,
+    &quot;JBL VibeBeam&quot;,
+    &quot;JBL Vib Beam&quot;,
+    &quot;JBL Vibe Beans&quot;,
+    &quot;JBL Vibes Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beams&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;JLB&quot;,
+    &quot;J B L&quot;,
+    &quot;JBLl&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beamn&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand &#x27;JBL&#x27; matches the listing brand, and variations in casing and spacing are acceptable. Although there are some incorrect variations, the primary brand name is correctly extracted.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;Owala FreeSip&quot;,
+    &quot;FreeSip&quot;,
+    &quot;Owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owallah&quot;,
+    &quot;Ohwala&quot;,
+    &quot;O wala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Free Sip&quot;,
+    &quot;Freesip&quot;,
+    &quot;FreeSipp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owla&quot;,
+    &quot;Oawla&quot;,
+    &quot;FreeSip&quot;,
+    &quot;freesip&quot;,
+    &quot;FreeSipp&quot;,
+    &quot;FreeSippp&quot;,
+    &quot;FreeSipz&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;Owala&#x27; and &#x27;FreeSip&#x27;, which closely match the listing brand. Minor variations in casing are acceptable, and the output contains acceptable variations of the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;CISILY&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisely&quot;,
+    &quot;Sisily&quot;,
+    &quot;Cis ily&quot;,
+    &quot;Cis-ily&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;Cisily&#x27; and variations like &#x27;cisily&#x27;, &#x27;Cisiliy&#x27;, and &#x27;Cisly&#x27;, which closely match the listing brand &#x27;Cisily&#x27;. Minor variations in casing and spelling are acceptable according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Camps&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneer Kamp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;Pioneer Camp&#x27; and its variations in casing, which closely match the listing brand. Minor variations in casing are acceptable according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;Jikaso&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikasho&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes incorrect brand names such as &#x27;Jikashoo&#x27;, &#x27;Jikash&#x27;, and &#x27;Jikashaa&#x27;, which do not closely match the listing brand &#x27;Jikasho&#x27;. Additionally, while &#x27;Jikasho&#x27; and &#x27;jikasho&#x27; are acceptable variations, the presence of multiple incorrect extractions leads to a failure.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctic Starr&quot;,
+    &quot;Antarctic Stars&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Starrr&quot;,
+    &quot;Antarctic Str&quot;,
+    &quot;AntarcticStarr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;Antarctic Star&#x27; and variations that are minor (casing and slight misspellings), which align with the acceptable conditions outlined in the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Revlon&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon Consumer Products Corporation&quot;,
+    &quot;Revlone&quot;,
+    &quot;Color Stay&quot;,
+    &quot;Colorstey&quot;,
+    &quot;Revlon Color Stay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlo&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStayy&quot;,
+    &quot;ColorStai&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;REVLON&#x27; and &#x27;Revlon ColorStay&#x27;, which closely match the listing brand. Minor variations in casing and spelling are present, but they do not disqualify the extraction.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaidd&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Town &amp; Country Living&quot;,
+    &quot;town &amp; country living&quot;,
+    &quot;Town&amp;CountryLiving&quot;,
+    &quot;TownCountryLiving&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes multiple variations of the brand name &#x27;KitchenAid&#x27;, which closely match the listing brand. Minor variations in casing and spacing are present, but they are acceptable according to the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacco&quot;,
+    &quot;Sachsen Us&quot;,
+    &quot;SachsenUS&quot;,
+    &quot;Webaco&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacooa&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Wbacoo&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;SachsenUs&quot;,
+    &quot;Sachsen Us&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes the brand name &#x27;WEBACOO&#x27; and its variations, which closely match the listing brand. Minor variations in casing are acceptable, and the output meets the criteria for extraction.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;Hasbro&quot;,
+    &quot;Cyber Commander Series&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;Tranformers&quot;,
+    &quot;Transformors&quot;,
+    &quot;Transformer Toys&quot;,
+    &quot;Optimus Primee&quot;,
+    &quot;Optimus Prine&quot;,
+    &quot;OptimusPrime&quot;,
+    &quot;Cyber Commander&quot;,
+    &quot;Cyber Command Series&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbro Toys&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;optimus prime&quot;,
+    &quot;OptimusPrim&quot;,
+    &quot;OptimusPrme&quot;,
+    &quot;Hasbro&quot;,
+    &quot;hasbro&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes the brand &#x27;Transformers&#x27; and &#x27;Hasbro&#x27;, which closely match the listing brand. Minor variations in casing and spelling are present, but they do not disqualify the extraction as the main brand is correctly identified.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrsuh&quot;,
+    &quot;RxCrushh&quot;,
+    &quot;Vesco Medical&quot;,
+    &quot;vesco medical&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Rx Crush&#x27; and &#x27;rx crush&#x27;, which closely match the listing brand &#x27;Rx Crush&#x27;, meeting the acceptable variations in casing. Other variations like &#x27;RxCrush&#x27; are also present, further supporting the extraction.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Resolve Designs&#x27; as a brand entity, which is incorrect since it is the manufacturer, not the brand. Additionally, &#x27;RxCrus&#x27; and &#x27;RxCrussh&#x27; are incorrect variations that do not closely match the brand &#x27;Rx Crush&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Resolve Designs&#x27; and variations of it, which is not the brand name from the listing. The extracted brand names &#x27;Rx Crush&#x27; and &#x27;RxCrush&#x27; are acceptable, but the presence of incorrect brand names like &#x27;Resolve Designs&#x27; and its variations indicates a failure to meet the criterion.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes variations of the brand &#x27;Rx Crush&#x27; but also incorrectly lists &#x27;Resolve Designs&#x27; as a brand entity, which is not acceptable. Additionally, it fails to extract the brand accurately in some instances, such as &#x27;RxCrus&#x27; and &#x27;RxCrussh&#x27;, which are not close enough to the original brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttiey&quot;,
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOty&quot;,
+    &quot;Easy One Touch&quot;,
+    &quot;EasyOneTouch&quot;,
+    &quot;EasyOneTouch5&quot;,
+    &quot;easy one touch&quot;,
+    &quot;easy one touch 5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand &#x27;iOttie&#x27; matches the listing brand, and the variations such as &#x27;iotie&#x27; and &#x27;Easy One Touch&#x27; are acceptable minor variations. Therefore, the output meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;Apple&#x27; and its minor variations, which closely match the listing brand. Therefore, the output meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;Alta&quot;,
+    &quot;Alta Series&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;ALTA&quot;,
+    &quot;Alta&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand &#x27;THERMOS&#x27; matches the listing brand, and minor variations in casing are acceptable. The output includes &#x27;THERMOS&#x27; in various forms, which aligns with the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand names include &#x27;OXO&#x27; and variations that closely match the listing brand, meeting the PASS conditions of the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;the northe face&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Faace&quot;,
+    &quot;North Face&quot;,
+    &quot;Northface&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Faace&quot;,
+    &quot;North Fae&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;The North Facee&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Fac&quot;,
+    &quot;North Face&quot;,
+    &quot;north face&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Facee&quot;,
+    &quot;NorthFace&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;The North Facee&#x27; and &#x27;North Facee&#x27;, which are incorrect variations of the brand name. Additionally, &#x27;The North Fac&#x27; is also an incomplete extraction. Therefore, the output does not meet the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand &#x27;Frigidaire&#x27; matches the listing brand, and the variations in casing and minor misspellings do not disqualify it from passing.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">No Hallucinated Brand</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">9 Pass</span>
+                        <span class="stat fail">11 Fail</span>
+                        <span class="rate">45%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;JBL Vibe&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;JBL&quot;,
+    &quot;JLB&quot;,
+    &quot;JB L&quot;,
+    &quot;JayBeeL&quot;,
+    &quot;JBL VibeBeam&quot;,
+    &quot;JBL Vib Beam&quot;,
+    &quot;JBL Vibe Beans&quot;,
+    &quot;JBL Vibes Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beams&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;JLB&quot;,
+    &quot;J B L&quot;,
+    &quot;JBLl&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beamn&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brands in the module output either match the valid brand &#x27;JBL&#x27; or are acceptable variations of it. The variations include acceptable typos and formatting differences, which align with the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;Owala FreeSip&quot;,
+    &quot;FreeSip&quot;,
+    &quot;Owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owallah&quot;,
+    &quot;Ohwala&quot;,
+    &quot;O wala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Free Sip&quot;,
+    &quot;Freesip&quot;,
+    &quot;FreeSipp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owla&quot;,
+    &quot;Oawla&quot;,
+    &quot;FreeSip&quot;,
+    &quot;freesip&quot;,
+    &quot;FreeSipp&quot;,
+    &quot;FreeSippp&quot;,
+    &quot;FreeSipz&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brands are variations of the valid brand &#x27;Owala&#x27; and &#x27;FreeSip&#x27;, which are present in the input data. The output includes acceptable typo variations and does not contain any completely different or made-up brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;CISILY&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisely&quot;,
+    &quot;Sisily&quot;,
+    &quot;Cis ily&quot;,
+    &quot;Cis-ily&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brand variations in the module output are either exact matches or acceptable typo variations of the brand &#x27;Cisily&#x27; found in the input data.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Camps&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneer Kamp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The extracted brand &#x27;Pioneer Camp&#x27; appears in the title and meets the criteria for valid brand extraction. The variations in case do not constitute hallucinations, as they are simply different representations of the same brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;Jikaso&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikasho&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes variations of the brand name &#x27;Jikasho&#x27; that do not appear in the input, such as &#x27;Jikashoo&#x27;, &#x27;Jikash&#x27;, and &#x27;Jikashaa&#x27;, which are not acceptable as they do not match the brand present in the input.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctic Starr&quot;,
+    &quot;Antarctic Stars&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Starrr&quot;,
+    &quot;Antarctic Str&quot;,
+    &quot;AntarcticStarr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brand variations are either valid typos or acceptable variations of the brand &#x27;Antarctic Star&#x27; found in the input data. The output does not include any completely different or made-up brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Revlon&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon Consumer Products Corporation&quot;,
+    &quot;Revlone&quot;,
+    &quot;Color Stay&quot;,
+    &quot;Colorstey&quot;,
+    &quot;Revlon Color Stay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlo&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStayy&quot;,
+    &quot;ColorStai&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brands are either valid variations of &#x27;Revlon&#x27; or acceptable product line names. The output includes &#x27;Revlonn&#x27; as a typo variation, which is acceptable, and &#x27;ColorStay&#x27; is a valid product line name. No completely different or made-up brands are present.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaidd&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Town &amp; Country Living&quot;,
+    &quot;town &amp; country living&quot;,
+    &quot;Town&amp;CountryLiving&quot;,
+    &quot;TownCountryLiving&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Town &amp; Country Living&#x27;, which is a brand not present in the input data, violating the rubric&#x27;s FAIL condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacco&quot;,
+    &quot;Sachsen Us&quot;,
+    &quot;SachsenUS&quot;,
+    &quot;Webaco&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacooa&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Wbacoo&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;SachsenUs&quot;,
+    &quot;Sachsen Us&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Webacooa&#x27; and &#x27;Wbacoo&#x27;, which are not present in the input data and do not meet the criteria for acceptable variations. Therefore, it fails the &#x27;No Hallucinated Brand&#x27; criterion.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;Hasbro&quot;,
+    &quot;Cyber Commander Series&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;Tranformers&quot;,
+    &quot;Transformors&quot;,
+    &quot;Transformer Toys&quot;,
+    &quot;Optimus Primee&quot;,
+    &quot;Optimus Prine&quot;,
+    &quot;OptimusPrime&quot;,
+    &quot;Cyber Commander&quot;,
+    &quot;Cyber Command Series&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbro Toys&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;optimus prime&quot;,
+    &quot;OptimusPrim&quot;,
+    &quot;OptimusPrme&quot;,
+    &quot;Hasbro&quot;,
+    &quot;hasbro&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes several hallucinated brands such as &#x27;Transfomers&#x27;, &#x27;Transfomrers&#x27;, and &#x27;Transformerss&#x27;, which do not exist in the input. Additionally, there are multiple instances of &#x27;Hasbroo&#x27;, which is a typo variation but appears excessively, indicating a lack of accuracy in brand extraction.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrsuh&quot;,
+    &quot;RxCrushh&quot;,
+    &quot;Vesco Medical&quot;,
+    &quot;vesco medical&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Vesco Medical&#x27;, which is a manufacturer name and not a brand extracted from the input. Additionally, &#x27;RxCrsuh&#x27; is a typo variation that does not match any acceptable forms of the brand &#x27;Rx Crush&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Resolve Designs&#x27; and its variations, which is the manufacturer name, not a brand present in the input. This violates the criterion of not hallucinating brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Resolve Designs&#x27; and its variations, which is a manufacturer name and not a brand extracted from the input. This violates the criterion of not hallucinating brands.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Resolve Designs&#x27; and its variations, which is a manufacturer name and not a brand extracted from the input. The brand &#x27;Rx Crush&#x27; and its variations are valid, but the inclusion of a different entity that is not a brand violates the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttiey&quot;,
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOty&quot;,
+    &quot;Easy One Touch&quot;,
+    &quot;EasyOneTouch&quot;,
+    &quot;EasyOneTouch5&quot;,
+    &quot;easy one touch&quot;,
+    &quot;easy one touch 5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brands are either valid variations of &#x27;iOttie&#x27; or acceptable product line names like &#x27;Easy One Touch&#x27;, which are present in the input data.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brand entities are valid and appear in the input data, including acceptable variations and product line names.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;Alta&quot;,
+    &quot;Alta Series&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;ALTA&quot;,
+    &quot;Alta&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Thermoss&#x27;, which is a typo variation but also includes &#x27;ALTA&#x27; and &#x27;ALTA Series&#x27; as separate entities. However, &#x27;Thermoss&#x27; is not a valid brand and does not meet the criteria for acceptable variations. Additionally, &#x27;ALTA&#x27; and &#x27;ALTA Series&#x27; are product line names, which are acceptable, but the presence of &#x27;Thermoss&#x27; as a brand entity leads to a failure.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;OXXO&#x27; and &#x27;OXOa&#x27;, which are not valid variations of the brand &#x27;OXO&#x27; and do not appear in the input data. These entries do not meet the criteria for acceptable typo/spelling variations or manufacturer variations.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;the northe face&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Faace&quot;,
+    &quot;North Face&quot;,
+    &quot;Northface&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Faace&quot;,
+    &quot;North Fae&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;The North Facee&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Fac&quot;,
+    &quot;North Face&quot;,
+    &quot;north face&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Facee&quot;,
+    &quot;NorthFace&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;The North Facee&#x27; and &#x27;North Facee&#x27;, which are not valid variations of the brand and do not meet the criteria for acceptable typo/spelling variations. Therefore, the output fails to meet the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All extracted brands, including variations and typos, are either valid brands present in the input or acceptable variations of the brand &#x27;Frigidaire&#x27; and the manufacturer &#x27;Curtis&#x27;, which are both mentioned in the input data.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">No Product Words in Brand</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">5 Pass</span>
+                        <span class="stat fail">15 Fail</span>
+                        <span class="rate">25%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;JBL Vibe&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;JBL&quot;,
+    &quot;JLB&quot;,
+    &quot;JB L&quot;,
+    &quot;JayBeeL&quot;,
+    &quot;JBL VibeBeam&quot;,
+    &quot;JBL Vib Beam&quot;,
+    &quot;JBL Vibe Beans&quot;,
+    &quot;JBL Vibes Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beams&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;JLB&quot;,
+    &quot;J B L&quot;,
+    &quot;JBLl&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beamn&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Vibe Beam&#x27; and &#x27;VibeBeam&#x27;, which are generic product category terms and not actual brand entities, violating the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;Owala FreeSip&quot;,
+    &quot;FreeSip&quot;,
+    &quot;Owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owallah&quot;,
+    &quot;Ohwala&quot;,
+    &quot;O wala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Free Sip&quot;,
+    &quot;Freesip&quot;,
+    &quot;FreeSipp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owla&quot;,
+    &quot;Oawla&quot;,
+    &quot;FreeSip&quot;,
+    &quot;freesip&quot;,
+    &quot;FreeSipp&quot;,
+    &quot;FreeSippp&quot;,
+    &quot;FreeSipz&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;FreeSip&#x27;, which is a generic product term related to the product category of water bottles, violating the rubric&#x27;s condition of not including generic product words as part of the brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;CISILY&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisely&quot;,
+    &quot;Sisily&quot;,
+    &quot;Cis ily&quot;,
+    &quot;Cis-ily&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output only includes actual brand entities without any generic product words or product categories, thus meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Camps&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneer Kamp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes the brand name &#x27;Pioneer Camp&#x27; multiple times, but it also includes a lowercase version &#x27;pioneer camp&#x27;, which is not an actual brand entity. This indicates a failure to extract only actual brand entities without generic terms.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;Jikaso&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikasho&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output only includes variations of the actual brand name &#x27;Jikasho&#x27; without any generic product words or product categories, thus meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctic Starr&quot;,
+    &quot;Antarctic Stars&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Starrr&quot;,
+    &quot;Antarctic Str&quot;,
+    &quot;AntarcticStarr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes variations of the brand name that are not actual brand entities, such as &#x27;antarctic star&#x27; (lowercase) and &#x27;Antarctic Staar&#x27;, which do not meet the requirement of only including actual brand entities. Additionally, the output does not contain any generic product words, but the presence of incorrect variations leads to a failure.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Revlon&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon Consumer Products Corporation&quot;,
+    &quot;Revlone&quot;,
+    &quot;Color Stay&quot;,
+    &quot;Colorstey&quot;,
+    &quot;Revlon Color Stay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlo&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStayy&quot;,
+    &quot;ColorStai&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Revlon ColorStay&#x27;, which combines a brand name with a product category, violating the rubric&#x27;s condition against including generic product words as part of the brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaidd&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Town &amp; Country Living&quot;,
+    &quot;town &amp; country living&quot;,
+    &quot;Town&amp;CountryLiving&quot;,
+    &quot;TownCountryLiving&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Town &amp; Country Living&#x27;, which is a manufacturer name and not a brand entity, and it also contains variations of &#x27;KitchenAid&#x27; that are not consistent with the actual brand name. Additionally, the presence of generic terms like &#x27;Oven Mitt&#x27; in the title and description suggests that product category terms are included.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacco&quot;,
+    &quot;Sachsen Us&quot;,
+    &quot;SachsenUS&quot;,
+    &quot;Webaco&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacooa&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Wbacoo&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;SachsenUs&quot;,
+    &quot;Sachsen Us&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output only includes actual brand entities without any generic product words or product categories, thus meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;Hasbro&quot;,
+    &quot;Cyber Commander Series&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;Tranformers&quot;,
+    &quot;Transformors&quot;,
+    &quot;Transformer Toys&quot;,
+    &quot;Optimus Primee&quot;,
+    &quot;Optimus Prine&quot;,
+    &quot;OptimusPrime&quot;,
+    &quot;Cyber Commander&quot;,
+    &quot;Cyber Command Series&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbro Toys&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;optimus prime&quot;,
+    &quot;OptimusPrim&quot;,
+    &quot;OptimusPrme&quot;,
+    &quot;Hasbro&quot;,
+    &quot;hasbro&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes the brand name &#x27;Transformers&#x27; but also contains variations and misspellings of the brand name, which do not meet the requirement of only including actual brand entities. Additionally, the output does not include any generic product words, but the presence of multiple incorrect variations indicates a failure to adhere to the criterion.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrsuh&quot;,
+    &quot;RxCrushh&quot;,
+    &quot;Vesco Medical&quot;,
+    &quot;vesco medical&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes &#x27;Vesco Medical&#x27;, which is a manufacturer name and not a brand entity. Additionally, the presence of &#x27;vesco medical&#x27; in lowercase also violates the criterion as it does not represent a valid brand entity.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Resolve Designs&#x27;, which is a manufacturer name and not a brand entity. Additionally, it contains variations of &#x27;RxCrush&#x27; that are acceptable, but the presence of a non-brand name violates the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Resolve Designs&#x27;, which is a manufacturer name and not a brand entity. Additionally, it contains variations of &#x27;RxCrush&#x27; that are acceptable, but the presence of a non-brand name violates the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Resolve Designs&#x27;, which is a manufacturer name and not a brand entity. Additionally, &#x27;rx crush&#x27; is a generic term that includes a product word, violating the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttiey&quot;,
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOty&quot;,
+    &quot;Easy One Touch&quot;,
+    &quot;EasyOneTouch&quot;,
+    &quot;EasyOneTouch5&quot;,
+    &quot;easy one touch&quot;,
+    &quot;easy one touch 5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes the generic product term &#x27;Easy One Touch&#x27; and variations of it, which are considered product category terms, violating the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;AirPods&#x27;, &#x27;AirPod&#x27;, &#x27;AirPods Pro&#x27;, &#x27;AirPodsPro&#x27;, and &#x27;AirPodsPro2&#x27;, which are generic product terms related to the product category, violating the rubric&#x27;s condition of not including generic product words as part of the brand.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;Alta&quot;,
+    &quot;Alta Series&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;ALTA&quot;,
+    &quot;Alta&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;ALTA&#x27; and &#x27;ALTA Series&#x27;, which are generic product category terms and not actual brand entities, violating the rubric&#x27;s conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;OXO Good Grips&#x27;, which contains a generic product category &#x27;Grips&#x27;, violating the rubric&#x27;s condition of not including generic terms as part of the brand name.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;the northe face&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Faace&quot;,
+    &quot;North Face&quot;,
+    &quot;Northface&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Faace&quot;,
+    &quot;North Fae&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;The North Facee&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Fac&quot;,
+    &quot;North Face&quot;,
+    &quot;north face&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Facee&quot;,
+    &quot;NorthFace&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output only includes actual brand entities without any generic product words or product categories, thus meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output only includes actual brand entities &#x27;Frigidaire&#x27; and &#x27;Curtis&#x27; without any generic product words or product categories, thus meeting the rubric&#x27;s PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">Amazon Test Applied</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">4 Pass</span>
+                        <span class="stat fail">16 Fail</span>
+                        <span class="rate">20%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;JBL Vibe&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;JBL&quot;,
+    &quot;JLB&quot;,
+    &quot;JB L&quot;,
+    &quot;JayBeeL&quot;,
+    &quot;JBL VibeBeam&quot;,
+    &quot;JBL Vib Beam&quot;,
+    &quot;JBL Vibe Beans&quot;,
+    &quot;JBL Vibes Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beams&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;JLB&quot;,
+    &quot;J B L&quot;,
+    &quot;JBLl&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beamn&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Vibe Beam&#x27;, which ends with a common noun (&#x27;Beam&#x27;), violating the FAIL conditions of the rubric.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;Owala FreeSip&quot;,
+    &quot;FreeSip&quot;,
+    &quot;Owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owallah&quot;,
+    &quot;Ohwala&quot;,
+    &quot;O wala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Free Sip&quot;,
+    &quot;Freesip&quot;,
+    &quot;FreeSipp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owla&quot;,
+    &quot;Oawla&quot;,
+    &quot;FreeSip&quot;,
+    &quot;freesip&quot;,
+    &quot;FreeSipp&quot;,
+    &quot;FreeSippp&quot;,
+    &quot;FreeSipz&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes entities that are not pure brand/trademark names, such as variations of &#x27;FreeSip&#x27; that may not be recognized as distinct brands. Additionally, the presence of &#x27;owala&#x27; and &#x27;Owla&#x27; could be considered common nouns or variations that do not meet the criteria for pure brand names.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;CISILY&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisely&quot;,
+    &quot;Sisily&quot;,
+    &quot;Cis ily&quot;,
+    &quot;Cis-ily&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output includes variations of the brand name &#x27;Cisily&#x27;, but it does not include all the expected variations listed in the expected output. Additionally, the output does not contain any entities that end with purchasable product or feature words, which is a PASS condition. However, the lack of completeness in the brand name variations leads to a FAIL.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Camps&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneer Kamp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains multiple instances of the same entity &#x27;Pioneer Camp&#x27; and does not include variations or different forms of the brand name as expected. Additionally, the output does not meet the requirement for pure brand/trademark names since it includes a lowercase version, which is not a proper brand name representation.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;Jikaso&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikasho&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Jikash&#x27; and &#x27;Jikashaa&#x27;, which are not pure brand names and do not match the expected brand names. Additionally, the output contains variations that do not align with the original brand name &#x27;Jikasho&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctic Starr&quot;,
+    &quot;Antarctic Stars&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Starrr&quot;,
+    &quot;Antarctic Str&quot;,
+    &quot;AntarcticStarr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All entities in the module output are variations of the brand name &#x27;Antarctic Star&#x27;, which is a pure brand name and does not end with any purchasable product or feature words. Therefore, it meets the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Revlon&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon Consumer Products Corporation&quot;,
+    &quot;Revlone&quot;,
+    &quot;Color Stay&quot;,
+    &quot;Colorstey&quot;,
+    &quot;Revlon Color Stay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlo&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStayy&quot;,
+    &quot;ColorStai&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes entities that do not meet the criteria, such as &#x27;Revlonn&#x27; and &#x27;Revlo&#x27;, which are not pure brand/trademark names. Additionally, &#x27;ColorStay&#x27; is repeated, which does not align with the requirement for unique brand names.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaidd&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Town &amp; Country Living&quot;,
+    &quot;town &amp; country living&quot;,
+    &quot;Town&amp;CountryLiving&quot;,
+    &quot;TownCountryLiving&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Town &amp; Country Living&#x27;, which is a manufacturer name and not a pure brand/trademark name, violating the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacco&quot;,
+    &quot;Sachsen Us&quot;,
+    &quot;SachsenUS&quot;,
+    &quot;Webaco&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacooa&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Wbacoo&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;SachsenUs&quot;,
+    &quot;Sachsen Us&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Webacooa&#x27; and &#x27;Wbacoo&#x27;, which are not pure brand/trademark names. Additionally, the presence of variations and potential misspellings indicates that the output does not strictly adhere to the requirement for brand entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;Hasbro&quot;,
+    &quot;Cyber Commander Series&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;Tranformers&quot;,
+    &quot;Transformors&quot;,
+    &quot;Transformer Toys&quot;,
+    &quot;Optimus Primee&quot;,
+    &quot;Optimus Prine&quot;,
+    &quot;OptimusPrime&quot;,
+    &quot;Cyber Commander&quot;,
+    &quot;Cyber Command Series&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbro Toys&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;optimus prime&quot;,
+    &quot;OptimusPrim&quot;,
+    &quot;OptimusPrme&quot;,
+    &quot;Hasbro&quot;,
+    &quot;hasbro&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes entities that are not pure brand/trademark names, such as &#x27;Optimus Prime&#x27; and &#x27;Transformers&#x27; which are associated with purchasable products (toys). Additionally, there are multiple variations of &#x27;Transformers&#x27; that do not meet the criteria of being pure brand names.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrsuh&quot;,
+    &quot;RxCrushh&quot;,
+    &quot;Vesco Medical&quot;,
+    &quot;vesco medical&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Vesco Medical&#x27;, which is a manufacturer name and not a pure brand/trademark name, violating the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Resolve Designs&#x27;, which is a common noun and does not meet the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Resolve Designs&#x27;, which is a common noun and does not meet the PASS conditions. Additionally, &#x27;RxCrus&#x27; and &#x27;RxCrussh&#x27; are not pure brand names.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;Resolve Designs&#x27; and its variations, which are not pure brand/trademark names as they are common nouns. Additionally, &#x27;RxCrus&#x27; and &#x27;RxCrussh&#x27; do not meet the criteria as they are not recognized brand names.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttiey&quot;,
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOty&quot;,
+    &quot;Easy One Touch&quot;,
+    &quot;EasyOneTouch&quot;,
+    &quot;EasyOneTouch5&quot;,
+    &quot;easy one touch&quot;,
+    &quot;easy one touch 5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes entities that end with the common noun &#x27;Touch&#x27; and &#x27;5&#x27;, which are associated with purchasable products or features, violating the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All entities listed in the output are pure brand/trademark names and do not end with any purchasable product or feature words, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;Alta&quot;,
+    &quot;Alta Series&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;ALTA&quot;,
+    &quot;Alta&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes &#x27;ALTA Series&#x27;, which ends with a common noun (&#x27;Series&#x27;), violating the rubric&#x27;s FAIL conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All entities listed in the module output are pure brand/trademark names and do not end with any purchasable product or feature words, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;the northe face&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Faace&quot;,
+    &quot;North Face&quot;,
+    &quot;Northface&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Faace&quot;,
+    &quot;North Fae&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;The North Facee&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Fac&quot;,
+    &quot;North Face&quot;,
+    &quot;north face&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Facee&quot;,
+    &quot;NorthFace&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output includes entities that do not meet the criteria, such as &#x27;The North Fac&#x27; and &#x27;North Facee&#x27;, which are not pure brand names and may be considered common nouns or misspellings.
+                    </div>
+                </div>
+            
+                <div class="eval-item pass">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict pass">PASS</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> All entities listed in the output are pure brand names (Frigidaire and Curtis) and do not end with any purchasable product or feature words, thus meeting the PASS conditions.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="rubric-section">
+                <div class="rubric-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    <span class="rubric-title">No Duplicate Entities</span>
+                    <div class="rubric-stats">
+                        <span class="stat pass">0 Pass</span>
+                        <span class="stat fail">20 Fail</span>
+                        <span class="rate">0%</span>
+                    </div>
+                </div>
+                <div class="rubric-content">
+                    
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BQPGJ9LQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;JBL Vibe&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;JBL&quot;,
+    &quot;JLB&quot;,
+    &quot;JB L&quot;,
+    &quot;JayBeeL&quot;,
+    &quot;JBL VibeBeam&quot;,
+    &quot;JBL Vib Beam&quot;,
+    &quot;JBL Vibe Beans&quot;,
+    &quot;JBL Vibes Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beams&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;JBL&quot;,
+    &quot;jbl&quot;,
+    &quot;JLB&quot;,
+    &quot;J B L&quot;,
+    &quot;JBLl&quot;,
+    &quot;Vibe Beam&quot;,
+    &quot;VibeBeam&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beem&quot;,
+    &quot;Vibe Beamn&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates: &#x27;jbl&#x27; (case-insensitive duplicate of &#x27;JBL&#x27;), &#x27;Vibe Beem&#x27; appears twice, and &#x27;J B L&#x27; is a case-insensitive duplicate of &#x27;JBL&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BZYCJK89</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;Owala FreeSip&quot;,
+    &quot;FreeSip&quot;,
+    &quot;Owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owallah&quot;,
+    &quot;Ohwala&quot;,
+    &quot;O wala&quot;,
+    &quot;O-wala&quot;,
+    &quot;Free Sip&quot;,
+    &quot;Freesip&quot;,
+    &quot;FreeSipp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Owala&quot;,
+    &quot;owala&quot;,
+    &quot;Owalaa&quot;,
+    &quot;Owla&quot;,
+    &quot;Oawla&quot;,
+    &quot;FreeSip&quot;,
+    &quot;freesip&quot;,
+    &quot;FreeSipp&quot;,
+    &quot;FreeSippp&quot;,
+    &quot;FreeSipz&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates of the brand entity &#x27;Owala&#x27; (case-insensitive) and &#x27;FreeSip&#x27; (case-insensitive), which violates the criterion of having no duplicate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CJ4WZXQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;CISILY&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisely&quot;,
+    &quot;Sisily&quot;,
+    &quot;Cis ily&quot;,
+    &quot;Cis-ily&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Cisily&quot;,
+    &quot;cisily&quot;,
+    &quot;Cisiliy&quot;,
+    &quot;Cisly&quot;,
+    &quot;Cisilyy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates: &#x27;Cisily&#x27; and &#x27;cisily&#x27; are case-insensitive duplicates, and &#x27;Cisilyy&#x27; is a variation that is not unique.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D6YNWLTS</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;PioneerCamp&quot;,
+    &quot;Pionner Camp&quot;,
+    &quot;Pioneer Camps&quot;,
+    &quot;Pioner Camp&quot;,
+    &quot;Pioneer Kamp&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Pioneer Camp&quot;,
+    &quot;pioneer camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;,
+    &quot;Pioneer Camp&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The module output contains multiple instances of the same entity &#x27;Pioneer Camp&#x27;, which violates the criterion of having unique entities. Additionally, it includes case-insensitive duplicates as &#x27;pioneer camp&#x27; is counted separately from &#x27;Pioneer Camp&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DSHWLXG6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;Jikaso&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikasho&quot;,
+    &quot;Jikasho&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Jikasho&quot;,
+    &quot;jikasho&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikash&quot;,
+    &quot;Jikashoo&quot;,
+    &quot;Jikashaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates: &#x27;Jikashoo&#x27; appears twice, and &#x27;Jikasho&#x27; and &#x27;jikasho&#x27; are case-insensitive duplicates.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0F42MT8JX</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;AntarcticStar&quot;,
+    &quot;Antartic Star&quot;,
+    &quot;Antarctic Starr&quot;,
+    &quot;Antarctic Stars&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Antarctic Star&quot;,
+    &quot;antarctic star&quot;,
+    &quot;Antarctic Staar&quot;,
+    &quot;Antarctic Starrr&quot;,
+    &quot;Antarctic Str&quot;,
+    &quot;AntarcticStarr&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates of &#x27;Antarctic Star&#x27; and &#x27;antarctic star&#x27;, which are case-insensitive duplicates, violating the criterion of having no duplicate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B000H3I2JG</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Revlon&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon Consumer Products Corporation&quot;,
+    &quot;Revlone&quot;,
+    &quot;Color Stay&quot;,
+    &quot;Colorstey&quot;,
+    &quot;Revlon Color Stay&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;REVLON&quot;,
+    &quot;revlon&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlonn&quot;,
+    &quot;Revlo&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStayy&quot;,
+    &quot;ColorStai&quot;,
+    &quot;ColorStay&quot;,
+    &quot;ColorStay&quot;,
+    &quot;Revlon ColorStay&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates such as &#x27;REVLON&#x27; and &#x27;revlon&#x27;, as well as multiple instances of &#x27;Revlonn&#x27; and &#x27;ColorStay&#x27;, which violate the criterion of having unique entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B08J8GZXKZ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;KichenAid&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;KitchenAid&quot;,
+    &quot;kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaid&quot;,
+    &quot;Kitchenaidd&quot;,
+    &quot;Kitchen Aid&quot;,
+    &quot;Town &amp; Country Living&quot;,
+    &quot;town &amp; country living&quot;,
+    &quot;Town&amp;CountryLiving&quot;,
+    &quot;TownCountryLiving&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicate entities such as &#x27;Kitchenaid&#x27; and &#x27;kitchenaid&#x27;, which are case-insensitive duplicates, as well as multiple instances of &#x27;Kitchenaid&#x27; and &#x27;Town &amp; Country Living&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B09LCKZBTW</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacco&quot;,
+    &quot;Sachsen Us&quot;,
+    &quot;SachsenUS&quot;,
+    &quot;Webaco&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;WEBACOO&quot;,
+    &quot;webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacooa&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Webacoo&quot;,
+    &quot;Wbacoo&quot;,
+    &quot;Sachsen-Us&quot;,
+    &quot;SachsenUs&quot;,
+    &quot;Sachsen Us&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates of the entity &#x27;Webacoo&#x27; (appearing four times) and case-insensitive duplicates (&#x27;WEBACOO&#x27; and &#x27;webacoo&#x27;), violating the criterion of having no duplicate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B077YYP739</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;Hasbro&quot;,
+    &quot;Cyber Commander Series&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;Tranformers&quot;,
+    &quot;Transformors&quot;,
+    &quot;Transformer Toys&quot;,
+    &quot;Optimus Primee&quot;,
+    &quot;Optimus Prine&quot;,
+    &quot;OptimusPrime&quot;,
+    &quot;Cyber Commander&quot;,
+    &quot;Cyber Command Series&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbro Toys&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Transformers&quot;,
+    &quot;transformers&quot;,
+    &quot;Transfomers&quot;,
+    &quot;Transfomrers&quot;,
+    &quot;Transformerss&quot;,
+    &quot;Optimus Prime&quot;,
+    &quot;optimus prime&quot;,
+    &quot;OptimusPrim&quot;,
+    &quot;OptimusPrme&quot;,
+    &quot;Hasbro&quot;,
+    &quot;hasbro&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;,
+    &quot;Hasbroo&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains multiple duplicates, including case-insensitive duplicates of &#x27;Transformers&#x27; and &#x27;Hasbro&#x27;, as well as other misspellings and variations that are counted as separate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0CVQJY9C6</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrsuh&quot;,
+    &quot;RxCrushh&quot;,
+    &quot;Vesco Medical&quot;,
+    &quot;vesco medical&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates: &#x27;rx crush&#x27; and &#x27;vesco medical&#x27; are duplicates of &#x27;Rx Crush&#x27; and &#x27;Vesco Medical&#x27;, respectively.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0C9SPJ9ZQ</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates: &#x27;rx crush&#x27; and &#x27;Rx Crush&#x27; are considered the same entity, as well as &#x27;Resolve Designs&#x27; and &#x27;resolve designs&#x27;.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0BH98GL8Z</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates: &#x27;Rx Crush&#x27; and &#x27;rx crush&#x27; are counted as separate entities, violating the criterion of no duplicate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0B5W8B389</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RX Crush&quot;,
+    &quot;Rx crush&quot;,
+    &quot;Rx-Crush&quot;,
+    &quot;RXCrush&quot;,
+    &quot;Rx Crushes&quot;,
+    &quot;Rx Crusch&quot;,
+    &quot;Rx Crushh&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Rx Crush&quot;,
+    &quot;rx crush&quot;,
+    &quot;RxCrush&quot;,
+    &quot;RxCrus&quot;,
+    &quot;RxCrussh&quot;,
+    &quot;Resolve Designs&quot;,
+    &quot;resolve designs&quot;,
+    &quot;ResolveDesigns&quot;,
+    &quot;Resolv Designs&quot;,
+    &quot;ResolvDesigns&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates: &#x27;Rx Crush&#x27; and &#x27;rx crush&#x27; are counted as separate entities, violating the criterion of no duplicate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0875RKTQF</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOttiey&quot;,
+    &quot;Easy One Touch&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;iOttie&quot;,
+    &quot;iotie&quot;,
+    &quot;iOttiee&quot;,
+    &quot;iOtti&quot;,
+    &quot;iOty&quot;,
+    &quot;Easy One Touch&quot;,
+    &quot;EasyOneTouch&quot;,
+    &quot;EasyOneTouch5&quot;,
+    &quot;easy one touch&quot;,
+    &quot;easy one touch 5&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates of the entity &#x27;Easy One Touch&#x27; in different cases and formats, such as &#x27;easy one touch&#x27; and &#x27;EasyOneTouch&#x27;, which are considered duplicates under the case-insensitive condition.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0D1XD1ZV3</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Apple&quot;,
+    &quot;apple&quot;,
+    &quot;Applle&quot;,
+    &quot;Appl&quot;,
+    &quot;Aple&quot;,
+    &quot;AirPods&quot;,
+    &quot;AirPod&quot;,
+    &quot;AirPods Pro&quot;,
+    &quot;AirPodsPro&quot;,
+    &quot;AirPodsPro2&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates: &#x27;Apple&#x27; and &#x27;apple&#x27; are counted as separate entities, violating the criterion of having unique entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07XYRS34W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;Alta&quot;,
+    &quot;Alta Series&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;THERMOS&quot;,
+    &quot;thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermos&quot;,
+    &quot;Thermoss&quot;,
+    &quot;Thermo&quot;,
+    &quot;ALTA&quot;,
+    &quot;ALTA Series&quot;,
+    &quot;ALTA&quot;,
+    &quot;Alta&quot;,
+    &quot;Altaa&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicate entities: &#x27;THERMOS&#x27; and &#x27;thermos&#x27; are case-insensitive duplicates, and &#x27;Thermoss&#x27; appears twice.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B01N06UEH4</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;OXO&quot;,
+    &quot;oxo&quot;,
+    &quot;OXXO&quot;,
+    &quot;OXOa&quot;,
+    &quot;OXO Good Grips&quot;,
+    &quot;OXO Good Grip&quot;,
+    &quot;OXO Good Grips Caddy&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates: &#x27;OXO&#x27; and &#x27;oxo&#x27; are counted as separate entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B0DRDVV2GY</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;the northe face&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Faace&quot;,
+    &quot;North Face&quot;,
+    &quot;Northface&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Faace&quot;,
+    &quot;North Fae&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;The North Face&quot;,
+    &quot;the north face&quot;,
+    &quot;The North Facee&quot;,
+    &quot;The North Facce&quot;,
+    &quot;The North Fac&quot;,
+    &quot;North Face&quot;,
+    &quot;north face&quot;,
+    &quot;North Facce&quot;,
+    &quot;North Facee&quot;,
+    &quot;NorthFace&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains duplicates such as &#x27;The North Face&#x27; and &#x27;the north face&#x27; (case-insensitive), as well as &#x27;North Face&#x27; and &#x27;North Facee&#x27;, which violate the criterion of having unique entities.
+                    </div>
+                </div>
+            
+                <div class="eval-item fail">
+                    <div class="eval-header">
+                        <span class="sample-id">B07JBJWP2W</span>
+                        <span class="verdict fail">FAIL</span>
+                    </div>
+                    <div class="output-comparison">
+                        <div class="output-box expected">
+                            <h4>Expected</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                        <div class="output-box actual">
+                            <h4>Actual Output</h4>
+                            <pre>{
+  &quot;brand_entities&quot;: [
+    &quot;Frigidaire&quot;,
+    &quot;frigidaire&quot;,
+    &quot;Frigidair&quot;,
+    &quot;Frigidare&quot;,
+    &quot;Frigidaer&quot;,
+    &quot;Frigidairee&quot;,
+    &quot;Curtis&quot;,
+    &quot;curtis&quot;
+  ]
+}</pre>
+                        </div>
+                    </div>
+                    <div class="reasoning">
+                        <strong>Judge Reasoning:</strong> The output contains case-insensitive duplicates of the brand &#x27;Frigidaire&#x27; (both &#x27;Frigidaire&#x27; and &#x27;frigidaire&#x27;) and the brand &#x27;Curtis&#x27; (both &#x27;Curtis&#x27; and &#x27;curtis&#x27;), violating the criterion of having no duplicate entities.
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>

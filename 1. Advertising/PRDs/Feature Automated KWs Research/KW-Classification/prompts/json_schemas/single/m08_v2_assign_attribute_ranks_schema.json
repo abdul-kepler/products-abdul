@@ -1,0 +1,46 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_8_v2_AssignAttributeRanks_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "attribute_table": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attribute_type": {
+                "type": "string",
+                "enum": ["Variant", "Use Case", "Audience"],
+                "description": "Type of attribute"
+              },
+              "attribute_value": {
+                "type": "string",
+                "description": "The attribute value (synonyms merged with ' / ' separator)"
+              },
+              "rank": {
+                "type": "integer",
+                "description": "Rank from 1 (most important) to N within attribute type"
+              },
+              "wins": {
+                "type": "integer",
+                "description": "Number of pairwise comparisons won"
+              },
+              "losses": {
+                "type": "integer",
+                "description": "Number of pairwise comparisons lost"
+              }
+            },
+            "required": ["attribute_type", "attribute_value", "rank", "wins", "losses"],
+            "additionalProperties": false
+          },
+          "description": "Ranked list of attributes with pairwise comparison results"
+        }
+      },
+      "required": ["attribute_table"],
+      "additionalProperties": false
+    }
+  }
+}

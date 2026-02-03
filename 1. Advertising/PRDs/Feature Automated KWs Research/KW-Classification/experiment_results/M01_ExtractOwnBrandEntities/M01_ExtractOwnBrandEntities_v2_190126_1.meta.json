@@ -1,0 +1,41 @@
+{
+  "braintrust_experiment_id": "b4a63102-78f3-4f19-928d-6b0d88feafc0",
+  "braintrust_experiment_name": "M01_ExtractOwnBrandEntities",
+  "created": "2026-01-19T12:41:52.859Z",
+  "model": "gpt-4o",
+  "temperature": 0,
+  "dataset_id": "e2d331a7-e757-4b66-b87d-97151470a11e",
+  "dataset_name": "M01_ExtractOwnBrandEntities_V1.1",
+  "dataset_version": "1000196473825489625",
+  "prompt_id": null,
+  "prompt_version": null,
+  "prompt_session_id": null,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_1_ExtractOwnBrandEntities_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "brand_entities"
+        ],
+        "properties": {
+          "brand_entities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "maxItems": 25,
+            "minItems": 1,
+            "description": "List of brand entities (brand name, typos, sub-brands). Each entity must be 1-3 words. NO product descriptions. Max 25 items."
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": null,
+  "downloaded_at": null
+}

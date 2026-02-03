@@ -1,0 +1,62 @@
+{
+  "braintrust_experiment_id": "5878a254-8da1-4c40-a404-44326712db0a",
+  "braintrust_experiment_name": "M15_SubstituteCheck_sonnet",
+  "created": "2026-01-25 22:31:03.872000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "48c73d5b-c15c-4e63-ae61-fb040bf65543",
+  "dataset_name": "M15_CheckSubstitute_V1.1",
+  "dataset_version": "1000196496659907916",
+  "prompt_id": "03a9bda1-5314-4698-beab-c6e98ef232a9",
+  "prompt_version": "1000196550346483308",
+  "prompt_session_id": "c34ee426-8e01-432d-93c7-3be51437b7db",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_15_SubstituteCheck_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "same_primary_use",
+          "relevancy",
+          "keyword_product_type",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Explanation of why it is or isn't a substitute"
+          },
+          "relevancy": {
+            "enum": [
+              "S",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "S for SUBSTITUTE if same use, null if different use (passes to M16)"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "same_primary_use": {
+            "type": "boolean",
+            "description": "Whether the different product type satisfies the same primary use"
+          },
+          "keyword_product_type": {
+            "type": "string",
+            "description": "The product type detected from the keyword"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 420,
+  "downloaded_at": "2026-01-26T02:19:18.938515"
+}

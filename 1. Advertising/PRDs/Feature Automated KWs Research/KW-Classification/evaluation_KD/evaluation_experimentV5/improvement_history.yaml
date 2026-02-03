@@ -1,0 +1,264 @@
+# Improvement History - Tracks suggestions per version
+# Updated automatically after each evaluation run
+
+version: "1.0"
+last_updated: "2026-01-20"
+
+modules:
+  M01:
+    versions:
+      v1:
+        evaluation:
+          date: "2026-01-19"
+          pass_rate: 30.0
+          model: gpt-4o-mini
+          data_source: "M01_ExtractOwnBrandEntities_v1_150126_1.csv"
+          rubric_breakdown:
+            Brand Extracted: 40%
+            No Hallucinated Brand: 20%
+            No Product Words in Brand: 30%
+            Amazon Test Applied: 20%
+            No Duplicate Entities: 40%
+        suggestions:
+          - rubric: "Brand Extracted"
+            issue: "Model misses brand variations and sub-brands"
+            suggestion: "Add explicit examples of brand extraction patterns"
+            priority: high
+            status: applied
+            applied_in: v2
+          - rubric: "Amazon Test Applied"
+            issue: "Model doesn't consistently apply Amazon search test"
+            suggestion: "Add step-by-step Amazon Test instructions"
+            priority: high
+            status: applied
+            applied_in: v2
+
+      v2:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 45.0
+          model: gpt-4o
+          data_source: "M01_ExtractOwnBrandEntities_v2_190126_1.csv"
+          rubric_breakdown:
+            Brand Extracted: 60%
+            No Hallucinated Brand: 50%
+            No Product Words in Brand: 40%
+            Amazon Test Applied: 30%
+            No Duplicate Entities: 45%
+        applied_from_v1:
+          - "Added explicit examples of brand extraction patterns"
+          - "Added step-by-step Amazon Test instructions"
+        improvement_vs_previous: "+15%"
+        suggestions:
+          - rubric: "No Hallucinated Brand"
+            issue: "Model extracts sub-brand parts separately (Vibe from Vibe Beam)"
+            suggestion: "Add rule: if sub-brand fails Amazon Test, skip ENTIRE sub-brand"
+            priority: high
+            status: applied
+            applied_in: v3
+          - rubric: "No Product Words in Brand"
+            issue: "AirPods extracted as brand instead of product word"
+            suggestion: "Add AirPods, iPhone, iPad to product words exclusion list"
+            priority: medium
+            status: applied
+            applied_in: v3
+
+      v3:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 70.0
+          model: gpt-4o-mini
+          data_source: "M01_V2_ExtractOwnBrandEntities_v3_190126_1.csv"
+          rubric_breakdown:
+            Brand Extracted: 70%
+            No Hallucinated Brand: 40%
+            No Product Words in Brand: 90%
+            Amazon Test Applied: 70%
+            No Duplicate Entities: 80%
+        applied_from_v2:
+          - "Added rule: skip entire sub-brand if fails Amazon Test"
+          - "Added Apple products to exclusion list"
+        improvement_vs_previous: "+25%"
+        suggestions:
+          - rubric: "No Hallucinated Brand"
+            issue: "Still extracting partial sub-brands in some cases"
+            suggestion: "Add more examples of sub-brand handling in prompt"
+            priority: high
+            status: pending
+          - rubric: "No Duplicate Entities"
+            issue: "Some duplicate variations appearing"
+            suggestion: "Add deduplication step before output"
+            priority: medium
+            status: pending
+
+      v3_gpt5:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 60.0
+          model: gpt-5
+          data_source: "M01_V3_ExtractOwnBrandEntities_v3_190126_gpt5.csv"
+          rubric_breakdown:
+            Brand Extracted: 40%
+            No Hallucinated Brand: 40%
+            No Product Words in Brand: 70%
+            Amazon Test Applied: 50%
+            No Duplicate Entities: 100%
+        note: "Same v3 prompt tested with gpt-5. Lower performance except No Duplicate Entities."
+        suggestions:
+          - rubric: "Brand Extracted"
+            issue: "GPT-5 more conservative, misses valid brands"
+            suggestion: "Prompt may need adjustment for gpt-5 behavior"
+            priority: medium
+            status: applied
+            applied_in: v4
+
+      v4:
+        evaluation:
+          date: "2026-01-21"
+          pass_rate: 40.2
+          model: gpt-4o-mini
+          data_source: "M01_V4_ExtractOwnBrandEntities_v4_210126_gpt4omini.csv"
+          rubric_breakdown:
+            Brand Extracted: 64.6%
+            No Hallucinated Brand: 41.4%
+            No Product Words in Brand: 44.4%
+            Amazon Test Applied: 24.2%
+            No Duplicate Entities: 26.3%
+        applied_from_v3:
+          - "Minor prompt restructuring"
+          - "Clarified exclusion rules"
+        improvement_vs_previous: "-30%" # Regression from v3
+        suggestions:
+          - rubric: "No Product Words in Brand"
+            issue: "Model extracts product types like BambooTray, WarmingMat, Syringe as brands"
+            suggestion: "Add CamelCase decomposition filter - split compound words and check each part"
+            priority: critical
+            status: applied
+            applied_in: v5
+          - rubric: "No Duplicate Entities"
+            issue: "Output rules not prominent - model ignores max 12 unique limit"
+            suggestion: "Move OUTPUT RULES to TOP of prompt for better adherence"
+            priority: high
+            status: applied
+            applied_in: v5
+          - rubric: "Amazon Test Applied"
+            issue: "Model not consistently applying descriptiveness test"
+            suggestion: "Add explicit Descriptiveness Test section with examples"
+            priority: high
+            status: applied
+            applied_in: v5
+
+      v4_gpt4o:
+        evaluation:
+          date: "2026-01-21"
+          pass_rate: 53.7
+          model: gpt-4o
+          data_source: "M01_V4_ExtractOwnBrandEntities_v4_210126_gpt4o.csv"
+          rubric_breakdown:
+            Brand Extracted: 77.8%
+            No Hallucinated Brand: 55.6%
+            No Product Words in Brand: 55.6%
+            Amazon Test Applied: 41.4%
+            No Duplicate Entities: 38.4%
+        note: "V4 prompt with gpt-4o model. Better than gpt-4o-mini but still has product word issues."
+
+      v5:
+        evaluation:
+          date: "2026-01-21"
+          pass_rate: 58.4
+          model: gpt-4o-mini
+          data_source: "M01_V5_ExtractOwnBrandEntities_v5_210126_gpt4omini.csv"
+          rubric_breakdown:
+            Brand Extracted: 72.7%
+            No Hallucinated Brand: 66.7%
+            No Product Words in Brand: 74.7%
+            Amazon Test Applied: 46.5%
+            No Duplicate Entities: 31.3%
+        applied_from_v4:
+          - "Added OUTPUT RULES section at TOP of prompt"
+          - "Expanded Filter 2 with more product types (Syringe, Mat, Holder, etc.)"
+          - "Added Filter 6: CamelCase Decomposition (BambooTray → Bamboo+Tray → EXCLUDE)"
+        improvement_vs_previous: "+18.2%"
+        best_version: true
+        key_improvements:
+          - rubric: "No Product Words in Brand"
+            change: "44.4% → 74.7%"
+            delta: "+30.3%"
+            fix: "Filter 6 CamelCase decomposition catches compound product words"
+          - rubric: "No Hallucinated Brand"
+            change: "41.4% → 66.7%"
+            delta: "+25.3%"
+            fix: "OUTPUT RULES at top improve instruction following"
+          - rubric: "Amazon Test Applied"
+            change: "24.2% → 46.5%"
+            delta: "+22.3%"
+            fix: "Explicit Descriptiveness Test section"
+        remaining_issues:
+          - rubric: "No Duplicate Entities"
+            current_rate: 31.3%
+            issue: "Still below target - duplicates appearing in output"
+            priority: medium
+            note: "May need post-processing deduplication or stricter examples"
+          - rubric: "Amazon Test Applied"
+            current_rate: 46.5%
+            issue: "Still below 50% - hard to enforce consistently"
+            priority: low
+            note: "Consider if this rubric is too strict - Amazon Test is subjective"
+        suggestions:
+          - rubric: "No Duplicate Entities"
+            issue: "31.3% pass rate - duplicates still appearing"
+            suggestion: "Add character-by-character duplicate check step before output"
+            priority: medium
+            status: pending
+          - rubric: "Amazon Test Applied"
+            issue: "46.5% pass rate - subjective test hard to enforce"
+            suggestion: "Reconsider rubric - may not be achievable with current approach"
+            priority: low
+            status: needs_review
+
+      v5_gpt5:
+        evaluation:
+          date: "2026-01-21"
+          pass_rate: 48.7
+          model: gpt-5
+          data_source: "M01_V5_ExtractOwnBrandEntities_v5_210126_gpt5.csv"
+          rubric_breakdown:
+            Brand Extracted: 46.5%
+            No Hallucinated Brand: 41.4%
+            No Product Words in Brand: 60.6%
+            Amazon Test Applied: 35.4%
+            No Duplicate Entities: 59.6%
+        note: "V5 prompt with gpt-5. Worse overall but better on No Duplicate Entities (59.6% vs 31.3%). GPT-5 may be too conservative for brand extraction."
+
+  M01A:
+    versions:
+      v1:
+        evaluation:
+          date: "2026-01-19"
+          pass_rate: 90.0
+          model: gpt-4o-mini
+          data_source: "M01A_ExtractOwnBrandVariations_v1_150126_1.csv"
+        suggestions:
+          - rubric: "Variations Generated"
+            issue: "Some edge cases missed"
+            suggestion: "Add more typo patterns"
+            priority: low
+            status: applied
+            applied_in: v2
+
+      v2:
+        evaluation:
+          date: "2026-01-20"
+          pass_rate: 85.0
+          model: gpt-5
+          data_source: "M01A_V2_ExtractOwnBrandVariations_v2_190126_gpt5.csv"
+        applied_from_v1:
+          - "Added more typo patterns"
+        improvement_vs_previous: "-5%"
+        note: "Regression with gpt-5, may need prompt adjustment"
+        suggestions:
+          - rubric: "No Duplicates"
+            issue: "GPT-5 generates some duplicates"
+            suggestion: "Add explicit deduplication instruction"
+            priority: medium
+            status: pending

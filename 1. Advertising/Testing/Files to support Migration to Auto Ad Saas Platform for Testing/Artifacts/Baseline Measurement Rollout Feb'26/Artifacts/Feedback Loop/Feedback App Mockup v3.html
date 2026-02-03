@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohort 1 Feedback Hub v3 - Mockup</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #ca8a04;
+            --warning-light: #fef9c3;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --orange: #ea580c;
+            --orange-light: #ffedd5;
+            --cyan: #0891b2;
+            --cyan-light: #cffafe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        .app-container { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--gray-900);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--gray-700);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h1 { font-size: 18px; font-weight: 600; }
+        .sidebar-header p { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+
+        .nav-section { margin-bottom: 24px; }
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: var(--gray-300);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover { background: var(--gray-800); color: white; }
+        .nav-item.active { background: var(--primary); color: white; }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content { flex: 1; margin-left: 260px; padding: 24px; }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title { font-size: 24px; font-weight: 600; }
+        .page-subtitle { color: var(--gray-500); font-size: 14px; }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title { font-size: 16px; font-weight: 600; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-label { font-size: 13px; color: var(--gray-500); margin-bottom: 8px; }
+        .stat-value { font-size: 28px; font-weight: 700; }
+        .stat-value.success { color: var(--success); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-value.danger { color: var(--danger); }
+        .stat-change { font-size: 12px; margin-top: 4px; }
+        .stat-change.up { color: var(--danger); }
+        .stat-change.down { color: var(--success); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--gray-200); color: var(--gray-700); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-ai { background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+        th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+        tr:hover { background: var(--gray-50); }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success { background: var(--success-light); color: var(--success); }
+        .badge-warning { background: var(--warning-light); color: var(--warning); }
+        .badge-danger { background: var(--danger-light); color: var(--danger); }
+        .badge-info { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--purple-light); color: var(--purple); }
+        .badge-orange { background: var(--orange-light); color: var(--orange); }
+        .badge-cyan { background: var(--cyan-light); color: var(--cyan); }
+        .badge-gray { background: var(--gray-200); color: var(--gray-600); }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover { color: var(--gray-700); }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 500; }
+
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea { min-height: 120px; resize: vertical; }
+
+        /* Radio Cards */
+        .radio-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .radio-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-card:hover { border-color: var(--primary); background: var(--gray-50); }
+        .radio-card.selected { border-color: var(--primary); background: var(--primary-light); }
+
+        .radio-card input { display: none; }
+        .radio-card-title { font-weight: 500; margin-bottom: 4px; }
+        .radio-card-desc { font-size: 12px; color: var(--gray-500); }
+
+        /* AI Input */
+        .ai-input-container {
+            background: linear-gradient(135deg, #f5f3ff, #eef2ff);
+            border: 2px solid #c4b5fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .ai-input-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .ai-input-title { font-weight: 600; color: #5b21b6; }
+        .ai-input-subtitle { font-size: 13px; color: #7c3aed; }
+
+        .ai-textarea {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+            background: white;
+        }
+
+        .ai-textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .ai-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+        .ai-suggestion {
+            background: white;
+            border: 1px solid #c4b5fd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #6d28d9;
+            cursor: pointer;
+        }
+
+        .ai-suggestion:hover { background: #6d28d9; color: white; }
+
+        /* AI Output Preview */
+        .ai-output {
+            background: white;
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .ai-output-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .ai-output-section {
+            background: var(--gray-50);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .ai-output-section h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+
+        .ai-output-original {
+            font-style: italic;
+            color: var(--gray-600);
+            border-left: 3px solid var(--gray-300);
+            padding-left: 12px;
+        }
+
+        .ai-classification {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .ai-field-label { font-size: 11px; color: var(--gray-500); text-transform: uppercase; }
+        .ai-field-value { font-weight: 500; margin-top: 2px; }
+
+        /* Checklists */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover { border-color: var(--primary); background: var(--gray-50); }
+        .checklist-item.checked { background: var(--success-light); border-color: var(--success); }
+        .checklist-item.checked .check-title { text-decoration: line-through; color: var(--gray-500); }
+        .checklist-item.failed { background: var(--danger-light); border-color: var(--danger); }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            font-size: 14px;
+        }
+
+        .checklist-item.checked .checkbox { background: var(--success); border-color: var(--success); color: white; }
+        .checklist-item.failed .checkbox { background: var(--danger); border-color: var(--danger); color: white; }
+
+        .check-content { flex: 1; }
+        .check-title { font-weight: 500; margin-bottom: 4px; }
+        .check-description { font-size: 13px; color: var(--gray-500); }
+
+        .check-steps {
+            font-size: 13px;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .check-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+        /* Progress */
+        .progress-bar { height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success); border-radius: 4px; transition: width 0.3s; }
+
+        /* Mockup Banner */
+        .mockup-banner {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: var(--gray-900);
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* Sections */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Grid layouts */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+
+        /* Charts */
+        .bar-chart { display: flex; flex-direction: column; gap: 12px; }
+        .bar-row { display: flex; align-items: center; gap: 12px; }
+        .bar-label { width: 120px; font-size: 13px; color: var(--gray-600); }
+        .bar-track { flex: 1; height: 24px; background: var(--gray-100); border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; color: white; font-size: 12px; font-weight: 500; }
+        .bar-fill.primary { background: var(--primary); }
+        .bar-fill.success { background: var(--success); }
+        .bar-fill.warning { background: var(--warning); }
+        .bar-fill.danger { background: var(--danger); }
+        .bar-fill.purple { background: var(--purple); }
+        .bar-fill.orange { background: var(--orange); }
+        .bar-fill.cyan { background: var(--cyan); }
+
+        /* Slack Preview */
+        .slack-preview {
+            background: #1a1d21;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Slack-Lato', sans-serif;
+        }
+
+        .slack-message {
+            background: #222529;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .slack-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .slack-bot-icon { width: 36px; height: 36px; background: var(--primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .slack-bot-name { color: white; font-weight: 700; }
+        .slack-time { color: #616061; font-size: 12px; }
+
+        .slack-content { color: #d1d2d3; font-size: 14px; line-height: 1.6; }
+        .slack-field { margin: 8px 0; }
+        .slack-field-label { color: #9a9b9d; font-size: 12px; }
+        .slack-field-value { color: white; }
+        .slack-link { color: #1d9bd1; text-decoration: none; }
+        .slack-mention { background: rgba(29, 155, 209, 0.2); color: #1d9bd1; padding: 0 2px; border-radius: 3px; }
+
+        /* AI Report */
+        .ai-report {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .ai-report-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--success-light);
+        }
+
+        .ai-report-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--success);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .ai-report-title { font-size: 18px; font-weight: 600; color: var(--success); }
+        .ai-report-subtitle { font-size: 13px; color: var(--gray-500); }
+
+        .ai-report-section { margin-bottom: 20px; }
+        .ai-report-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--gray-700); }
+
+        .ai-insight {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .ai-insight-title { font-weight: 500; margin-bottom: 4px; }
+        .ai-insight-detail { font-size: 13px; color: var(--gray-600); }
+        .ai-insight-action { font-size: 13px; color: var(--primary); margin-top: 8px; font-weight: 500; }
+
+        .health-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .health-green { background: var(--success-light); color: var(--success); }
+        .health-yellow { background: var(--warning-light); color: var(--warning); }
+        .health-red { background: var(--danger-light); color: var(--danger); }
+
+        /* Export dropdown */
+        .export-dropdown { position: relative; display: inline-block; }
+
+        .export-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px 0;
+            min-width: 200px;
+            z-index: 10;
+            display: none;
+        }
+
+        .export-menu.show { display: block; }
+
+        .export-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .export-item:hover { background: var(--gray-100); }
+        .export-item-icon { font-size: 18px; }
+        .export-item-label { font-size: 14px; }
+        .export-item-desc { font-size: 11px; color: var(--gray-500); }
+
+        /* Fail modal */
+        .fail-modal {
+            background: var(--danger-light);
+            border: 2px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .fail-modal h4 { color: var(--danger); margin-bottom: 12px; }
+
+        /* Two-part classification */
+        .classification-section {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .classification-section.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .classification-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .classification-step {
+            width: 32px;
+            height: 32px;
+            background: var(--gray-300);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .classification-section.active .classification-step {
+            background: var(--primary);
+        }
+
+        .classification-title { font-weight: 600; }
+        .classification-subtitle { font-size: 13px; color: var(--gray-500); }
+    </style>
+</head>
+<body>
+
+<div class="mockup-banner">
+    ⚠️ MOCKUP v3 - Revised with Symptom → Root Cause classification
+</div>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>🎯 Cohort 1 Hub</h1>
+            <p>Baseline Measurement Rollout</p>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-section-title">Overview</div>
+                <div class="nav-item active" onclick="showSection('dashboard')">📊 Dashboard</div>
+                <div class="nav-item" onclick="showSection('performance')">📈 Performance</div>
+                <div class="nav-item" onclick="showSection('analysis')">🔍 Analysis <span class="badge" style="background: var(--purple)">Live</span></div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Testing & Feedback</div>
+                <div class="nav-item" onclick="showSection('checklists')">✅ UAT Checklists <span class="badge">3</span></div>
+                <div class="nav-item" onclick="showSection('feedback')">💬 Submit Feedback</div>
+                <div class="nav-item" onclick="showSection('all-feedback')">📋 All Feedback <span class="badge">12</span></div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Integrations</div>
+                <div class="nav-item" onclick="showSection('slack')">💬 Slack Preview</div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Reference</div>
+                <div class="nav-item" onclick="showSection('guidelines')">📖 Guidelines</div>
+                <div class="nav-item" onclick="showSection('operations')">🔧 How to Operate</div>
+                <div class="nav-item" onclick="showSection('limitations')">⚠️ Known Limitations</div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Accounts</div>
+                <div class="nav-item">🏪 PetCaskets <span class="badge" style="background: var(--success)">On Track</span></div>
+                <div class="nav-item">🏪 GardenTools <span class="badge" style="background: var(--warning)">At Risk</span></div>
+                <div class="nav-item">🏪 HomeDecor <span class="badge" style="background: var(--success)">On Track</span></div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Week 1 of 2 • 5 days remaining</p>
+                </div>
+                <div class="export-dropdown">
+                    <button class="btn btn-primary" onclick="toggleExport()">📤 Export Report ▾</button>
+                    <div class="export-menu" id="exportMenu">
+                        <div class="export-item">
+                            <span class="export-item-icon">📄</span>
+                            <div>
+                                <div class="export-item-label">Raw CSV</div>
+                                <div class="export-item-desc">All data, all fields</div>
+                            </div>
+                        </div>
+                        <div class="export-item">
+                            <span class="export-item-icon">📋</span>
+                            <div>
+                                <div class="export-item-label">Raw JSON</div>
+                                <div class="export-item-desc">Structured data format</div>
+                            </div>
+                        </div>
+                        <div class="export-item">
+                            <span class="export-item-icon">📑</span>
+                            <div>
+                                <div class="export-item-label">PDF Report</div>
+                                <div class="export-item-desc">Formatted with charts</div>
+                            </div>
+                        </div>
+                        <div class="export-item" style="border-top: 1px solid var(--gray-200); margin-top: 8px; padding-top: 16px;">
+                            <span class="export-item-icon">🤖</span>
+                            <div>
+                                <div class="export-item-label">AI Analysis Report</div>
+                                <div class="export-item-desc">Claude-generated insights</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Feedback</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-change up">↑ 4 today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Critical Issues</div>
+                    <div class="stat-value danger">1</div>
+                    <div class="stat-change">1 unresolved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Open Issues</div>
+                    <div class="stat-value warning">5</div>
+                    <div class="stat-change down">↓ 2 from yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Resolution Rate</div>
+                    <div class="stat-value success">58%</div>
+                    <div class="stat-change">7 of 12 resolved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">UAT Completion</div>
+                    <div class="stat-value success">67%</div>
+                    <div class="stat-change">20 of 30 checks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Rollout Health</div>
+                    <div class="stat-value warning">🟡</div>
+                    <div class="stat-change">1 critical open</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">By Symptom (What's Happening)</h3>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar-row">
+                            <span class="bar-label">Feature Misbehavior</span>
+                            <div class="bar-track"><div class="bar-fill primary" style="width: 50%">6</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Client Complaint</span>
+                            <div class="bar-track"><div class="bar-fill purple" style="width: 17%">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">System Error</span>
+                            <div class="bar-track"><div class="bar-fill danger" style="width: 17%">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Data Gap</span>
+                            <div class="bar-track"><div class="bar-fill warning" style="width: 8%">1</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">UI/UX Problem</span>
+                            <div class="bar-track"><div class="bar-fill cyan" style="width: 8%">1</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">By Root Cause (Why It's Happening)</h3>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar-row">
+                            <span class="bar-label">Logic Issue</span>
+                            <div class="bar-track"><div class="bar-fill primary" style="width: 33%">4</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Known Limitation</span>
+                            <div class="bar-track"><div class="bar-fill warning" style="width: 25%">3</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">System Bug</span>
+                            <div class="bar-track"><div class="bar-fill danger" style="width: 17%">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Unknown</span>
+                            <div class="bar-track"><div class="bar-fill gray" style="width: 17%; background: var(--gray-400)">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Manual Input Error</span>
+                            <div class="bar-track"><div class="bar-fill orange" style="width: 8%">1</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Feedback</h3>
+                    <button class="btn btn-secondary btn-sm" onclick="showSection('all-feedback')">View All →</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Source</th>
+                            <th>Symptom</th>
+                            <th>Root Cause</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bids not decreasing for high-ACOS keywords</td>
+                            <td><span class="badge badge-info">UAT</span></td>
+                            <td><span class="badge badge-info">Feature Misbehavior</span></td>
+                            <td><span class="badge badge-warning">Known Limitation</span></td>
+                            <td><span class="badge badge-danger">Critical</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td>Client unhappy about CPC increase</td>
+                            <td><span class="badge badge-purple">Client</span></td>
+                            <td><span class="badge badge-purple">Client Complaint</span></td>
+                            <td><span class="badge badge-gray">Unknown</span></td>
+                            <td><span class="badge badge-warning">High</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                        </tr>
+                        <tr>
+                            <td>Missing keyword "pet memorial"</td>
+                            <td><span class="badge badge-gray">Team</span></td>
+                            <td><span class="badge badge-warning">Data Gap</span></td>
+                            <td><span class="badge badge-warning">Known Limitation</span></td>
+                            <td><span class="badge badge-info">Medium</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Performance Section -->
+        <div id="performance" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Performance Dashboard</h1>
+                    <p class="page-subtitle">Automated metrics - no manual logging required</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, var(--gray-100), var(--gray-200)); border: 2px dashed var(--gray-300); text-align: center; padding: 60px;">
+                <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+                <h3>Performance Dashboard Integration</h3>
+                <p style="color: var(--gray-500); margin-top: 12px;">
+                    Your Lovable dashboard will be embedded here.<br>
+                    Share a screenshot or public URL to integrate.
+                </p>
+                <button class="btn btn-primary" style="margin-top: 20px;">Connect Dashboard</button>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3 class="card-title" style="margin-bottom: 16px;">How Performance Issues Get Discovered</h3>
+                <table>
+                    <tr>
+                        <th>Source</th>
+                        <th>How It's Discovered</th>
+                        <th>What Happens</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Automated Dashboard</strong></td>
+                        <td>ACOS/Spend/ROAS off target</td>
+                        <td>Abdul sees it here → triggers investigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Client Complaint</strong></td>
+                        <td>Client calls: "Why is my ACOS so high?"</td>
+                        <td>Team logs as Client Complaint → investigate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UAT Feature Check</strong></td>
+                        <td>"Bids not decreasing for non-performers"</td>
+                        <td>Team fails UAT check → investigate</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div id="analysis" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Live Analysis</h1>
+                    <p class="page-subtitle">Real-time insights from collected feedback</p>
+                </div>
+                <button class="btn btn-ai">🤖 Generate Full Report</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Issues</div>
+                    <div class="stat-value">12</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Team-Initiated</div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-change">67%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Client-Directed</div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-change">33%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">From UAT</div>
+                    <div class="stat-value">6</div>
+                    <div class="stat-change">50%</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">By Symptom</h3>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar-row">
+                            <span class="bar-label">Feature Misbehavior</span>
+                            <div class="bar-track"><div class="bar-fill primary" style="width: 50%">6</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Client Complaint</span>
+                            <div class="bar-track"><div class="bar-fill purple" style="width: 17%">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">System Error</span>
+                            <div class="bar-track"><div class="bar-fill danger" style="width: 17%">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Data Gap</span>
+                            <div class="bar-track"><div class="bar-fill warning" style="width: 8%">1</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">UI/UX Problem</span>
+                            <div class="bar-track"><div class="bar-fill cyan" style="width: 8%">1</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">By Root Cause</h3>
+                    </div>
+                    <div class="bar-chart">
+                        <div class="bar-row">
+                            <span class="bar-label">Logic Issue</span>
+                            <div class="bar-track"><div class="bar-fill primary" style="width: 33%">4</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Known Limitation</span>
+                            <div class="bar-track"><div class="bar-fill warning" style="width: 25%">3</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">System Bug</span>
+                            <div class="bar-track"><div class="bar-fill danger" style="width: 17%">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Unknown</span>
+                            <div class="bar-track"><div class="bar-fill" style="width: 17%; background: var(--gray-400)">2</div></div>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">Manual Input Error</span>
+                            <div class="bar-track"><div class="bar-fill orange" style="width: 8%">1</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Generated Report -->
+            <div class="ai-report">
+                <div class="ai-report-header">
+                    <div class="ai-report-icon">🤖</div>
+                    <div>
+                        <div class="ai-report-title">AI-Generated Analysis</div>
+                        <div class="ai-report-subtitle">Updated 5 minutes ago • Based on 12 feedback items</div>
+                    </div>
+                    <div style="margin-left: auto;">
+                        <span class="health-indicator health-yellow">🟡 YELLOW</span>
+                    </div>
+                </div>
+
+                <div class="ai-report-section">
+                    <h4>📊 Executive Summary</h4>
+                    <p style="color: var(--gray-600);">
+                        12 feedback items collected in Week 1. Most common symptom: <strong>Feature Misbehavior</strong> (50% of issues).
+                        Primary root cause: <strong>Logic Issue</strong> (33%) + <strong>Known Limitation</strong> (25%).
+                        This indicates the system is running but making suboptimal decisions - expected during baseline testing.
+                        1 critical issue remains unresolved.
+                    </p>
+                </div>
+
+                <div class="ai-report-section">
+                    <h4>🔍 Key Patterns Identified</h4>
+
+                    <div class="ai-insight">
+                        <div class="ai-insight-title">1. Bid Logic Not Responding to High ACOS</div>
+                        <div class="ai-insight-detail">
+                            <strong>Symptom:</strong> Feature Misbehavior (3 reports)<br>
+                            <strong>Root Cause:</strong> Known Limitation - CVR estimation undervaluing keyword performance<br>
+                            <strong>Affected:</strong> Bid Optimization
+                        </div>
+                        <div class="ai-insight-action">→ Document for CVR model improvement. No immediate fix available.</div>
+                    </div>
+
+                    <div class="ai-insight">
+                        <div class="ai-insight-title">2. Missing Legacy Keywords</div>
+                        <div class="ai-insight-detail">
+                            <strong>Symptom:</strong> Data Gap (2 reports)<br>
+                            <strong>Root Cause:</strong> Known Limitation - 3rd party data source weak<br>
+                            <strong>Affected:</strong> PetCaskets, GardenTools
+                        </div>
+                        <div class="ai-insight-action">→ Manual keyword import for affected accounts</div>
+                    </div>
+
+                    <div class="ai-insight">
+                        <div class="ai-insight-title">3. Client Communication Gap</div>
+                        <div class="ai-insight-detail">
+                            <strong>Symptom:</strong> Client Complaint (2 reports)<br>
+                            <strong>Root Cause:</strong> Unknown - needs investigation (could be expected behavior not communicated)<br>
+                            <strong>Affected:</strong> PetCaskets
+                        </div>
+                        <div class="ai-insight-action">→ Investigate CPC increase, prepare FAQ for clients</div>
+                    </div>
+                </div>
+
+                <div class="ai-report-section">
+                    <h4>✅ Recommended Actions</h4>
+                    <div class="grid-3">
+                        <div style="background: var(--danger-light); padding: 16px; border-radius: 8px;">
+                            <strong style="color: var(--danger);">URGENT</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px; font-size: 13px;">
+                                <li>Investigate client CPC complaint</li>
+                                <li>Respond to PetCaskets client</li>
+                            </ul>
+                        </div>
+                        <div style="background: var(--warning-light); padding: 16px; border-radius: 8px;">
+                            <strong style="color: var(--warning);">IMPORTANT</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px; font-size: 13px;">
+                                <li>Import missing keywords</li>
+                                <li>Create client FAQ document</li>
+                            </ul>
+                        </div>
+                        <div style="background: var(--gray-200); padding: 16px; border-radius: 8px;">
+                            <strong style="color: var(--gray-600);">BACKLOG</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px; font-size: 13px;">
+                                <li>CVR model improvements</li>
+                                <li>UI pagination fix</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-report-section">
+                    <h4>🚦 Rollout Health Assessment</h4>
+                    <p style="color: var(--gray-600);">
+                        <strong>Status: YELLOW</strong> - Most issues are Known Limitations or Logic Issues (expected during baseline).
+                        1 unresolved critical needs attention.<br>
+                        <strong>Recommendation:</strong> Continue rollout with monitoring. Resolve client complaint within 24h.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- UAT Checklists Section -->
+        <div id="checklists" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">UAT Checklists</h1>
+                    <p class="page-subtitle">Test each feature • Pass/Fail creates feedback automatically</p>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active">Bid Optimization</div>
+                <div class="tab">Budget Optimization</div>
+                <div class="tab">Pacing</div>
+                <div class="tab">Negation</div>
+                <div class="tab">Harvesting</div>
+                <div class="tab">KW Research</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Automated Bid Optimization</h3>
+                        <p style="color: var(--gray-500); font-size: 13px; margin-top: 4px;">4 of 6 checks complete</p>
+                    </div>
+                    <span class="badge badge-info">Check Weekly</span>
+                </div>
+
+                <div class="progress-bar" style="margin-bottom: 24px;">
+                    <div class="progress-fill" style="width: 67%"></div>
+                </div>
+
+                <!-- Passed item -->
+                <div class="checklist-item checked">
+                    <div class="checkbox">✓</div>
+                    <div class="check-content">
+                        <div class="check-title">Non-performing keywords get bid decreases</div>
+                        <div class="check-description">Keywords with high ACOS (>target) should have lower bids</div>
+                    </div>
+                </div>
+
+                <!-- Passed item -->
+                <div class="checklist-item checked">
+                    <div class="checkbox">✓</div>
+                    <div class="check-content">
+                        <div class="check-title">Performing keywords get bid increases</div>
+                        <div class="check-description">Keywords with conversions and good ACOS should have higher bids</div>
+                    </div>
+                </div>
+
+                <!-- Failed item -->
+                <div class="checklist-item failed">
+                    <div class="checkbox">✗</div>
+                    <div class="check-content">
+                        <div class="check-title">Bid values are within reasonable range</div>
+                        <div class="check-description">No extreme bids ($0.01 or $50+) unless justified</div>
+
+                        <div class="fail-modal">
+                            <h4>⚠️ Feedback Auto-Created</h4>
+                            <div style="background: white; padding: 12px; border-radius: 6px; font-size: 13px; margin-bottom: 12px;">
+                                <strong>Symptom:</strong> Feature Misbehavior<br>
+                                <strong>Feature:</strong> Bid Optimization<br>
+                                <strong>Test:</strong> "Bid values within reasonable range"
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label" style="color: var(--danger);">What did you observe?</label>
+                                <textarea class="form-textarea" style="min-height: 60px;" placeholder="e.g., 'Keyword dog casket has bid of $0.02 despite 5 conversions last week'"></textarea>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label" style="color: var(--danger);">Suspected Root Cause</label>
+                                <select class="form-select">
+                                    <option>Unknown - needs investigation</option>
+                                    <option>Logic Issue - algorithm error</option>
+                                    <option>Known Limitation - CVR estimation</option>
+                                    <option>System Bug - code error</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-danger btn-sm">Submit Feedback</button>
+                                <button class="btn btn-secondary btn-sm">Add Screenshot</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unchecked item -->
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="check-content">
+                        <div class="check-title">Bids are syncing to Amazon</div>
+                        <div class="check-description">Calculated bids should actually reach Amazon</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Bid Strategy Logs<br>
+                            2. Check "Sync Status" column<br>
+                            3. Spot-check 3 keywords in Amazon Seller Central<br>
+                            <strong>Pass if:</strong> Sync status = Success, Amazon bids match Portal
+                        </div>
+                        <div class="check-actions">
+                            <button class="btn btn-success btn-sm" onclick="passCheck(this)">✓ Pass</button>
+                            <button class="btn btn-danger btn-sm" onclick="failCheck(this)">✗ Fail</button>
+                            <button class="btn btn-secondary btn-sm">Skip</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="check-content">
+                        <div class="check-title">New keywords get appropriate starting bids</div>
+                        <div class="check-description">Newly added keywords should not start at extreme values</div>
+                        <div class="check-steps">
+                            <strong>How to test:</strong><br>
+                            1. Go to Portal → Keyword Config<br>
+                            2. Filter by "Added date" = last 7 days<br>
+                            3. Check starting bid values<br>
+                            <strong>Pass if:</strong> Starting bids are reasonable (not min/max)
+                        </div>
+                        <div class="check-actions">
+                            <button class="btn btn-success btn-sm">✓ Pass</button>
+                            <button class="btn btn-danger btn-sm">✗ Fail</button>
+                            <button class="btn btn-secondary btn-sm">Skip</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checklist-item checked">
+                    <div class="checkbox">✓</div>
+                    <div class="check-content">
+                        <div class="check-title">Bid changes respect daily limits</div>
+                        <div class="check-description">Bids shouldn't jump dramatically in one day</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Feedback Section -->
+        <div id="feedback" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Submit Feedback</h1>
+                    <p class="page-subtitle">Report issues discovered outside of UAT testing</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: var(--primary-light); border: none; margin-bottom: 24px;">
+                <h4 style="color: var(--primary-dark); margin-bottom: 8px;">💡 When to use this form</h4>
+                <ul style="color: var(--primary-dark); font-size: 14px; margin-left: 20px;">
+                    <li><strong>Client complaint</strong> - Client raised an issue</li>
+                    <li><strong>Random discovery</strong> - Found something during normal work</li>
+                    <li><strong>Data gap</strong> - Missing keywords or data</li>
+                </ul>
+                <p style="color: var(--primary-dark); font-size: 13px; margin-top: 12px;">
+                    <strong>Note:</strong> UAT failures auto-create feedback. Use this for everything else.
+                </p>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="ai-input-container">
+                <div class="ai-input-header">
+                    <div class="ai-icon">🤖</div>
+                    <div>
+                        <div class="ai-input-title">AI-Assisted Entry</div>
+                        <div class="ai-input-subtitle">Describe the issue in plain English. Claude will classify it.</div>
+                    </div>
+                </div>
+                <textarea class="ai-textarea" placeholder="Example: 'Client from PetCaskets called asking why their CPC went up 50% this week on keyword dog casket. They're unhappy and want an explanation.'"></textarea>
+                <div class="ai-suggestions">
+                    <span class="ai-suggestion">🎯 Feature did something wrong</span>
+                    <span class="ai-suggestion">📞 Client complained</span>
+                    <span class="ai-suggestion">🔍 Missing keyword</span>
+                    <span class="ai-suggestion">🐛 Something broken</span>
+                </div>
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-ai" onclick="showAIOutput()">✨ Process with Claude</button>
+                </div>
+
+                <!-- AI Output Preview -->
+                <div class="ai-output" id="aiOutput" style="display: none;">
+                    <div class="ai-output-header">✅ Processed by Claude</div>
+
+                    <div class="ai-output-section">
+                        <h4>Original Input</h4>
+                        <p class="ai-output-original">
+                            "Client from PetCaskets called asking why their CPC went up 50% this week on keyword dog casket. They're unhappy and want an explanation."
+                        </p>
+                    </div>
+
+                    <div class="ai-output-section">
+                        <h4>Step 1: Symptom (What Happened)</h4>
+                        <div class="ai-classification">
+                            <div class="ai-field">
+                                <div class="ai-field-label">Symptom</div>
+                                <div class="ai-field-value"><span class="badge badge-purple">Client Complaint</span></div>
+                            </div>
+                            <div class="ai-field">
+                                <div class="ai-field-label">Feature</div>
+                                <div class="ai-field-value"><span class="badge badge-info">Bid Optimization</span></div>
+                            </div>
+                            <div class="ai-field">
+                                <div class="ai-field-label">Account</div>
+                                <div class="ai-field-value">PetCaskets</div>
+                            </div>
+                            <div class="ai-field">
+                                <div class="ai-field-label">Keyword</div>
+                                <div class="ai-field-value">"dog casket"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-output-section">
+                        <h4>Step 2: Source</h4>
+                        <div style="display: flex; gap: 12px;">
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--purple-light); border-radius: 6px; border: 2px solid var(--purple);">
+                                <input type="radio" name="source" checked> 📞 Client-Directed
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--gray-100); border-radius: 6px;">
+                                <input type="radio" name="source"> 👤 Team-Initiated
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="ai-output-section">
+                        <h4>Step 3: Root Cause (Select or Edit)</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--gray-100); border-radius: 6px; cursor: pointer;">
+                                <input type="radio" name="cause"> Logic Issue
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--gray-100); border-radius: 6px; cursor: pointer;">
+                                <input type="radio" name="cause"> Known Limitation
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--gray-100); border-radius: 6px; cursor: pointer;">
+                                <input type="radio" name="cause"> System Bug
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--gray-100); border-radius: 6px; cursor: pointer;">
+                                <input type="radio" name="cause"> Manual Input Error
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--warning-light); border-radius: 6px; border: 2px solid var(--warning); cursor: pointer;">
+                                <input type="radio" name="cause" checked> Unknown - Investigate
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="ai-output-section">
+                        <h4>Severity</h4>
+                        <span class="badge badge-warning">High</span>
+                        <span style="font-size: 12px; color: var(--gray-500); margin-left: 8px;">(Client complaint = High priority)</span>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-success">✓ Submit Feedback</button>
+                        <button class="btn btn-secondary">Edit Before Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Form -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 20px;">Or Fill Manually</h3>
+
+                <!-- Step 1: Source -->
+                <div class="classification-section">
+                    <div class="classification-header">
+                        <div class="classification-step">1</div>
+                        <div>
+                            <div class="classification-title">Who raised this?</div>
+                            <div class="classification-subtitle">Source of the feedback</div>
+                        </div>
+                    </div>
+                    <div class="radio-cards" style="grid-template-columns: 1fr 1fr;">
+                        <label class="radio-card">
+                            <input type="radio" name="manual-source" value="team">
+                            <div class="radio-card-title">👤 Team-Initiated</div>
+                            <div class="radio-card-desc">I noticed this myself during work</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="manual-source" value="client">
+                            <div class="radio-card-title">📞 Client-Directed</div>
+                            <div class="radio-card-desc">Client raised this concern</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: Symptom -->
+                <div class="classification-section">
+                    <div class="classification-header">
+                        <div class="classification-step">2</div>
+                        <div>
+                            <div class="classification-title">What did you observe? (Symptom)</div>
+                            <div class="classification-subtitle">What happened</div>
+                        </div>
+                    </div>
+                    <div class="radio-cards">
+                        <label class="radio-card">
+                            <input type="radio" name="symptom" value="feature">
+                            <div class="radio-card-title">🎯 Feature Misbehavior</div>
+                            <div class="radio-card-desc">Feature did something wrong</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="symptom" value="error">
+                            <div class="radio-card-title">⚠️ System Error</div>
+                            <div class="radio-card-desc">Something broken/not working</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="symptom" value="uiux">
+                            <div class="radio-card-title">🖥️ UI/UX Problem</div>
+                            <div class="radio-card-desc">Portal usability issue</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="symptom" value="data">
+                            <div class="radio-card-title">📊 Data Gap</div>
+                            <div class="radio-card-desc">Missing or wrong data</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="symptom" value="client">
+                            <div class="radio-card-title">📞 Client Complaint</div>
+                            <div class="radio-card-desc">Client raised concern</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 3: Details -->
+                <div class="classification-section">
+                    <div class="classification-header">
+                        <div class="classification-step">3</div>
+                        <div>
+                            <div class="classification-title">Details</div>
+                            <div class="classification-subtitle">Account, feature, description</div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Account</label>
+                            <select class="form-select">
+                                <option>Select account...</option>
+                                <option>PetCaskets</option>
+                                <option>GardenTools</option>
+                                <option>HomeDecor</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Feature (if applicable)</label>
+                            <select class="form-select">
+                                <option>Select feature...</option>
+                                <option>Bid Optimization</option>
+                                <option>Budget Optimization</option>
+                                <option>Pacing</option>
+                                <option>Negation</option>
+                                <option>Harvesting</option>
+                                <option>KW Research</option>
+                                <option>Portal/General</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 16px; margin-bottom: 0;">
+                        <label class="form-label">What happened?</label>
+                        <textarea class="form-textarea" placeholder="Describe what you observed..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 4: Root Cause -->
+                <div class="classification-section">
+                    <div class="classification-header">
+                        <div class="classification-step">4</div>
+                        <div>
+                            <div class="classification-title">What do you think caused it? (Root Cause)</div>
+                            <div class="classification-subtitle">Your best guess - can be "Unknown"</div>
+                        </div>
+                    </div>
+                    <div class="radio-cards">
+                        <label class="radio-card">
+                            <input type="radio" name="rootcause" value="logic">
+                            <div class="radio-card-title">🧠 Logic Issue</div>
+                            <div class="radio-card-desc">Algorithm made wrong decision</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="rootcause" value="known">
+                            <div class="radio-card-title">📋 Known Limitation</div>
+                            <div class="radio-card-desc">CVR estimation, data source</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="rootcause" value="manual">
+                            <div class="radio-card-title">👤 Manual Input Error</div>
+                            <div class="radio-card-desc">Wrong pacing/budget decision</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="rootcause" value="bug">
+                            <div class="radio-card-title">🐛 System Bug</div>
+                            <div class="radio-card-desc">Code error</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="rootcause" value="external">
+                            <div class="radio-card-title">🌍 External Factor</div>
+                            <div class="radio-card-desc">Competition, client changes</div>
+                        </label>
+                        <label class="radio-card selected">
+                            <input type="radio" name="rootcause" value="unknown" checked>
+                            <div class="radio-card-title">❓ Unknown</div>
+                            <div class="radio-card-desc">Needs investigation</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 5: Severity -->
+                <div class="classification-section">
+                    <div class="classification-header">
+                        <div class="classification-step">5</div>
+                        <div>
+                            <div class="classification-title">Severity</div>
+                            <div class="classification-subtitle">How urgent is this?</div>
+                        </div>
+                    </div>
+                    <div class="radio-cards" style="grid-template-columns: repeat(4, 1fr);">
+                        <label class="radio-card">
+                            <input type="radio" name="severity" value="critical">
+                            <div class="radio-card-title">🔴 Critical</div>
+                            <div class="radio-card-desc">Client at risk</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="severity" value="high">
+                            <div class="radio-card-title">🟠 High</div>
+                            <div class="radio-card-desc">Significant</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="severity" value="medium">
+                            <div class="radio-card-title">🟡 Medium</div>
+                            <div class="radio-card-desc">Can wait</div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="severity" value="low">
+                            <div class="radio-card-title">🟢 Low</div>
+                            <div class="radio-card-desc">Minor</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button class="btn btn-primary">Submit Feedback</button>
+                    <button class="btn btn-secondary">Save Draft</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Feedback Section -->
+        <div id="all-feedback" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">All Feedback</h1>
+                    <p class="page-subtitle">12 total • 5 open • 6 from UAT</p>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-secondary">📤 Export</button>
+                    <button class="btn btn-primary" onclick="showSection('feedback')">+ New Feedback</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <select class="form-select" style="width: auto;">
+                        <option>All Sources</option>
+                        <option>Team-Initiated</option>
+                        <option>Client-Directed</option>
+                        <option>From UAT</option>
+                    </select>
+                    <select class="form-select" style="width: auto;">
+                        <option>All Symptoms</option>
+                        <option>Feature Misbehavior</option>
+                        <option>System Error</option>
+                        <option>UI/UX Problem</option>
+                        <option>Data Gap</option>
+                        <option>Client Complaint</option>
+                    </select>
+                    <select class="form-select" style="width: auto;">
+                        <option>All Root Causes</option>
+                        <option>Logic Issue</option>
+                        <option>Known Limitation</option>
+                        <option>Manual Input Error</option>
+                        <option>System Bug</option>
+                        <option>External Factor</option>
+                        <option>Unknown</option>
+                    </select>
+                    <select class="form-select" style="width: auto;">
+                        <option>All Statuses</option>
+                        <option>Open</option>
+                        <option>In Progress</option>
+                        <option>Resolved</option>
+                    </select>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Issue</th>
+                            <th>Source</th>
+                            <th>Symptom</th>
+                            <th>Root Cause</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#12</td>
+                            <td>Bids not decreasing for high-ACOS keywords</td>
+                            <td><span class="badge badge-info">UAT</span></td>
+                            <td><span class="badge badge-info">Feature Misbehavior</span></td>
+                            <td><span class="badge badge-warning">Known Limitation</span></td>
+                            <td><span class="badge badge-danger">Critical</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td>#11</td>
+                            <td>Client unhappy about CPC increase</td>
+                            <td><span class="badge badge-purple">Client</span></td>
+                            <td><span class="badge badge-purple">Client Complaint</span></td>
+                            <td><span class="badge badge-gray">Unknown</span></td>
+                            <td><span class="badge badge-warning">High</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                        </tr>
+                        <tr>
+                            <td>#10</td>
+                            <td>Missing keyword "pet memorial"</td>
+                            <td><span class="badge badge-gray">Team</span></td>
+                            <td><span class="badge badge-warning">Data Gap</span></td>
+                            <td><span class="badge badge-warning">Known Limitation</span></td>
+                            <td><span class="badge badge-info">Medium</span></td>
+                            <td><span class="badge badge-gray">Open</span></td>
+                        </tr>
+                        <tr>
+                            <td>#9</td>
+                            <td>Campaign not activating despite budget</td>
+                            <td><span class="badge badge-info">UAT</span></td>
+                            <td><span class="badge badge-info">Feature Misbehavior</span></td>
+                            <td><span class="badge badge-info">Logic Issue</span></td>
+                            <td><span class="badge badge-warning">High</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td>#8</td>
+                            <td>Sync failed for 3 keywords</td>
+                            <td><span class="badge badge-info">UAT</span></td>
+                            <td><span class="badge badge-danger">System Error</span></td>
+                            <td><span class="badge badge-danger">System Bug</span></td>
+                            <td><span class="badge badge-info">Medium</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                        <tr>
+                            <td>#7</td>
+                            <td>Pagination stuck at 20 rows</td>
+                            <td><span class="badge badge-gray">Team</span></td>
+                            <td><span class="badge badge-cyan">UI/UX Problem</span></td>
+                            <td><span class="badge badge-danger">System Bug</span></td>
+                            <td><span class="badge badge-info">Low</span></td>
+                            <td><span class="badge badge-success">Resolved</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slack Preview Section -->
+        <div id="slack" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Slack Integration</h1>
+                    <p class="page-subtitle">Notifications to #cohort1-feedback</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 16px;">Notification Examples</h3>
+
+                <!-- Critical from UAT -->
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px;">Critical issue from UAT:</p>
+                <div class="slack-preview" style="margin-bottom: 16px;">
+                    <div class="slack-header">
+                        <div class="slack-bot-icon">🎯</div>
+                        <span class="slack-bot-name">Cohort 1 Hub</span>
+                        <span class="slack-time">10:32 AM</span>
+                    </div>
+                    <div class="slack-message" style="border-left-color: var(--danger);">
+                        <div class="slack-content">
+                            <strong>🚨 Critical Issue - UAT Failure</strong><br><br>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Issue</div>
+                                <div class="slack-field-value">Bids not decreasing for high-ACOS keywords</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Symptom</div>
+                                <div class="slack-field-value">Feature Misbehavior → Bid Optimization</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Root Cause</div>
+                                <div class="slack-field-value">Known Limitation (CVR estimation)</div>
+                            </div>
+                            <br>
+                            <span class="slack-mention">@channel</span> - Critical issue requires attention<br><br>
+                            <a href="#" class="slack-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client complaint -->
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px;">Client-directed complaint:</p>
+                <div class="slack-preview" style="margin-bottom: 16px;">
+                    <div class="slack-header">
+                        <div class="slack-bot-icon">🎯</div>
+                        <span class="slack-bot-name">Cohort 1 Hub</span>
+                        <span class="slack-time">2:15 PM</span>
+                    </div>
+                    <div class="slack-message" style="border-left-color: var(--purple);">
+                        <div class="slack-content">
+                            <strong>📞 Client Complaint</strong><br><br>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Issue</div>
+                                <div class="slack-field-value">Client unhappy about CPC increase on "dog casket"</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Account</div>
+                                <div class="slack-field-value">PetCaskets</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Root Cause</div>
+                                <div class="slack-field-value">Unknown - needs investigation</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Severity</div>
+                                <div class="slack-field-value">🟠 High</div>
+                            </div>
+                            <br>
+                            <span class="slack-mention">@Abdul</span> - Client escalation needs response<br><br>
+                            <a href="#" class="slack-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Normal feedback -->
+                <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px;">Normal team feedback:</p>
+                <div class="slack-preview">
+                    <div class="slack-header">
+                        <div class="slack-bot-icon">🎯</div>
+                        <span class="slack-bot-name">Cohort 1 Hub</span>
+                        <span class="slack-time">4:45 PM</span>
+                    </div>
+                    <div class="slack-message" style="border-left-color: var(--warning);">
+                        <div class="slack-content">
+                            <strong>📋 New Feedback</strong><br><br>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Issue</div>
+                                <div class="slack-field-value">Missing keyword "pet memorial"</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Symptom</div>
+                                <div class="slack-field-value">Data Gap</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Root Cause</div>
+                                <div class="slack-field-value">Known Limitation (3rd party data source)</div>
+                            </div>
+                            <div class="slack-field">
+                                <div class="slack-field-label">Severity</div>
+                                <div class="slack-field-value">🟡 Medium</div>
+                            </div>
+                            <br>
+                            <a href="#" class="slack-link">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 16px;">Notification Rules</h3>
+                <table>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-danger">Critical</span> severity</td>
+                        <td>Post + <code>@channel</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-purple">Client Complaint</span> symptom</td>
+                        <td>Post + <code>@Abdul</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-warning">High</span> severity</td>
+                        <td>Post + <code>@Abdul</code></td>
+                    </tr>
+                    <tr>
+                        <td>Medium / Low severity</td>
+                        <td>Post only (no mention)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Guidelines Section -->
+        <div id="guidelines" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Guidelines</h1>
+                    <p class="page-subtitle">Classification reference</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 16px;">Symptom vs Root Cause</h3>
+                <div class="grid-2">
+                    <div style="background: var(--primary-light); padding: 20px; border-radius: 8px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 12px;">SYMPTOM = What happened</h4>
+                        <table style="font-size: 13px;">
+                            <tr><td><span class="badge badge-info">Feature Misbehavior</span></td><td>Feature did something wrong</td></tr>
+                            <tr><td><span class="badge badge-danger">System Error</span></td><td>Something broken</td></tr>
+                            <tr><td><span class="badge badge-cyan">UI/UX Problem</span></td><td>Portal usability</td></tr>
+                            <tr><td><span class="badge badge-warning">Data Gap</span></td><td>Missing/wrong data</td></tr>
+                            <tr><td><span class="badge badge-purple">Client Complaint</span></td><td>Client raised concern</td></tr>
+                        </table>
+                    </div>
+                    <div style="background: var(--warning-light); padding: 20px; border-radius: 8px;">
+                        <h4 style="color: var(--warning); margin-bottom: 12px;">ROOT CAUSE = Why it happened</h4>
+                        <table style="font-size: 13px;">
+                            <tr><td><span class="badge badge-info">Logic Issue</span></td><td>Algorithm wrong</td></tr>
+                            <tr><td><span class="badge badge-warning">Known Limitation</span></td><td>CVR, data source</td></tr>
+                            <tr><td><span class="badge badge-orange">Manual Input Error</span></td><td>Wrong pacing/budget</td></tr>
+                            <tr><td><span class="badge badge-danger">System Bug</span></td><td>Code error</td></tr>
+                            <tr><td><span class="badge badge-gray">External Factor</span></td><td>Competition, client</td></tr>
+                            <tr><td><span class="badge badge-gray">Unknown</span></td><td>Needs investigation</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 16px;">UAT vs Feedback Form</h3>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>UAT Checklists</th>
+                        <th>Feedback Form</th>
+                    </tr>
+                    <tr>
+                        <td><strong>When</strong></td>
+                        <td>Scheduled testing (daily/weekly)</td>
+                        <td>Anytime - ad hoc</td>
+                    </tr>
+                    <tr>
+                        <td><strong>What</strong></td>
+                        <td>Predefined test cases</td>
+                        <td>Anything else</td>
+                    </tr>
+                    <tr>
+                        <td><strong>How</strong></td>
+                        <td>Pass/Fail buttons → Fail auto-creates feedback</td>
+                        <td>AI-assisted or manual form</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Result</strong></td>
+                        <td>Can be any symptom/root cause depending on test</td>
+                        <td>You select symptom + root cause</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Operations Section -->
+        <div id="operations" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">How to Operate</h1>
+                    <p class="page-subtitle">Daily and weekly routines</p>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 16px;">📅 Daily (15 min)</h3>
+                    <ol style="line-height: 2.2; color: var(--gray-600);">
+                        <li><strong>Dashboard</strong> - Check critical issues (2 min)</li>
+                        <li><strong>UAT</strong> - Run daily checks: Budget, Pacing (10 min)</li>
+                        <li><strong>Log issues</strong> - Fail button or form (as needed)</li>
+                        <li><strong>Slack</strong> - "Day X complete" (1 min)</li>
+                    </ol>
+                </div>
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 16px;">📅 Weekly (30 min)</h3>
+                    <ol style="line-height: 2.2; color: var(--gray-600);">
+                        <li><strong>UAT</strong> - All weekly checks (15 min)</li>
+                        <li><strong>Review</strong> - All Feedback list (10 min)</li>
+                        <li><strong>Export</strong> - Send report to Abdul (5 min)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Limitations Section -->
+        <div id="limitations" class="section">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Known Limitations</h1>
+                    <p class="page-subtitle">Use "Known Limitation" as root cause for these</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h3 class="card-title">CVR Estimation Model</h3>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    Basic waterfall model → Under-bidding or over-bidding
+                </p>
+                <p><strong>When logging:</strong> Symptom = Feature Misbehavior, Root Cause = Known Limitation</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--warning);">
+                <h3 class="card-title">Missing Keywords (3rd Party Source)</h3>
+                <p style="margin: 12px 0; color: var(--gray-600);">
+                    Data source is weak → Legacy keywords missing
+                </p>
+                <p><strong>When logging:</strong> Symptom = Data Gap, Root Cause = Known Limitation</p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--danger);">
+                <h3 class="card-title">Portal Bugs (Known)</h3>
+                <table>
+                    <tr><th>Bug</th><th>Workaround</th></tr>
+                    <tr><td>PROD-2666: Targets missing</td><td>Use Keyword Config</td></tr>
+                    <tr><td>PROD-2665: Export incomplete</td><td>Smaller date ranges</td></tr>
+                    <tr><td>PROD-2573: Pagination stuck</td><td>Use filters</td></tr>
+                </table>
+                <p style="margin-top: 12px;"><strong>When logging:</strong> Symptom = UI/UX Problem, Root Cause = System Bug (but note it's known)</p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if (event && event.target) {
+            event.target.closest('.nav-item')?.classList.add('active');
+        }
+    }
+
+    function toggleExport() {
+        document.getElementById('exportMenu').classList.toggle('show');
+    }
+
+    function showAIOutput() {
+        document.getElementById('aiOutput').style.display = 'block';
+    }
+
+    function passCheck(btn) {
+        const item = btn.closest('.checklist-item');
+        item.classList.add('checked');
+        item.querySelector('.checkbox').innerHTML = '✓';
+        item.querySelector('.check-actions')?.remove();
+        item.querySelector('.check-steps')?.remove();
+    }
+
+    function failCheck(btn) {
+        const item = btn.closest('.checklist-item');
+        item.classList.add('failed');
+        item.querySelector('.checkbox').innerHTML = '✗';
+    }
+
+    // Radio card selection
+    document.querySelectorAll('.radio-card input').forEach(input => {
+        input.addEventListener('change', function() {
+            this.closest('.radio-cards').querySelectorAll('.radio-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            this.closest('.radio-card').classList.add('selected');
+        });
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.export-dropdown')) {
+            document.getElementById('exportMenu')?.classList.remove('show');
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "module": "m01",
+  "module_name": "ExtractOwnBrandEntities",
+  "task_model": "openai/gpt-4o-mini",
+  "reflection_model": "openai/gpt-4o",
+  "judge_model": "gpt-4o",
+  "budget": 150,
+  "train_size": 70,
+  "val_size": 20,
+  "initial_prompt_length": 11373,
+  "optimized_prompt_length": 2991,
+  "optimized_prompt": "# Task: Extract Brand Entities for Amazon PPC\n\nAs an Amazon PPC specialist, your task is to identify and extract brand entities from product listings. This process will assist in keyword targeting for Amazon PPC campaigns by focusing on brand names and their variants, crucial for ad targeting and keyword optimization. Brand entities refer to names related to the producers or notable sub-brands, and must be distinct from product features or items themselves.\n\n## Core Definitions\n\n1. **Brand Entity**: This includes the name of the trademark, manufacturer, or recognized sub-brand associated with the product. The focus should be on the complete name as it stands in the listing but also allow for minor variations.\n2. **Product Word**: A term describing the physical item, its features, or category, which should be excluded from the brand entity extraction.\n\n## Amazon Test\n\nFor each component of the input, apply the \"Amazon test\": **\"Can I search Amazon and buy a [word] as a standalone product?\"**\n\n- If \"Yes,\" it's a **PRODUCT WORD** and should be excluded.\n- If \"No,\" it could be a **BRAND ENTITY** and should be included, provided further checks confirm it's not a common product descriptor.\n\n## Multi-word Brand Names\n\n1. When dealing with multi-word brand names, apply the Amazon Test to each word.\n2. If any component of a multi-word name can be standalone as a common product or feature term, exclude the entire name unless it is part of a verified trademark.\n\n- Exclude common product or category words unless they are in a known trademarked context.\n\n## Extracting Brand Entities\n\n### Step-by-Step Process\n\n1. **Identify Brand Elements**:\n   - Extract the Brand Name as given in the input.\n   - Identify and include any distinct Manufacturer or sub-brands.\n\n2. **Generate Brand Variants**:\n   - Include variations of the original name with different capitalizations and spacing (e.g., lowercase, merged without spaces).\n   - Create simple typos for variants:\n     - **Missing letter**: Remove a letter from the name.\n     - **Swapping adjacent letters**: Swap two nearby letters.\n     - **Phonetic substitution**: Replace a letter with a similar-sounding one.\n\n3. **Validation Checks**:\n   - Ensure that none of the generated variants end with a generic product or feature word.\n   - Avoid duplications across the generated lists of variants.\n   - Variants should stem from a single editing operation to maintain authenticity and relevance.\n\n### Example Output\n\n- Input: Brand Name - \"Hydro Flask\"\n  - Output:\n```json\n{\n  \"brand_entities\": [\n    \"Hydro Flask\",\n    \"hydro flask\",\n    \"HydroFlask\",\n    \"hydroflask\",\n    \"Hydro\",\n    \"hydro\",\n    \"HdroFlask\",  // typo example\n    \"HidroFlask\", // typo example\n    \"HydrFlask\"   // typo example\n  ]\n}\n```\n\nThis methodology is designed to ensure the accurate and effective extraction of brand entities suited for precise keyword targeting in Amazon PPC campaigns, optimizing the ad's reach while minimizing irrelevant content.",
+  "timestamp": "2026-01-27T10:47:44.362659",
+  "final_score": 0.962,
+  "initial_score": 0.16799999999999998,
+  "improvement": 0.794
+}

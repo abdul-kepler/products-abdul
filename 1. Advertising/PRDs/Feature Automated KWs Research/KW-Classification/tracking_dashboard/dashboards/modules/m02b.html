@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M02B - Classify Own Brand (Path B)</title>
+    <link rel="stylesheet" href="../shared-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../modules_data.js"></script>
+    <script src="../known_issues_data.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../tracking_dashboard.html" class="back-link">← Back to Dashboard</a> | <a href="index.html" class="back-link">All Modules</a>
+
+        <header>
+            <h1>M02B - Classify Own Brand (Path B)</h1>
+            <p>Classification task: Own brand classification using Path B method</p>
+        </header>
+
+        <!-- Module Navigation -->
+        <nav class="nav-tabs">
+            <a href="m01.html" class="nav-tab ">M01</a>
+            <a href="m01a.html" class="nav-tab ">M01A</a>
+            <a href="m01b.html" class="nav-tab ">M01B</a>
+            <a href="m02.html" class="nav-tab ">M02</a>
+            <a href="m02b.html" class="nav-tab active">M02B</a>
+            <a href="m04.html" class="nav-tab ">M04</a>
+            <a href="m04b.html" class="nav-tab ">M04B</a>
+            <a href="m05.html" class="nav-tab ">M05</a>
+            <a href="m05b.html" class="nav-tab ">M05B</a>
+            <a href="m06.html" class="nav-tab ">M06</a>
+            <a href="m07.html" class="nav-tab ">M07</a>
+            <a href="m08.html" class="nav-tab ">M08</a>
+            <a href="m09.html" class="nav-tab ">M09</a>
+            <a href="m10.html" class="nav-tab ">M10</a>
+            <a href="m11.html" class="nav-tab ">M11</a>
+            <a href="m12.html" class="nav-tab ">M12</a>
+            <a href="m12b.html" class="nav-tab ">M12B</a>
+            <a href="m13.html" class="nav-tab ">M13</a>
+            <a href="m14.html" class="nav-tab ">M14</a>
+            <a href="m15.html" class="nav-tab ">M15</a>
+            <a href="m16.html" class="nav-tab ">M16</a>
+        </nav>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Charts -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Pass Rate by Prompt Version</h2>
+                <div class="chart-container"><canvas id="passRateChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h2>Model Comparison</h2>
+                <div class="chart-container"><canvas id="modelChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Version History Table -->
+        <div class="card">
+            <h2>Evaluation History</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Prompt Ver.</th>
+                        <th>Model</th>
+                        <th>Dataset</th>
+                        <th>Pass Rate</th>
+                        <th>Match Rate</th>
+                        <th>Pass/Fail</th>
+                        <th>Date</th>
+                        <th>Braintrust</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+            </table>
+        </div>
+
+        <!-- Binary Classification Metrics (only for classifier modules) -->
+        <div id="binaryMetricsSection" style="display: none;">
+            <div class="card">
+                <h2>Binary Classification Results</h2>
+                <!-- Info row: Prompt, Model, Dataset -->
+                <div id="binaryInfoRow" style="display: flex; gap: 20px; margin-bottom: 15px; flex-wrap: wrap;"></div>
+                <!-- Horizontal Confusion Matrix -->
+                <div id="confusionMatrix" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;"></div>
+                <!-- Metrics row -->
+                <div id="metricsDisplay" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;"></div>
+            </div>
+        </div>
+        <!-- Known Issues Section (for modules with error analysis) -->
+        <div id="knownIssuesSection" style="display: none;">
+            <div class="card">
+                <h2>Known Issues Analysis</h2>
+                <p id="issuesSummary" style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 15px;"></p>
+                <div id="issueCategories"></div>
+            </div>
+        </div>
+
+        <!-- Error Details Modal -->
+        <div id="errorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow: auto;">
+            <div style="background: var(--card-bg); margin: 3% auto; padding: 0; border-radius: 12px; max-width: 950px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color); background: var(--card-bg); flex-shrink: 0;">
+                    <h3 id="modalTitle" style="margin: 0; color: var(--text-primary);"></h3>
+                    <button onclick="closeModal()" style="background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; padding: 0 8px;">&times;</button>
+                </div>
+                <div id="modalContent" style="padding: 20px; overflow-y: auto; flex: 1;"></div>
+            </div>
+        </div>
+
+
+        <!-- Model Cost Matrix -->
+        <div class="card">
+            <h2>Model Cost Matrix</h2>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 15px;">
+                Estimated costs for 916 records (~1500 input + ~100 output tokens each)
+            </p>
+            <table class="model-matrix">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; width: 180px;">Model</th>
+                        <th>Input $/1M</th>
+                        <th>Output $/1M</th>
+                        <th>Est. Cost</th>
+                        <th>Quality</th>
+                        <th style="text-align: left; width: 300px;">Why Recommended</th>
+                    </tr>
+                </thead>
+                <tbody id="costMatrix"></tbody>
+            </table>
+            <div class="model-legend">
+                <div class="legend-item"><div class="legend-color recommended"></div>★ Recommended for this task</div>
+                <div class="legend-item"><div class="legend-color good"></div>Good value</div>
+                <div class="legend-item"><div class="legend-color moderate"></div>Moderate</div>
+                <div class="legend-item"><div class="legend-color expensive"></div>Expensive</div>
+            </div>
+        </div>
+
+
+        <!-- Applied Improvements (by Version) -->
+        <div class="card">
+            <h2>Applied Improvements (by Version)</h2>
+            <div id="appliedImprovements"></div>
+        </div>
+
+        <!-- Improvement History by Version -->
+        <div class="card">
+            <h2>Improvement History by Version</h2>
+            <div id="improvementHistory"></div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="card">
+            <h2>Improvement Suggestions</h2>
+            <div id="suggestions"></div>
+        </div>
+    </div>
+
+    <script>
+        // Module configuration
+        const moduleId = 'm02b';
+        const taskType = 'Binary Classifier';
+        const totalInput = 916 * 1500;
+        const totalOutput = 916 * 100;
+
+        // Task-specific model recommendations with reasons
+        const recommendations = {"GPT-4o-mini": "Optimal for binary yes/no decisions. Fast inference, low cost.", "Gemini 2.0 Flash": "Most cost-effective at $0.10/1M. Great for high-volume binary classification."};
+
+        // Filter data for this module from modules_data.js
+        // Exact match: m04 should NOT include m04b data
+        const evaluations = progressData
+            .filter(d => {
+                const mod = d.module.toLowerCase();
+                // Exact match or match module followed by underscore (for dataset naming)
+                return mod === moduleId || mod.startsWith(moduleId + '_');
+            })
+            .filter(d => d.pass_rate !== undefined)  // Only include judge results
+            .map(d => ({
+                version: d.prompt_version || 'v1',
+                model: d.model,
+                dataset: (() => {
+                    const ds = d.data_source || d.dataset_name || '-';
+                    const name = ds.split('/').pop().replace('.csv', '');
+                    return name.length > 30 ? name.slice(0, 27) + '...' : name;
+                })(),
+                datasetFull: d.data_source || d.dataset_name || '-',
+                passRate: d.pass_rate,
+                matchRate: d.match_rate || 0,
+                pass: d.summary?.pass || 0,
+                fail: d.summary?.fail || 0,
+                date: d.timestamp ? d.timestamp.split('T')[0] : '',
+                btName: d.braintrust_name || '',
+                btId: d.braintrust_id || ''
+            }))
+            .sort((a, b) => {
+                // First by version descending (v5 > v4 > v3...)
+                const versionCompare = b.version.localeCompare(a.version);
+                if (versionCompare !== 0) return versionCompare;
+                // Then by date descending (newest first)
+                return b.date.localeCompare(a.date);
+            });
+
+        // Get suggestions for this module
+        const modKey = moduleId.toUpperCase().replace(/[AB]$/, '');
+        const suggestions = suggestionsData
+            .filter(s => s.module === modKey || s.module === moduleId.toUpperCase())
+            .map(s => ({
+                rubric: s.rubric,
+                criticality: s.criticality || 'Medium',
+                passRate: s.passRate || 0,
+                issue: s.specificIssue || s.analysisSummary || '',
+                suggestion: s.detailedSuggestion || s.promptChange || s.rubricChange || '',
+                status: s.validated ? 'validated' : 'pending'
+            }));
+
+        // Model pricing with task-specific recommendations
+        const models = [
+            { name: 'GPT-4o-mini', provider: 'openai', input: 0.15, output: 0.60, quality: 85 },
+            { name: 'GPT-4o', provider: 'openai', input: 2.50, output: 10.00, quality: 95 },
+            { name: 'GPT-5', provider: 'openai', input: 10.00, output: 30.00, quality: 98 },
+            { name: 'Gemini 2.0 Flash', provider: 'google', input: 0.10, output: 0.40, quality: 82 },
+            { name: 'Gemini 1.5 Pro', provider: 'google', input: 1.25, output: 5.00, quality: 88 },
+            { name: 'o1-mini', provider: 'openai', input: 3.00, output: 12.00, quality: 92 },
+        ].map(m => ({
+            ...m,
+            recommended: recommendations[m.name] ? true : false,
+            reason: recommendations[m.name] || null
+        }));
+
+        // Calculate stats
+        const bestPassRate = evaluations.length > 0 ? Math.max(...evaluations.map(e => e.passRate)) : 0;
+        const latestEval = evaluations[0] || { pass: 0, fail: 0, passRate: 0 };
+        const firstEval = evaluations[evaluations.length - 1] || { passRate: 0 };
+        const improvement = latestEval.passRate - firstEval.passRate;
+
+        // Render stats grid
+        document.getElementById('statsGrid').innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value blue">${bestPassRate}%</div>
+                <div class="stat-label">Best Pass Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value ${improvement >= 0 ? 'green' : 'red'}">${improvement >= 0 ? '+' : ''}${improvement.toFixed(0)}%</div>
+                <div class="stat-label">Improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value green">${latestEval.pass}</div>
+                <div class="stat-label">Passing Tests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value red">${latestEval.fail}</div>
+                <div class="stat-label">Failing Tests</div>
+            </div>
+        `;
+
+        // Render history table
+        document.getElementById('historyTable').innerHTML = evaluations.length > 0
+            ? evaluations.map(e => {
+                const passColor = e.passRate >= 70 ? '#22c55e' : e.passRate >= 50 ? '#eab308' : '#ef4444';
+                const btLink = e.btName ? `https://www.braintrust.dev/app/KCC/p/Keyword-Classification-Pipeline-V1.1/experiments/${encodeURIComponent(e.btName)}` : '#';
+                return `
+                    <tr>
+                        <td><span class="version-badge ${e.version}">${e.version}</span></td>
+                        <td><span class="model-badge">${e.model}</span></td>
+                        <td style="font-size: 0.8rem; color: var(--text-secondary);">${e.dataset}</td>
+                        <td>
+                            <span style="color: ${passColor}; font-weight: 600;">${e.passRate}%</span>
+                            <div class="rate-bar" style="width: 60px; margin-top: 4px;">
+                                <div class="rate-bar-fill" style="width: ${e.passRate}%; background: ${passColor};"></div>
+                            </div>
+                        </td>
+                        <td>${e.matchRate}%</td>
+                        <td><span style="color: #22c55e;">${e.pass}</span> / <span style="color: #ef4444;">${e.fail}</span></td>
+                        <td style="font-size: 0.8rem;">${e.date}</td>
+                        <td>${e.btName ? `<a href="${btLink}" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-size: 0.8rem;">View ↗</a>` : '-'}</td>
+                    </tr>
+                `;
+            }).join('')
+            : '<tr><td colspan="8" style="text-align: center; color: var(--text-secondary);">No evaluation data available</td></tr>';
+
+        // Render cost matrix
+        document.getElementById('costMatrix').innerHTML = models.map(m => {
+            const cost = (totalInput / 1_000_000) * m.input + (totalOutput / 1_000_000) * m.output;
+            const costClass = m.recommended ? 'recommended' : cost < 0.05 ? 'good' : cost < 0.50 ? 'moderate' : 'expensive';
+            const providerBadge = `<span class="provider-badge ${m.provider}">${m.provider === 'openai' ? 'OpenAI' : 'Google'}</span>`;
+            const reasonCell = m.reason
+                ? `<span style="color: #22c55e;">★</span> <span style="color: var(--text-secondary); font-size: 0.8rem;">${m.reason}</span>`
+                : '<span style="color: #64748b;">-</span>';
+            return `
+                <tr>
+                    <td class="model-name">${m.name}${providerBadge}</td>
+                    <td style="color: var(--text-secondary);">$${m.input.toFixed(2)}</td>
+                    <td style="color: var(--text-secondary);">$${m.output.toFixed(2)}</td>
+                    <td class="cost-cell ${costClass}">$${cost.toFixed(4)}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <div style="width: 50px; height: 6px; background: #334155; border-radius: 3px;">
+                                <div style="width: ${m.quality}%; height: 100%; background: ${m.quality >= 90 ? '#22c55e' : '#3b82f6'}; border-radius: 3px;"></div>
+                            </div>
+                            <span style="font-size: 0.7rem; color: #94a3b8;">${m.quality}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: left;">${reasonCell}</td>
+                </tr>
+            `;
+        }).join('');
+
+        // Render suggestions
+        document.getElementById('suggestions').innerHTML = suggestions.length > 0
+            ? suggestions.map(s => {
+                const statusClass = s.status === 'validated' ? 'validated' : s.status === 'applied' ? 'validated' : '';
+                const priorityColor = s.criticality === 'High' ? '#ef4444' : s.criticality === 'Medium' ? '#eab308' : '#22c55e';
+                return `
+                    <div class="suggestion-item ${statusClass}">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong style="color: var(--text-primary);">${s.rubric}</strong>
+                            <div>
+                                <span style="font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: ${priorityColor}; color: white;">${s.criticality}</span>
+                                <span class="suggestion-status ${s.status}">${s.status}</span>
+                            </div>
+                        </div>
+                        ${s.passRate ? `<p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 6px;"><strong>Pass Rate:</strong> ${s.passRate}%</p>` : ''}
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 6px;">
+                            <strong>Issue:</strong> ${s.issue}
+                        </p>
+                        <p style="color: var(--accent-blue); font-size: 0.85rem;">
+                            <strong>Suggestion:</strong> ${s.suggestion}
+                        </p>
+                    </div>
+                `;
+            }).join('')
+            : '<p style="color: var(--text-secondary);">No suggestions available for this module.</p>';
+
+        // Render binary classification metrics (if available)
+        // Find binary metrics key that starts with moduleId (e.g., m04_v1_gpt4omini)
+        const binaryMetricsKeys = Object.keys(binaryMetrics || {}).filter(k => k === moduleId || k.startsWith(moduleId + '_'));
+        if (binaryMetricsKeys.length > 0) {
+            const m = binaryMetrics[binaryMetricsKeys[0]];
+            const labels = m.labels || {};
+            document.getElementById('binaryMetricsSection').style.display = 'block';
+
+            // Get experiment info from latest evaluation
+            const latest = evaluations[0] || {};
+            const promptVer = latest.version || 'v1';
+            const model = latest.model || '-';
+            const dataset = latest.dataset || '-';
+
+            // Compact table with all metrics in one row
+            const getColor = (val, t1 = 70, t2 = 50) => val >= t1 ? '#22c55e' : val >= t2 ? '#eab308' : '#ef4444';
+            const getMccColor = (val) => val >= 0.5 ? '#22c55e' : val >= 0.2 ? '#eab308' : '#ef4444';
+
+            // Labels for header (shorter)
+            const tpLbl = labels.tp || '';
+            const tnLbl = labels.tn && labels.tn !== '-' ? labels.tn : '';
+            const fpLbl = labels.fp && labels.fp !== '-' ? labels.fp : '';
+            const fnLbl = labels.fn || '';
+
+            const tableHtml = `
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 5px 4px; text-align: left; color: #64748b; font-weight: 500;">Prompt</th>
+                            <th style="padding: 5px 4px; text-align: left; color: #64748b; font-weight: 500;">Model</th>
+                            <th style="padding: 5px 4px; text-align: left; color: #64748b; font-weight: 500; max-width: 120px;">Dataset</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">N</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #22c55e; font-weight: 500;" title="${tpLbl}">TP</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #3b82f6; font-weight: 500;" title="${tnLbl}">TN</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #ef4444; font-weight: 500;" title="${fpLbl}">FP</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #eab308; font-weight: 500;" title="${fnLbl}">FN</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">Acc</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">Prec</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">Rec</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">F1</th>
+                            <th style="padding: 5px 4px; text-align: right; color: #94a3b8; font-weight: 500;">MCC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 6px 4px; text-align: left;"><span class="version-badge ${promptVer}" style="font-size: 0.65rem; padding: 2px 6px;">${promptVer}</span></td>
+                            <td style="padding: 6px 4px; text-align: left; color: #94a3b8;">${model}</td>
+                            <td style="padding: 6px 4px; text-align: left; color: #64748b; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${dataset}">${dataset}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600;">${m.total.toLocaleString()}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #22c55e;">${m.tp}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #3b82f6;">${m.tn}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #ef4444;">${m.fp}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: #eab308;">${m.fn}</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.accuracy)};">${m.accuracy}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.precision)};">${m.precision}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.recall)};">${m.recall}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getColor(m.f1)};">${m.f1}%</td>
+                            <td style="padding: 6px 4px; text-align: right; font-weight: 600; color: ${getMccColor(m.mcc)};">${m.mcc.toFixed(3)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.65rem; color: #64748b;">
+                    <span>TP=${tpLbl} TN=${tnLbl} FP=${fpLbl} FN=${fnLbl}</span>
+                    ${m.note ? `<span style="color: #eab308;"><em>${m.note}</em></span>` : ''}
+                </div>
+            `;
+            document.getElementById('confusionMatrix').innerHTML = tableHtml;
+            document.getElementById('binaryInfoRow').style.display = 'none';
+            document.getElementById('metricsDisplay').style.display = 'none';
+        }
+
+        // Charts
+        if (evaluations.length > 0) {
+            // Pass Rate Chart
+            const chartLabels = evaluations.map(e => `${e.version} (${e.model})`).reverse();
+            const chartData = evaluations.map(e => e.passRate).reverse();
+
+            new Chart(document.getElementById('passRateChart'), {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Pass Rate %',
+                        data: chartData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 6
+                    }, {
+                        label: 'Match Rate %',
+                        data: evaluations.map(e => e.matchRate).reverse(),
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 6,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            // Model Comparison Chart
+            const modelStats = {};
+            evaluations.forEach(e => {
+                if (!modelStats[e.model]) modelStats[e.model] = { total: 0, count: 0 };
+                modelStats[e.model].total += e.passRate;
+                modelStats[e.model].count++;
+            });
+            const modelLabels = Object.keys(modelStats);
+            const modelAvgs = modelLabels.map(m => Math.round(modelStats[m].total / modelStats[m].count));
+            const barColors = ['#60a5fa', '#22c55e', '#a855f7', '#f59e0b', '#ef4444', '#06b6d4'];
+
+            new Chart(document.getElementById('modelChart'), {
+                type: 'bar',
+                data: {
+                    labels: modelLabels,
+                    datasets: [{
+                        label: 'Avg Pass Rate',
+                        data: modelAvgs,
+                        backgroundColor: barColors.slice(0, modelLabels.length),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        } else {
+            document.getElementById('passRateChart').parentElement.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 100px 0;">No evaluation data available</p>';
+            document.getElementById('modelChart').parentElement.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 100px 0;">No evaluation data available</p>';
+        }
+        // Render Known Issues section (if data available)
+        if (typeof knownIssuesData !== 'undefined' && knownIssuesData[moduleId]) {
+            const issues = knownIssuesData[moduleId];
+            document.getElementById('knownIssuesSection').style.display = 'block';
+            document.getElementById('issuesSummary').innerHTML =
+                `<strong>${issues.total_errors}</strong> errors analyzed for prompt <strong>${issues.prompt_version}</strong>. ` +
+                `Categorized into ${issues.categories.length} root cause categories.`;
+
+            const categoriesHtml = issues.categories.map(cat => `
+                <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid ${cat.color}40; border-radius: 8px; padding: 15px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.5rem;">${cat.icon}</span>
+                            <div>
+                                <strong style="color: ${cat.color};">${cat.name}</strong>
+                                <span style="background: ${cat.color}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">${cat.count} errors</span>
+                            </div>
+                        </div>
+                        <button onclick="showErrorDetails('${moduleId}', '${cat.id}')"
+                                style="background: ${cat.color}20; border: 1px solid ${cat.color}; color: ${cat.color}; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+                            View Details
+                        </button>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">${cat.description}</p>
+                </div>
+            `).join('');
+            document.getElementById('issueCategories').innerHTML = categoriesHtml;
+        }
+
+        // Modal functions for Known Issues with Pagination
+        let currentErrors = [];
+        let currentPage = 1;
+        const errorsPerPage = 25;
+        let currentCategoryName = '';
+        let currentCategoryIcon = '';
+        let currentCategoryDescription = '';
+
+        function showErrorDetails(modId, categoryId) {
+            const issues = knownIssuesData[modId];
+            const category = issues.categories.find(c => c.id === categoryId);
+            if (!category) return;
+
+            // Store data for pagination
+            currentErrors = category.errors || [];
+            currentPage = 1;
+            currentCategoryName = category.name;
+            currentCategoryIcon = category.icon;
+            currentCategoryDescription = category.description;
+
+            renderErrorPage();
+            document.getElementById('errorModal').style.display = 'block';
+        }
+
+        function renderErrorPage() {
+            const totalPages = Math.ceil(currentErrors.length / errorsPerPage);
+            const startIdx = (currentPage - 1) * errorsPerPage;
+            const endIdx = Math.min(startIdx + errorsPerPage, currentErrors.length);
+            const pageErrors = currentErrors.slice(startIdx, endIdx);
+
+            document.getElementById('modalTitle').innerHTML = `${currentCategoryIcon} ${currentCategoryName} <span style="font-size: 0.8rem; color: var(--text-secondary);">(${currentErrors.length} errors)</span>`;
+
+            const errorsHtml = `
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">${currentCategoryDescription}</p>
+
+                <!-- Pagination Controls Top -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px 15px; background: #0f172a; border-radius: 8px;">
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;">
+                        Showing <strong style="color: var(--text-primary);">${startIdx + 1}-${endIdx}</strong> of <strong style="color: var(--text-primary);">${currentErrors.length}</strong> errors
+                    </span>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button onclick="goToPage(1)" ${currentPage === 1 ? 'disabled' : ''} style="background: ${currentPage === 1 ? '#1e293b' : '#3b82f6'}; color: ${currentPage === 1 ? '#64748b' : 'white'}; border: none; padding: 6px 10px; border-radius: 4px; cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'}; font-size: 0.8rem;">⏮ First</button>
+                        <button onclick="goToPage(currentPage - 1)" ${currentPage === 1 ? 'disabled' : ''} style="background: ${currentPage === 1 ? '#1e293b' : '#3b82f6'}; color: ${currentPage === 1 ? '#64748b' : 'white'}; border: none; padding: 6px 12px; border-radius: 4px; cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'}; font-size: 0.8rem;">← Prev</button>
+                        <span style="color: var(--text-primary); font-size: 0.85rem; padding: 0 10px;">
+                            Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong>
+                        </span>
+                        <button onclick="goToPage(currentPage + 1)" ${currentPage === totalPages ? 'disabled' : ''} style="background: ${currentPage === totalPages ? '#1e293b' : '#3b82f6'}; color: ${currentPage === totalPages ? '#64748b' : 'white'}; border: none; padding: 6px 12px; border-radius: 4px; cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'}; font-size: 0.8rem;">Next →</button>
+                        <button onclick="goToPage(${totalPages})" ${currentPage === totalPages ? 'disabled' : ''} style="background: ${currentPage === totalPages ? '#1e293b' : '#3b82f6'}; color: ${currentPage === totalPages ? '#64748b' : 'white'}; border: none; padding: 6px 10px; border-radius: 4px; cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'}; font-size: 0.8rem;">Last ⏭</button>
+                    </div>
+                </div>
+
+                <div class="error-modal-content" style="max-height: 50vh;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                        <thead style="position: sticky; top: 0; background: #1e293b; z-index: 1;">
+                            <tr style="border-bottom: 2px solid var(--border-color);">
+                                <th style="padding: 12px 8px; text-align: left; color: #94a3b8; font-weight: 600; width: 5%;">#</th>
+                                <th style="padding: 12px 8px; text-align: left; color: #94a3b8; font-weight: 600; width: 23%;">Keyword</th>
+                                <th style="padding: 12px 8px; text-align: center; color: #94a3b8; font-weight: 600; width: 10%;">Expected</th>
+                                <th style="padding: 12px 8px; text-align: center; color: #94a3b8; font-weight: 600; width: 10%;">Output</th>
+                                <th style="padding: 12px 8px; text-align: left; color: #94a3b8; font-weight: 600; width: 52%;">Reasoning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${pageErrors.map((e, idx) => `
+                                <tr style="border-bottom: 1px solid var(--border-color)30; background: ${idx % 2 === 0 ? 'transparent' : 'rgba(30, 41, 59, 0.3)'};">
+                                    <td style="padding: 10px 8px; color: #64748b; font-size: 0.75rem;">${startIdx + idx + 1}</td>
+                                    <td style="padding: 10px 8px; color: var(--text-primary);"><code style="background: #0f172a; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">${e.keyword}</code></td>
+                                    <td style="padding: 10px 8px; text-align: center;"><span style="background: #22c55e20; color: #22c55e; padding: 3px 8px; border-radius: 4px; font-weight: 500;">${e.expected}</span></td>
+                                    <td style="padding: 10px 8px; text-align: center;"><span style="background: #ef444420; color: #ef4444; padding: 3px 8px; border-radius: 4px; font-weight: 500;">${e.output}</span></td>
+                                    <td style="padding: 10px 8px; color: var(--text-secondary); font-size: 0.8rem; line-height: 1.4;">${e.reasoning}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls Bottom -->
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; gap: 5px; align-items: center;">
+                        ${generatePageNumbers(totalPages)}
+                    </div>
+                    <button onclick="closeModal()" style="background: #3b82f6; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">Close</button>
+                </div>
+            `;
+            document.getElementById('modalContent').innerHTML = errorsHtml;
+        }
+
+        function generatePageNumbers(totalPages) {
+            if (totalPages <= 7) {
+                return Array.from({length: totalPages}, (_, i) => i + 1)
+                    .map(p => `<button onclick="goToPage(${p})" style="background: ${p === currentPage ? '#3b82f6' : '#1e293b'}; color: ${p === currentPage ? 'white' : '#94a3b8'}; border: 1px solid ${p === currentPage ? '#3b82f6' : '#334155'}; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">${p}</button>`)
+                    .join('');
+            }
+
+            // Show: 1 ... current-1 current current+1 ... last
+            let pages = [];
+            pages.push(1);
+
+            if (currentPage > 3) pages.push('...');
+
+            for (let p = Math.max(2, currentPage - 1); p <= Math.min(totalPages - 1, currentPage + 1); p++) {
+                pages.push(p);
+            }
+
+            if (currentPage < totalPages - 2) pages.push('...');
+
+            if (totalPages > 1) pages.push(totalPages);
+
+            return pages.map(p => {
+                if (p === '...') return '<span style="color: #64748b; padding: 0 5px;">...</span>';
+                return `<button onclick="goToPage(${p})" style="background: ${p === currentPage ? '#3b82f6' : '#1e293b'}; color: ${p === currentPage ? 'white' : '#94a3b8'}; border: 1px solid ${p === currentPage ? '#3b82f6' : '#334155'}; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">${p}</button>`;
+            }).join('');
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(currentErrors.length / errorsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderErrorPage();
+        }
+
+        function closeModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        // Close modal on outside click
+        document.getElementById('errorModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Render Applied Improvements (by Version)
+        function renderAppliedImprovements() {
+            const container = document.getElementById('appliedImprovements');
+            const moduleKey = moduleId.toUpperCase();
+            const versions = appliedData?.prompt_versions?.[moduleKey] || {};
+
+            if (Object.keys(versions).length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary);">No applied improvements recorded for this module.</p>';
+                return;
+            }
+
+            const versionCards = Object.entries(versions)
+                .sort((a, b) => b[0].localeCompare(a[0]))
+                .map(([version, data]) => {
+                    const suggestions = data.applied_suggestions || [];
+                    const suggestionsHtml = suggestions.map(s => `
+                        <div style="background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; padding: 8px 12px; margin-top: 8px; border-radius: 0 6px 6px 0;">
+                            <div style="font-weight: 600; color: var(--text-primary); font-size: 0.85rem;">${s.rubric || 'General'}</div>
+                            <div style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px;">${s.suggestion_summary || s.change || s.description || ''}</div>
+                        </div>
+                    `).join('');
+
+                    return `
+                        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span class="version-badge ${version.toLowerCase()}" style="font-size: 0.9rem; padding: 4px 12px;">${version}</span>
+                                <span style="color: var(--text-secondary); font-size: 0.8rem;">${data.date || ''}</span>
+                            </div>
+                            ${data.description ? `<p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">${data.description}</p>` : ''}
+                            ${suggestionsHtml || '<p style="color: var(--text-secondary); font-size: 0.8rem;">No specific changes documented.</p>'}
+                        </div>
+                    `;
+                }).join('');
+
+            container.innerHTML = versionCards;
+        }
+
+        // Render Improvement History by Version
+        function renderImprovementHistory() {
+            const container = document.getElementById('improvementHistory');
+            const moduleKey = moduleId.toUpperCase();
+            const moduleHistory = improvementHistory?.modules?.[moduleKey];
+
+            if (!moduleHistory || Object.keys(moduleHistory.versions || {}).length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary);">No improvement history available for this module.</p>';
+                return;
+            }
+
+            const versionsHtml = Object.entries(moduleHistory.versions)
+                .sort((a, b) => a[0].localeCompare(b[0]))
+                .map(([version, data]) => {
+                    const rubrics = data.rubric_breakdown || {};
+                    const rubricsHtml = Object.entries(rubrics).map(([rubric, info]) => {
+                        const passColor = info.pass_rate >= 70 ? '#22c55e' : info.pass_rate >= 50 ? '#eab308' : '#ef4444';
+                        return `
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color);">
+                                <span style="color: var(--text-primary); font-size: 0.85rem;">${rubric}</span>
+                                <span style="color: ${passColor}; font-weight: 600;">${info.pass_rate}%</span>
+                            </div>
+                        `;
+                    }).join('');
+
+                    const suggestions = data.suggestions_applied || [];
+                    const suggestionsHtml = suggestions.length > 0 ? `
+                        <div style="margin-top: 12px;">
+                            <div style="font-weight: 600; color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 6px;">Applied Suggestions:</div>
+                            ${suggestions.map(s => `<div style="color: #22c55e; font-size: 0.8rem;">+ ${s}</div>`).join('')}
+                        </div>
+                    ` : '';
+
+                    return `
+                        <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span class="version-badge ${version.toLowerCase().replace('_', '-')}" style="font-size: 0.9rem; padding: 4px 12px;">${version}</span>
+                                ${data.pass_rate ? `<span style="color: ${data.pass_rate >= 70 ? '#22c55e' : data.pass_rate >= 50 ? '#eab308' : '#ef4444'}; font-weight: 600;">${data.pass_rate}% Pass Rate</span>` : ''}
+                            </div>
+                            ${rubricsHtml}
+                            ${suggestionsHtml}
+                        </div>
+                    `;
+                }).join('');
+
+            container.innerHTML = versionsHtml;
+        }
+
+        // Initialize new widgets
+        if (typeof appliedData !== 'undefined') renderAppliedImprovements();
+        if (typeof improvementHistory !== 'undefined') renderImprovementHistory();
+
+    </script>
+</body>
+</html>

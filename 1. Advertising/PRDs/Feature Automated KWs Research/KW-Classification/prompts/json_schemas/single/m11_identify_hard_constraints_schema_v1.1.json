@@ -1,0 +1,29 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "module_11_IdentifyHardConstraints_output",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "hard_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of attribute names that are non-negotiable for the product to function. Most products have 0-1 hard constraints."
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence score from 0.0 to 1.0"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Step-by-step Chain of Thought analysis"
+        }
+      },
+      "required": ["hard_constraints", "confidence", "reasoning"],
+      "additionalProperties": false
+    }
+  }
+}

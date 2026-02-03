@@ -1,0 +1,85 @@
+{
+  "braintrust_experiment_id": "8524dc3d-5c32-4837-94cb-e62afb568be4",
+  "braintrust_experiment_name": "M12_HardConstraintViolationCheck_sonnet",
+  "created": "2026-01-25 23:18:30.437000+00:00",
+  "model": "claude-sonnet-4-20250514",
+  "temperature": 0,
+  "dataset_id": "cf2c2974-09d6-41b7-93b1-272d3c7e2716",
+  "dataset_name": "M12_CheckHardConstraint_V1.1",
+  "dataset_version": "1000196496658391633",
+  "prompt_id": "f8234ba6-7064-4ea3-a1a2-061e727d67ee",
+  "prompt_version": "1000196550520847357",
+  "prompt_session_id": "889ab6a2-7838-4ada-a2b9-83c61e5e831e",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_12_HardConstraintViolationCheck_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "violates_constraint",
+          "violated_constraint",
+          "relevancy",
+          "confidence",
+          "reasoning"
+        ],
+        "properties": {
+          "reasoning": {
+            "type": "string",
+            "description": "Brief explanation of why constraint was or wasn't violated"
+          },
+          "relevancy": {
+            "enum": [
+              "N",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "N for NEGATIVE if violates, null if no violation (pass to next module)"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score from 0.0 to 1.0"
+          },
+          "violated_constraint": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "attribute",
+              "keyword_value",
+              "product_value"
+            ],
+            "properties": {
+              "attribute": {
+                "type": "string",
+                "description": "The hard constraint attribute that was violated"
+              },
+              "keyword_value": {
+                "type": "string",
+                "description": "The value specified in the keyword"
+              },
+              "product_value": {
+                "type": "string",
+                "description": "The product's hard constraint value"
+              }
+            },
+            "description": "Details of the violated constraint, or null if no violation",
+            "additionalProperties": false
+          },
+          "violates_constraint": {
+            "type": "boolean",
+            "description": "Whether the keyword explicitly violates any hard constraint"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 443,
+  "downloaded_at": "2026-01-26T02:15:57.795029"
+}

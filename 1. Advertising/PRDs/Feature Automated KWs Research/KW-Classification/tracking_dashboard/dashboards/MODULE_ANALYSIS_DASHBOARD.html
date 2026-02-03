@@ -1,0 +1,3009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Evaluation Analysis Dashboard - Experiment V2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .dashboard-info {
+            margin: 0 15px 15px;
+            padding: 12px;
+            background: rgba(78, 205, 196, 0.15);
+            border-radius: 8px;
+            border-left: 3px solid #4ecdc4;
+        }
+
+        .dashboard-info h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #4ecdc4;
+            margin-bottom: 6px;
+        }
+
+        .dashboard-info p {
+            font-size: 10px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .menu-section {
+            margin: 15px 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .menu-section-title {
+            padding: 0 15px;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .module-list {
+            list-style: none;
+        }
+
+        .module-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .module-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .module-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: #4ecdc4;
+        }
+
+        .module-item .module-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .module-item .module-rate {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .rate-critical { background: #ff6b6b; color: white; }
+        .rate-warning { background: #feca57; color: #333; }
+        .rate-good { background: #4ecdc4; color: white; }
+        .rate-excellent { background: #26de81; color: white; }
+
+        .suggestions-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .suggestions-item:hover {
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        .suggestions-item.active {
+            background: rgba(255, 107, 107, 0.25);
+            border-left-color: #ff6b6b;
+        }
+
+        .suggestions-item .icon {
+            font-size: 16px;
+        }
+
+        .suggestions-item .text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .suggestions-item .badge {
+            margin-left: auto;
+            background: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            padding: 25px;
+            flex: 1;
+            max-width: calc(100% - 240px);
+        }
+
+        .module-header {
+            margin-bottom: 25px;
+        }
+
+        .module-header h2 {
+            font-size: 24px;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+
+        .module-header .description {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            min-width: 120px;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .stat-card .value.pass { color: #26de81; }
+        .stat-card .value.fail { color: #ff6b6b; }
+        .stat-card .value.critical { color: #c0392b; }
+        .stat-card .value.high { color: #e74c3c; }
+        .stat-card .value.medium { color: #f39c12; }
+        .stat-card .value.low { color: #27ae60; }
+
+        /* Main Layout - Chart + Table side by side */
+        .analysis-section {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        /* Analysis Table */
+        .table-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            font-size: 14px;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th {
+            padding: 10px 8px;
+            text-align: left;
+            background: #f8f9fa;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .issue-type-cell {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .issue-type-cell.prompt { color: #d68910; }
+        .issue-type-cell.model { color: #c0392b; }
+        .issue-type-cell.valid { color: #27ae60; }
+        .issue-type-cell.correct { color: #27ae60; }
+        .issue-type-cell.judge { color: #8e44ad; }
+
+        .analysis-summary-cell {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .specific-issue-cell {
+            color: #666;
+            max-width: 200px;
+        }
+
+        .output-cell {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 10px;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            max-width: 250px;
+            max-height: 80px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* Fixed Section */
+        .fixed-section {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .fixed-section h3 {
+            color: #155724;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fixed-section h3::before {
+            content: "✓";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: #155724;
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .fixed-item {
+            background: white;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .fixed-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Recommendations Section */
+        .recommendations-section {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .recommendations-section h3 {
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recommendations-section h3::before {
+            content: "!";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: #856404;
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .recommendation-item {
+            background: white;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .recommendation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Legend */
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Suggestions Page Styles */
+        .suggestions-content {
+            max-width: 1200px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: white;
+            color: #666;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .filter-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-tab.active {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .filter-tab.critical.active { background: #c0392b; }
+        .filter-tab.high.active { background: #e74c3c; }
+        .filter-tab.medium.active { background: #f39c12; }
+        .filter-tab.low.active { background: #27ae60; }
+
+        .criticality-section {
+            margin-bottom: 30px;
+        }
+
+        .criticality-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+
+        .criticality-header.critical { border-color: #c0392b; }
+        .criticality-header.high { border-color: #e74c3c; }
+        .criticality-header.medium { border-color: #f39c12; }
+        .criticality-header.low { border-color: #27ae60; }
+
+        .criticality-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .criticality-badge.critical { background: #c0392b; }
+        .criticality-badge.high { background: #e74c3c; }
+        .criticality-badge.medium { background: #f39c12; }
+        .criticality-badge.low { background: #27ae60; }
+
+        .criticality-title {
+            font-size: 18px;
+            color: #1a1a2e;
+        }
+
+        .criticality-count {
+            font-size: 13px;
+            color: #888;
+            margin-left: auto;
+        }
+
+        .suggestion-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid;
+        }
+
+        .suggestion-card.critical { border-left-color: #c0392b; }
+        .suggestion-card.high { border-left-color: #e74c3c; }
+        .suggestion-card.medium { border-left-color: #f39c12; }
+        .suggestion-card.low { border-left-color: #27ae60; }
+
+        .suggestion-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .module-badge {
+            background: #1a1a2e;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .issue-type-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .issue-type-badge.prompt { background: #fff3cd; color: #856404; }
+        .issue-type-badge.model { background: #f8d7da; color: #721c24; }
+
+        .pass-rate-badge {
+            margin-left: auto;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .suggestion-body {
+            display: grid;
+            gap: 15px;
+        }
+
+        .issue-description {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .issue-description h4 {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .issue-description p {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .output-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .output-box {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .output-box.expected {
+            border-left: 3px solid #27ae60;
+        }
+
+        .output-box.actual {
+            border-left: 3px solid #e74c3c;
+        }
+
+        .output-box h5 {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .output-box pre {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            color: #333;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .detailed-suggestion {
+            background: linear-gradient(135deg, #e8f4fc 0%, #d6eaf8 100%);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .detailed-suggestion h4 {
+            font-size: 12px;
+            color: #2980b9;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detailed-suggestion h4::before {
+            content: "💡";
+        }
+
+        .detailed-suggestion .suggestion-text {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .detailed-suggestion .prompt-change {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            color: #155724;
+            margin-top: 10px;
+        }
+
+        .detailed-suggestion .prompt-change strong {
+            color: #c0392b;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .analysis-section {
+                grid-template-columns: 1fr;
+            }
+            .output-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Module Analysis</h1>
+            <p>KW Classification Pipeline - Experiment V2</p>
+        </div>
+        <div class="dashboard-info">
+            <h4>What This Shows</h4>
+            <p><strong>LLM Judge Pass/Fail Decisions</strong><br>
+            Each module is evaluated by an LLM Judge against specific rubrics. This dashboard shows the pass rate for each rubric, categorized by issue type (Prompt Issue, Model Issue, Judge Issue, etc.).</p>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Actions</div>
+            <div class="suggestions-item" id="suggestionsMenuItem" onclick="showSuggestions()">
+                <span class="icon">⚠️</span>
+                <span class="text">Improvement Suggestions</span>
+                <span class="badge" id="totalIssuesBadge">13</span>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Modules (by Pass Rate)</div>
+            <ul class="module-list" id="moduleList">
+            <li class="module-item" data-module="M08" onclick="selectModule('M08')">
+                <span class="module-name">M08</span>
+                <span class="module-rate rate-critical">5%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M08_V2" onclick="selectModule('M08_V2')">
+                <span class="module-name">M08_V2</span>
+                <span class="module-rate rate-critical">8%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M10" onclick="selectModule('M10')">
+                <span class="module-name">M10</span>
+                <span class="module-rate rate-critical">20%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01_V1" onclick="selectModule('M01_V1')">
+                <span class="module-name">M01_V1</span>
+                <span class="module-rate rate-critical">30%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01A_V2_GEMINI" onclick="selectModule('M01A_V2_GEMINI')">
+                <span class="module-name">M01A_V2_GEMINI</span>
+                <span class="module-rate rate-warning">40%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gemini-2.0-flash</span>
+            </li>
+        
+            <li class="module-item" data-module="M01_V2" onclick="selectModule('M01_V2')">
+                <span class="module-name">M01_V2</span>
+                <span class="module-rate rate-warning">45%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M08_V2_SD" onclick="selectModule('M08_V2_SD')">
+                <span class="module-name">M08_V2_SD</span>
+                <span class="module-rate rate-warning">52%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01_V3_GEMINI" onclick="selectModule('M01_V3_GEMINI')">
+                <span class="module-name">M01_V3_GEMINI</span>
+                <span class="module-rate rate-warning">52%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gemini-2.0-flash</span>
+            </li>
+        
+            <li class="module-item" data-module="M11" onclick="selectModule('M11')">
+                <span class="module-name">M11</span>
+                <span class="module-rate rate-warning">53%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01_V3" onclick="selectModule('M01_V3')">
+                <span class="module-name">M01_V3</span>
+                <span class="module-rate rate-warning">57%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o-mini</span>
+            </li>
+        
+            <li class="module-item" data-module="M01A" onclick="selectModule('M01A')">
+                <span class="module-name">M01A</span>
+                <span class="module-rate rate-warning">59%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o-mini</span>
+            </li>
+        
+            <li class="module-item" data-module="M01" onclick="selectModule('M01')">
+                <span class="module-name">M01</span>
+                <span class="module-rate rate-good">60%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M12" onclick="selectModule('M12')">
+                <span class="module-name">M12</span>
+                <span class="module-rate rate-good">60%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M04" onclick="selectModule('M04')">
+                <span class="module-name">M04</span>
+                <span class="module-rate rate-good">60%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M09" onclick="selectModule('M09')">
+                <span class="module-name">M09</span>
+                <span class="module-rate rate-good">62%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M06_SD" onclick="selectModule('M06_SD')">
+                <span class="module-name">M06_SD</span>
+                <span class="module-rate rate-good">65%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M06_GD" onclick="selectModule('M06_GD')">
+                <span class="module-name">M06_GD</span>
+                <span class="module-rate rate-good">65%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M16" onclick="selectModule('M16')">
+                <span class="module-name">M16</span>
+                <span class="module-rate rate-good">75%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01B" onclick="selectModule('M01B')">
+                <span class="module-name">M01B</span>
+                <span class="module-rate rate-good">75%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o-mini</span>
+            </li>
+        
+            <li class="module-item" data-module="M07_GD" onclick="selectModule('M07_GD')">
+                <span class="module-name">M07_GD</span>
+                <span class="module-rate rate-good">75%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M07_SD" onclick="selectModule('M07_SD')">
+                <span class="module-name">M07_SD</span>
+                <span class="module-rate rate-good">78%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01B_V1_GEMINI" onclick="selectModule('M01B_V1_GEMINI')">
+                <span class="module-name">M01B_V1_GEMINI</span>
+                <span class="module-rate rate-excellent">80%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gemini-2.0-flash</span>
+            </li>
+        
+            <li class="module-item" data-module="M04B" onclick="selectModule('M04B')">
+                <span class="module-name">M04B</span>
+                <span class="module-rate rate-excellent">80%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M01A_V2" onclick="selectModule('M01A_V2')">
+                <span class="module-name">M01A_V2</span>
+                <span class="module-rate rate-excellent">85%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M05B" onclick="selectModule('M05B')">
+                <span class="module-name">M05B</span>
+                <span class="module-rate rate-excellent">90%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M13" onclick="selectModule('M13')">
+                <span class="module-name">M13</span>
+                <span class="module-rate rate-excellent">90%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M15" onclick="selectModule('M15')">
+                <span class="module-name">M15</span>
+                <span class="module-rate rate-excellent">95%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M14" onclick="selectModule('M14')">
+                <span class="module-name">M14</span>
+                <span class="module-rate rate-excellent">100%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M02B" onclick="selectModule('M02B')">
+                <span class="module-name">M02B</span>
+                <span class="module-rate rate-excellent">100%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        
+            <li class="module-item" data-module="M02" onclick="selectModule('M02')">
+                <span class="module-name">M02</span>
+                <span class="module-rate rate-excellent">100%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o-mini</span>
+            </li>
+        
+            <li class="module-item" data-module="M05" onclick="selectModule('M05')">
+                <span class="module-name">M05</span>
+                <span class="module-rate rate-excellent">100%</span>
+                <span style="display:block; font-size:0.7rem; color:#64748b; margin-top:2px;">unknown | gpt-4o</span>
+            </li>
+        </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Generated by JavaScript -->
+    </main>
+
+    <script>
+        // Module Data with Analysis Summary breakdown and examples
+        const moduleData = {
+            "M01A": {
+                        "name": "M01A - Extract Brand Variations",
+                        "description": "Generates typo/case variations of brand name",
+                        "total": 80,
+                        "pass": 47,
+                        "fail": 33,
+                        "passRate": 59,
+                        "model": "gpt-4o-mini",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01A_ExtractOwnBrandVariations_PathB/M01A_ExtractOwnBrandVariations_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T16:41:46.043155",
+                        "analysisSummary": {
+                                    "PASS - correct": 47,
+                                    "FAIL - 8-12 variations generated": 18,
+                                    "FAIL - no unrelated terms": 13,
+                                    "FAIL - variations generated": 2
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - variations generated",
+                                                "specificIssue": "The module output generated 12 variations of the brand name ",
+                                                "expectedOutput": "{\"variations\": [\"Owala\", \"owala\", \"O-wala\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalaa\", \"Owalla\", \"Owalq\", ",
+                                                "actualOutput": "{\"variations\": [\"Owala\", \"owala\", \"OWALA\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalq\", \"Owalla\", \"O-wala\", \""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no unrelated terms",
+                                                "specificIssue": "All variations in the module output are plausible references",
+                                                "expectedOutput": "{\"variations\": [\"Owala\", \"owala\", \"O-wala\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalaa\", \"Owalla\", \"Owalq\", ",
+                                                "actualOutput": "{\"variations\": [\"Owala\", \"owala\", \"OWALA\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalq\", \"Owalla\", \"O-wala\", \""
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - 8-12 variations generated",
+                                                "specificIssue": "The module output contains 12 variations, which meets the up",
+                                                "expectedOutput": "{\"variations\": [\"Owala\", \"owala\", \"O-wala\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalaa\", \"Owalla\", \"Owalq\", ",
+                                                "actualOutput": "{\"variations\": [\"Owala\", \"owala\", \"OWALA\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalq\", \"Owalla\", \"O-wala\", \""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - first item is correct spelling",
+                                                "specificIssue": "The first item in the variations is 'Owala', which matches t",
+                                                "expectedOutput": "{\"variations\": [\"Owala\", \"owala\", \"O-wala\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalaa\", \"Owalla\", \"Owalq\", ",
+                                                "actualOutput": "{\"variations\": [\"Owala\", \"owala\", \"OWALA\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalq\", \"Owalla\", \"O-wala\", \""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - variations generated",
+                                                "specificIssue": "The module output generated multiple variations of the brand",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M14": {
+                        "name": "M14 - Primary Use Check Same Type",
+                        "description": "Checks primary use for same product type",
+                        "total": 30,
+                        "pass": 30,
+                        "fail": 0,
+                        "passRate": 100,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M14_PrimaryUseCheckSameType/M14_PrimaryUseCheckSameType_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:13:14.384437",
+                        "analysisSummary": {
+                                    "PASS - correct": 30
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - same use answer correct",
+                                                "specificIssue": "The rubric requires a correct YES/NO determination on whethe",
+                                                "expectedOutput": "{\"relevancy\": \"R\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The keyword 'waterproof down jacket men' refers to a jacket desig"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - superficial differences ignore",
+                                                "specificIssue": "The rubric requires that material, form, character, and bran",
+                                                "expectedOutput": "{\"relevancy\": \"R\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The keyword 'waterproof down jacket men' refers to a jacket desig"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - not overly cautious",
+                                                "specificIssue": "The rubric requires that the module should classify as 'R' w",
+                                                "expectedOutput": "{\"relevancy\": \"R\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The keyword 'waterproof down jacket men' refers to a jacket desig"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01_V2": {
+                        "name": "M01 v2 - Extract Own Brand Entities",
+                        "description": "Extracts brand name and variations from product listing",
+                        "total": 100,
+                        "pass": 45,
+                        "fail": 55,
+                        "passRate": 45,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_ExtractOwnBrandEntities_v2_190126_1.csv",
+                        "timestamp": "2026-01-20T01:42:52.118402",
+                        "analysisSummary": {
+                                    "FAIL - brand extracted": 14,
+                                    "FAIL - no hallucinated brand": 12,
+                                    "FAIL - no product words in brand": 7,
+                                    "FAIL - amazon test applied": 15,
+                                    "PASS - correct": 45,
+                                    "FAIL - no duplicate entities": 7
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - brand extracted",
+                                                "specificIssue": "The module output includes 'Resolve Designs' and its variati",
+                                                "expectedOutput": "{\"brand_entities\": [\"Rx Crush\", \"RxCrush\", \"RX Crush\", \"Rx crush\", \"Rx-Crush\", \"RXCrush\", \"Rx Crushe",
+                                                "actualOutput": "{\"brand_entities\": [\"RxCrush\", \"rxcrush\", \"RxCrsh\", \"RxCursh\", \"RxCrus\", \"RxCrussh\", \"Resolve Design"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no hallucinated brand",
+                                                "specificIssue": "The module output includes 'Resolve Designs' and its variati",
+                                                "expectedOutput": "{\"brand_entities\": [\"Rx Crush\", \"RxCrush\", \"RX Crush\", \"Rx crush\", \"Rx-Crush\", \"RXCrush\", \"Rx Crushe",
+                                                "actualOutput": "{\"brand_entities\": [\"RxCrush\", \"rxcrush\", \"RxCrsh\", \"RxCursh\", \"RxCrus\", \"RxCrussh\", \"Resolve Design"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no product words in brand",
+                                                "specificIssue": "The module output includes 'Resolve Designs' and its variati",
+                                                "expectedOutput": "{\"brand_entities\": [\"Rx Crush\", \"RxCrush\", \"RX Crush\", \"Rx crush\", \"Rx-Crush\", \"RXCrush\", \"Rx Crushe",
+                                                "actualOutput": "{\"brand_entities\": [\"RxCrush\", \"rxcrush\", \"RxCrsh\", \"RxCursh\", \"RxCrus\", \"RxCrussh\", \"Resolve Design"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - amazon test applied",
+                                                "specificIssue": "The module output includes 'Resolve Designs' and its variati",
+                                                "expectedOutput": "{\"brand_entities\": [\"Rx Crush\", \"RxCrush\", \"RX Crush\", \"Rx crush\", \"Rx-Crush\", \"RXCrush\", \"Rx Crushe",
+                                                "actualOutput": "{\"brand_entities\": [\"RxCrush\", \"rxcrush\", \"RxCrsh\", \"RxCursh\", \"RxCrus\", \"RxCrussh\", \"Resolve Design"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no duplicate entities",
+                                                "specificIssue": "The module output contains no exact string duplicates. Case ",
+                                                "expectedOutput": "{\"brand_entities\": [\"Rx Crush\", \"RxCrush\", \"RX Crush\", \"Rx crush\", \"Rx-Crush\", \"RXCrush\", \"Rx Crushe",
+                                                "actualOutput": "{\"brand_entities\": [\"RxCrush\", \"rxcrush\", \"RxCrsh\", \"RxCursh\", \"RxCrus\", \"RxCrussh\", \"Resolve Design"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M16": {
+                        "name": "M16 - Complementary Check",
+                        "description": "Identifies complementary products",
+                        "total": 40,
+                        "pass": 30,
+                        "fail": 10,
+                        "passRate": 75,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M16_ComplementaryCheck/M16_ComplementaryCheck_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:15:38.333262",
+                        "analysisSummary": {
+                                    "FAIL - complementary answer correct": 1,
+                                    "PASS - correct": 30,
+                                    "FAIL - relationship type identified": 9
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - complementary answer correct",
+                                                "specificIssue": "The rubric requires a 'YES' when products are commonly used ",
+                                                "expectedOutput": "{\"relevancy\": \"C\"}",
+                                                "actualOutput": "{\"confidence\": 0.92, \"reasoning\": \"Thermal socks and a puffer jacket are both winter clothing items,"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - amazon bundle test applied",
+                                                "specificIssue": "The rubric requires that the module correctly applies the 'W",
+                                                "expectedOutput": "{\"relevancy\": \"C\"}",
+                                                "actualOutput": "{\"confidence\": 0.92, \"reasoning\": \"Thermal socks and a puffer jacket are both winter clothing items,"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - same category \u2260 complementary",
+                                                "specificIssue": "The rubric requires that same-category items with different ",
+                                                "expectedOutput": "{\"relevancy\": \"C\"}",
+                                                "actualOutput": "{\"confidence\": 0.92, \"reasoning\": \"Thermal socks and a puffer jacket are both winter clothing items,"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - relationship type identified",
+                                                "specificIssue": "The rubric requires that for a 'C' classification, a specifi",
+                                                "expectedOutput": "{\"relevancy\": \"C\"}",
+                                                "actualOutput": "{\"confidence\": 0.92, \"reasoning\": \"Thermal socks and a puffer jacket are both winter clothing items,"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01": {
+                        "name": "M01 - Extract Own Brand Entities",
+                        "description": "Extracts brand name and variations from product listing",
+                        "total": 50,
+                        "pass": 30,
+                        "fail": 20,
+                        "passRate": 60,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_V3_ExtractOwnBrandEntities_v3_190126_gpt5.csv",
+                        "timestamp": "2026-01-20T00:31:24.366747",
+                        "analysisSummary": {
+                                    "FAIL - brand extracted": 6,
+                                    "FAIL - no hallucinated brand": 6,
+                                    "FAIL - no product words in brand": 3,
+                                    "FAIL - amazon test applied": 5,
+                                    "PASS - correct": 30
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - brand extracted",
+                                                "specificIssue": "The rubric requires the extracted brand to match or closely ",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"BJL\", \"JBLL\", \"JL\", \"VoiceAware\", \"voiceaware\", \"VoiecAwar"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no hallucinated brand",
+                                                "specificIssue": "The module output includes 'VoiceAware', 'voiceaware', 'Voie",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"BJL\", \"JBLL\", \"JL\", \"VoiceAware\", \"voiceaware\", \"VoiecAwar"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no product words in brand",
+                                                "specificIssue": "The module output includes 'VoiceAware' and its variations a",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"BJL\", \"JBLL\", \"JL\", \"VoiceAware\", \"voiceaware\", \"VoiecAwar"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - amazon test applied",
+                                                "specificIssue": "The module output includes 'VoiceAware' and its variations, ",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"BJL\", \"JBLL\", \"JL\", \"VoiceAware\", \"voiceaware\", \"VoiecAwar"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no duplicate entities",
+                                                "specificIssue": "The module output contains no exact string duplicates in the",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"BJL\", \"JBLL\", \"JL\", \"VoiceAware\", \"voiceaware\", \"VoiecAwar"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M05B": {
+                        "name": "M05B - Classify Non-Branded (Path B)",
+                        "description": "Classifies non-branded keywords (Path B)",
+                        "total": 20,
+                        "pass": 18,
+                        "fail": 2,
+                        "passRate": 90,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M05B_ClassifyNonBrandedKeywords_PathB/M05B_ClassifyNonBrandedKeywords_PathB_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:53:10.880745",
+                        "analysisSummary": {
+                                    "PASS - correct": 18,
+                                    "FAIL - correct nb/null classification": 1,
+                                    "FAIL - hidden brand awareness": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct nb/null classification",
+                                                "specificIssue": "The rubric requires that a keyword be classified as NB if it",
+                                                "expectedOutput": "{\"branding_scope_3\": \"NB\"}",
+                                                "actualOutput": "{\"branding_scope_3\": \"NB\", \"confidence\": 0.95, \"found_term\": null, \"reasoning\": \"The keyword 'wirele"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - hidden brand awareness",
+                                                "specificIssue": "The rubric requires identifying potential unlisted brands or",
+                                                "expectedOutput": "{\"branding_scope_3\": \"NB\"}",
+                                                "actualOutput": "{\"branding_scope_3\": \"NB\", \"confidence\": 0.95, \"found_term\": null, \"reasoning\": \"The keyword 'wirele"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01_V3": {
+                        "name": "M01 V3",
+                        "description": "Extracts brand name and variations from product listing",
+                        "total": 75,
+                        "pass": 43,
+                        "fail": 32,
+                        "passRate": 57,
+                        "model": "gpt-4o-mini",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_V2_ExtractOwnBrandEntities_v3_190126_1.csv",
+                        "timestamp": "2026-01-20T16:50:53.018799",
+                        "analysisSummary": {
+                                    "PASS - correct": 43,
+                                    "FAIL - brand extracted": 6,
+                                    "FAIL - no hallucinated brand": 7,
+                                    "FAIL - no product words in brand": 3,
+                                    "FAIL - amazon test applied": 8,
+                                    "FAIL - no duplicate entities": 8
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - brand extracted",
+                                                "specificIssue": "The extracted brand 'Owala' matches the listing brand, and v",
+                                                "expectedOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl",
+                                                "actualOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no hallucinated brand",
+                                                "specificIssue": "All extracted brands ('Owala', 'FreeSip', and 'BlenderBottle",
+                                                "expectedOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl",
+                                                "actualOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no product words in brand",
+                                                "specificIssue": "The module output includes only actual brand entities and tr",
+                                                "expectedOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl",
+                                                "actualOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - amazon test applied",
+                                                "specificIssue": "All entities listed in the output are brand or trademark nam",
+                                                "expectedOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl",
+                                                "actualOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no duplicate entities",
+                                                "specificIssue": "The module output contains no exact string duplicates in the",
+                                                "expectedOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl",
+                                                "actualOutput": "{\"brand_entities\": [\"Owala\", \"owala\", \"Owla\", \"Oawla\", \"Owalaa\", \"FreeSip\", \"freesip\", \"FreSip\", \"Bl"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01A_V2": {
+                        "name": "M01A v2 - Extract Brand Variations",
+                        "description": "Generates typo/case variations of brand name",
+                        "total": 40,
+                        "pass": 34,
+                        "fail": 6,
+                        "passRate": 85,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01A_ExtractOwnBrandVariations_PathB/M01A_V2_ExtractOwnBrandVariations_v2_190126_gpt5.csv",
+                        "timestamp": "2026-01-20T00:49:25.922974",
+                        "analysisSummary": {
+                                    "PASS - correct": 34,
+                                    "FAIL - no unrelated terms": 6
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - variations generated",
+                                                "specificIssue": "The module output generated more than 3 variations of the br",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"J.B.L.\", \"J B L\", \"JNL\", \"JVL\", \"KBL\", \"JLB\", \"JBBL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no unrelated terms",
+                                                "specificIssue": "The module output includes 'JNL', 'JVL', 'KBL', 'JLB', and '",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"J.B.L.\", \"J B L\", \"JNL\", \"JVL\", \"KBL\", \"JLB\", \"JBBL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - 8-12 variations generated",
+                                                "specificIssue": "The module output contains exactly 9 variations, which falls",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"J.B.L.\", \"J B L\", \"JNL\", \"JVL\", \"KBL\", \"JLB\", \"JBBL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - first item is correct spelling",
+                                                "specificIssue": "The first item in the module output is 'JBL', which matches ",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"J.B.L.\", \"J B L\", \"JNL\", \"JVL\", \"KBL\", \"JLB\", \"JBBL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - variations generated",
+                                                "specificIssue": "The module output generated 10 variations of the brand name ",
+                                                "expectedOutput": "{\"variations\": [\"Owala\", \"owala\", \"O-wala\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalaa\", \"Owalla\", \"Owalq\", ",
+                                                "actualOutput": "{\"variations\": [\"Owala\", \"owala\", \"OWALA\", \"O-wala\", \"Owla\", \"Owalla\", \"Ohwala\", \"Owsla\", \"Owalq\", \""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M02B": {
+                        "name": "M02B - Classify Own Brand Keywords (Path B)",
+                        "description": "Classifies keyword as OB (Path B workflow)",
+                        "total": 70,
+                        "pass": 70,
+                        "fail": 0,
+                        "passRate": 100,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M02B_ClassifyOwnBrandKeywords_PathB/M02B_ClassifyOwnBrandKeywords_PathB_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:51:24.520681",
+                        "analysisSummary": {
+                                    "PASS - correct": 70
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct ob/null classification",
+                                                "specificIssue": "The rubric requires that the keyword be classified as null i",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.98, \"match_type\": null, \"matched_term\": null, \"reasoning\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - matched term exists in variati",
+                                                "specificIssue": "The rubric requires that the matched_term is null when the c",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.98, \"match_type\": null, \"matched_term\": null, \"reasoning\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - word boundary handling",
+                                                "specificIssue": "The module correctly did not match any partial brand terms w",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.98, \"match_type\": null, \"matched_term\": null, \"reasoning\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no similar brand confusion",
+                                                "specificIssue": "The module correctly did not confuse any similar-sounding br",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.98, \"match_type\": null, \"matched_term\": null, \"reasoning\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - non-brand patterns rejected",
+                                                "specificIssue": "The module output meets the PASS conditions as it returns nu",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.98, \"match_type\": null, \"matched_term\": null, \"reasoning\""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M10": {
+                        "name": "M10 - Validate Primary Intended Use",
+                        "description": "Validates M09 primary intended use output",
+                        "total": 20,
+                        "pass": 4,
+                        "fail": 16,
+                        "passRate": 20,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M10_ValidatePrimaryIntendedUse/M10_ValidatePrimaryIntendedUse_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:07:48.837867",
+                        "analysisSummary": {
+                                    "FAIL - invalid m09 output flagged": 8,
+                                    "FAIL - fix improves output": 8,
+                                    "PASS - correct": 4
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - invalid m09 output flagged",
+                                                "specificIssue": "The rubric requires that the module correctly identifies and",
+                                                "expectedOutput": "{\"validated_use\": \"Listening to audio\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The original phrase contains the word 'Wireless', which is accept"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - fix improves output",
+                                                "specificIssue": "The rubric requires that if M09 was invalid, the fix should ",
+                                                "expectedOutput": "{\"validated_use\": \"Listening to audio\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The original phrase contains the word 'Wireless', which is accept"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - invalid m09 output flagged",
+                                                "specificIssue": "The rubric requires the module to correctly flag invalid M09",
+                                                "expectedOutput": "{\"validated_use\": \"Carrying drinks for hydration\"}",
+                                                "actualOutput": "{\"confidence\": 0.88, \"reasoning\": \"The original phrase 'Portable insulated drink hydration' contains"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - fix improves output",
+                                                "specificIssue": "The module output 'drink hydration' does not adequately addr",
+                                                "expectedOutput": "{\"validated_use\": \"Carrying drinks for hydration\"}",
+                                                "actualOutput": "{\"confidence\": 0.88, \"reasoning\": \"The original phrase 'Portable insulated drink hydration' contains"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - invalid m09 output flagged",
+                                                "specificIssue": "The rubric requires that the module correctly flags invalid ",
+                                                "expectedOutput": "{\"validated_use\": \"Kitchen sink item organization\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The original phrase 'kitchen sink item organization' is valid as "
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M09": {
+                        "name": "M09 - Identify Primary Intended Use",
+                        "description": "Identifies primary intended use of product",
+                        "total": 40,
+                        "pass": 25,
+                        "fail": 15,
+                        "passRate": 62,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M09_IdentifyPrimaryIntendedUse/M09_IdentifyPrimaryIntendedUse_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:06:58.509576",
+                        "analysisSummary": {
+                                    "PASS - correct": 25,
+                                    "FAIL - no brand or technology names": 5,
+                                    "FAIL - captures core purpose": 5,
+                                    "FAIL - no marketing language": 3,
+                                    "FAIL - word count 3-6": 2
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - captures core purpose",
+                                                "specificIssue": "The module output 'wireless audio listening' captures the ma",
+                                                "expectedOutput": "{\"primary_use\": \"Wireless music and audio listening\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"primary_use\": \"wireless audio listening\", \"reasoning\": \"The primary function o"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no marketing language",
+                                                "specificIssue": "The module output 'wireless audio listening' uses a simple v",
+                                                "expectedOutput": "{\"primary_use\": \"Wireless music and audio listening\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"primary_use\": \"wireless audio listening\", \"reasoning\": \"The primary function o"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - word count 3-6",
+                                                "specificIssue": "The rubric requires the primary use phrase to be exactly 3-6",
+                                                "expectedOutput": "{\"primary_use\": \"Wireless music and audio listening\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"primary_use\": \"wireless audio listening\", \"reasoning\": \"The primary function o"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no brand or technology names",
+                                                "specificIssue": "The module output includes the term 'JBL Vibe Beam' in its r",
+                                                "expectedOutput": "{\"primary_use\": \"Wireless music and audio listening\"}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"primary_use\": \"wireless audio listening\", \"reasoning\": \"The primary function o"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - captures core purpose",
+                                                "specificIssue": "The module output 'drinking water on the go' captures the ma",
+                                                "expectedOutput": "{\"primary_use\": \"Portable insulated drink hydration\"}",
+                                                "actualOutput": "{\"confidence\": 0.9, \"primary_use\": \"drinking water on the go\", \"reasoning\": \"The primary function of"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01_V1": {
+                        "name": "M01 v1 - Extract Own Brand Entities",
+                        "description": "Extracts brand name and variations from product listing",
+                        "total": 50,
+                        "pass": 15,
+                        "fail": 35,
+                        "passRate": 30,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_ExtractOwnBrandEntities_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:31:46.961853",
+                        "analysisSummary": {
+                                    "FAIL - brand extracted": 9,
+                                    "PASS - correct": 15,
+                                    "FAIL - amazon test applied": 9,
+                                    "FAIL - no duplicate entities": 6,
+                                    "FAIL - no hallucinated brand": 8,
+                                    "FAIL - no product words in brand": 3
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - brand extracted",
+                                                "specificIssue": "The module output does not include 'JBL Vibe', 'JBL VibeBeam",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"JBL Vibe\", \"Vibe Beam\", \"JBL\", \"JLB\", \"JB L\", \"JayBeeL\", \"JBL VibeBeam\",",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"J B L\", \"JBLl\", \"Vibe Beam\", \"VibeBeam\", \"Vibe Beem\", \"Vib"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no hallucinated brand",
+                                                "specificIssue": "The module output includes 'JBL', 'Vibe Beam', and variation",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"JBL Vibe\", \"Vibe Beam\", \"JBL\", \"JLB\", \"JB L\", \"JayBeeL\", \"JBL VibeBeam\",",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"J B L\", \"JBLl\", \"Vibe Beam\", \"VibeBeam\", \"Vibe Beem\", \"Vib"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no product words in brand",
+                                                "specificIssue": "The module output only includes actual brand entities and va",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"JBL Vibe\", \"Vibe Beam\", \"JBL\", \"JLB\", \"JB L\", \"JayBeeL\", \"JBL VibeBeam\",",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"J B L\", \"JBLl\", \"Vibe Beam\", \"VibeBeam\", \"Vibe Beem\", \"Vib"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - amazon test applied",
+                                                "specificIssue": "The module output includes 'Vibe Beam' and variations like '",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"JBL Vibe\", \"Vibe Beam\", \"JBL\", \"JLB\", \"JB L\", \"JayBeeL\", \"JBL VibeBeam\",",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"J B L\", \"JBLl\", \"Vibe Beam\", \"VibeBeam\", \"Vibe Beem\", \"Vib"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no duplicate entities",
+                                                "specificIssue": "The module output contains the exact string 'Vibe Beem' twic",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"JBL Vibe\", \"Vibe Beam\", \"JBL\", \"JLB\", \"JB L\", \"JayBeeL\", \"JBL VibeBeam\",",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"J B L\", \"JBLl\", \"Vibe Beam\", \"VibeBeam\", \"Vibe Beem\", \"Vib"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01B_V1_GEMINI": {
+                        "name": "M01B V1 GEMINI",
+                        "description": "Extracts sub-brands, product lines, manufacturer",
+                        "total": 40,
+                        "pass": 32,
+                        "fail": 8,
+                        "passRate": 80,
+                        "model": "gemini-2.0-flash",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01B_ExtractBrandRelatedTerms/M01B_V1_ExtractBrandRelatedTerms_v1_200126_gemini20flash.csv",
+                        "timestamp": "2026-01-20T18:01:49.553753",
+                        "analysisSummary": {
+                                    "PASS - correct": 32,
+                                    "FAIL - sub-brands identified": 7,
+                                    "FAIL - manufacturer null when same as brand": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - sub-brands identified",
+                                                "specificIssue": "The module output correctly identified the major sub-brand '",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no universal standards as bran",
+                                                "specificIssue": "The module output does not list any universal standards as b",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - manufacturer null when same as",
+                                                "specificIssue": "The module output correctly returns null for the manufacture",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - searchable standards defaults ",
+                                                "specificIssue": "The module output has an empty array for searchable_standard",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - sub-brands identified",
+                                                "specificIssue": "The module output correctly identifies the major sub-brand '",
+                                                "expectedOutput": "{\"manufacturer\": {\"name\": \"BlenderBottle\", \"searchable\": true, \"short\": \"BlenderBottle\"}, \"searchabl",
+                                                "actualOutput": "{\"manufacturer\": {\"name\": \"BlenderBottle\", \"searchable\": true, \"short\": \"BlenderBottle\"}, \"searchabl"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M12": {
+                        "name": "M12 - Hard Constraint Violation Check",
+                        "description": "Checks for hard constraint violations",
+                        "total": 20,
+                        "pass": 12,
+                        "fail": 8,
+                        "passRate": 60,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M12_HardConstraintViolationCheck/M12_HardConstraintViolationCheck_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:10:56.991676",
+                        "analysisSummary": {
+                                    "PASS - correct": 12,
+                                    "FAIL - decision path followed": 8
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct r/s/c/n label",
+                                                "specificIssue": "The rubric requires that the final classification matches th",
+                                                "expectedOutput": "{\"relevancy\": null}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The keyword 'waterproof down jacket men' does not specify a size,"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - decision path followed",
+                                                "specificIssue": "The rubric requires the decision path to follow constraints ",
+                                                "expectedOutput": "{\"relevancy\": null}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"reasoning\": \"The keyword 'waterproof down jacket men' does not specify a size,"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M06_SD": {
+                        "name": "M06 SD - Generate Product Type Taxonomy",
+                        "description": "Generates product type taxonomy from listing",
+                        "total": 60,
+                        "pass": 39,
+                        "fail": 21,
+                        "passRate": 65,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M06_GenerateProductTypeTaxonomy/M06_GenerateProductTypeTaxonomy_sd1_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:56:20.386036",
+                        "analysisSummary": {
+                                    "FAIL - three-level hierarchy": 9,
+                                    "PASS - correct": 39,
+                                    "FAIL - no material/feature as separate levels": 8,
+                                    "FAIL - hierarchy order correct": 3,
+                                    "FAIL - maximum three levels": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - three-level hierarchy",
+                                                "specificIssue": "The module output does not meet the rubric criterion because",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"Dinnerware Set\", \"rank\": 1}, {\"level\": 2, \"product_type\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - product type focused",
+                                                "specificIssue": "The module output describes the product category/type by usi",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"Dinnerware Set\", \"rank\": 1}, {\"level\": 2, \"product_type\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - hierarchy order correct",
+                                                "specificIssue": "The module output meets the rubric criterion as the taxonomy",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"Dinnerware Set\", \"rank\": 1}, {\"level\": 2, \"product_type\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - product type accurate",
+                                                "specificIssue": "The module output correctly identifies the product as a 'Din",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"Dinnerware Set\", \"rank\": 1}, {\"level\": 2, \"product_type\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - maximum three levels",
+                                                "specificIssue": "The module output contains a taxonomy with 2 levels, which i",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"Dinnerware Set\", \"rank\": 1}, {\"level\": 2, \"product_type\""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01B": {
+                        "name": "M01B - Extract Brand Related Terms",
+                        "description": "Extracts sub-brands, product lines, manufacturer",
+                        "total": 80,
+                        "pass": 60,
+                        "fail": 20,
+                        "passRate": 75,
+                        "model": "gpt-4o-mini",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01B_ExtractBrandRelatedTerms_PathB/M01B_ExtractBrandRelatedTerms_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T16:44:12.456362",
+                        "analysisSummary": {
+                                    "PASS - correct": 60,
+                                    "FAIL - sub-brands identified": 13,
+                                    "FAIL - no universal standards as brand-specific": 3,
+                                    "FAIL - manufacturer null when same as brand": 3,
+                                    "FAIL - searchable standards defaults to empty": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - sub-brands identified",
+                                                "specificIssue": "The module output correctly identifies the major sub-brand '",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no universal standards as bran",
+                                                "specificIssue": "The module output does not include any universal standards o",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - manufacturer null when same as",
+                                                "specificIssue": "The module output correctly returns null for the manufacture",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - searchable standards defaults ",
+                                                "specificIssue": "The module output has an empty array for searchable_standard",
+                                                "expectedOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}",
+                                                "actualOutput": "{\"manufacturer\": null, \"searchable_standards\": [], \"sub_brands\": [\"Vibe Beam\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - sub-brands identified",
+                                                "specificIssue": "The module output correctly identifies the major sub-brand '",
+                                                "expectedOutput": "{\"manufacturer\": {\"name\": \"BlenderBottle\", \"searchable\": true, \"short\": \"BlenderBottle\"}, \"searchabl",
+                                                "actualOutput": "{\"manufacturer\": {\"name\": \"BlenderBottle\", \"searchable\": true, \"short\": \"BlenderBottle\"}, \"searchabl"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M02": {
+                        "name": "M02 - Classify Own Brand Keywords",
+                        "description": "Classifies keyword as OB (Own Brand) or passes through",
+                        "total": 105,
+                        "pass": 105,
+                        "fail": 0,
+                        "passRate": 100,
+                        "model": "gpt-4o-mini",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M02_ClassifyOwnBrandKeywords/M02_ClassifyOwnBrandKeywords_v1_150126_1.csv",
+                        "timestamp": "2026-01-19T15:22:17.082655",
+                        "analysisSummary": {
+                                    "PASS - correct": 105
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct ob/null classification",
+                                                "specificIssue": "The keyword 'ipod headphones' does not contain any brand var",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.97, \"reasoning\": \"Verified: No brand entity found in 'ipo"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - matched term exists in variati",
+                                                "specificIssue": "The matched_term is null, which is acceptable since the clas",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.97, \"reasoning\": \"Verified: No brand entity found in 'ipo"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - word boundary handling",
+                                                "specificIssue": "The module correctly identified that there were no brand ent",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.97, \"reasoning\": \"Verified: No brand entity found in 'ipo"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no similar brand confusion",
+                                                "specificIssue": "The module correctly identified that there were no brand ent",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.97, \"reasoning\": \"Verified: No brand entity found in 'ipo"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - non-brand patterns rejected",
+                                                "specificIssue": "The module output returned null for the ASIN patterns and PP",
+                                                "expectedOutput": "{\"branding_scope_1\": null}",
+                                                "actualOutput": "{\"branding_scope_1\": null, \"confidence\": 0.97, \"reasoning\": \"Verified: No brand entity found in 'ipo"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M13": {
+                        "name": "M13 - Product Type Check",
+                        "description": "Validates product type classification",
+                        "total": 30,
+                        "pass": 27,
+                        "fail": 3,
+                        "passRate": 90,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M13_ProductTypeCheck/M13_ProductTypeCheck_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:11:58.977590",
+                        "analysisSummary": {
+                                    "PASS - correct": 27,
+                                    "FAIL - modifiers properly stripped": 2,
+                                    "FAIL - synonyms recognized": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - same type answer correct",
+                                                "specificIssue": "The rubric requires checking if the YES/NO for same product ",
+                                                "expectedOutput": "{\"same_type\": true}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"keyword_product_type\": \"down jacket\", \"reasoning\": \"1. Core product type in ke"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - modifiers properly stripped",
+                                                "specificIssue": "The rubric requires that modifiers such as use-case, materia",
+                                                "expectedOutput": "{\"same_type\": true}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"keyword_product_type\": \"down jacket\", \"reasoning\": \"1. Core product type in ke"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - synonyms recognized",
+                                                "specificIssue": "The rubric requires that common synonyms and regional variat",
+                                                "expectedOutput": "{\"same_type\": true}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"keyword_product_type\": \"down jacket\", \"reasoning\": \"1. Core product type in ke"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M15": {
+                        "name": "M15 - Substitute Check",
+                        "description": "Identifies substitute products",
+                        "total": 20,
+                        "pass": 19,
+                        "fail": 1,
+                        "passRate": 95,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M15_SubstituteCheck/M15_SubstituteCheck_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:14:05.532752",
+                        "analysisSummary": {
+                                    "PASS - correct": 19,
+                                    "FAIL - substitute answer correct": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - substitute answer correct",
+                                                "specificIssue": "The rubric requires a YES when products are of different typ",
+                                                "expectedOutput": "{\"relevancy\": null}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"keyword_product_type\": \"thermal socks\", \"reasoning\": \"The keyword 'thermal soc"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - 60% overlap rule applied",
+                                                "specificIssue": "The rubric requires that products with 60%+ primary use over",
+                                                "expectedOutput": "{\"relevancy\": null}",
+                                                "actualOutput": "{\"confidence\": 0.95, \"keyword_product_type\": \"thermal socks\", \"reasoning\": \"The keyword 'thermal soc"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M06_GD": {
+                        "name": "M06 GD - Generate Product Type Taxonomy",
+                        "description": "Generates product type taxonomy from listing",
+                        "total": 60,
+                        "pass": 39,
+                        "fail": 21,
+                        "passRate": 65,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M06_GenerateProductTypeTaxonomy/M06_GenerateProductTypeTaxonomy_gd1_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:54:45.854644",
+                        "analysisSummary": {
+                                    "FAIL - three-level hierarchy": 10,
+                                    "PASS - correct": 39,
+                                    "FAIL - no material/feature as separate levels": 6,
+                                    "FAIL - hierarchy order correct": 5
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - three-level hierarchy",
+                                                "specificIssue": "The module output does not meet the rubric criterion because",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"True Wireless Earbuds\", \"rank\": 1}, {\"level\": 2, \"produc"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - product type focused",
+                                                "specificIssue": "The module output describes the product category/type at bot",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"True Wireless Earbuds\", \"rank\": 1}, {\"level\": 2, \"produc"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - hierarchy order correct",
+                                                "specificIssue": "The module output correctly orders the taxonomy levels from ",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"True Wireless Earbuds\", \"rank\": 1}, {\"level\": 2, \"produc"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - product type accurate",
+                                                "specificIssue": "The rubric requires that the product types accurately descri",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"True Wireless Earbuds\", \"rank\": 1}, {\"level\": 2, \"produc"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - maximum three levels",
+                                                "specificIssue": "The rubric requires the taxonomy to have at most 3 levels. T",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"taxonomy\": [{\"level\": 1, \"product_type\": \"True Wireless Earbuds\", \"rank\": 1}, {\"level\": 2, \"produc"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M04": {
+                        "name": "M04 - Classify Competitor Brand Keywords",
+                        "description": "Classifies keyword as CB (Competitor Brand) or passes through",
+                        "total": 60,
+                        "pass": 36,
+                        "fail": 24,
+                        "passRate": 60,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M04_ClassifyCompetitorBrandKeywords/M04_ClassifyCompetitorBrandKeywords_v1_150126_1.csv",
+                        "timestamp": "2026-01-19T20:47:21.027981",
+                        "analysisSummary": {
+                                    "PASS - correct": 36,
+                                    "FAIL - correct cb/null classification": 10,
+                                    "FAIL - case insensitive matching": 9,
+                                    "FAIL - competitor correctly identified": 5
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct cb/null classification",
+                                                "specificIssue": "The rubric requires a CB classification when the keyword con",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"reasoning\": \"Keyword contains 'Le Creuset' which exactly matches competi"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - own brand excluded",
+                                                "specificIssue": "The rubric requires that the own_brand specified in INPUT is",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"reasoning\": \"Keyword contains 'Le Creuset' which exactly matches competi"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - case insensitive matching",
+                                                "specificIssue": "The module output correctly identifies 'Le Creuset' in the k",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"reasoning\": \"Keyword contains 'Le Creuset' which exactly matches competi"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - competitor correctly identifie",
+                                                "specificIssue": "The rubric requires that the matched_competitor is the actua",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"reasoning\": \"Keyword contains 'Le Creuset' which exactly matches competi"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M08_V2": {
+                        "name": "M08 v2 - Assign Attribute Ranks",
+                        "description": "Assigns importance ranks to attributes",
+                        "total": 40,
+                        "pass": 3,
+                        "fail": 37,
+                        "passRate": 8,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M08_AssignAttributeRanks/M08_V2_AssignAttributeRanks_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:04:15.956521",
+                        "analysisSummary": {
+                                    "FAIL - ranks assigned": 9,
+                                    "FAIL - important attributes ranked high": 10,
+                                    "FAIL - unique ranks per type": 8,
+                                    "FAIL - title attributes ranked 1-2": 10,
+                                    "PASS - correct": 3
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - ranks assigned",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Up to 32 Hours Battery Life\","
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - important attributes ranked hi",
+                                                "specificIssue": "The module output does not meet the rubric criterion because",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Up to 32 Hours Battery Life\","
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - unique ranks per type",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Up to 32 Hours Battery Life\","
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - title attributes ranked 1-2",
+                                                "specificIssue": "The title includes attributes 'True Wireless', 'Deep Bass So",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Up to 32 Hours Battery Life\","
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - ranks assigned",
+                                                "specificIssue": "The module output meets the rubric criterion as all attribut",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Use Case\", \"attribute_value\": \"Sports\", \"rank\": 1}, {\"attri",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"BPA-Free\", \"losses\": 0, \"rank"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01A_V2_GEMINI": {
+                        "name": "M01A V2 GEMINI",
+                        "description": "Generates typo/case variations of brand name",
+                        "total": 40,
+                        "pass": 16,
+                        "fail": 24,
+                        "passRate": 40,
+                        "model": "gemini-2.0-flash",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01A_ExtractOwnBrandVariations/M01A_V2_ExtractOwnBrandVariations_v2_200126_gemini20flash.csv",
+                        "timestamp": "2026-01-20T18:00:23.549595",
+                        "analysisSummary": {
+                                    "PASS - correct": 16,
+                                    "FAIL - no unrelated terms": 10,
+                                    "FAIL - 8-12 variations generated": 10,
+                                    "FAIL - first item is correct spelling": 3,
+                                    "FAIL - variations generated": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - variations generated",
+                                                "specificIssue": "The module output generated 10 variations of the brand name ",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"JLB\", \"JBK\", \"JNL\", \"J.B.L.\", \"J B L\", \"JBLl\", \"JBLk\"]}"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no unrelated terms",
+                                                "specificIssue": "The output includes variations like 'JLB', 'JBK', and 'JNL' ",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"JLB\", \"JBK\", \"JNL\", \"J.B.L.\", \"J B L\", \"JBLl\", \"JBLk\"]}"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - 8-12 variations generated",
+                                                "specificIssue": "The module output contains only 10 variations, which is fewe",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"JLB\", \"JBK\", \"JNL\", \"J.B.L.\", \"J B L\", \"JBLl\", \"JBLk\"]}"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - first item is correct spelling",
+                                                "specificIssue": "The first item in the module output is 'JBL', which is corre",
+                                                "expectedOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"J-B-L\", \"JBL-\", \"JBL.\", \"JBLl\", \"JBLK\", \"JBLQ\", \"JBLT\", \"JBLX\"",
+                                                "actualOutput": "{\"variations\": [\"JBL\", \"jbl\", \"Jbl\", \"JLB\", \"JBK\", \"JNL\", \"J.B.L.\", \"J B L\", \"JBLl\", \"JBLk\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - variations generated",
+                                                "specificIssue": "The module output generated 9 variations of the brand name '",
+                                                "expectedOutput": "{\"variations\": [\"Owala\", \"owala\", \"O-wala\", \"Owla\", \"Ohwala\", \"Owsla\", \"Owalaa\", \"Owalla\", \"Owalq\", ",
+                                                "actualOutput": "{\"variations\": [\"Owala\", \"owala\", \"Owalla\", \"Ohwala\", \"Owalq\", \"Owals\", \"Owalaa\", \"Owalao\", \"O-wala\""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M08_V2_SD": {
+                        "name": "M08 v2 SD - Assign Attribute Ranks",
+                        "description": "Assigns importance ranks to attributes",
+                        "total": 40,
+                        "pass": 21,
+                        "fail": 19,
+                        "passRate": 52,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M08_AssignAttributeRanks/M08_V2_AssignAttributeRanks-sd1_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:05:57.604187",
+                        "analysisSummary": {
+                                    "FAIL - ranks assigned": 6,
+                                    "PASS - correct": 21,
+                                    "FAIL - title attributes ranked 1-2": 8,
+                                    "FAIL - important attributes ranked high": 5
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - ranks assigned",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": []}",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Water resistant\", \"losses\": 0"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - important attributes ranked hi",
+                                                "specificIssue": "The module output ranks function-critical attributes such as",
+                                                "expectedOutput": "{\"attribute_table\": []}",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Water resistant\", \"losses\": 0"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - unique ranks per type",
+                                                "specificIssue": "The module output meets the rubric criterion as each attribu",
+                                                "expectedOutput": "{\"attribute_table\": []}",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Water resistant\", \"losses\": 0"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - title attributes ranked 1-2",
+                                                "specificIssue": "The title includes the attributes 'Water Resistant', 'Smudge",
+                                                "expectedOutput": "{\"attribute_table\": []}",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Water resistant\", \"losses\": 0"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - ranks assigned",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": []}",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Carbon Black\", \"losses\": 0, \""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M08": {
+                        "name": "M08 - Assign Attribute Ranks",
+                        "description": "Assigns importance ranks to attributes",
+                        "total": 40,
+                        "pass": 2,
+                        "fail": 38,
+                        "passRate": 5,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M08_AssignAttributeRanks/M08_AssignAttributeRanks_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:00:35.082566",
+                        "analysisSummary": {
+                                    "FAIL - ranks assigned": 9,
+                                    "FAIL - important attributes ranked high": 10,
+                                    "FAIL - unique ranks per type": 9,
+                                    "FAIL - title attributes ranked 1-2": 10,
+                                    "PASS - correct": 2
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - ranks assigned",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Bluetooth 5.2\", \"rank\": 1}, {"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - important attributes ranked hi",
+                                                "specificIssue": "The module output does not meet the rubric criterion because",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Bluetooth 5.2\", \"rank\": 1}, {"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - unique ranks per type",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Bluetooth 5.2\", \"rank\": 1}, {"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - title attributes ranked 1-2",
+                                                "specificIssue": "The title includes attributes 'True Wireless', 'Deep Bass So",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"In-Ear\", \"rank\": 1}, {\"attrib",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"Bluetooth 5.2\", \"rank\": 1}, {"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - ranks assigned",
+                                                "specificIssue": "The module output does not meet the PASS conditions because ",
+                                                "expectedOutput": "{\"attribute_table\": [{\"attribute_type\": \"Use Case\", \"attribute_value\": \"Sports\", \"rank\": 1}, {\"attri",
+                                                "actualOutput": "{\"attribute_table\": [{\"attribute_type\": \"Variant\", \"attribute_value\": \"BPA-Free\", \"rank\": 1}, {\"attr"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M04B": {
+                        "name": "M04B - Classify Competitor Brand (Path B)",
+                        "description": "Classifies keyword as CB (Path B workflow)",
+                        "total": 40,
+                        "pass": 32,
+                        "fail": 8,
+                        "passRate": 80,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M04B_ClassifyCompetitorBrandKeywords_PathB/M04B_ClassifyCompetitorBrandKeywords_PathB_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:52:38.747693",
+                        "analysisSummary": {
+                                    "PASS - correct": 32,
+                                    "FAIL - correct cb/null classification": 4,
+                                    "FAIL - case insensitive matching": 3,
+                                    "FAIL - competitor correctly identified": 1
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct cb/null classification",
+                                                "specificIssue": "The rubric requires a 'CB' classification when the keyword c",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"confidence\": 0.95, \"matched_competitor\": \"Le Creuset\", \"matched_term\": \""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - own brand excluded",
+                                                "specificIssue": "The rubric requires that the own_brand 'KitchenAid' is not c",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"confidence\": 0.95, \"matched_competitor\": \"Le Creuset\", \"matched_term\": \""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - case insensitive matching",
+                                                "specificIssue": "The rubric requires that brand matching ignores case differe",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"confidence\": 0.95, \"matched_competitor\": \"Le Creuset\", \"matched_term\": \""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - competitor correctly identifie",
+                                                "specificIssue": "The rubric requires that the matched_competitor field correc",
+                                                "expectedOutput": "{\"branding_scope_2\": \"CB\"}",
+                                                "actualOutput": "{\"branding_scope_2\": \"CB\", \"confidence\": 0.95, \"matched_competitor\": \"Le Creuset\", \"matched_term\": \""
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M05": {
+                        "name": "M05 - Classify Non-Branded Keywords",
+                        "description": "Classifies non-branded keywords",
+                        "total": 4,
+                        "pass": 4,
+                        "fail": 0,
+                        "passRate": 100,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M05_ClassifyNonBrandedKeywords/M05_ClassifyNonBrandedKeywords_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:27:50.770592",
+                        "analysisSummary": {
+                                    "PASS - correct": 4
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - correct nb/null classification",
+                                                "specificIssue": "The rubric requires that a keyword be classified as NB if it",
+                                                "expectedOutput": "{\"branding_scope_3\": \"NB\"}",
+                                                "actualOutput": "{\"branding_scope_3\": \"NB\", \"confidence\": 0.97, \"reasoning\": \"The keyword 'wireless microphone' conta"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - hidden brand awareness",
+                                                "specificIssue": "The rubric requires identifying potential unlisted brands or",
+                                                "expectedOutput": "{\"branding_scope_3\": \"NB\"}",
+                                                "actualOutput": "{\"branding_scope_3\": \"NB\", \"confidence\": 0.97, \"reasoning\": \"The keyword 'wireless microphone' conta"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M07_SD": {
+                        "name": "M07 SD - Extract Product Attributes",
+                        "description": "Extracts product attributes from listing",
+                        "total": 40,
+                        "pass": 31,
+                        "fail": 9,
+                        "passRate": 78,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M07_ExtractProductAttributes/M07_ExtractProductAttributes-sd1_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:58:57.315491",
+                        "analysisSummary": {
+                                    "FAIL - attributes from listing": 2,
+                                    "PASS - correct": 31,
+                                    "FAIL - specifications preserve full details": 5,
+                                    "FAIL - audiences explicit only or dash": 2
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - attributes from listing",
+                                                "specificIssue": "The module output includes attributes such as 'Dishwasher sa",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Everyday dining and entertaining\", \"Formal dinner parties\", \"Cas"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no fabricated use cases",
+                                                "specificIssue": "The use cases provided by the module are reasonable for a di",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Everyday dining and entertaining\", \"Formal dinner parties\", \"Cas"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - audiences explicit only or das",
+                                                "specificIssue": "The module output includes '-' for the 'audiences' field, wh",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Everyday dining and entertaining\", \"Formal dinner parties\", \"Cas"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - specifications preserve full d",
+                                                "specificIssue": "The module output does not include any technical specificati",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Everyday dining and entertaining\", \"Formal dinner parties\", \"Cas"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - attributes from listing",
+                                                "specificIssue": "The module output attributes can all be traced back to the l",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"Teens\", \"Children\", \"Younger users\", \"Seniors\", \"-\"], \"use_cases\": [\"Taking high qua"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M11": {
+                        "name": "M11 - Identify Hard Constraints",
+                        "description": "Identifies hard constraints for product",
+                        "total": 70,
+                        "pass": 37,
+                        "fail": 33,
+                        "passRate": 53,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M11_IdentifyHardConstraints/M11_IdentifyHardConstraints_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T01:10:20.800444",
+                        "analysisSummary": {
+                                    "PASS - correct": 37,
+                                    "FAIL - 3-step test applied": 8,
+                                    "FAIL - constraint count reasonable": 5,
+                                    "FAIL - constraints non-negotiable": 5,
+                                    "FAIL - only true hard constraints": 4,
+                                    "FAIL - critical constraints not missed": 3,
+                                    "FAIL - never categories excluded": 5,
+                                    "FAIL - expected 0-1 hard constraints": 3
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - constraint count reasonable",
+                                                "specificIssue": "The rubric requires that most consumer products, including e",
+                                                "expectedOutput": "{\"hard_constraints\": []}",
+                                                "actualOutput": "{\"confidence\": 0.9, \"hard_constraints\": [], \"reasoning\": \"Analyzing JBL Vibe Beam Earbuds for 'Liste"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - constraints non-negotiable",
+                                                "specificIssue": "The rubric requires that the OUTPUT hard_constraints array i",
+                                                "expectedOutput": "{\"hard_constraints\": []}",
+                                                "actualOutput": "{\"confidence\": 0.9, \"hard_constraints\": [], \"reasoning\": \"Analyzing JBL Vibe Beam Earbuds for 'Liste"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - only true hard constraints",
+                                                "specificIssue": "The rubric requires that only function-critical attributes a",
+                                                "expectedOutput": "{\"hard_constraints\": []}",
+                                                "actualOutput": "{\"confidence\": 0.9, \"hard_constraints\": [], \"reasoning\": \"Analyzing JBL Vibe Beam Earbuds for 'Liste"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - critical constraints not misse",
+                                                "specificIssue": "The rubric requires that all function-critical constraints a",
+                                                "expectedOutput": "{\"hard_constraints\": []}",
+                                                "actualOutput": "{\"confidence\": 0.9, \"hard_constraints\": [], \"reasoning\": \"Analyzing JBL Vibe Beam Earbuds for 'Liste"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - never categories excluded",
+                                                "specificIssue": "The rubric requires that attributes from NEVER categories ar",
+                                                "expectedOutput": "{\"hard_constraints\": []}",
+                                                "actualOutput": "{\"confidence\": 0.9, \"hard_constraints\": [], \"reasoning\": \"Analyzing JBL Vibe Beam Earbuds for 'Liste"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M07_GD": {
+                        "name": "M07 GD - Extract Product Attributes",
+                        "description": "Extracts product attributes from listing",
+                        "total": 40,
+                        "pass": 30,
+                        "fail": 10,
+                        "passRate": 75,
+                        "model": "gpt-4o",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M07_ExtractProductAttributes/M07_ExtractProductAttributes_gd1_v1_150126_1.csv",
+                        "timestamp": "2026-01-20T00:57:34.663211",
+                        "analysisSummary": {
+                                    "PASS - correct": 30,
+                                    "FAIL - specifications preserve full details": 6,
+                                    "FAIL - audiences explicit only or dash": 2,
+                                    "FAIL - attributes from listing": 2
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - attributes from listing",
+                                                "specificIssue": "The module output includes attributes and use cases that are",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Daily entertainment\", \"Making hands-free stereo calls on the go\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no fabricated use cases",
+                                                "specificIssue": "The rubric requires that use cases be realistic and grounded",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Daily entertainment\", \"Making hands-free stereo calls on the go\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - audiences explicit only or das",
+                                                "specificIssue": "The rubric requires that the audiences only include explicit",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Daily entertainment\", \"Making hands-free stereo calls on the go\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - specifications preserve full d",
+                                                "specificIssue": "The module output includes full specifications with all numb",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"Daily entertainment\", \"Making hands-free stereo calls on the go\""
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - attributes from listing",
+                                                "specificIssue": "The module output lists attributes and use cases that are al",
+                                                "expectedOutput": "{}",
+                                                "actualOutput": "{\"audiences\": [\"-\"], \"use_cases\": [\"General hydration\", \"Sports and outdoor activities\", \"Travel and"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            },
+            "M01_V3_GEMINI": {
+                        "name": "M01 V3 GEMINI",
+                        "description": "Extracts brand name and variations from product listing",
+                        "total": 50,
+                        "pass": 26,
+                        "fail": 24,
+                        "passRate": 52,
+                        "model": "gemini-2.0-flash",
+                        "promptVersion": "unknown",
+                        "dataSource": "/home/kostya/PycharmProjects/PythonProject1/experiment_results/M01_ExtractOwnBrandEntities/M01_V3_ExtractOwnBrandEntities_v3_200126_gemini20flash.csv",
+                        "timestamp": "2026-01-20T17:59:07.703280",
+                        "analysisSummary": {
+                                    "PASS - correct": 26,
+                                    "FAIL - no product words in brand": 4,
+                                    "FAIL - amazon test applied": 5,
+                                    "FAIL - no hallucinated brand": 5,
+                                    "FAIL - no duplicate entities": 5,
+                                    "FAIL - brand extracted": 5
+                        },
+                        "analysisTable": [
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - brand extracted",
+                                                "specificIssue": "The extracted brand 'JBL' matches the listing brand, and var",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLB\", \"JBLl\", \"JBLL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no hallucinated brand",
+                                                "specificIssue": "The extracted brand 'JBL' is present in the input data, spec",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLB\", \"JBLl\", \"JBLL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - no product words in brand",
+                                                "specificIssue": "The module output does not include any standalone generic pr",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLB\", \"JBLl\", \"JBLL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Prompt Issue",
+                                                "analysisSummary": "FAIL - amazon test applied",
+                                                "specificIssue": "The module output is missing some valid brand entities such ",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLB\", \"JBLl\", \"JBLL\"]}"
+                                    },
+                                    {
+                                                "issueType": "Model Correct",
+                                                "analysisSummary": "PASS - no duplicate entities",
+                                                "specificIssue": "The module output contains no exact string duplicates. Each ",
+                                                "expectedOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLl\", \"JBLB\", \"Vibe Beem\", \"Vibe Bem\", \"Vibe Bema\"]}",
+                                                "actualOutput": "{\"brand_entities\": [\"JBL\", \"jbl\", \"JLB\", \"JBLB\", \"JBLl\", \"JBLL\"]}"
+                                    }
+                        ],
+                        "fixed": [],
+                        "recommendations": []
+            }
+};
+
+        // Detailed improvement suggestions with prompt changes
+        // ✅ = VALIDATED through experiments, ⏳ = Pending validation
+        const improvementSuggestions = [
+            {
+                        "rubric": "No Hallucinated Brand",
+                        "criticality": "High",
+                        "passRate": 60.0,
+                        "issueType": "Model Issue + Prompt Clarity",
+                        "analysisSummary": "Model extracts 'Vibe' as standalone sub-brand from 'Vibe Beam' when prompt says to skip entire sub-brand if last word is generic",
+                        "detailedSuggestion": "PROMPT FIX: Add explicit rule for sub-brand handling",
+                        "promptChange": "Add: 'If sub-brand fails Amazon Test, skip ENTIRE sub-brand'",
+                        "impact": "Expected to improve from 60% to 90%+ for this rubric",
+                        "validated": false,
+                        "module": "M01"
+            },
+            {
+                        "rubric": "No Product Words in Brand",
+                        "criticality": "Medium",
+                        "passRate": 86.7,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "AirPods being extracted as brand entity when it's a product word",
+                        "detailedSuggestion": "Add AirPods, iPhone, iPad to product words exclusion list",
+                        "validated": false,
+                        "module": "M01"
+            },
+            {
+                        "rubric": "No Duplicate Entities",
+                        "criticality": "Medium",
+                        "passRate": 86.7,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "Some outputs contain exact duplicate strings",
+                        "detailedSuggestion": "Strengthen final duplicate validation step",
+                        "validated": false,
+                        "module": "M01"
+            },
+            {
+                        "rubric": "8-12 Variations Generated",
+                        "criticality": "High",
+                        "passRate": 60.0,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "4 of 10 samples fail due to DUPLICATE variations",
+                        "detailedSuggestion": "Add explicit duplicate validation step",
+                        "validated": true,
+                        "module": "M01A"
+            },
+            {
+                        "rubric": "No Unrelated Terms",
+                        "criticality": "Low",
+                        "passRate": 90.0,
+                        "issueType": "Judge Issue",
+                        "analysisSummary": "1 false positive - judge incorrectly flagged 'KichenAid' typo as unrelated",
+                        "detailedSuggestion": "Update rubric to clarify typos are valid variations",
+                        "validated": true,
+                        "module": "M01A"
+            },
+            {
+                        "rubric": "Correct CB/null Classification",
+                        "criticality": "Critical",
+                        "passRate": 33.3,
+                        "issueType": "Judge Issue (Data Quality)",
+                        "analysisSummary": "9 of 10 failures are DATA ISSUES - model correctly returned null, dataset is wrong",
+                        "detailedSuggestion": "DATA FIX: Update dataset expected values. Change from 'CB' to null for brands not in list",
+                        "validated": true,
+                        "module": "M04"
+            },
+            {
+                        "rubric": "Taxonomy Generated",
+                        "criticality": "Medium",
+                        "passRate": 65.0,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "Taxonomy sometimes too generic or misses key product types",
+                        "validated": false,
+                        "module": "M06"
+            },
+            {
+                        "rubric": "Ranks Assigned",
+                        "criticality": "Critical",
+                        "passRate": 5.0,
+                        "issueType": "Judge Issue + Model Issue",
+                        "analysisSummary": "Judge expects 'Use Case' but prompt shows 'UseCase'. Model also skips ranking some attributes.",
+                        "specificIssue": "Prompt CLEARLY shows 'UseCase' (no space) in all examples, but judge fails because expected values have 'Use Case' (with space)",
+                        "detailedSuggestion": "FIX 1 (JUDGE): Update expected values to 'UseCase'. FIX 2 (MODEL): Add 'rank EVERY attribute' instruction",
+                        "impact": "Expected to improve from 5% to 70%+ after fixing both issues",
+                        "validated": true,
+                        "module": "M08"
+            },
+            {
+                        "rubric": "Title Attributes Ranked 1-2",
+                        "criticality": "High",
+                        "passRate": 10.0,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "Title attributes sometimes ranked 3+ instead of required 1-2",
+                        "detailedSuggestion": "Emphasize title attribute priority in prompt",
+                        "validated": false,
+                        "module": "M08"
+            },
+            {
+                        "rubric": "Primary Use Identified",
+                        "criticality": "Medium",
+                        "passRate": 62.5,
+                        "issueType": "Model Issue + Data Issue",
+                        "analysisSummary": "Model identifies correct use but phrasing doesn't match expected exactly",
+                        "validated": false,
+                        "module": "M09"
+            },
+            {
+                        "rubric": "Invalid M09 Output Flagged",
+                        "criticality": "Critical",
+                        "passRate": 20.0,
+                        "issueType": "Judge Issue (Strict Matching)",
+                        "analysisSummary": "Judge fails because model output is semantically equivalent but not exact string match",
+                        "specificIssue": "Expected: 'Listening to audio'. Model: 'Wireless music and audio listening'. Both describe same use case!",
+                        "detailedSuggestion": "Allow semantic equivalence in primary use comparison",
+                        "rubricChange": "Add: 'Semantically equivalent uses are acceptable: Listening to audio = Wireless music listening'",
+                        "impact": "Expected to improve from 20% to 80%+ if semantic matching allowed",
+                        "validated": true,
+                        "module": "M10"
+            },
+            {
+                        "rubric": "Constraints Are Product-Specific",
+                        "criticality": "Medium",
+                        "passRate": 40.0,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "Model sometimes includes generic constraints instead of product-specific ones",
+                        "detailedSuggestion": "Add explicit examples of what is NOT a hard constraint",
+                        "validated": false,
+                        "module": "M11"
+            },
+            {
+                        "rubric": "Complementary Correctly Identified",
+                        "criticality": "Medium",
+                        "passRate": 75.0,
+                        "issueType": "Model Issue",
+                        "analysisSummary": "Some complementary relationships not identified correctly",
+                        "validated": false,
+                        "module": "M16"
+            }
+];
+
+        const colors = {
+            "PASS - correct": "#26de81",
+            "PASS with variation": "#4ecdc4",
+            "PASS with valid alternative": "#4ecdc4",
+            "FAIL - null output": "#2d3436",
+            "FAIL - duplicates found": "#e17055",
+            "FAIL - hallucination detected": "#d63031",
+            "FAIL - hallucination": "#d63031",
+            "FAIL - format issue": "#fdcb6e",
+            "FAIL - structure issue": "#fdcb6e",
+            "FAIL - count issue": "#e17055",
+            "FAIL - wrong classification": "#ff7675",
+            "FAIL - matching error": "#fab1a0",
+            "FAIL - model error": "#ff7675",
+            "FAIL - ranking issue": "#e17055",
+            "FAIL - constraint issue": "#e17055",
+            "FAIL - unrelated terms": "#fab1a0",
+            "FAIL - word count issue": "#fdcb6e",
+            "FAIL - description issue": "#fdcb6e",
+            "FAIL - classification error": "#ff7675"
+        };
+
+        let currentView = 'module';
+        let activeFilter = 'all';
+
+        function getIssueTypeClass(issueType) {
+            if (issueType.includes('Prompt')) return 'prompt';
+            if (issueType.includes('Model') && issueType.includes('Correct')) return 'correct';
+            if (issueType.includes('Model')) return 'model';
+            if (issueType.includes('Valid')) return 'valid';
+            if (issueType.includes('Judge')) return 'judge';
+            return '';
+        }
+
+        function init() {
+            renderSidebar();
+            document.getElementById('totalIssuesBadge').textContent = improvementSuggestions.length;
+            selectModule('M08');
+        }
+
+        function renderSidebar() {
+            const list = document.getElementById('moduleList');
+            const modules = Object.keys(moduleData).sort((a, b) => {
+                return moduleData[a].passRate - moduleData[b].passRate;
+            });
+
+            list.innerHTML = modules.map(id => {
+                const m = moduleData[id];
+                let rateClass = 'rate-critical';
+                if (m.passRate >= 80) rateClass = 'rate-excellent';
+                else if (m.passRate >= 60) rateClass = 'rate-good';
+                else if (m.passRate >= 40) rateClass = 'rate-warning';
+
+                return `
+                    <li class="module-item" data-module="${id}" onclick="selectModule('${id}')">
+                        <span class="module-name">${id}</span>
+                        <span class="module-rate ${rateClass}">${m.passRate}%</span>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function selectModule(moduleId) {
+            currentView = 'module';
+            document.querySelectorAll('.module-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.module === moduleId) {
+                    item.classList.add('active');
+                }
+            });
+            document.getElementById('suggestionsMenuItem').classList.remove('active');
+            renderModuleContent(moduleId);
+        }
+
+        function showSuggestions() {
+            currentView = 'suggestions';
+            document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('suggestionsMenuItem').classList.add('active');
+            renderSuggestionsContent();
+        }
+
+        function renderModuleContent(moduleId) {
+            const m = moduleData[moduleId];
+            const main = document.getElementById('mainContent');
+
+            main.innerHTML = `
+                <div class="module-header">
+                    <h2>${m.name}</h2>
+                    <p class="description">${m.description}</p>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="label">Total</div>
+                        <div class="value">${m.total}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Pass</div>
+                        <div class="value pass">${m.pass}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Fail</div>
+                        <div class="value fail">${m.fail}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Pass Rate</div>
+                        <div class="value">${m.passRate}%</div>
+                    </div>
+                </div>
+
+                <div class="analysis-section">
+                    <div class="chart-card">
+                        <h3>Analysis Summary Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="analysisSummaryChart"></canvas>
+                        </div>
+                        <div class="chart-legend" id="chartLegend"></div>
+                    </div>
+
+                    <div class="table-card">
+                        <h3>Analysis Details</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Issue Type</th>
+                                    <th>Analysis Summary</th>
+                                    <th>Specific Issue</th>
+                                    <th>Expected Output</th>
+                                    <th>Actual Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${m.analysisTable.map(row => `
+                                    <tr>
+                                        <td class="issue-type-cell ${getIssueTypeClass(row.issueType)}">${row.issueType}</td>
+                                        <td class="analysis-summary-cell">${row.analysisSummary}</td>
+                                        <td class="specific-issue-cell">${row.specificIssue}</td>
+                                        <td><div class="output-cell">${row.expectedOutput}</div></td>
+                                        <td><div class="output-cell">${row.actualOutput}</div></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                ${m.fixed.length > 0 ? `
+                    <div class="fixed-section">
+                        <h3>What's Been Fixed</h3>
+                        ${m.fixed.map(f => `<div class="fixed-item">${f}</div>`).join('')}
+                    </div>
+                ` : ''}
+
+                ${m.recommendations.length > 0 ? `
+                    <div class="recommendations-section">
+                        <h3>Recommendations</h3>
+                        ${m.recommendations.map(r => `<div class="recommendation-item">${r}</div>`).join('')}
+                    </div>
+                ` : ''}
+            `;
+
+            renderAnalysisChart(m);
+        }
+
+        function renderSuggestionsContent() {
+            const main = document.getElementById('mainContent');
+
+            // Count by criticality
+            const counts = {
+                Critical: improvementSuggestions.filter(s => s.criticality === 'Critical').length,
+                High: improvementSuggestions.filter(s => s.criticality === 'High').length,
+                Medium: improvementSuggestions.filter(s => s.criticality === 'Medium').length,
+                Low: improvementSuggestions.filter(s => s.criticality === 'Low').length
+            };
+
+            main.innerHTML = `
+                <div class="suggestions-content">
+                    <div class="module-header">
+                        <h2>Improvement Suggestions</h2>
+                        <p class="description">Detailed analysis of issues with specific prompt changes needed - sorted by criticality</p>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="label">Critical</div>
+                            <div class="value critical">${counts.Critical}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">High</div>
+                            <div class="value high">${counts.High}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Medium</div>
+                            <div class="value medium">${counts.Medium}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Low</div>
+                            <div class="value low">${counts.Low}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Total Issues</div>
+                            <div class="value">${improvementSuggestions.length}</div>
+                        </div>
+                    </div>
+
+                    <div class="filter-tabs">
+                        <button class="filter-tab ${activeFilter === 'all' ? 'active' : ''}" onclick="filterSuggestions('all')">All Issues</button>
+                        <button class="filter-tab critical ${activeFilter === 'Critical' ? 'active' : ''}" onclick="filterSuggestions('Critical')">Critical (${counts.Critical})</button>
+                        <button class="filter-tab high ${activeFilter === 'High' ? 'active' : ''}" onclick="filterSuggestions('High')">High (${counts.High})</button>
+                        <button class="filter-tab medium ${activeFilter === 'Medium' ? 'active' : ''}" onclick="filterSuggestions('Medium')">Medium (${counts.Medium})</button>
+                        <button class="filter-tab low ${activeFilter === 'Low' ? 'active' : ''}" onclick="filterSuggestions('Low')">Low (${counts.Low})</button>
+                    </div>
+
+                    <div id="suggestionsContainer"></div>
+                </div>
+            `;
+
+            renderSuggestionCards();
+        }
+
+        function filterSuggestions(filter) {
+            activeFilter = filter;
+            renderSuggestionsContent();
+        }
+
+        function renderSuggestionCards() {
+            const container = document.getElementById('suggestionsContainer');
+            const filtered = activeFilter === 'all'
+                ? improvementSuggestions
+                : improvementSuggestions.filter(s => s.criticality === activeFilter);
+
+            // Group by criticality
+            const grouped = {};
+            filtered.forEach(s => {
+                if (!grouped[s.criticality]) grouped[s.criticality] = [];
+                grouped[s.criticality].push(s);
+            });
+
+            const order = ['Critical', 'High', 'Medium', 'Low'];
+
+            container.innerHTML = order
+                .filter(crit => grouped[crit])
+                .map(crit => `
+                    <div class="criticality-section">
+                        <div class="criticality-header ${crit.toLowerCase()}">
+                            <span class="criticality-badge ${crit.toLowerCase()}">${crit}</span>
+                            <span class="criticality-title">${crit} Priority</span>
+                            <span class="criticality-count">${grouped[crit].length} issues</span>
+                        </div>
+                        ${grouped[crit].map(s => renderSuggestionCard(s)).join('')}
+                    </div>
+                `).join('');
+        }
+
+        function renderSuggestionCard(s) {
+            const issueTypeClass = s.issueType.includes('Prompt') ? 'prompt' : 'model';
+            return `
+                <div class="suggestion-card ${s.criticality.toLowerCase()}">
+                    <div class="suggestion-header">
+                        <span class="module-badge">${s.module}</span>
+                        <span class="issue-type-badge ${issueTypeClass}">${s.issueType}</span>
+                        <span class="analysis-summary-cell">${s.analysisSummary}</span>
+                        <span class="pass-rate-badge">Pass Rate: ${s.passRate}%</span>
+                    </div>
+                    <div class="suggestion-body">
+                        <div class="issue-description">
+                            <h4>Issue Analysis</h4>
+                            <p>${s.specificIssue}</p>
+                        </div>
+                        <div class="output-comparison">
+                            <div class="output-box expected">
+                                <h5>Expected Output</h5>
+                                <pre>${s.expectedOutput}</pre>
+                            </div>
+                            <div class="output-box actual">
+                                <h5>Actual Output</h5>
+                                <pre>${s.actualOutput}</pre>
+                            </div>
+                        </div>
+                        <div class="detailed-suggestion">
+                            <h4>Recommended Fix</h4>
+                            <div class="suggestion-text">${s.detailedSuggestion}</div>
+                            <div class="prompt-change">${s.promptChange}</div>
+                            <span class="impact-badge">${s.impact}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAnalysisChart(m) {
+            const labels = Object.keys(m.analysisSummary);
+            const values = Object.values(m.analysisSummary);
+            const chartColors = labels.map(l => colors[l] || '#888');
+
+            new Chart(document.getElementById('analysisSummaryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: chartColors,
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            const legendHtml = labels.map((label, i) => `
+                <div class="legend-item">
+                    <div class="legend-color" style="background: ${chartColors[i]}"></div>
+                    <span>${label} (${values[i]})</span>
+                </div>
+            `).join('');
+            document.getElementById('chartLegend').innerHTML = legendHtml;
+        }
+
+        init();
+    </script>
+</body>
+</html>

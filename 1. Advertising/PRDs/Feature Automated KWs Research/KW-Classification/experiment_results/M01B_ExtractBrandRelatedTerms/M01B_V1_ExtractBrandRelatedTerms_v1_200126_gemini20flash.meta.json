@@ -1,0 +1,80 @@
+{
+  "braintrust_experiment_id": "c282a922-d2cc-43df-9c0b-d0efede06049",
+  "braintrust_experiment_name": "M01B_ExtractBrandRelatedTerms_v1_200126",
+  "created": "2026-01-20 14:19:42.531000+00:00",
+  "model": "gemini-2.0-flash",
+  "temperature": 0,
+  "dataset_id": "4136035d-c741-459b-a107-6b185a92aa7b",
+  "dataset_name": "M01B_ExtractBrandRelatedTerms_V1.1",
+  "dataset_version": "1000196473825687859",
+  "prompt_id": "0418bc9b-dfdc-4646-9bd7-e29e4f5e5cba",
+  "prompt_version": "1000196520100979777",
+  "prompt_session_id": "538c5208-16fb-42bd-acbb-da8d158400ce",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "module_1b_ExtractBrandRelatedTerms_output",
+      "schema": {
+        "type": "object",
+        "required": [
+          "sub_brands",
+          "searchable_standards",
+          "manufacturer"
+        ],
+        "properties": {
+          "sub_brands": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "description": "Named sub-brands, product families, or series (e.g., FreeSip, Vibe Beam, ColorStay, Cyber Commander Series)"
+          },
+          "manufacturer": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "short",
+                  "searchable"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Full manufacturer name"
+                  },
+                  "short": {
+                    "type": "string",
+                    "description": "Short/common name for searching"
+                  },
+                  "searchable": {
+                    "type": "boolean",
+                    "description": "true if people might search by this manufacturer name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Manufacturer info if different from brand, null otherwise"
+          },
+          "searchable_standards": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "description": "Industry standards/certifications that consumers search for on Amazon (e.g., ENFit, MagSafe, Gore-Tex)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  },
+  "records_count": 99,
+  "downloaded_at": "2026-01-20T17:41:36.270680"
+}
